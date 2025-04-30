@@ -1,47 +1,30 @@
 <template>
 	<div id="client-root">
-		<div id="grid-container">
-			<div id="left-sidebar-container" class="grid-column right-border">
-				<div id="home" class="bottom-border">
-					<NuxtLink href="web">
-						<img src="~/assets/img/house.svg" alt="Home" width="70%">
-					</NuxtLink>
-				</div>
-				<div id="servers-list" v-for="server of servers">
-					<NuxtLink :href="'web' + server.url">
-						<img src="~/assets/img/server.svg" :alt="server.name" width="70%">
-					</NuxtLink>
-				</div>
-			</div>
-			<div id="main-content" class="grid-column">
-				<div id="main-bar" class="main-grid-row bottom-border">
-					main bar
-				</div>
-				<div id="channels-list" class="main-grid-row">
-					<Channel v-for="channel of channels" :name="channel.name" :href="`${useRoute().path}/${channel.id}`" />
-				</div>
-				<div id="message-history" class="main-grid-row">
-					<Message v-for="message of messages" :img="pfp" :username="message.author.username" :text="message.text"
-						:timestamp="message.timestamp" format="12" />
-				</div>
-				<div id="message-box" class="main-grid-row">
-					<input type="text" name="message-box-input" id="message-box-input">
-				</div>
-			</div>
-			<div id="right-sidebar-container" class="grid-column left-border">
-				<div id="utilities" class="bottom-border">
-					<div>
-						<NuxtLink>
-							<img src="~/assets/img/envelope.svg" alt="Inbox" width="30dvw">
-						</NuxtLink>
-					</div>
-				</div>
-				<div id="members-list">
-					<div class="member-item" v-for="member of members">
-						<img src="~/assets/img/tiger-head.svg" :alt="member.displayName" width="30dvw">
-						<span class="member-display-name">{{ member.displayName }}</span>
-					</div>
-				</div>
+		<div id="home">
+			<NuxtLink href="/web">
+				<img src="~/assets/img/house.svg" alt="Home">
+			</NuxtLink>
+		</div>
+		<div id="current-channel">
+			main bar
+		</div>
+		<div id="test">test</div>
+		<div id="servers-list">
+			<NuxtLink v-for="server of servers" :href="'web' + server.url">
+				<img src="~/assets/img/server.svg" :alt="server.name" width="1%">
+			</NuxtLink>
+		</div>
+		<div id="channels-list" class="main-grid-row">
+			<Channel v-for="channel of channels" :name="channel.name" :href="`${useRoute().path}/${channel.id}`" />
+		</div>
+		<div id="message-history" class="main-grid-row">
+			<Message v-for="message of messages" :img="pfp" :username="message.author.username" :text="message.text"
+				:timestamp="message.timestamp" format="12" />
+		</div>
+		<div id="members-list">
+			<div class="member-item" v-for="member of members">
+				<img src="~/assets/img/tiger-head.svg" :alt="member.displayName" width="30dvw">
+				<span class="member-display-name">{{ member.displayName }}</span>
 			</div>
 		</div>
 	</div>
@@ -165,10 +148,21 @@ const channels = [
 #client-root {
 	/* border: 1px solid white; */
 	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 18fr 4fr;
+	grid-template-rows: 8dvh auto;
+	text-align: center;
+}
+
+#client-root > div:nth-child(-n+3) {
+	border-bottom: 1px solid rgb(70, 70, 70);
 }
 
 #client-root div {
 	/* border: 1px solid cyan; */
+}
+
+#main-bar {
 }
 
 #__nuxt {
@@ -177,18 +171,23 @@ const channels = [
 	height: 100%;
 }
 
-#grid-container {
-	display: grid;
-	grid-template-columns: 1fr 18fr 4fr;
-	height: 100%;
-}
-
 .grid-column {
 	padding-top: 1dvh;
 }
 
 #home {
-	margin-bottom: 3dvh;
+	grid-column: 1;
+	grid-row: 1;
+}
+
+#current-info {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+#test {
+	grid-column: 3;
+	grid-row: 1;
 }
 
 #utilities {
@@ -244,6 +243,5 @@ const channels = [
 }
 
 #main-bar {
-	margin-bottom: 2dvh;
 }
 </style>
