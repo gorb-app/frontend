@@ -1,17 +1,18 @@
 <template>
 	<div id="client-root">
-		<div id="home">
+		<div id="home" class=".homebar-item">
 			<NuxtLink href="/web">
 				<img src="~/assets/img/house.svg" alt="Home">
 			</NuxtLink>
 		</div>
-		<div id="current-channel">
+		<div id="current-channel" class=".homebar-item">
 			main bar
 		</div>
-		<div id="test">test</div>
+		<div id="test" class=".homebar-item">test</div>
+		<div id="test2" class=".homebar-item">test2</div>
 		<div id="servers-list">
 			<NuxtLink v-for="server of servers" :href="'web' + server.url">
-				<img src="~/assets/img/server.svg" :alt="server.name" width="1%">
+				<img src="~/assets/img/server.svg" :alt="server.name">
 			</NuxtLink>
 		</div>
 		<div id="channels-list" class="main-grid-row">
@@ -20,6 +21,9 @@
 		<div id="message-history" class="main-grid-row">
 			<Message v-for="message of messages" :img="pfp" :username="message.author.username" :text="message.text"
 				:timestamp="message.timestamp" format="12" />
+			<div id="message-box" class="main-grid-row">
+				<input type="text" name="message-box-input" id="message-box-input">
+			</div>
 		</div>
 		<div id="members-list">
 			<div class="member-item" v-for="member of members">
@@ -28,6 +32,7 @@
 			</div>
 		</div>
 	</div>
+	<NuxtPage />
 </template>
 
 <script lang="ts" setup>
@@ -149,12 +154,12 @@ const channels = [
 	/* border: 1px solid white; */
 	height: 100%;
 	display: grid;
-	grid-template-columns: 1fr 18fr 4fr;
+	grid-template-columns: 1fr 4fr 18fr 4fr;
 	grid-template-rows: 8dvh auto;
 	text-align: center;
 }
 
-#client-root > div:nth-child(-n+3) {
+#client-root>div:nth-child(-n+4) {
 	border-bottom: 1px solid rgb(70, 70, 70);
 }
 
@@ -162,8 +167,7 @@ const channels = [
 	/* border: 1px solid cyan; */
 }
 
-#main-bar {
-}
+#main-bar {}
 
 #__nuxt {
 	display: flex;
@@ -242,6 +246,12 @@ const channels = [
 	/* border: 1px solid cyan; */
 }
 
-#main-bar {
+#main-bar {}
+
+#servers-list,
+#channels-list,
+#message-history,
+#members-list {
+	margin-top: 3dvh;
 }
 </style>
