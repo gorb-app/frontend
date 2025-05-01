@@ -178,12 +178,6 @@ function sendMessage(e: Event) {
 	border-bottom: 1px solid rgb(70, 70, 70);
 }
 
-#client-root div {
-	/* border: 1px solid cyan; */
-}
-
-#main-bar {}
-
 #__nuxt {
 	display: flex;
 	flex-flow: column;
@@ -258,12 +252,6 @@ function sendMessage(e: Event) {
 	width: 80%;
 	height: 100%;
 }
-
-.main-grid-row {
-	/* border: 1px solid cyan; */
-}
-
-#main-bar {}
 
 #servers-list,
 #channels-list,
