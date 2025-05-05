@@ -1,16 +1,27 @@
 import type { NitroFetchRequest, NitroFetchOptions } from "nitropack";
 
 export default async <T>(request: NitroFetchRequest, options: NitroFetchOptions<string> = {}) => {
-  const accessToken = useCookie("access_token");
-  console.log("access token 2:", accessToken.value);
+  const accessToken = useCookie("access_token").value;
+  console.log("access token 2:", accessToken);
+
+  let headers: HeadersInit = {};
+
+  if (accessToken) {
+    headers = {
+      ...options.headers,
+      "Authorization": `Bearer ${accessToken}`
+    };
+  } else {
+    headers = {
+      ...options.headers
+    };
+  }
 
   try {
     const res = await $fetch<T>(request, {
       ...options,
-      headers: {
-        ...options.headers,
-        "Authorization": `Bearer ${accessToken.value}`
-      }
+      headers,
+      credentials: "include"
     });
 
     return res;
