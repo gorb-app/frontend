@@ -4,7 +4,7 @@ COPY ./.output /web
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 
-RUN useradd --create-home --home-dir /web gorb
+RUN busybox adduser -D -h /web gorb
 
 USER gorb
 
