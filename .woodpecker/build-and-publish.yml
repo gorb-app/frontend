@@ -1,0 +1,25 @@
+
+steps:
+  - name: build
+    image: node:alpine
+    commands:
+      - npm install -g pnpm
+      - pnpm install
+      - pnpm build
+    when:
+    - event: push
+    - event: pull_request
+
+  - name: container-build-and-publish
+    image: docker
+    commands:
+      - docker login --username radical --password $PASSWORD git.gorb.app
+      - docker buildx build --platform linux/amd64,linux/arm64 --rm --push -t git.gorb.app/gorb/frontend:main .
+    environment:
+      PASSWORD:
+        from_secret: docker_password
+    volumes:
+      - /var/run/podman/podman.sock:/var/run/docker.sock
+    when:
+    - branch: main
+      event: push
