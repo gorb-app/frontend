@@ -1,40 +1,131 @@
 <template>
-  <div id="main-container">
-    <div id="auth-form-container">
-      <slot />
-    </div>
-    <div v-if="accessToken">
-      You're logged in!
-      <button @click="logout">Log out</button>
-    </div>
-    <div v-if="res">
-      Response:
-      <p>
-        {{ res }}
-      </p>
+  <div id="root-container" style="margin-top: 5dvh;">
+    <Loading v-if="!mounted" />
+    <div v-else id="main-container">
+      <div v-if="!instanceUrl">
+        <div v-if="instanceError" style="color: red;">
+          {{ instanceError }}
+        </div>
+        <form @submit="selectInstance">
+          <div>
+            <label for="instance-url">Instance URL</label>
+            <br>
+            <input type="url" name="instance-url" id="instance-url" required v-model="instanceUrlInput">
+          </div>
+          <div>
+            <button type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+      <div v-else id="auth-form-container">
+        <slot />
+      </div>
+      <div v-if="auth.accessToken.value">
+        You're logged in!
+        <form @submit="logout">
+          <div>
+            <label for="logout-password">Password</label>
+            <br>
+            <input type="password" name="logout-password" id="logout-password" v-model="form.password" required>
+          </div>
+          <div>
+            <button type="submit">Log out</button>
+          </div>
+        </form>
+        <div>
+          <button @click="refresh">Refresh</button>
+        </div>
+        <div>
+          <button @click="showUser">Show user</button>
+        </div>
+        <div>
+          <button @click="getUser">Get me</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { FetchError } from 'ofetch';
+
+const mounted = ref(false);
 
 const apiVersion = useRuntimeConfig().public.apiVersion;
+const instanceUrl = ref<string | null>(null);
 
-const accessToken = useCookie("access_token");
+const instanceUrlInput = ref<string>();
+const instanceError = ref<string>();
 
-const res = ref();
+const redirectTo = useRoute().query.redirect_to;
+
+const auth = useAuth();
+
+if (auth.accessToken.value) {
+  navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
+}
+
+onMounted(() => {
+  mounted.value = true;
+  instanceUrl.value = localStorage.getItem("instanceUrl");
+  console.log("set instance url to:", instanceUrl.value);
+});
+
+async function selectInstance(e: Event) {
+  e.preventDefault();
+  if (instanceUrlInput.value) {
+    const instanceUrlObj = new URL(`api/v${apiVersion}/stats`, instanceUrlInput.value.endsWith("/") ? instanceUrlInput.value : instanceUrlInput.value + "/");
+    try {
+      const res = await $fetch.raw(instanceUrlObj.href);
+      console.log("instance res:", res);
+      instanceError.value = "";
+      const origin = new URL(res.url).origin;
+      localStorage.setItem("instanceUrl", origin);
+      instanceUrl.value = origin;
+      localStorage.setItem("apiBase", origin + `/api/v${apiVersion}`);
+    } catch (error: any) {
+      if (error instanceof FetchError) {
+        console.log("Status code:", error.response?.status);
+        if (error.response?.status == 404) {
+          instanceError.value = "An instance with that URL does not exist or is currently down.";
+        }
+      }
+      console.error("Error:", error);
+    }
+  }
+}
+
+const form = reactive({
+  password: ""
+});
 
 async function logout(e: Event) {
   e.preventDefault();
-  accessToken.value = null;
-  useCookie("refresh_token").value = null;
-  res.value = await $fetch(`/api/v${apiVersion}/auth/revoke`, { credentials: "include" });
+  await auth.logout(form.password);
+  console.log("logout");
+}
+
+async function refresh(e: Event) {
+  e.preventDefault();
+  await auth.refresh();
+  console.log("refreshed");
+}
+
+async function getUser(e: Event) {
+  e.preventDefault();
+  await auth.getUser();
+  console.log("user:", auth.user.value);
+}
+
+async function showUser(e: Event) {
+  e.preventDefault();
+  console.log("user:", auth.user.value);
 }
 
 </script>
 
 <style>
-#main-container {
+#root-container, #main-container  {
   display: flex;
   flex-direction: column;
   align-items: center;
