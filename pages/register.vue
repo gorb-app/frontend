@@ -24,7 +24,7 @@
         <input type="password" name="password" id="password" v-model="form.password">
       </div>
       <div>
-        <label for="repeat-password">Password</label>
+        <label for="repeat-password">Repeat password</label>
         <br>
         <input type="password" name="repeat-password" id="repeat-password" v-model="form.repeatPassword">
       </div>
@@ -34,12 +34,6 @@
     </form>
     <div>
       Already have an account? <NuxtLink href="/login">Log in</NuxtLink>!
-    </div>
-    <div v-if="response">
-      Response:
-      <p>
-        {{ response }}
-      </p>
     </div>
   </NuxtLayout>
 </template>
@@ -56,8 +50,6 @@ const form = reactive({
   password: "",
   repeatPassword: ""
 });
-
-const response = ref();
 
 /*
 const errorMessages = reactive({
@@ -81,18 +73,11 @@ const errorMessages = reactive({
 */
 
 //const authStore = useAuthStore();
-const accessToken = useCookie("access_token");
-const refreshToken = useCookie("refresh_token");
+const auth = useAuth();
 const redirectTo = useRoute().query.redirect_to;
 
-console.log("access token:", accessToken.value);
-console.log("refresh token:", refreshToken.value);
-
 onMounted(() => {
-  console.log("accessToken:", accessToken.value);
-  console.log("refreshToken:", refreshToken.value);
-
-  if (accessToken.value) {
+  if (auth.accessToken.value) {
     //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
   }
 });
@@ -135,19 +120,7 @@ const apiVersion = useRuntimeConfig().public.apiVersion;
 async function register(e: Event) {
   e.preventDefault();
   console.log("Sending registration data");
-  const hashedPass = await hashPassword(form.password);
-  const res = await $fetch(`/api/v${apiVersion}/auth/register`, {
-    method: "POST", body:
-    {
-      email: form.email, username: form.username, password: hashedPass
-    }
-  }) as { access_token: string, refresh_token: string };
-  response.value = res;
-  //authStore.setAccessToken(accessToken);
-  accessToken.value = res.access_token;
-  console.log("set access token:", accessToken.value);
-  const refreshToken = useCookie("refresh_token", { secure: true, httpOnly: false });
-  refreshToken.value = res.refresh_token;
+  await auth.register(form.username, form.email, form.password);
   //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
 }
 
