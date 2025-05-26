@@ -50,24 +50,24 @@
 import { FetchError } from 'ofetch';
 
 const mounted = ref(false);
+const redirectTo = useRoute().query.redirect_to;
 
 const apiVersion = useRuntimeConfig().public.apiVersion;
-const instanceUrl = ref<string | null>(null);
-
+const instanceUrl = ref<string | null | undefined>(null);
 const instanceUrlInput = ref<string>();
 const instanceError = ref<string>();
-
-const redirectTo = useRoute().query.redirect_to;
 
 const auth = useAuth();
 
 if (auth.accessToken.value) {
-  navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
+  //navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
 }
 
 onMounted(() => {
   mounted.value = true;
-  instanceUrl.value = localStorage.getItem("instanceUrl");
+  const cookie = useCookie("instance_url").value;
+  instanceUrl.value = cookie;
+  console.log(cookie);
   console.log("set instance url to:", instanceUrl.value);
 });
 
@@ -82,6 +82,8 @@ async function selectInstance(e: Event) {
       const origin = new URL(res.url).origin;
       localStorage.setItem("instanceUrl", origin);
       instanceUrl.value = origin;
+      useCookie("instance_url").value = origin;
+      useCookie("api_base").value = origin + `/api/v${apiVersion}`;
       localStorage.setItem("apiBase", origin + `/api/v${apiVersion}`);
     } catch (error: any) {
       if (error instanceof FetchError) {
