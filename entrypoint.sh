@@ -23,4 +23,4 @@ rotate_log() {
 
 rotate_log "/web/logs/frontend.log"
 
-/usr/bin/node /web/server/index.mjs 2>&1 | tee /gorb/logs/frontend.log
+/usr/local/bin/node /web/server/index.mjs 2>&1 | tee /gorb/logs/frontend.log
