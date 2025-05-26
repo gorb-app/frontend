@@ -83,8 +83,8 @@ async function selectInstance(e: Event) {
       localStorage.setItem("instanceUrl", origin);
       instanceUrl.value = origin;
       useCookie("instance_url").value = origin;
-      useCookie("api_base").value = origin + `/v${apiVersion}`;
-      localStorage.setItem("apiBase", origin + `/v${apiVersion}`);
+      useCookie("api_base").value = origin + `/api/v${apiVersion}`;
+      localStorage.setItem("apiBase", origin + `/api/v${apiVersion}`);
     } catch (error: any) {
       if (error instanceof FetchError) {
         console.log("Status code:", error.response?.status);
