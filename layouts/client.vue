@@ -1,59 +1,43 @@
 <template>
 	<div id="client-root">
-		<div id="home" class=".homebar-item">
-			<NuxtLink href="/web">
-				<img src="~/assets/img/house.svg" alt="Home">
+		<div id="homebar">
+			<div class="homebar-item">
+				main bar
+			</div>
+			</div>
+				<div id="left-column">
+			<NuxtLink id="home-button" href="/">
+				<Icon name="lucide:house" class="white" size="2rem" />
 			</NuxtLink>
-		</div>
-		<div id="current-channel" class=".homebar-item">
-			main bar
-		</div>
-		<div id="test" class=".homebar-item">test</div>
-		<div id="test2" class=".homebar-item">test2</div>
-		<div id="servers-list">
-			<NuxtLink v-for="server of servers" :href="'web' + server.url">
-				<img src="~/assets/img/server.svg" :alt="server.name">
-			</NuxtLink>
-		</div>
-		<div id="channels-list" class="main-grid-row">
-			<Channel v-for="channel of channels" :name="channel.name" :href="`${useRoute().path}/${channel.id}`" />
-		</div>
-		<div id="message-history" class="main-grid-row">
-			<Message v-for="message of messages" :img="pfp" :username="message.author.username" :text="message.text"
-				:timestamp="message.timestamp" format="12" />
-			<div id="message-box" class="main-grid-row">
-				<input type="text" name="message-box-input" id="message-box-input">
+			<div id="servers-list">
+				<NuxtLink v-for="server of servers" :href="`/servers/${server.uuid}`">
+					<Icon name="lucide:server" class="white" size="2rem" />
+				</NuxtLink>
 			</div>
 		</div>
-		<div id="members-list">
-			<div class="member-item" v-for="member of members">
-				<img src="~/assets/img/tiger-head.svg" :alt="member.displayName" width="30dvw">
-				<span class="member-display-name">{{ member.displayName }}</span>
-			</div>
-		</div>
+		<slot />
 	</div>
-	<NuxtPage />
 </template>
 
 <script lang="ts" setup>
 
-import pfp from "~/assets/img/tiger-head.svg";
-
 const servers = [
 	{
 		name: "Test",
-		url: "/servers/284103257435"
+		uuid: "0197088b-e4e8-7033-8e6b-7ceb065e9acd"
 	},
 	{
 		name: "Test",
-		url: "/servers/284103257435"
+		uuid: "0197088b-e4e8-7033-8e6b-7ceb065e9acd"
 	},
 	{
 		name: "Test",
-		url: "/servers/284103257435"
+		uuid: "0197088b-e4e8-7033-8e6b-7ceb065e9acd"
 	}
 ];
 
+//const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
+//console.log("servers:", servers);
 const members = [
 	{
 		id: "3287484395",
@@ -93,59 +77,13 @@ const members = [
 	}
 ];
 
-const messages = [
-	{
-		author: {
-			id: "3287484395",
-			username: "SauceyRed",
-			avatar: "~/assets/img/tiger-head.svg"
-		},
-		text: "hello gamers!",
-		timestamp: 1745948498000
-	},
-	{
-		author: {
-			id: "3287484395",
-			username: "SauceyRed",
-			avatar: "~/assets/img/tiger-head.svg"
-		},
-		text: "yo what's up!",
-		timestamp: 1745948498000
-	},
-	{
-		author: {
-			id: "3287484395",
-			username: "SauceyRed",
-			avatar: "~/assets/img/tiger-head.svg"
-		},
-		text: "how are you guys?",
-		timestamp: 1745948498000
-	},
-	{
-		author: {
-			id: "3287484395",
-			username: "SauceyRed",
-			avatar: "~/assets/img/tiger-head.svg"
-		},
-		text: "im doing well",
-		timestamp: 1745948498000
-	}
-]
-
-const channels = [
-	{
-		name: "#super-cool-channel",
-		id: "8gh9548rg44"
-	},
-	{
-		name: "#super-lame-channel",
-		id: "hgff45387hy"
-	},
-	{
-		name: "#secret-channel",
-		id: "g8f734h87gt"
-	},
-]
+function sendMessage(e: Event) {
+	e.preventDefault();
+	const textInput = document.getElementById("message-box-input") as HTMLInputElement;
+	const text = textInput.value;
+	console.log("MESSAGE SENT!!!");
+	console.log("text:", text);
+}
 
 </script>
 
@@ -155,19 +93,23 @@ const channels = [
 	height: 100%;
 	display: grid;
 	grid-template-columns: 1fr 4fr 18fr 4fr;
-	grid-template-rows: 8dvh auto;
+	grid-template-rows: 4dvh auto;
 	text-align: center;
+}
+
+#homebar {
+	grid-row: 1;
+	grid-column: 1 / -1;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	padding-left: 5dvw;
+	padding-right: 5dvw;
 }
 
 #client-root>div:nth-child(-n+4) {
 	border-bottom: 1px solid rgb(70, 70, 70);
 }
-
-#client-root div {
-	/* border: 1px solid cyan; */
-}
-
-#main-bar {}
 
 #__nuxt {
 	display: flex;
@@ -180,8 +122,8 @@ const channels = [
 }
 
 #home {
-	grid-column: 1;
-	grid-row: 1;
+	padding-left: .5dvw;
+	padding-right: .5dvw;
 }
 
 #current-info {
@@ -194,64 +136,50 @@ const channels = [
 	grid-row: 1;
 }
 
-#utilities {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 3dvh;
-	justify-content: center;
-}
-
-#left-sidebar-container,
-#right-sidebar-container {
-	text-align: center;
-}
-
 .member-item {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.bottom-border {
-	border-bottom: 1px solid rgb(70, 70, 70);
+#message-history,
+#members-list {
+	padding-top: 3dvh;
 }
 
-.left-border {
-	border-left: 1px solid rgb(70, 70, 70);
+#message-history {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding-left: 3dvw;
+	padding-right: 3dvw;
 }
 
-.right-border {
+#left-column {
+	display: flex;
+	flex-direction: column;
+	gap: 2dvh;
+	padding-left: .5dvw;
+	padding-right: .5dvw;
+	border-right: 1px solid rgb(70, 70, 70);
+	padding-top: 1.5dvh;
+}
+
+#middle-left-column {
+	padding-left: 1dvw;
+	padding-right: 1dvw;
 	border-right: 1px solid rgb(70, 70, 70);
 }
 
-#main-content {
-	display: grid;
-	grid-template-rows: 1fr 15fr 30fr 2fr;
-	text-align: center;
-	margin-left: 1dvw;
+#home-button {
+	border-bottom: 1px solid rgb(70, 70, 70);
+	padding-bottom: 1dvh;
 }
 
-#message-box {
-	border: 1px solid rgb(70, 70, 70);
-	width: 100%;
-	margin-bottom: 1dvh;
+#servers-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1dvh;
 }
 
-#message-box-input {
-	width: 80%;
-	height: 100%;
-}
-
-.main-grid-row {
-	/* border: 1px solid cyan; */
-}
-
-#main-bar {}
-
-#servers-list,
-#channels-list,
-#message-history,
-#members-list {
-	margin-top: 3dvh;
-}
 </style>
