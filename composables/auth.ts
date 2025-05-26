@@ -1,12 +1,17 @@
+import type { UserResponse } from "~/types/interfaces";
+
 export const useAuth = () => {
-  const config = useRuntimeConfig();
   const accessToken = useCookie("access_token");
-  const user = useState("user", () => null);
+  const user = useState<UserResponse | null>("user", () => null);
+
+  async function clearAuth() {
+    accessToken.value = null;
+    user.value = null;
+  }
 
   async function register(username: string, email: string, password: string) {
-    const apiBase = localStorage.getItem("apiBase");
     const hashedPass = await hashPassword(password);
-    const res = await $fetch(`${apiBase}/auth/register`, {
+    const res = await fetchWithApi("/auth/register", {
       method: "POST", body:
       {
         email, identifier: username, password: hashedPass, device_name: "Linux Laptop"
@@ -17,30 +22,28 @@ export const useAuth = () => {
   }
 
   async function login(username: string, password: string, device_name: string) {
-    const apiBase = localStorage.getItem("apiBase");
     const hashedPass = await hashPassword(password);
     console.log("hashedPass:", hashedPass);
     //authStore.setAccessToken(accessToken);
-    const res = await fetchWithAuth(`${apiBase}/auth/login`, {
+    const res = await fetchWithApi("/auth/login", {
       method: "POST", body:
       {
         username, password: hashedPass, device_name: "Linux Laptop"
       }
     }) as { access_token: string, refresh_token: string }; fetch
-
+    console.log("hi");
     accessToken.value = res.access_token;
     console.log("access token:", accessToken.value);
     await fetchUser();
   }
 
   async function logout(password: string) {
-    const apiBase = localStorage.getItem("apiBase");
     console.log("password:", password);
     console.log("access:", accessToken.value);
     const hashedPass = await hashPassword(password);
     console.log("hashed");
 
-    const res = await fetchWithAuth(`${apiBase}/auth/revoke`, {
+    const res = await fetchWithApi("/auth/revoke", {
       method: "POST",
       body:
       {
@@ -48,29 +51,31 @@ export const useAuth = () => {
       }
     });
 
-    accessToken.value = null;
-    user.value = null;
+    clearAuth();
   }
 
   async function revoke() {
-    accessToken.value = null;
-    localStorage.removeItem("instanceUrl");
-    localStorage.removeItem("apiBase");
+    clearAuth();
   }
 
   async function refresh() {
-    const apiBase = localStorage.getItem("apiBase");
-    const res = await fetchWithAuth(`${apiBase}/auth/refresh`, {
-      method: "POST"
-    }) as { access_token: string };
-    accessToken.value = res.access_token;
+    console.log("refreshing");
+    try {
+      const res = await fetchWithApi("/auth/refresh", {
+        method: "POST"
+      }) as { access_token: string };
+      accessToken.value = res.access_token;
+      console.log("set new access token");
+    } catch (error) {
+      console.error("refresh error:", error);
+    }
   }
 
   async function fetchUser() {
-    const apiBase = localStorage.getItem("apiBase");
     if (!accessToken.value) return;
-    const res = await fetchWithAuth(`${apiBase}/users/me`) as any;
+    const res = await fetchWithApi("/users/me") as UserResponse;
     user.value = res;
+    return user.value;
   }
 
   async function getUser() {
