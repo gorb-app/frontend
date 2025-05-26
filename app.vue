@@ -16,4 +16,21 @@ body {
 a {
   color: aquamarine;
 }
+
+.white {
+	color: white;
+}
+
+.bottom-border {
+	border-bottom: 1px solid rgb(70, 70, 70);
+}
+
+.left-border {
+	border-left: 1px solid rgb(70, 70, 70);
+}
+
+.right-border {
+	border-right: 1px solid rgb(70, 70, 70);
+}
+
 </style>
