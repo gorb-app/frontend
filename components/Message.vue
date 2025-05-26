@@ -1,13 +1,20 @@
 <template>
 	<div class="message">
-		<img class="message-author-pfp" :src="img" :alt="username">
+		<div>
+			<img v-if="props.img" class="message-author-avatar" :src="img" :alt="username">
+			<Icon v-else name="lucide:user" class="message-author-avatar" />
+		</div>
 		<div class="message-data">
 			<div class="message-metadata">
 				<span class="message-author-username">
 					{{ username }}
 				</span>
-				<span class="message-date">
+				<span class="message-date" :title="date.toString()">
 					{{ messageDate }}
+					<!--
+					<div class="message-date-hover" v-if="showHover">
+					</div>
+					-->
 				</span>
 			</div>
 			<div class="message-text">
@@ -21,6 +28,7 @@
 const props = defineProps<{ class?: string, img?: string, username: string, text: string, timestamp: number, format: "12" | "24" }>();
 
 const messageDate = ref<string>();
+const showHover = ref(false);
 
 const date = new Date(props.timestamp);
 const now = new Date()
@@ -32,11 +40,15 @@ if (now.getUTCHours() >= 0) {
 		if (dateHour > 12) {
 			dateHour = dateHour - 12;
 		}
-		messageDate.value = `${dateHour}:${dateMinute} ${dateHour > 0 && dateHour < 13 ? "AM" : "PM"}`
+		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute} ${dateHour > 0 && dateHour < 13 ? "AM" : "PM"}`
 	} else {
-		messageDate.value = `${dateHour}:${dateMinute}`
+		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute}`
 	}
 }
+
+//function toggleTooltip(e: Event) {
+//	showHover.value = !showHover.value;
+//}
 
 </script>
 
@@ -46,7 +58,8 @@ if (now.getUTCHours() >= 0) {
 	/* border: 1px solid lightcoral; */
 	margin-bottom: 1dvh;
 	display: grid;
-	grid-template-columns: 3em auto;
+	grid-template-columns: auto 1fr;
+	align-items: center;
 }
 
 .message-metadata {
@@ -65,7 +78,7 @@ if (now.getUTCHours() >= 0) {
 	align-items: center;
 }
 
-.message-author-pfp {
+.message-author-avatar {
 	margin-right: 1dvw;
 	width: 3em;
 }
@@ -79,4 +92,15 @@ if (now.getUTCHours() >= 0) {
 	font-size: small;
 	color: rgb(150, 150, 150);
 }
+
+.message-date:hover {
+	cursor: default;
+}
+
+/*
+.message-date-tooltip {
+	height: 20px;;
+	width: 20px;
+}
+*/
 </style>
