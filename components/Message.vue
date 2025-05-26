@@ -71,6 +71,9 @@ if (now.getUTCHours() >= 0) {
 .message-data {
 	/* border: 1px solid white; */
 	margin-left: .5dvw;
+	display: flex;
+	flex-direction: column;
+	gap: 1dvh;
 }
 
 .message-author {
