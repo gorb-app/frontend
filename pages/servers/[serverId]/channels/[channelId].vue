@@ -66,7 +66,12 @@ const members = [
 	},
 	{
 		id: "3287484395",
-		displayName: "SauceyRed",
+		displayName: "JustTemmie",
+		avatar: ""
+	},
+	{
+		id: "3287484395",
+		displayName: "GOIN!!!!!!",
 		avatar: ""
 	},
 	{
@@ -76,22 +81,17 @@ const members = [
 	},
 	{
 		id: "3287484395",
-		displayName: "SauceyRed",
+		displayName: "Hatsune Miku Official",
 		avatar: ""
 	},
 	{
 		id: "3287484395",
-		displayName: "SauceyRed",
+		displayName: "Hatsune Miku Official",
 		avatar: ""
 	},
 	{
 		id: "3287484395",
-		displayName: "SauceyRed",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed",
+		displayName: "Hatsune Miku Official",
 		avatar: ""
 	},
 	{
@@ -122,8 +122,6 @@ function toggleInvitePopup(e: Event) {
 	margin-top: .5em;
 	margin-bottom: .5em;
 }
-
-
 
 #members-list {
 	padding-top: 3dvh;

@@ -1,7 +1,7 @@
 <template>
   <div id="message-area">
 	<div id="messages">
-		<Message v-for="message of messages" :username="displayName" :text="message.message"
+		<Message v-for="message of messages" :username="message.user_uuid" :text="message.message"
 			:timestamp="uuidToTimestamp(message.uuid)" format="12" />
 	</div>
 	<div id="message-box">
