@@ -90,7 +90,7 @@ function sendMessage(e: Event) {
 <style>
 #client-root {
 	/* border: 1px solid white; */
-	height: 100%;
+	height: 100dvh;
 	display: grid;
 	grid-template-columns: 1fr 4fr 18fr 4fr;
 	grid-template-rows: 4dvh auto;
@@ -114,7 +114,6 @@ function sendMessage(e: Event) {
 #__nuxt {
 	display: flex;
 	flex-flow: column;
-	height: 100%;
 }
 
 .grid-column {

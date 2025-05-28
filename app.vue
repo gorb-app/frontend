@@ -18,7 +18,6 @@ body {
   box-sizing: border-box;
   color: rgb(190, 190, 190);
   background-color: rgb(30, 30, 30);
-  height: 100%;
   margin: 0;
 }
 
