@@ -12,6 +12,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		const { refresh } = useAuth();
 		console.log("hi");
 		await refresh();
-		return await navigateTo("/login");
+		const query = new URLSearchParams();
+		query.set("redirect_to", to.path);
+		return await navigateTo("/login" + (query ?? ""));
 	}
 })
