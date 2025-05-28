@@ -60,17 +60,21 @@ export const useAuth = () => {
 
   async function refresh() {
     console.log("refreshing");
-	const res = await fetchWithApi("/auth/refresh", {
-	method: "POST"
-	}) as any;
-	console.log("finished refreshing:", res);
-	accessToken.value = res?.access_token;
-	console.log("set new access token");
+    const res = await fetchWithApi("/auth/refresh", {
+      method: "POST"
+    }) as any;
+    console.log("finished refreshing:", res);
+    if (res.access_token) {
+      accessToken.value = res.access_token;
+      console.log("set new access token");
+    } else {
+      console.log("refresh didn't return access token");
+    }
   }
 
   async function fetchUser() {
     if (!accessToken.value) return;
-	console.log("fetchuser access token:", accessToken.value);
+    console.log("fetchuser access token:", accessToken.value);
     const res = await fetchWithApi("/users/me") as UserResponse;
     user.value = res;
     return user.value;
