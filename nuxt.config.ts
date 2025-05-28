@@ -10,7 +10,19 @@ export default defineNuxtConfig({
       E.g.: baseURL set to "/web" would host at https://gorb.app/web
       Default is "/" (aka root), which hosts at https://gorb.app/
     */
-    baseURL: "/"
+    baseURL: "/",
+    head: {
+      title: 'Gorb',
+      // this is purely used to embed in that other chat app, and similar stuff
+      meta: [
+        { property: 'og:title', content: 'Gorb' },
+        { property: 'og:description', content: 'Gorb is an open-source (and eventually federated) chat platform where you can join and chat in servers, chat privately in DMs, and more.' },
+        { property: 'og:url', content: 'https://gorb.app/web' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Gorb' },
+        { property: 'theme-color', content: "#df5f0b" }
+      ]
+    }
   },
   runtimeConfig: {
     public: {

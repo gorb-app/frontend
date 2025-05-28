@@ -1,6 +1,6 @@
 <template>
   <div id="message-area">
-	<div id="messages">
+	<div id="messages" ref="messagesElement">
 		<Message v-for="message of messages" :username="displayNames[message.user_uuid]" :text="message.message"
 			:timestamp="uuidToTimestamp(message.uuid)" format="12" />
 	</div>
@@ -29,13 +29,25 @@ if (messagesRes && props.reverse) {
   messagesRes.reverse();
 }
 
-const messages = ref(messagesRes ?? []);
+const messages = ref<MessageResponse[]>([]);
 
 const displayNames = ref<Record<string, string>>({});
 
 const route = useRoute();
 
 const messageInput = ref<string>();
+
+const messagesElement = ref<HTMLDivElement>();
+
+if (messagesRes) messages.value = messagesRes;
+	const displayNamesArr: Record<string, string> = {};
+	for (const message of messages.value) {
+		if (!displayNamesArr[message.user_uuid]) {
+			const displayName = await getDisplayName(message.user_uuid);
+			displayNamesArr[message.user_uuid] = displayName;
+		}
+	}
+	displayNames.value = displayNamesArr;
 
 const accessToken = useCookie("access_token").value;
 const apiBase = useCookie("api_base").value;
@@ -88,14 +100,7 @@ function sendMessage(e: Event) {
 }
 
 onMounted(async () => {
-	const displayNamesArr: Record<string, string> = {};
-	for (const message of messages.value) {
-		if (!displayNamesArr[message.user_uuid]) {
-			const displayName = await getDisplayName(message.user_uuid);
-			displayNamesArr[message.user_uuid] = displayName;
-		}
-	}
-	displayNames.value = displayNamesArr;
+	messagesElement.value?.scrollTo({ top: messagesElement.value.scrollHeight });
 });
 
 </script>
@@ -117,17 +122,9 @@ onMounted(async () => {
 
 #message-box {
 	border: 1px solid rgb(70, 70, 70);
+	padding-bottom: 1dvh;
+	padding-top: 1dvh;
 	margin-bottom: 1dvh;
-	height: 7%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-}
-
-#message-form {
-	height: 50%;
-	width: 100%;
 }
 
 #message-input {
