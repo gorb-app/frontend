@@ -1,7 +1,7 @@
 <template>
-  <div id="root-container" style="margin-top: 5dvh;">
-    <Loading v-if="!mounted" />
-    <div v-else id="main-container">
+  <Loading v-if="!mounted" />
+  <div v-else id="root-container" style="margin-top: 5dvh;">
+    <div id="main-container">
       <div v-if="!instanceUrl">
         <div v-if="instanceError" style="color: red;">
           {{ instanceError }}
