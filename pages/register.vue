@@ -123,10 +123,10 @@ async function register(e: Event) {
   e.preventDefault();
   console.log("Sending registration data");
   try {
-	await auth.register(form.username, form.email, form.password);
-	return await navigateTo(query.redirect_to);
+    await auth.register(form.username, form.email, form.password);
+    return await navigateTo(query.redirect_to);
   } catch (error) {
-	console.error("Error registering:", error);
+    console.error("Error registering:", error);
   }
   //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
 }
