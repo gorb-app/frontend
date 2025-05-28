@@ -1,6 +1,15 @@
 <template>
-  <NuxtPage />
+  <div>
+	<Loading v-if="loading" />
+    <NuxtPage />
+  </div>
 </template>
+
+<script lang="ts" setup>
+
+const loading = useState("loading");
+
+</script>
 
 <style>
 html,
