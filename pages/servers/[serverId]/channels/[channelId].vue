@@ -20,7 +20,7 @@
 			<div id="channels-list">
 				<Channel v-for="channel of channels" :name="channel.name"
 					:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
-					:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
+					:href="`/guilds/${route.params.serverId}/channels/${channel.uuid}`" />
 			</div>
 		</div>
 		<MessageArea :channel-url="channelUrlPath" />
@@ -40,7 +40,7 @@ const route = useRoute();
 
 const loading = useState("loading");
 
-const channelUrlPath = `servers/${route.params.serverId}/channels/${route.params.channelId}`;
+const channelUrlPath = `/channels/${route.params.channelId}`;
 
 const server = ref<GuildResponse | undefined>();
 const channels = ref<ChannelResponse[] | undefined>();
@@ -104,13 +104,9 @@ onMounted(async () => {
 	console.log("channelid: set loading to true");
 	server.value = await fetchWithApi(`servers/${route.params.serverId}`);
 
-	channels.value = await fetchWithApi(
-		`servers/${route.params.serverId}/channels`
-	);
+	channels.value = await fetchWithApi(`/channels`);
 	console.log("channels:", channels.value);
-	channel.value = await fetchWithApi(
-		route.path
-	);
+	channel.value = await fetchWithApi(route.path);
 	console.log("channel:", channel.value);
 
 	console.log("channelid: channel:", channel);
