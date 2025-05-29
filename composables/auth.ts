@@ -64,7 +64,7 @@ export const useAuth = () => {
       method: "POST"
     }) as any;
     console.log("finished refreshing:", res);
-    if (res.access_token) {
+    if (res && res.access_token) {
       accessToken.value = res.access_token;
       console.log("set new access token");
     } else {
