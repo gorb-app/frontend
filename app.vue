@@ -18,6 +18,10 @@ body {
   margin: 0;
 }
 
+*:focus-visible {
+	outline: 1px solid rgb(150, 150, 150);
+}
+
 a {
   color: aquamarine;
 }
