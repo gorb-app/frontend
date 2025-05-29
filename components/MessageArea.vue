@@ -1,8 +1,8 @@
 <template>
   <div id="message-area">
 	<div id="messages" ref="messagesElement">
-		<Message v-for="message of messages" :username="displayNames[message.user_uuid]" :text="message.message"
-			:timestamp="uuidToTimestamp(message.uuid)" format="12" />
+		<Message v-for="message of messages" :username="message.user.display_name ?? message.user.username" :text="message.message"
+			:timestamp="uuidToTimestamp(message.uuid)" :img="message.user.avatar" format="12" />
 	</div>
 	<div id="message-box">
 		<form id="message-form" @submit="sendMessage">
@@ -17,7 +17,6 @@
 
 <script lang="ts" setup>
 import type { MessageResponse } from '~/types/interfaces';
-import fetchUser from '~/utils/fetchUser';
 import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number, reverse?: boolean }>();
@@ -32,8 +31,6 @@ if (messagesRes && props.reverse) {
 
 const messages = ref<MessageResponse[]>([]);
 
-const displayNames = ref<Record<string, string>>({});
-
 const route = useRoute();
 
 const messageInput = ref<string>();
@@ -41,14 +38,6 @@ const messageInput = ref<string>();
 const messagesElement = ref<HTMLDivElement>();
 
 if (messagesRes) messages.value = messagesRes;
-	const displayNamesArr: Record<string, string> = {};
-	for (const message of messages.value) {
-		if (!displayNamesArr[message.user_uuid]) {
-			const displayName = await getDisplayName(message.user_uuid);
-			displayNamesArr[message.user_uuid] = displayName;
-		}
-	}
-	displayNames.value = displayNamesArr;
 
 const accessToken = useCookie("access_token").value;
 const apiBase = useCookie("api_base").value;
@@ -85,13 +74,6 @@ ws.addEventListener("message", async (event) => {
 });
 } else {
 	await refresh();
-}
-
-async function getDisplayName(memberId: string): Promise<string> {
-	//const user = await fetchMember((route.params.serverId as string), memberId);
-	const user = await fetchUser((route.params.serverId as string), memberId);
-	return user!.display_name ?? user!.username;
-
 }
 
 function sendMessage(e: Event) {
