@@ -21,23 +21,12 @@
 </template>
 
 <script lang="ts" setup>
+import type { GuildResponse } from '~/types/interfaces';
+
 
 const loading = useState("loading", () => false);
 
-const servers = [
-	{
-		name: "Test",
-		uuid: "0197088b-e4e8-7033-8e6b-7ceb065e9acd"
-	},
-	{
-		name: "Test",
-		uuid: "0197088b-e4e8-7033-8e6b-7ceb065e9acd"
-	},
-	{
-		name: "Test",
-		uuid: "0197088b-e4e8-7033-8e6b-7ceb065e9acd"
-	}
-];
+const servers: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("servers:", servers);
