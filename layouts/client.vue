@@ -80,14 +80,6 @@ const members = [
 	}
 ];
 
-function sendMessage(e: Event) {
-	e.preventDefault();
-	const textInput = document.getElementById("message-box-input") as HTMLInputElement;
-	const text = textInput.value;
-	console.log("MESSAGE SENT!!!");
-	console.log("text:", text);
-}
-
 </script>
 
 <style>
