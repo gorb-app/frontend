@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <form @submit="register">
+    <form v-if="registrationEnabled" @submit="register">
       <div>
         <!--
         <span class="form-error" v-if="errors.username.length > 0">
@@ -32,6 +32,9 @@
         <button type="submit">Register</button>
       </div>
     </form>
+    <div v-else>
+      <h3>This instance has disabled registration.</h3>
+    </div>
     <div>
       Already have an account? <NuxtLink :href="loginUrl">Log in</NuxtLink>!
     </div>
@@ -39,10 +42,21 @@
 </template>
 
 <script lang="ts" setup>
-
+import type { StatsResponse } from '~/types/interfaces';
 definePageMeta({
   layout: "auth"
 })
+
+const instanceUrl = useCookie("instance_url").value;
+const registrationEnabled = ref<boolean>(false);
+
+if (instanceUrl) {
+	const statsUrl = new URL("/stats", instanceUrl).href;
+	const { status, data, error } = await useFetch<StatsResponse>(statsUrl);
+	if (status.value == "success" && data.value) {
+		registrationEnabled.value = data.value.registration_enabled;
+	}
+}
 
 const form = reactive({
   username: "",
