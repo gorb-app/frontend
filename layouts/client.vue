@@ -1,5 +1,6 @@
 <template>
-	<div id="client-root">
+	<Loading v-show="loading" />
+	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
 		<div id="homebar">
 			<div class="homebar-item">
 				main bar
@@ -20,6 +21,8 @@
 </template>
 
 <script lang="ts" setup>
+
+const loading = useState("loading", () => false);
 
 const servers = [
 	{
@@ -95,6 +98,16 @@ function sendMessage(e: Event) {
 	grid-template-columns: 1fr 4fr 18fr 4fr;
 	grid-template-rows: 4dvh auto;
 	text-align: center;
+	
+}
+
+.hidden {
+	opacity: 0%;
+}
+
+.visible {
+	opacity: 100%;
+	transition-duration: 500ms;
 }
 
 #homebar {

@@ -39,25 +39,20 @@
 
 const route = useRoute();
 
-const server: GuildResponse | undefined = await fetchWithApi(`servers/${route.params.serverId}`);
-
-const channels: ChannelResponse[] | undefined = await fetchWithApi(
-	`servers/${route.params.serverId}/channels`
-);
-const channel: ChannelResponse | undefined = await fetchWithApi(
-	route.path
-);
+const loading = useState("loading");
 
 const channelUrlPath = `servers/${route.params.serverId}/channels/${route.params.channelId}`;
 
-console.log("channel:", channel);
+const server = ref<GuildResponse | undefined>();
+const channels = ref<ChannelResponse[] | undefined>();
+const channel = ref<ChannelResponse | undefined>();
 
 const showInvitePopup = ref(false);
 
 import type { ChannelResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
-//console.log("servers:", servers);
+//console.log("channelid: servers:", servers);
 const members = [
 	{
 		id: "3287484395",
@@ -105,6 +100,24 @@ const members = [
 		avatar: ""
 	}
 ];
+
+onMounted(async () => {
+	loading.value = true;
+	console.log("channelid: set loading to true");
+	server.value = await fetchWithApi(`servers/${route.params.serverId}`);
+
+	channels.value = await fetchWithApi(
+		`servers/${route.params.serverId}/channels`
+	);
+	channel.value = await fetchWithApi(
+		route.path
+	);
+
+	console.log("channelid: channel:", channel);
+	await sleep(3000);
+	loading.value = false;
+	console.log("channelid: set loading to false");
+});
 
 function showServerSettings() { }
 
