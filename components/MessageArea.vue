@@ -4,9 +4,9 @@
 		<Message v-for="message of messages" :username="message.user.display_name ?? message.user.username" :text="message.message"
 			:timestamp="uuidToTimestamp(message.uuid)" :img="message.user.avatar" format="12" />
 	</div>
-	<div id="message-box">
+	<div id="message-box" class="rounded-corners">
 		<form id="message-form" @submit="sendMessage">
-			<input v-model="messageInput" type="text" name="message-input" id="message-box-input" autocomplete="off">
+			<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text" name="message-input" autocomplete="off">
 			<button id="submit-button" type="submit">
 				<Icon name="lucide:send" />
 			</button>
@@ -19,19 +19,17 @@
 import type { MessageResponse } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 
-const props = defineProps<{ channelUrl: string, amount?: number, offset?: number, reverse?: boolean }>();
+const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,
 	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
 );
-if (messagesRes && props.reverse) {
+if (messagesRes) {
   messagesRes.reverse();
 }
 
 const messages = ref<MessageResponse[]>([]);
-
-const route = useRoute();
 
 const messageInput = ref<string>();
 
@@ -54,7 +52,7 @@ if (accessToken && apiBase) {
 		["Authorization", accessToken]
 	);
 	if (ws) break;
-	await sleep(10000);
+	await sleep(5000);
 } while (!ws);
 
 ws.addEventListener("open", (event) => {
@@ -72,6 +70,9 @@ ws.addEventListener("message", async (event) => {
 		scrollToBottom(messagesElement);
 	}
 });
+
+
+
 } else {
 	await refresh();
 }
@@ -123,13 +124,15 @@ onMounted(async () => {
 #message-form {
 	display: flex;
 	justify-content: center;
-	height: 60%;
 }
 
 #message-box-input {
 	width: 80%;
 	background-color: rgb(50, 50, 50);
 	border: none;
+	color: inherit;
+	padding-left: 1dvw;
+	padding-right: 1dvw;
 }
 
 #messages {
@@ -142,11 +145,12 @@ onMounted(async () => {
 #submit-button {
 	background-color: inherit;
 	border: none;
-	color: white;
+	color: rgb(200, 200, 200);
+	font-size: 1.5em;
 }
 
 #submit-button:hover {
-	background-color: rgb(40, 40, 40);
+	color: rgb(255, 255, 255);
 }
 
 </style>
