@@ -1,46 +1,60 @@
 <template>
-  <NuxtLayout>
-    <form @submit="formLogin">
-      <div>
-        <label for="username">Username/Email</label>
-        <br>
-        <input type="text" name="username" id="username" v-model="form.username">
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <br>
-        <input type="password" name="password" id="password" v-model="form.password">
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
-    </form>
-    <div>
-      Don't have an account? <NuxtLink href="/register">Register</NuxtLink> one!
-    </div>
-  </NuxtLayout>
+	<NuxtLayout>
+		<form @submit="formLogin">
+			<div>
+				<label for="username">Username/Email</label>
+				<br>
+				<input type="text" name="username" id="username" v-model="form.username">
+			</div>
+			<div>
+				<label for="password">Password</label>
+				<br>
+				<input type="password" name="password" id="password" v-model="form.password">
+			</div>
+			<div>
+				<button type="submit">Login</button>
+			</div>
+		</form>
+		<div>
+			Don't have an account? <NuxtLink :href="registerUrl">Register</NuxtLink> one!
+		</div>
+	</NuxtLayout>
 </template>
 
 <script lang="ts" setup>
 
 definePageMeta({
-  layout: "auth"
+	layout: "auth"
 })
 
 const form = reactive({
-  username: "",
-  password: "",
+	username: "",
+	password: "",
 });
 
 //const authStore = useAuthStore();
 
+const query = useRoute().query as Record<string, string>;
+const searchParams = new URLSearchParams(query);
+const registerUrl = `/register?${searchParams}`
+
 const { login } = useAuth();
 
 async function formLogin(e: Event) {
-  e.preventDefault();
-  console.log("Sending login data");
-  await login(form.username, form.password, "Linux Laptop");
-  //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
+	e.preventDefault();
+	console.log("Sending login data");
+	try {
+		await login(form.username, form.password, "Linux Laptop");
+		console.log("logged in");
+		if (query.redirect_to) {
+			console.log("redirecting to:", query.redirect_to);
+			return await navigateTo(query.redirect_to);
+		}
+		return await navigateTo("/");
+	} catch (error) {
+		console.error("Error logging in:", error);
+	}
+	//return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
 }
 
 </script>

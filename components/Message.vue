@@ -1,7 +1,7 @@
 <template>
 	<div class="message">
 		<div>
-			<img v-if="props.img" class="message-author-avatar" :src="img" :alt="username">
+			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="username">
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
 		</div>
 		<div class="message-data">
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ class?: string, img?: string, username: string, text: string, timestamp: number, format: "12" | "24" }>();
+const props = defineProps<{ class?: string, img?: string | null, username: string, text: string, timestamp: number, format: "12" | "24" }>();
 
 const messageDate = ref<string>();
 const showHover = ref(false);
@@ -74,6 +74,7 @@ if (now.getUTCHours() >= 0) {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
+	height: 100%;
 }
 
 .message-author {
@@ -84,6 +85,7 @@ if (now.getUTCHours() >= 0) {
 .message-author-avatar {
 	margin-right: 1dvw;
 	width: 3em;
+	border-radius: 50%;
 }
 
 .author-username {

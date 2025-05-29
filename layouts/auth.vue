@@ -1,7 +1,6 @@
 <template>
   <div id="root-container" style="margin-top: 5dvh;">
-    <Loading v-if="!mounted" />
-    <div v-else id="main-container">
+    <div id="main-container">
       <div v-if="!instanceUrl">
         <div v-if="instanceError" style="color: red;">
           {{ instanceError }}
@@ -49,7 +48,6 @@
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
 
-const mounted = ref(false);
 const redirectTo = useRoute().query.redirect_to;
 
 const apiVersion = useRuntimeConfig().public.apiVersion;
@@ -64,7 +62,6 @@ if (auth.accessToken.value) {
 }
 
 onMounted(() => {
-  mounted.value = true;
   const cookie = useCookie("instance_url").value;
   instanceUrl.value = cookie;
   console.log(cookie);

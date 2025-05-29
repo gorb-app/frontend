@@ -30,11 +30,11 @@ export const useAuth = () => {
       {
         username, password: hashedPass, device_name: "Linux Laptop"
       }
-    }) as { access_token: string, refresh_token: string }; fetch
+    }) as { access_token: string, refresh_token: string };
     console.log("hi");
     accessToken.value = res.access_token;
     console.log("access token:", accessToken.value);
-    await fetchUser();
+    //await fetchUser();
   }
 
   async function logout(password: string) {
@@ -60,19 +60,21 @@ export const useAuth = () => {
 
   async function refresh() {
     console.log("refreshing");
-    try {
-      const res = await fetchWithApi("/auth/refresh", {
-        method: "POST"
-      }) as { access_token: string };
+    const res = await fetchWithApi("/auth/refresh", {
+      method: "POST"
+    }) as any;
+    console.log("finished refreshing:", res);
+    if (res && res.access_token) {
       accessToken.value = res.access_token;
       console.log("set new access token");
-    } catch (error) {
-      console.error("refresh error:", error);
+    } else {
+      console.log("refresh didn't return access token");
     }
   }
 
   async function fetchUser() {
     if (!accessToken.value) return;
+    console.log("fetchuser access token:", accessToken.value);
     const res = await fetchWithApi("/users/me") as UserResponse;
     user.value = res;
     return user.value;

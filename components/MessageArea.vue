@@ -1,13 +1,13 @@
 <template>
   <div id="message-area">
 	<div id="messages" ref="messagesElement">
-		<Message v-for="message of messages" :username="displayNames[message.user_uuid]" :text="message.message"
-			:timestamp="uuidToTimestamp(message.uuid)" format="12" />
+		<Message v-for="message of messages" :username="message.user.display_name ?? message.user.username" :text="message.message"
+			:timestamp="uuidToTimestamp(message.uuid)" :img="message.user.avatar" format="12" />
 	</div>
 	<div id="message-box">
 		<form id="message-form" @submit="sendMessage">
-			<input v-model="messageInput" type="text" name="message-input" id="message-box-input">
-			<button type="submit">
+			<input v-model="messageInput" type="text" name="message-input" id="message-box-input" autocomplete="off">
+			<button id="submit-button" type="submit">
 				<Icon name="lucide:send" />
 			</button>
 		</form>
@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import type { MessageResponse } from '~/types/interfaces';
-import fetchUser from '~/utils/fetchUser';
+import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number, reverse?: boolean }>();
 
@@ -31,8 +31,6 @@ if (messagesRes && props.reverse) {
 
 const messages = ref<MessageResponse[]>([]);
 
-const displayNames = ref<Record<string, string>>({});
-
 const route = useRoute();
 
 const messageInput = ref<string>();
@@ -40,14 +38,6 @@ const messageInput = ref<string>();
 const messagesElement = ref<HTMLDivElement>();
 
 if (messagesRes) messages.value = messagesRes;
-	const displayNamesArr: Record<string, string> = {};
-	for (const message of messages.value) {
-		if (!displayNamesArr[message.user_uuid]) {
-			const displayName = await getDisplayName(message.user_uuid);
-			displayNamesArr[message.user_uuid] = displayName;
-		}
-	}
-	displayNames.value = displayNamesArr;
 
 const accessToken = useCookie("access_token").value;
 const apiBase = useCookie("api_base").value;
@@ -71,21 +61,19 @@ ws.addEventListener("open", (event) => {
 	console.log("WebSocket connected!");
 });
 
-ws.addEventListener("message", (event) => {
+ws.addEventListener("message", async (event) => {
 	console.log("event data:", event.data);
 	messages.value?.push(
 		JSON.parse(event.data)
 	);
+	await nextTick();
+	if (messagesElement.value) {
+		console.log("scrolling to bottom");
+		scrollToBottom(messagesElement);
+	}
 });
 } else {
 	await refresh();
-}
-
-async function getDisplayName(memberId: string): Promise<string> {
-	//const user = await fetchMember((route.params.serverId as string), memberId);
-	const user = await fetchUser((route.params.serverId as string), memberId);
-	return user!.display_name ?? user!.username;
-
 }
 
 function sendMessage(e: Event) {
@@ -100,7 +88,9 @@ function sendMessage(e: Event) {
 }
 
 onMounted(async () => {
-	messagesElement.value?.scrollTo({ top: messagesElement.value.scrollHeight });
+	if (messagesElement.value) {
+		scrollToBottom(messagesElement);
+	}
 });
 
 </script>
@@ -108,27 +98,38 @@ onMounted(async () => {
 <style scoped>
 
 #message-area {
-	padding-top: 3dvh;
-}
-
-#message-area {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 8fr 1fr;
 	justify-content: space-between;
+	padding-top: 3dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
 }
 
 #message-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
 	border: 1px solid rgb(70, 70, 70);
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
 	margin-bottom: 1dvh;
+	margin-top: 1dvh;
 }
 
-#message-input {
-	width: 100%;
+#message-form {
+	display: flex;
+	justify-content: center;
+	height: 60%;
+}
+
+#message-box-input {
+	width: 80%;
+	background-color: rgb(50, 50, 50);
+	border: none;
 }
 
 #messages {
@@ -136,6 +137,16 @@ onMounted(async () => {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
+}
+
+#submit-button {
+	background-color: inherit;
+	border: none;
+	color: white;
+}
+
+#submit-button:hover {
+	background-color: rgb(40, 40, 40);
 }
 
 </style>

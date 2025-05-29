@@ -33,7 +33,7 @@
       </div>
     </form>
     <div>
-      Already have an account? <NuxtLink href="/login">Log in</NuxtLink>!
+      Already have an account? <NuxtLink :href="loginUrl">Log in</NuxtLink>!
     </div>
   </NuxtLayout>
 </template>
@@ -74,7 +74,9 @@ const errorMessages = reactive({
 
 //const authStore = useAuthStore();
 const auth = useAuth();
-const redirectTo = useRoute().query.redirect_to;
+const query = useRoute().query as Record<string, string>;
+const searchParams = new URLSearchParams(query);
+const loginUrl = `/login?${searchParams}`
 
 onMounted(() => {
   if (auth.accessToken.value) {
@@ -120,7 +122,12 @@ const apiVersion = useRuntimeConfig().public.apiVersion;
 async function register(e: Event) {
   e.preventDefault();
   console.log("Sending registration data");
-  await auth.register(form.username, form.email, form.password);
+  try {
+    await auth.register(form.username, form.email, form.password);
+    return await navigateTo(query.redirect_to);
+  } catch (error) {
+    console.error("Error registering:", error);
+  }
   //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
 }
 

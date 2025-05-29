@@ -1,6 +1,12 @@
 <template>
-  <NuxtPage />
+  <div>
+    <NuxtPage />
+  </div>
 </template>
+
+<script lang="ts" setup>
+
+</script>
 
 <style>
 html,
@@ -9,8 +15,11 @@ body {
   box-sizing: border-box;
   color: rgb(190, 190, 190);
   background-color: rgb(30, 30, 30);
-  height: 100%;
   margin: 0;
+}
+
+*:focus-visible {
+	outline: 1px solid rgb(150, 150, 150);
 }
 
 a {

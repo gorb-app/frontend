@@ -1,5 +1,6 @@
 <template>
-	<div id="client-root">
+	<Loading v-show="loading" />
+	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
 		<div id="homebar">
 			<div class="homebar-item">
 				main bar
@@ -20,6 +21,8 @@
 </template>
 
 <script lang="ts" setup>
+
+const loading = useState("loading", () => false);
 
 const servers = [
 	{
@@ -90,11 +93,21 @@ function sendMessage(e: Event) {
 <style>
 #client-root {
 	/* border: 1px solid white; */
-	height: 100%;
+	height: 100dvh;
 	display: grid;
 	grid-template-columns: 1fr 4fr 18fr 4fr;
 	grid-template-rows: 4dvh auto;
 	text-align: center;
+	
+}
+
+.hidden {
+	opacity: 0%;
+}
+
+.visible {
+	opacity: 100%;
+	transition-duration: 500ms;
 }
 
 #homebar {
@@ -114,7 +127,6 @@ function sendMessage(e: Event) {
 #__nuxt {
 	display: flex;
 	flex-flow: column;
-	height: 100%;
 }
 
 .grid-column {
