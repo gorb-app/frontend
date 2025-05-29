@@ -115,6 +115,7 @@ onMounted(async () => {
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
 	margin-bottom: 1dvh;
+	margin-top: 1dvh;
 }
 
 #message-input {
