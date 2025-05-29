@@ -126,7 +126,6 @@ onMounted(async () => {
 #message-form {
 	display: flex;
 	justify-content: center;
-	height: 60%;
 }
 
 #message-box-input {
@@ -145,11 +144,12 @@ onMounted(async () => {
 #submit-button {
 	background-color: inherit;
 	border: none;
-	color: white;
+	color: rgb(200, 200, 200);
+	font-size: 1.5em;
 }
 
 #submit-button:hover {
-	background-color: rgb(40, 40, 40);
+	color: rgb(255, 255, 255);
 }
 
 </style>
