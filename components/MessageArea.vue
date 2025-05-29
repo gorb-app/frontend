@@ -132,6 +132,7 @@ onMounted(async () => {
 	width: 80%;
 	background-color: rgb(50, 50, 50);
 	border: none;
+	color: inherit;
 }
 
 #messages {
