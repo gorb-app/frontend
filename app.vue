@@ -1,10 +1,13 @@
 <template>
   <div>
+    <Banner v-if="banner" />
     <NuxtPage />
   </div>
 </template>
 
 <script lang="ts" setup>
+
+const banner = useState("banner", () => false);
 
 </script>
 
@@ -40,6 +43,10 @@ a {
 
 .right-border {
 	border-right: 1px solid rgb(70, 70, 70);
+}
+
+.rounded-corners {
+  border-radius: .3rem;
 }
 
 </style>
