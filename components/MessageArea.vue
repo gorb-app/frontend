@@ -6,7 +6,7 @@
 	</div>
 	<div id="message-box">
 		<form id="message-form" @submit="sendMessage">
-			<input v-model="messageInput" type="text" name="message-input" id="message-box-input">
+			<input v-model="messageInput" type="text" name="message-input" id="message-box-input" autocomplete="off">
 			<button type="submit">
 				<Icon name="lucide:send" />
 			</button>
