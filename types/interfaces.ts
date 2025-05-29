@@ -32,10 +32,11 @@ export interface ChannelResponse {
 }
 
 export interface MessageResponse {
-	uuid: string
-	channel_uuid: string
-	user_uuid: string
-	message: string
+	uuid: string,
+	channel_uuid: string,
+	user_uuid: string,
+	message: string,
+	user: UserResponse
 }
 
 export interface InviteResponse {
@@ -49,6 +50,6 @@ export interface UserResponse {
 	username: string,
 	display_name: string | null,
 	avatar: string | null,
-	email: string,
-	email_verified: boolean
+	email?: string,
+	email_verified?: boolean
   }
