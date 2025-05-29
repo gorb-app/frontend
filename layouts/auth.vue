@@ -1,50 +1,48 @@
 <template>
-  <NuxtLayout>
-    <div id="root-container" style="margin-top: 5dvh;">
-      <div id="main-container">
-        <div v-if="!instanceUrl">
-          <div v-if="instanceError" style="color: red;">
-            {{ instanceError }}
-          </div>
-          <form @submit="selectInstance">
-            <div>
-              <label for="instance-url">Instance URL</label>
-              <br>
-              <input type="url" name="instance-url" id="instance-url" required v-model="instanceUrlInput">
-            </div>
-            <div>
-              <button type="submit">Next</button>
-            </div>
-          </form>
+  <div id="root-container" style="margin-top: 5dvh;">
+    <div id="main-container">
+      <div v-if="!instanceUrl">
+        <div v-if="instanceError" style="color: red;">
+          {{ instanceError }}
         </div>
-        <div v-else id="auth-form-container">
-          <slot />
+        <form @submit="selectInstance">
+          <div>
+            <label for="instance-url">Instance URL</label>
+            <br>
+            <input type="url" name="instance-url" id="instance-url" required v-model="instanceUrlInput">
+          </div>
+          <div>
+            <button type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+      <div v-else id="auth-form-container">
+        <slot />
+      </div>
+      <div v-if="auth.accessToken.value">
+        You're logged in!
+        <form @submit="logout">
+          <div>
+            <label for="logout-password">Password</label>
+            <br>
+            <input type="password" name="logout-password" id="logout-password" v-model="form.password" required>
+          </div>
+          <div>
+            <button type="submit">Log out</button>
+          </div>
+        </form>
+        <div>
+          <button @click="refresh">Refresh</button>
         </div>
-        <div v-if="auth.accessToken.value">
-          You're logged in!
-          <form @submit="logout">
-            <div>
-              <label for="logout-password">Password</label>
-              <br>
-              <input type="password" name="logout-password" id="logout-password" v-model="form.password" required>
-            </div>
-            <div>
-              <button type="submit">Log out</button>
-            </div>
-          </form>
-          <div>
-            <button @click="refresh">Refresh</button>
-          </div>
-          <div>
-            <button @click="showUser">Show user</button>
-          </div>
-          <div>
-            <button @click="getUser">Get me</button>
-          </div>
+        <div>
+          <button @click="showUser">Show user</button>
+        </div>
+        <div>
+          <button @click="getUser">Get me</button>
         </div>
       </div>
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 
 <script lang="ts" setup>
