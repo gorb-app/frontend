@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-	console.log("to.path:", to.path);
+	console.log("to.fullPath:", to.fullPath);
 	const loading = useState("loading");
 	const accessToken = useCookie("access_token").value;
 	if (["/login", "/register"].includes(to.path)) {
@@ -19,6 +19,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		query.set("redirect_to", to.path);
 		loading.value = false;
 		console.log("set loading to false");
-		return await navigateTo("/login" + (query ?? ""));
+		return await navigateTo("/login?" + (query ?? ""));
 	}
 })
