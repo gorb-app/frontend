@@ -4,9 +4,9 @@
 		<Message v-for="message of messages" :username="message.user.display_name ?? message.user.username" :text="message.message"
 			:timestamp="uuidToTimestamp(message.uuid)" :img="message.user.avatar" format="12" />
 	</div>
-	<div id="message-box">
+	<div id="message-box" class="rounded-corners">
 		<form id="message-form" @submit="sendMessage">
-			<input v-model="messageInput" type="text" name="message-input" id="message-box-input" autocomplete="off">
+			<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text" name="message-input" autocomplete="off">
 			<button id="submit-button" type="submit">
 				<Icon name="lucide:send" />
 			</button>
@@ -54,7 +54,7 @@ if (accessToken && apiBase) {
 		["Authorization", accessToken]
 	);
 	if (ws) break;
-	await sleep(10000);
+	await sleep(5000);
 } while (!ws);
 
 ws.addEventListener("open", (event) => {
@@ -72,6 +72,9 @@ ws.addEventListener("message", async (event) => {
 		scrollToBottom(messagesElement);
 	}
 });
+
+
+
 } else {
 	await refresh();
 }
