@@ -18,6 +18,7 @@
 <script lang="ts" setup>
 import type { MessageResponse } from '~/types/interfaces';
 import fetchUser from '~/utils/fetchUser';
+import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number, reverse?: boolean }>();
 
@@ -71,11 +72,16 @@ ws.addEventListener("open", (event) => {
 	console.log("WebSocket connected!");
 });
 
-ws.addEventListener("message", (event) => {
+ws.addEventListener("message", async (event) => {
 	console.log("event data:", event.data);
 	messages.value?.push(
 		JSON.parse(event.data)
 	);
+	await nextTick();
+	if (messagesElement.value) {
+		console.log("scrolling to bottom");
+		scrollToBottom(messagesElement);
+	}
 });
 } else {
 	await refresh();
@@ -100,7 +106,9 @@ function sendMessage(e: Event) {
 }
 
 onMounted(async () => {
-	messagesElement.value?.scrollTo({ top: messagesElement.value.scrollHeight });
+	if (messagesElement.value) {
+		scrollToBottom(messagesElement);
+	}
 });
 
 </script>
