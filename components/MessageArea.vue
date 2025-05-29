@@ -19,19 +19,17 @@
 import type { MessageResponse } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 
-const props = defineProps<{ channelUrl: string, amount?: number, offset?: number, reverse?: boolean }>();
+const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,
 	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
 );
-if (messagesRes && props.reverse) {
+if (messagesRes) {
   messagesRes.reverse();
 }
 
 const messages = ref<MessageResponse[]>([]);
-
-const route = useRoute();
 
 const messageInput = ref<string>();
 
