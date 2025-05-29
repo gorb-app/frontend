@@ -7,7 +7,7 @@
 	<div id="message-box">
 		<form id="message-form" @submit="sendMessage">
 			<input v-model="messageInput" type="text" name="message-input" id="message-box-input" autocomplete="off">
-			<button type="submit">
+			<button id="submit-button" type="submit">
 				<Icon name="lucide:send" />
 			</button>
 		</form>
@@ -137,6 +137,16 @@ onMounted(async () => {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
+}
+
+#submit-button {
+	background-color: inherit;
+	border: none;
+	color: white;
+}
+
+#submit-button:hover {
+	background-color: rgb(40, 40, 40);
 }
 
 </style>
