@@ -1,18 +1,23 @@
 <template>
-  <div id="message-area">
-	<div id="messages" ref="messagesElement">
-		<Message v-for="message of messages" :username="message.user.display_name ?? message.user.username" :text="message.message"
-			:timestamp="uuidToTimestamp(message.uuid)" :img="message.user.avatar" format="12" />
+	<div id="message-area">
+		<div id="messages" ref="messagesElement">
+			<div v-for="(message, i) of messages">
+				<Message :username="message.user.display_name ?? message.user.username"
+					:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
+					format="12" :type="messagesType[message.uuid]"
+					:margin-bottom="messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal'" />
+			</div>
+		</div>
+		<div id="message-box" class="rounded-corners">
+			<form id="message-form" @submit="sendMessage">
+				<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text"
+					name="message-input" autocomplete="off">
+				<button id="submit-button" type="submit">
+					<Icon name="lucide:send" />
+				</button>
+			</form>
+		</div>
 	</div>
-	<div id="message-box" class="rounded-corners">
-		<form id="message-form" @submit="sendMessage">
-			<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text" name="message-input" autocomplete="off">
-			<button id="submit-button" type="submit">
-				<Icon name="lucide:send" />
-			</button>
-		</form>
-	</div>
-</div>
 </template>
 
 <script lang="ts" setup>
@@ -21,12 +26,59 @@ import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
+const messageTimestamps = ref<Record<string, number>>({});
+const messagesType = ref<Record<string, "normal" | "compact">>({});
+
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,
 	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
 );
 if (messagesRes) {
-  messagesRes.reverse();
+	messagesRes.reverse();
+	console.log("messages res:", messagesRes.map(msg => msg.message));
+	const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
+	for (const message of messagesRes) {
+		messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
+
+		console.log("message:", message.message);
+		const firstByUser = firstMessageByUsers.value[message.user.uuid];
+		if (firstByUser) {
+			console.log("first by user exists");
+			if (message.user.uuid != firstByUser.user.uuid) {
+				console.log("message is by new user, setting their first message")
+				firstMessageByUsers.value[message.user.uuid] = message;
+				console.log("RETURNING FALSE");
+				messagesType.value[message.uuid] = "normal";
+				continue;
+			}
+		} else {
+			console.log("first by user doesn't exist");
+			console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
+			firstMessageByUsers.value[message.user.uuid] = message;
+			console.log("RETURNING FALSE");
+			messagesType.value[message.uuid] = "normal";
+			continue;
+		}
+		const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference;
+		const prevTimestamp = messageTimestamps.value[firstByUser.uuid];
+		const timestamp = messageTimestamps.value[message.uuid];
+		console.log("first message timestamp:", prevTimestamp);
+		console.log("timestamp:", timestamp);
+		const diff = (timestamp - prevTimestamp);
+		console.log("min diff:", messageGroupingMaxDifference);
+		console.log("diff:", diff);
+		const lessThanMax = diff <= messageGroupingMaxDifference;
+		console.log("group?", lessThanMax);
+		if (!lessThanMax) {
+			console.log("diff exceeds max");
+			console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`)
+			firstMessageByUsers.value[message.user.uuid] = message;
+			messagesType.value[message.uuid] = "normal";
+			continue;
+		}
+		console.log("RETURNING " + lessThanMax.toString().toUpperCase());
+		messagesType.value[message.uuid] = "compact";
+	}
 }
 
 const messages = ref<MessageResponse[]>([]);
@@ -49,29 +101,28 @@ if (accessToken && apiBase) {
 	do {
 		console.log("Trying to connect to channel WebSocket...");
 		ws = new WebSocket(`${apiBase.replace("http", "ws").replace("3000", "8080")}/${props.channelUrl}/socket`,
-		["Authorization", accessToken]
-	);
-	if (ws) break;
-	await sleep(5000);
-} while (!ws);
+			["Authorization", accessToken]
+		);
+		if (ws) break;
+		await sleep(5000);
+	} while (!ws);
 
-ws.addEventListener("open", (event) => {
-	console.log("WebSocket connected!");
-});
+	ws.addEventListener("open", (event) => {
+		console.log("WebSocket connected!");
+	});
 
-ws.addEventListener("message", async (event) => {
-	console.log("event data:", event.data);
-	messages.value?.push(
-		JSON.parse(event.data)
-	);
-	await nextTick();
-	if (messagesElement.value) {
-		console.log("scrolling to bottom");
-		scrollToBottom(messagesElement);
-	}
-});
-
-
+	ws.addEventListener("message", async (event) => {
+		console.log("event data:", event.data);
+		console.log("message uuid:", event.data.uuid);
+		const parsedData = JSON.parse(event.data);
+		messageTimestamps.value[parsedData.uuid] = uuidToTimestamp(parsedData.uuid);
+		messages.value.push(parsedData);
+		await nextTick();
+		if (messagesElement.value) {
+			console.log("scrolling to bottom");
+			scrollToBottom(messagesElement);
+		}
+	});
 
 } else {
 	await refresh();
@@ -82,7 +133,7 @@ function sendMessage(e: Event) {
 	const text = messageInput.value;
 	console.log("text:", text);
 	if (text) {
-		ws.send(text);	
+		ws.send(text);
 		messageInput.value = "";
 		console.log("MESSAGE SENT!!!");
 	}
@@ -97,13 +148,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
 #message-area {
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: 8fr 1fr;
 	justify-content: space-between;
-	padding-top: 3dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
@@ -118,7 +167,7 @@ onMounted(async () => {
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
 	margin-bottom: 1dvh;
-	margin-top: 1dvh;
+	margin-top: 2dvh;
 }
 
 #message-form {
@@ -152,5 +201,4 @@ onMounted(async () => {
 #submit-button:hover {
 	color: rgb(255, 255, 255);
 }
-
 </style>

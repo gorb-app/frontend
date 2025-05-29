@@ -49,4 +49,9 @@ a {
   border-radius: .3rem;
 }
 
+
+.invisible {
+	visibility: hidden;
+}
+
 </style>
