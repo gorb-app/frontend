@@ -1,55 +1,55 @@
 <template>
-  <Loading v-if="!mounted" />
-  <div v-else id="root-container" style="margin-top: 5dvh;">
-    <div id="main-container">
-      <div v-if="!instanceUrl">
-        <div v-if="instanceError" style="color: red;">
-          {{ instanceError }}
+  <NuxtLayout>
+    <div id="root-container" style="margin-top: 5dvh;">
+      <div id="main-container">
+        <div v-if="!instanceUrl">
+          <div v-if="instanceError" style="color: red;">
+            {{ instanceError }}
+          </div>
+          <form @submit="selectInstance">
+            <div>
+              <label for="instance-url">Instance URL</label>
+              <br>
+              <input type="url" name="instance-url" id="instance-url" required v-model="instanceUrlInput">
+            </div>
+            <div>
+              <button type="submit">Next</button>
+            </div>
+          </form>
         </div>
-        <form @submit="selectInstance">
-          <div>
-            <label for="instance-url">Instance URL</label>
-            <br>
-            <input type="url" name="instance-url" id="instance-url" required v-model="instanceUrlInput">
-          </div>
-          <div>
-            <button type="submit">Next</button>
-          </div>
-        </form>
-      </div>
-      <div v-else id="auth-form-container">
-        <slot />
-      </div>
-      <div v-if="auth.accessToken.value">
-        You're logged in!
-        <form @submit="logout">
-          <div>
-            <label for="logout-password">Password</label>
-            <br>
-            <input type="password" name="logout-password" id="logout-password" v-model="form.password" required>
-          </div>
-          <div>
-            <button type="submit">Log out</button>
-          </div>
-        </form>
-        <div>
-          <button @click="refresh">Refresh</button>
+        <div v-else id="auth-form-container">
+          <slot />
         </div>
-        <div>
-          <button @click="showUser">Show user</button>
-        </div>
-        <div>
-          <button @click="getUser">Get me</button>
+        <div v-if="auth.accessToken.value">
+          You're logged in!
+          <form @submit="logout">
+            <div>
+              <label for="logout-password">Password</label>
+              <br>
+              <input type="password" name="logout-password" id="logout-password" v-model="form.password" required>
+            </div>
+            <div>
+              <button type="submit">Log out</button>
+            </div>
+          </form>
+          <div>
+            <button @click="refresh">Refresh</button>
+          </div>
+          <div>
+            <button @click="showUser">Show user</button>
+          </div>
+          <div>
+            <button @click="getUser">Get me</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
 
-const mounted = ref(false);
 const redirectTo = useRoute().query.redirect_to;
 
 const apiVersion = useRuntimeConfig().public.apiVersion;
@@ -64,7 +64,6 @@ if (auth.accessToken.value) {
 }
 
 onMounted(() => {
-  mounted.value = true;
   const cookie = useCookie("instance_url").value;
   instanceUrl.value = cookie;
   console.log(cookie);
