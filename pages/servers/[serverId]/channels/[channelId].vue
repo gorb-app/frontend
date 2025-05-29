@@ -114,7 +114,6 @@ onMounted(async () => {
 	);
 
 	console.log("channelid: channel:", channel);
-	await sleep(3000);
 	loading.value = false;
 	console.log("channelid: set loading to false");
 });
