@@ -98,19 +98,21 @@ onMounted(async () => {
 <style scoped>
 
 #message-area {
-	padding-top: 3dvh;
-}
-
-#message-area {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 8fr 1fr;
 	justify-content: space-between;
+	padding-top: 3dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
 }
 
 #message-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-content: center;
 	border: 1px solid rgb(70, 70, 70);
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
@@ -118,8 +120,16 @@ onMounted(async () => {
 	margin-top: 1dvh;
 }
 
-#message-input {
-	width: 100%;
+#message-form {
+	display: flex;
+	justify-content: center;
+	height: 60%;
+}
+
+#message-box-input {
+	width: 80%;
+	background-color: rgb(50, 50, 50);
+	border: none;
 }
 
 #messages {
