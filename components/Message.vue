@@ -31,20 +31,23 @@ const messageDate = ref<string>();
 const showHover = ref(false);
 
 const date = new Date(props.timestamp);
-const now = new Date()
 
-if (now.getUTCHours() >= 0) {
-	let dateHour = date.getUTCHours();
-	let dateMinute = date.getUTCMinutes();
-	if (props.format == "12") {
-		if (dateHour > 12) {
-			dateHour = dateHour - 12;
-		}
-		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute} ${dateHour > 0 && dateHour < 13 ? "AM" : "PM"}`
+console.log("message:", props.text);
+let dateHour = date.getHours();
+let dateMinute = date.getMinutes();
+if (props.format == "12") {
+	if (dateHour > 12) {
+		dateHour = dateHour - 12;
+		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute} PM`
 	} else {
-		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute}`
+		if (dateHour == 0) {
+			dateHour = 12;
+		}
+		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute} ${dateHour >= 0 && dateHour < 13 ? "AM" : "PM"}`
 	}
-}
+} else {
+	messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute}`
+	}
 
 //function toggleTooltip(e: Event) {
 //	showHover.value = !showHover.value;
