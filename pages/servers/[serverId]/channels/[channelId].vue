@@ -18,9 +18,8 @@
 				</h3>
 			</div>
 			<div id="channels-list">
-				<Channel v-for="channel of channels" v-if="route.params.channelId == channel?.uuid" :name="channel.name"
-					:href="route.path" :current="true" />
-				<Channel v-for="channel of channels" v-else :name="channel.name"
+				<Channel v-for="channel of channels" :name="channel.name"
+					:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
 					:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
 			</div>
 		</div>
@@ -102,19 +101,19 @@ const members = [
 ];
 
 onMounted(async () => {
-	loading.value = true;
 	console.log("channelid: set loading to true");
 	server.value = await fetchWithApi(`servers/${route.params.serverId}`);
 
 	channels.value = await fetchWithApi(
 		`servers/${route.params.serverId}/channels`
 	);
+	console.log("channels:", channels.value);
 	channel.value = await fetchWithApi(
 		route.path
 	);
+	console.log("channel:", channel.value);
 
 	console.log("channelid: channel:", channel);
-	loading.value = false;
 	console.log("channelid: set loading to false");
 });
 
@@ -149,6 +148,12 @@ function toggleInvitePopup(e: Event) {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	border-left: 1px solid rgb(70, 70, 70);
+}
+
+#channels-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1dvh;
 }
 
 </style>
