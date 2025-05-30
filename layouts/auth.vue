@@ -48,24 +48,30 @@
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
 
-const redirectTo = useRoute().query.redirect_to;
-
 const apiVersion = useRuntimeConfig().public.apiVersion;
 const instanceUrl = ref<string | null | undefined>(null);
 const instanceUrlInput = ref<string>();
 const instanceError = ref<string>();
+const requestUrl = useRequestURL();
+const apiBase = useCookie("api_base");
 
 const auth = useAuth();
 
-if (auth.accessToken.value) {
-  //navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
+const { status, data: gorbTxt } = await useFetch(`${requestUrl.protocol}//${requestUrl.host}/.well-known/gorb.txt`, { responseType: "text" });
+if (status.value == "success" && gorbTxt.value) {
+	console.log("got gorb.txt:", gorbTxt.value);
+	const parsed = parseWellKnown(gorbTxt.value as string);
+	if (parsed.ApiBaseUrl) {
+		apiBase.value = parsed.ApiBaseUrl;
+		console.log("set apiBase to:", parsed.ApiBaseUrl);
+	}
 }
 
-onMounted(() => {
-  const cookie = useCookie("instance_url").value;
-  instanceUrl.value = cookie;
-  console.log(cookie);
-  console.log("set instance url to:", instanceUrl.value);
+onMounted(async () => {
+	const cookie = useCookie("instance_url").value;
+	instanceUrl.value = cookie;
+	console.log(cookie);
+	console.log("set instance url to:", instanceUrl.value);
 });
 
 async function selectInstance(e: Event) {
@@ -74,14 +80,13 @@ async function selectInstance(e: Event) {
     const instanceUrlObj = new URL(`api/v${apiVersion}/stats`, instanceUrlInput.value.endsWith("/") ? instanceUrlInput.value : instanceUrlInput.value + "/");
     try {
       const res = await $fetch.raw(instanceUrlObj.href);
-      console.log("instance res:", res);
       instanceError.value = "";
+	  
       const origin = new URL(res.url).origin;
-      localStorage.setItem("instanceUrl", origin);
       instanceUrl.value = origin;
       useCookie("instance_url").value = origin;
-      useCookie("api_base").value = origin + `/api/v${apiVersion}`;
-      localStorage.setItem("apiBase", origin + `/api/v${apiVersion}`);
+
+      if (!apiBase.value) apiBase.value = origin + `/api/v${apiVersion}`;
     } catch (error: any) {
       if (error instanceof FetchError) {
         console.log("Status code:", error.response?.status);

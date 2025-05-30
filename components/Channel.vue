@@ -1,19 +1,21 @@
 <template>
-  <div v-if="current" class="channel-list-link-container">
+  <div v-if="isCurrentChannel" class="channel-list-link-container rounded-corners current-channel">
 	<NuxtLink class="channel-list-link" :href="props.href">
-		# {{ name }}
+		# {{ props.name }}
 	</NuxtLink>
   </div>
-  <div v-else class="channel-list-link-container current-channel">
+  <div v-else class="channel-list-link-container rounded-corners">
 	<NuxtLink class="channel-list-link" :href="props.href">
-		# {{ name }}
+		# {{ props.name }}
 	</NuxtLink>
   </div>
 </template>
 
 <script lang="ts" setup>
 
-const props = defineProps<{ name: string, href: string, current?: boolean }>();
+const props = defineProps<{ name: string, uuid: string, currentUuid: string, href: string }>();
+
+const isCurrentChannel = props.uuid == props.currentUuid;
 
 </script>
 
@@ -30,6 +32,7 @@ const props = defineProps<{ name: string, href: string, current?: boolean }>();
 	display: flex;
 	height: 4dvh;
 	white-space: nowrap;
+	align-items: center;
 }
 
 .current-channel {

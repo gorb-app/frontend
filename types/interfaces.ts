@@ -53,3 +53,12 @@ export interface UserResponse {
 	email?: string,
 	email_verified?: boolean
   }
+
+export interface StatsResponse {
+	accounts: number,
+    uptime: number,
+    version: string,
+    registration_enabled: boolean,
+    email_verification_required: boolean,
+    build_number: string
+}

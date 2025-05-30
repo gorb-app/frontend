@@ -26,7 +26,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiVersion: 1
+      apiVersion: 1,
+      messageGroupingMaxDifference: 300000
     }
   },
   /* nitro: {

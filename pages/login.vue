@@ -15,13 +15,15 @@
 				<button type="submit">Login</button>
 			</div>
 		</form>
-		<div>
+		<div v-if="registrationEnabled">
 			Don't have an account? <NuxtLink :href="registerUrl">Register</NuxtLink> one!
 		</div>
 	</NuxtLayout>
 </template>
 
 <script lang="ts" setup>
+import type { StatsResponse } from '~/types/interfaces';
+
 
 definePageMeta({
 	layout: "auth"
@@ -36,6 +38,18 @@ const form = reactive({
 
 const query = useRoute().query as Record<string, string>;
 const searchParams = new URLSearchParams(query);
+
+const instanceUrl = useCookie("instance_url").value;
+const registrationEnabled = ref<boolean>(true);
+
+if (instanceUrl) {
+	const statsUrl = new URL("/stats", instanceUrl).href;
+	const { status, data } = await useFetch<StatsResponse>(statsUrl);
+	if (status.value == "success" && data.value) {
+		registrationEnabled.value = data.value.registration_enabled;
+	}
+}
+
 const registerUrl = `/register?${searchParams}`
 
 const { login } = useAuth();
