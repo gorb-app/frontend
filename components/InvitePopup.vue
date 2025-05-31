@@ -20,7 +20,7 @@ const route = useRoute();
 
 async function generateInvite(): Promise<void> {
   const createdInvite: InviteResponse | undefined = await fetchWithApi(
-    `/servers/${route.params.serverId}/invites`,
+    `/guilds/${route.params.guildId}/invites`,
     { method: "POST", body: { custom_id: "oijewfoiewf" } }
   );
 

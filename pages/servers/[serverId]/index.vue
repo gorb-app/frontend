@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-const server = await fetchWithApi(`/guilds/${useRoute().params.serverId}`);
-console.log("server:", server);
+const guild = await fetchWithApi(`/guilds/${useRoute().params.guildId}`);
+console.log("guild:", guild);
 
 </script>
 

@@ -10,8 +10,8 @@
 			<NuxtLink id="home-button" href="/">
 				<Icon name="lucide:house" class="white" size="2rem" />
 			</NuxtLink>
-			<div id="servers-list">
-				<NuxtLink v-for="server of servers" :href="`/servers/${server.uuid}`">
+			<div id="guilds-list">
+				<NuxtLink v-for="guild of guilds" :href="`/guilds/${guild.uuid}`">
 					<Icon name="lucide:server" class="white" size="2rem" />
 				</NuxtLink>
 			</div>
@@ -26,7 +26,7 @@ import type { GuildResponse } from '~/types/interfaces';
 
 const loading = useState("loading", () => false);
 
-const servers: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
+const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("servers:", servers);
@@ -169,7 +169,7 @@ const members = [
 	padding-bottom: 1dvh;
 }
 
-#servers-list {
+#guilds-list {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
