@@ -17,7 +17,6 @@ export const useApi = () => {
 		return await fetchWithApi(`/channels/${channelId}`)
 	}
 
-
 	async function fetchMembers(guildId: string): Promise<GuildMemberResponse[] | undefined> {
 		return await fetchWithApi(`/guilds/${guildId}/members`);
 	}
@@ -34,8 +33,8 @@ export const useApi = () => {
 		return await fetchWithApi(`/users/${userId}`);
 	}
 
-	async function fetchMessages(channelId: string): Promise<MessageResponse[] | undefined> {
-		return await fetchWithApi(`/channels/${channelId}/messages`);
+	async function fetchMessages(channelId: string, options?: { amount?: number, offset?: number }): Promise<MessageResponse[] | undefined> {
+		return await fetchWithApi(`/channels/${channelId}/messages`, { query: { amount: options?.amount ?? 100, offset: options?.offset ?? 0 } });
 	}
 
 	async function fetchMessage(channelId: string, messageId: string): Promise<MessageResponse | undefined> {
