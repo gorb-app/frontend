@@ -26,9 +26,9 @@
 		<MessageArea :channel-url="channelUrlPath" />
 		<div id="members-list">
 			<div class="member-item" v-for="member of members">
-				<img v-if="member.avatar" :src="member.avatar" :alt="member.displayName" height="30" />
-				<Icon v-else name="lucide:user" size="30" />
-				<span class="member-display-name">{{ member.displayName }}</span>
+				<img v-if="member.user.avatar" class="member-avatar" :src="member.user.avatar" :alt="member.user.display_name ?? member.user.username" />
+				<Icon v-else class="member-avatar" name="lucide:user" />
+				<span class="member-display-name">{{ member.user.display_name ?? member.user.username }}</span>
 			</div>
 		</div>
 	</NuxtLayout>
@@ -52,53 +52,9 @@ import type { ChannelResponse, GuildResponse, MessageResponse } from "~/types/in
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);
-const members = [
-	{
-		id: "3287484395",
-		displayName: "SauceyRed",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "JustTemmie",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "GOIN!!!!!!",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "Hatsune Miku Official",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "Hatsune Miku Official",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "Hatsune Miku Official",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed",
-		avatar: ""
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed",
-		avatar: ""
-	}
-];
+
+const { fetchMembers } = useApi();
+const members = await fetchMembers(route.params.serverId as string);
 
 onMounted(async () => {
 	console.log("channelid: set loading to true");
@@ -129,6 +85,7 @@ function toggleInvitePopup(e: Event) {
 	align-items: center;
 	margin-top: .5em;
 	margin-bottom: .5em;
+	gap: .5em;
 }
 
 #members-list {
@@ -151,6 +108,12 @@ function toggleInvitePopup(e: Event) {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
+}
+
+.member-avatar {
+	height: 2.3em;
+	width: 2.3em;
+	border-radius: 50%;
 }
 
 </style>
