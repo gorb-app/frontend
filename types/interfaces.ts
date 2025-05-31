@@ -23,6 +23,14 @@ export interface GuildResponse {
     member_count: number
 }
 
+export interface GuildMemberResponse {
+	uuid: string,
+	nickname: string,
+	user_uuid: string,
+	guild_uuid: string,
+	user: UserResponse
+}
+
 export interface ChannelResponse {
 	uuid: string,
 	guild_uuid: string,
