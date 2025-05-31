@@ -51,28 +51,16 @@
 
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
+import type { StatsResponse } from '~/types/interfaces';
 
 const instanceUrl = ref<string | null | undefined>(null);
 const instanceUrlInput = ref<string>();
 const instanceError = ref<string>();
-const requestUrl = useRequestURL();
 const apiVersion = useRuntimeConfig().public.apiVersion;
 const apiBase = useCookie("api_base");
-const gorbTxtError = ref<string>("");
+const registrationEnabled = useState("registrationEnabled", () => true);
 
 const auth = useAuth();
-
-const { status, data: gorbTxt } = await useFetch(`${requestUrl.protocol}//${requestUrl.host}/.well-known/gorb.txt`, { responseType: "text" });
-if (status.value == "success" && gorbTxt.value) {
-	console.log("got gorb.txt:", gorbTxt.value);
-	const parsed = parseWellKnown(gorbTxt.value as string);
-	if (parsed.ApiBaseUrl) {
-		apiBase.value = `${parsed.ApiBaseUrl}/${apiVersion}`;
-		console.log("set apiBase to:", parsed.ApiBaseUrl);
-	}
-} else {
-	gorbTxtError.value = "Failed to find that instance.";
-}
 
 onMounted(async () => {
 	const cookie = useCookie("instance_url").value;
@@ -99,6 +87,11 @@ async function selectInstance(e: Event) {
 				instanceUrl.value = origin;
 				useCookie("instance_url").value = origin;
 				console.log("set instance url to:", origin);
+				const { status, data, error } = await useFetch<StatsResponse>(`${apiBase.value}/stats`);
+				if (status.value == "success" && data.value) {
+					registrationEnabled.value = data.value.registration_enabled;
+					console.log("set registration enabled value to:", data.value.registration_enabled);
+				}
 				return;
 			}
 			instanceError.value = "That URL is not a valid instance.";

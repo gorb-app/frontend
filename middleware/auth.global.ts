@@ -3,6 +3,25 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	const loading = useState("loading");
 	const accessToken = useCookie("access_token").value;
 	if (["/login", "/register"].includes(to.path)) {
+		console.log("path is login or register");
+		const apiBase = useCookie("api_base");
+		console.log("apiBase gotten:", apiBase.value);
+		if (!apiBase.value) {
+			const requestUrl = useRequestURL();
+			console.log("request url:", requestUrl.href);
+			const apiVersion = useRuntimeConfig().public.apiVersion;
+			console.log("api version:", apiVersion);
+			console.log("apiBase not set");
+			const { status, data: gorbTxt } = await useFetch(`${requestUrl.protocol}//${requestUrl.host}/.well-known/gorb.txt`, { responseType: "text" });
+			if (status.value == "success" && gorbTxt.value) {
+				console.log("got gorb.txt:", gorbTxt.value);
+				const parsed = parseWellKnown(gorbTxt.value as string);
+				if (parsed.ApiBaseUrl) {
+					apiBase.value = `${parsed.ApiBaseUrl}/${apiVersion}`;
+					console.log("set apiBase to:", parsed.ApiBaseUrl);
+				}
+			}
+		}
 		if (accessToken) {
 			return await navigateTo("/");
 		}

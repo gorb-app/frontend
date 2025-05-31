@@ -47,14 +47,17 @@ definePageMeta({
   layout: "auth"
 })
 
-const instanceUrl = useCookie("instance_url").value;
-const registrationEnabled = ref<boolean>(false);
+const registrationEnabled = useState("registrationEnabled", () => true);
 
-if (instanceUrl) {
-	const statsUrl = new URL("/stats", instanceUrl).href;
-	const { status, data, error } = await useFetch<StatsResponse>(statsUrl);
+console.log("wah");
+console.log("weoooo")
+const apiBase = useCookie("api_base");
+console.log("apiBase:", apiBase.value);
+if (apiBase.value) {
+	const { status, data, error } = await useFetch<StatsResponse>(`${apiBase.value}/stats`);
 	if (status.value == "success" && data.value) {
 		registrationEnabled.value = data.value.registration_enabled;
+		console.log("set registration enabled value to:", data.value.registration_enabled);
 	}
 }
 
@@ -91,12 +94,6 @@ const auth = useAuth();
 const query = useRoute().query as Record<string, string>;
 const searchParams = new URLSearchParams(query);
 const loginUrl = `/login?${searchParams}`
-
-onMounted(() => {
-  if (auth.accessToken.value) {
-    //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
-  }
-});
 
 /*
 watch(() => form.username, (newValue) => {
