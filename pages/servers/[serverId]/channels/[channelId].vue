@@ -102,9 +102,10 @@ const members = [
 
 onMounted(async () => {
 	console.log("channelid: set loading to true");
-	server.value = await fetchWithApi(`servers/${route.params.serverId}`);
+	const serverUrl = `guilds/${route.params.serverId}`;
+	server.value = await fetchWithApi(serverUrl);
 
-	channels.value = await fetchWithApi(`/channels`);
+	channels.value = await fetchWithApi(`${serverUrl}/channels`);
 	console.log("channels:", channels.value);
 	channel.value = await fetchWithApi(route.path);
 	console.log("channel:", channel.value);
