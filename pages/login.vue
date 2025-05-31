@@ -43,6 +43,7 @@ const registrationEnabled = ref<boolean>(true);
 const apiBase = useCookie("api_base");
 
 if (apiBase.value) {
+	console.log("apiBase:", apiBase.value);
 	const statsUrl = new URL("/stats", apiBase.value).href;
 	const { status, data } = await useFetch<StatsResponse>(statsUrl);
 	if (status.value == "success" && data.value) {
@@ -62,9 +63,9 @@ async function formLogin(e: Event) {
 		console.log("logged in");
 		if (query.redirect_to) {
 			console.log("redirecting to:", query.redirect_to);
-			return await navigateTo(query.redirect_to);
+			return await navigateTo(query.redirect_to, { replace: true });
 		}
-		return await navigateTo("/");
+		return await navigateTo("/", { replace: true });
 	} catch (error) {
 		console.error("Error logging in:", error);
 	}
