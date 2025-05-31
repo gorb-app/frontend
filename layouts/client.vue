@@ -10,8 +10,8 @@
 			<NuxtLink id="home-button" href="/">
 				<Icon name="lucide:house" class="white" size="2rem" />
 			</NuxtLink>
-			<div id="guilds-list">
-				<NuxtLink v-for="guild of guilds" :href="`/guilds/${guild.uuid}`">
+			<div id="servers-list">
+				<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
 					<Icon name="lucide:server" class="white" size="2rem" />
 				</NuxtLink>
 			</div>
@@ -169,7 +169,7 @@ const members = [
 	padding-bottom: 1dvh;
 }
 
-#guilds-list {
+#servers-list {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;

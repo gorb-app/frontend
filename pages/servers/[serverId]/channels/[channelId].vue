@@ -5,7 +5,7 @@
 				<h3>
 					{{ server?.name }}
 					<span>
-						<button @click="showServerSettings">
+						<button @click="showGuildSettings">
 							<Icon name="lucide:settings" />
 						</button>
 					</span>
@@ -20,7 +20,7 @@
 			<div id="channels-list">
 				<Channel v-for="channel of channels" :name="channel.name"
 					:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
-					:href="`/guilds/${route.params.serverId}/channels/${channel.uuid}`" />
+					:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
 			</div>
 		</div>
 		<MessageArea :channel-url="channelUrlPath" />
@@ -102,10 +102,10 @@ const members = [
 
 onMounted(async () => {
 	console.log("channelid: set loading to true");
-	const serverUrl = `guilds/${route.params.serverId}`;
-	server.value = await fetchWithApi(serverUrl);
+	const guildUrl = `guilds/${route.params.serverId}`;
+	server.value = await fetchWithApi(guildUrl);
 
-	channels.value = await fetchWithApi(`${serverUrl}/channels`);
+	channels.value = await fetchWithApi(`${guildUrl}/channels`);
 	console.log("channels:", channels.value);
 	channel.value = await fetchWithApi(route.path);
 	console.log("channel:", channel.value);
@@ -114,7 +114,7 @@ onMounted(async () => {
 	console.log("channelid: set loading to false");
 });
 
-function showServerSettings() { }
+function showGuildSettings() { }
 
 function toggleInvitePopup(e: Event) {
 	e.preventDefault();
