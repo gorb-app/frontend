@@ -75,12 +75,10 @@ if (props.format == "12") {
 
 onMounted(() => {
 	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
-		console.log("mouse enter");
 		dateHidden.value = false;
 	});
 
 	messageElement.value?.addEventListener("mouseleave", (e: Event) => {
-		console.log("mouse leave");
 		dateHidden.value = true;
 	});
 });
