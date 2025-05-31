@@ -67,7 +67,7 @@ if (status.value == "success" && gorbTxt.value) {
 	console.log("got gorb.txt:", gorbTxt.value);
 	const parsed = parseWellKnown(gorbTxt.value as string);
 	if (parsed.ApiBaseUrl) {
-		apiBase.value = parsed.ApiBaseUrl;
+		apiBase.value = `${parsed.ApiBaseUrl}/${apiVersion}`;
 		console.log("set apiBase to:", parsed.ApiBaseUrl);
 	}
 } else {
