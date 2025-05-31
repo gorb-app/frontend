@@ -40,7 +40,7 @@ const route = useRoute();
 
 const loading = useState("loading");
 
-const channelUrlPath = `/channels/${route.params.channelId}`;
+const channelUrlPath = `channels/${route.params.channelId}`;
 
 const server = ref<GuildResponse | undefined>();
 const channels = ref<ChannelResponse[] | undefined>();
@@ -107,7 +107,7 @@ onMounted(async () => {
 
 	channels.value = await fetchWithApi(`${guildUrl}/channels`);
 	console.log("channels:", channels.value);
-	channel.value = await fetchWithApi(route.path);
+	channel.value = await fetchWithApi(`/channels/${route.params.channelId}`);
 	console.log("channel:", channel.value);
 
 	console.log("channelid: channel:", channel);
