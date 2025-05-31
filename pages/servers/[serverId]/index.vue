@@ -5,8 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-const guild = await fetchWithApi(`/guilds/${useRoute().params.serverId}`);
-console.log("guild:", guild);
+definePageMeta({
+	middleware: "server"
+});
 
 </script>
 
