@@ -1,7 +1,7 @@
-import type { ChannelResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 export const useApi = () => {
-	async function fetchGuilds(guildId: string): Promise<GuildResponse[] | undefined> {
+	async function fetchGuilds(): Promise<GuildResponse[] | undefined> {
 		return await fetchWithApi(`/guilds`);
 	}
 	
@@ -18,15 +18,15 @@ export const useApi = () => {
 	}
 
 
-	async function fetchMembers(guildId: string) {
+	async function fetchMembers(guildId: string): Promise<GuildMemberResponse[] | undefined> {
 		return await fetchWithApi(`/guilds/${guildId}/members`);
 	}
 
-	async function fetchMember(guildId: string, memberId: string) {
+	async function fetchMember(guildId: string, memberId: string): Promise<GuildMemberResponse | undefined> {
 		return await fetchWithApi(`/guilds/${guildId}/members/${memberId}`);
 	}
 
-	async function fetchUsers(userId: string) {
+	async function fetchUsers() {
 		return await fetchWithApi(`/users`);
 	}
 
