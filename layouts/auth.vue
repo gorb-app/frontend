@@ -56,6 +56,7 @@ const instanceUrl = ref<string | null | undefined>(null);
 const instanceUrlInput = ref<string>();
 const instanceError = ref<string>();
 const requestUrl = useRequestURL();
+const apiVersion = useRuntimeConfig().public.apiVersion;
 const apiBase = useCookie("api_base");
 const gorbTxtError = ref<string>("");
 
@@ -92,7 +93,7 @@ async function selectInstance(e: Event) {
 			const parsed = parseWellKnown(res._data as string);
 			console.log("parsed:", parsed);
 			if (parsed.ApiBaseUrl) {
-				apiBase.value = parsed.ApiBaseUrl;
+				apiBase.value = `${parsed.ApiBaseUrl}/v${apiVersion}`;
 				console.log("set apiBase to:", parsed.ApiBaseUrl);
 				const origin = new URL(res.url).origin;
 				instanceUrl.value = origin;
