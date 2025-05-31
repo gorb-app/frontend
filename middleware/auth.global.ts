@@ -17,7 +17,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				console.log("got gorb.txt:", gorbTxt.value);
 				const parsed = parseWellKnown(gorbTxt.value as string);
 				if (parsed.ApiBaseUrl) {
-					apiBase.value = `${parsed.ApiBaseUrl}/${apiVersion}`;
+					apiBase.value = `${parsed.ApiBaseUrl}/v${apiVersion}`;
 					console.log("set apiBase to:", parsed.ApiBaseUrl);
 				}
 			}
