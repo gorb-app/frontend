@@ -27,12 +27,13 @@ import scrollToBottom from '~/utils/scrollToBottom';
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
 const messageTimestamps = ref<Record<string, number>>({});
-const messagesType = ref<Record<string, "normal" | "compact">>({});
+const messagesType = ref<Record<string, "normal" | "grouped">>({});
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,
 	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
 );
+
 if (messagesRes) {
 	messagesRes.reverse();
 	console.log("messages res:", messagesRes.map(msg => msg.message));
@@ -77,7 +78,7 @@ if (messagesRes) {
 			continue;
 		}
 		console.log("RETURNING " + lessThanMax.toString().toUpperCase());
-		messagesType.value[message.uuid] = "compact";
+		messagesType.value[message.uuid] = "grouped";
 	}
 }
 

@@ -18,7 +18,7 @@
 			</div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" class="message compact-message">
+	<div v-else ref="messageElement" class="message grouped-message">
 		<div class="left-column">
 			<div>
 				<span :class="{ 'invisible': dateHidden }" class="message-date" :title="date.toString()">
@@ -42,7 +42,7 @@ const props = defineProps<{
 	text: string,
 	timestamp: number,
 	format: "12" | "24",
-	type: "normal" | "compact",
+	type: "normal" | "grouped",
 	marginBottom: boolean
 }>();
 
