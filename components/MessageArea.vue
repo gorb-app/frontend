@@ -175,6 +175,8 @@ onMounted(async () => {
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
 	margin-bottom: 1dvh;
+	margin-left: 1dvw;
+	margin-right: 1dvw;
 }
 
 #message-form {
@@ -196,6 +198,8 @@ onMounted(async () => {
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
+	padding-left: 1dvw;
+	padding-right: 1dvw;
 }
 
 #submit-button {
