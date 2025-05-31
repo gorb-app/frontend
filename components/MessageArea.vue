@@ -1,12 +1,11 @@
 <template>
 	<div id="message-area">
 		<div id="messages" ref="messagesElement">
-			<div v-for="(message, i) of messages">
-				<Message :username="message.user.display_name ?? message.user.username"
-					:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
-					format="12" :type="messagesType[message.uuid]"
-					:margin-bottom="messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal'" />
-			</div>
+			<Message v-for="(message, i) of messages" :username="message.user.display_name ?? message.user.username"
+				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
+				format="12" :type="messagesType[message.uuid]"
+				:margin-bottom="messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal'"
+				:last="i == messages.length - 1" />
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
@@ -176,7 +175,6 @@ onMounted(async () => {
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
 	margin-bottom: 1dvh;
-	margin-top: 2dvh;
 }
 
 #message-form {
