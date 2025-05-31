@@ -131,8 +131,6 @@ watch(() => form.repeatPassword, (newValue) => {
   console.log("repeat password change:", newValue);
 })
 
-const apiVersion = useRuntimeConfig().public.apiVersion;
-
 async function register(e: Event) {
   e.preventDefault();
   console.log("Sending registration data");
