@@ -39,11 +39,11 @@ const form = reactive({
 const query = useRoute().query as Record<string, string>;
 const searchParams = new URLSearchParams(query);
 
-const instanceUrl = useCookie("instance_url").value;
 const registrationEnabled = ref<boolean>(true);
+const apiBase = useCookie("api_base");
 
-if (instanceUrl) {
-	const statsUrl = new URL("/stats", instanceUrl).href;
+if (apiBase.value) {
+	const statsUrl = new URL("/stats", apiBase.value).href;
 	const { status, data } = await useFetch<StatsResponse>(statsUrl);
 	if (status.value == "success" && data.value) {
 		registrationEnabled.value = data.value.registration_enabled;
