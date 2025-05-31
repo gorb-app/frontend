@@ -28,18 +28,15 @@ const props = defineProps<{ channelUrl: string, amount?: number, offset?: number
 
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
+const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,
 	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
 );
 
-if (messagesRes) {
-	messagesRes.reverse();
-	console.log("messages res:", messagesRes.map(msg => msg.message));
-	const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
-	for (const message of messagesRes) {
-		messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
+function groupMessage(message: MessageResponse) {
+	messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
 
 		console.log("message:", message.message);
 		const firstByUser = firstMessageByUsers.value[message.user.uuid];
@@ -50,7 +47,7 @@ if (messagesRes) {
 				firstMessageByUsers.value[message.user.uuid] = message;
 				console.log("RETURNING FALSE");
 				messagesType.value[message.uuid] = "normal";
-				continue;
+				return;
 			}
 		} else {
 			console.log("first by user doesn't exist");
@@ -58,9 +55,9 @@ if (messagesRes) {
 			firstMessageByUsers.value[message.user.uuid] = message;
 			console.log("RETURNING FALSE");
 			messagesType.value[message.uuid] = "normal";
-			continue;
+			return;
 		}
-		const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference;
+		
 		const prevTimestamp = messageTimestamps.value[firstByUser.uuid];
 		const timestamp = messageTimestamps.value[message.uuid];
 		console.log("first message timestamp:", prevTimestamp);
@@ -75,10 +72,18 @@ if (messagesRes) {
 			console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`)
 			firstMessageByUsers.value[message.user.uuid] = message;
 			messagesType.value[message.uuid] = "normal";
-			continue;
+			return;
 		}
 		console.log("RETURNING " + lessThanMax.toString().toUpperCase());
 		messagesType.value[message.uuid] = "grouped";
+}
+
+const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
+if (messagesRes) {
+	messagesRes.reverse();
+	console.log("messages res:", messagesRes.map(msg => msg.message));
+	for (const message of messagesRes) {
+		groupMessage(message);
 	}
 }
 
@@ -116,7 +121,10 @@ if (accessToken && apiBase) {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
-		messageTimestamps.value[parsedData.uuid] = uuidToTimestamp(parsedData.uuid);
+		
+		groupMessage(parsedData);
+		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
+		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
 		messages.value.push(parsedData);
 		await nextTick();
 		if (messagesElement.value) {
