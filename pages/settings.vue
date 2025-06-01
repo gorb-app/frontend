@@ -6,12 +6,17 @@
         <ul>
           <template v-for="category in categories" :key="category.display_name">
             <h2>{{ category.display_name }}</h2>
-            <li v-for="page in category.pages" :key="page.display_name" @click="selectCategory(page)">
+            <li 
+              v-for="page in category.pages" 
+              :key="page.display_name" 
+              @click="selectCategory(category, page)"
+              :class="{ 'sidebar-focus': selectedPage === page.display_name }"
+            >
               {{ page.display_name }}
             </li>
             <span class="spacer"></span>
           </template>
-
+          
           <ButtonScary text="Log Out" :callback=logout></ButtonScary>
         </ul>
       </div>
@@ -71,9 +76,11 @@ const settingsCategories = {
 const categories = Object.values(settingsCategories);
 
 let currentPage = ref(categories[0].pages[0]);
+let selectedPage = ref(currentPage.value.display_name);
 
-const selectCategory = (page: Page) => {
+const selectCategory = (_category: Category, page: Page) => {
   currentPage.value = page;
+  selectedPage.value = page.display_name;
   console.log(`switching to ${page.display_name}`)
 };
 
@@ -102,7 +109,7 @@ function logout() {
   color: white;
   padding: 10px;
   margin-left: auto;
-
+  
   overflow-y: auto;
   height: 100vh;
 }
@@ -119,9 +126,15 @@ function logout() {
 }
 
 #sidebar li {
+  border-radius: 8px;
   padding: 8px;
+  margin: 2px 0;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: background-color 0.3s;
+}
+
+.sidebar-focus {
+  background-color: #383B41;
 }
 
 #sidebar li:hover {
