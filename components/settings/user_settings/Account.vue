@@ -2,9 +2,30 @@
   <div>
     <h1>My Account</h1>
     
-    <div id="profile-container">
-      <Userpopup :user=user_me></Userpopup>
+    <div class="profile-and-user-data-fields">
+      <div class="user-data-fields">
+        <h3 class="subtitle">AVATAR</h3>
+        <Button text="Change Avatar" :callback="changeAvatar"></Button>
+        <Button text="Remove Avatar" :callback="removeAvatar" style="margin-left: 10px; background-color: grey;"></Button>
+        <h3 class="subtitle">DISPLAY NAME</h3>
+        <input type="text" v-model="user.display_name" placeholder="Enter display name" />
+        <h3 class="subtitle">USERNAME</h3>
+        <input type="text" v-model="user.username" placeholder="Enter username" />
+        <h3 class="subtitle">PRONOUNS</h3>
+        <input type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
+        <h3 class="subtitle">ABOUT ME</h3>
+        <p>{{ user?.about_me || "TBD" }}</p>
+
+        <Button text="Save Changes" :callback="saveChanges"></Button>
+      </div>
+      <Userpopup :user=user_me class="profile"></Userpopup>
     </div>
+
+    <!-- i love html -->
+    <br>
+    <br>
+    <br>
+    <br>
 
     <h2>Password (and eventually authenticator)</h2>
     <Button text="Reset Password (tbd)" :callback=resetPassword></Button> 
@@ -19,10 +40,81 @@
 import Button from '~/components/buttons/Button.vue';
 import ButtonScary from '~/components/buttons/ButtonScary.vue';
 
-const { user, fetchUser } = useAuth();
+const { fetchUser } = useAuth();
 
 const user_me = await fetchUser()
+let user_reference = Object.assign({}, user_me)
+const user = user_me!
 
+let new_pfp_file: any = null
+
+const saveChanges = async () => {
+  try {
+    const formData = new FormData()
+
+    if (new_pfp_file) {
+      formData.append('avatar', new_pfp_file, new_pfp_file.name)
+      new_pfp_file = null
+    }
+    
+    // oh lord praise deep seek v3
+    const jsonBlob = new Blob(
+      [JSON.stringify({
+        display_name: user.display_name,
+        username: user.username,
+        pronouns: user.pronouns,
+      })], 
+      { type: 'application/json' }
+    );
+    formData.append('json', jsonBlob, 'data.json');
+    
+    await fetchWithApi("/me", {
+      method: "PATCH",
+      body: formData
+    })
+
+    user_reference = Object.assign({}, user_me)
+    alert("success!!")
+  } catch (error: any) {
+    if (error?.response?.status !== 200) {
+      const errorData = await error?.response?.json()
+
+      alert(`error ${error?.response?.status} met whilst trying to update profile info\n${errorData}`)
+    }
+  }  
+};
+
+
+const removeAvatar = async () => {
+  alert("TBD")
+  // await fetchWithApi(`/auth/reset-password`);
+}
+
+const changeAvatar = async () => {
+  try {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+
+    input.onchange = async(e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      new_pfp_file = file;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        user.avatar = e?.target?.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    input.oncancel = () => alert("cancelled upload!");
+    input.click();
+  } catch (err) {
+    console.error('User canceled or error:', err);
+  }
+}
 
 const resetPassword = async () => {
   alert("TBD")
@@ -35,11 +127,24 @@ const deleteAccount = async () => {
 </script>
 
 <style scoped>
-#profile-container {
-  border: 2px solid orange;
+.profile-container {
   min-width: 250px;
   min-height: 200px;
   padding: 8px;
   border-radius: 8px;
+}
+
+.profile-and-user-data-fields {
+  display: flex;
+}
+
+.profile-container, .user-data-fields {
+  min-width: 350px;
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 800;
+  margin: 12px 0;
 }
 </style>

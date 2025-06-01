@@ -76,7 +76,6 @@ export const useAuth = () => {
     if (!accessToken.value) return;
     console.log("fetchuser access token:", accessToken.value);
     const res = await fetchWithApi("/me") as UserResponse;
-    res.avatar = res.avatar ?? "https://gorb.b-cdn.net/avatar/default-pfp.png";
     user.value = res;
     return user.value;
   }

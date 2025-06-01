@@ -3,8 +3,12 @@
     <img v-if="props.user.avatar" id="avatar" :src="props.user.avatar" alt="profile avatar">
     <div id="cover-colour"></div>
     <div id="main-body">
-      <p id="display-name"><strong>{{ props.user.display_name || "display_name" }}</strong></p>
-      <p id="username"> {{ props.user.username || "username" }}</p>
+      <p id="display-name">
+        <strong>{{ props.user.display_name || "display_name" }}</strong>
+      </p>
+      <p id="username-and-pronouns">
+        {{ props.user.username || "username" }} - {{ props.user.pronouns || "un/defined" }} 
+      </p>
       <div id="about-me">
         <span>About me</span>
       </div>
@@ -18,15 +22,15 @@ import type { UserResponse } from '~/types/interfaces';
 const { fetchMembers } = useApi();
 
 const props = defineProps<{
-	user: UserResponse,
+	user: UserResponse | any, // actually UserResponse | null but TS is yelling at me again
 }>();
 
 </script>
 
 <style scoped>
 #profile-popup {
-  min-width: 200px;
-  max-width: 200px;
+  min-width: 300px;
+  max-width: 300px;
   border-radius: 8px;
   position: relative;
   display: flex;
@@ -34,46 +38,44 @@ const props = defineProps<{
 }
 
 #cover-colour {
-  border-radius: 8px 8px 0 0;
-  min-height: 52px;
+  border-radius: 12px 12px 0 0;
+  min-height: 60px;
   background-color: #442505;
 }
 
 #main-body {
-  border-radius: 0 0 8px 8px;
-  padding: 8px;
-  min-height: 180px;
+  border-radius: 0 0 12px 12px;
+  padding: 12px;
+  min-height: 280px;
   background-color: #4b3018;
   overflow-wrap: break-word;
   hyphens: manual;
 }
 
 #avatar {
-  width: 64px;
-  border: 4px solid #4b3018;
+  width: 96px;
+  height: 96px;
+  border: 5px solid #4b3018;
   border-radius: 100%;
   position: absolute;
-  left: 12px;
-  top: 12px;
+  left: 16px;
+  top: 16px;
 }
 
 #display-name {
-  margin-top: 28px;
+  margin-top: 60px;
   margin-bottom: 0;
-  font-size: 18px;
+  font-size: 28px;
 }
 
-#username {
-  margin-top: 2px;
-  margin-bottom: 0;
-  font-size: 12px;
+#username-and-pronouns {
+  margin: 2px;
+  font-size: 16px;
 }
 
 #about-me {
   margin-top: 4px;
   padding: 4px;
-  font-size: 14px;
+  font-size: 16px;
 }
-
-
 </style>

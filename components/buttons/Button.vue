@@ -28,11 +28,11 @@ const props = defineProps<{
 	background-color: #b35719;
 	color: #ffffff;
 
-	padding: 8px 16px;
-	font-size: 16px;
+	padding: 8px 18px;
+	font-size: 18px;
 	transition: background-color 0.2s;
 
-	border-radius: 16px;
+	border-radius: 12px;
 	text-decoration: none;
 	display: inline-block;
 }

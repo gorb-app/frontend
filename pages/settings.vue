@@ -115,8 +115,8 @@ const selectCategory = (_category: Category, page: Page) => {
 }
 
 #sidebar {
-  min-width: 200px;
-  max-width: 200px;
+  min-width: 250px;
+  max-width: 250px;
   background-color: #2f3136;
   color: white;
   padding: 10px;
@@ -127,7 +127,7 @@ const selectCategory = (_category: Category, page: Page) => {
 }
 
 #sidebar h2 {
-  font-size: 1.5em;
+  font-size: 2em;
   padding: 0 8px;
 }
 
@@ -140,6 +140,7 @@ const selectCategory = (_category: Category, page: Page) => {
 #sidebar li {
   border-radius: 8px;
   padding: 8px;
+  font-size: 1.3em;
   margin: 2px 0;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -155,7 +156,7 @@ const selectCategory = (_category: Category, page: Page) => {
 
 #sub_page {
   flex-grow: 1;
-  max-width: 600px;
+  max-width: 800px;
   margin-left: 1.5rem;
   margin-right: auto;
 
