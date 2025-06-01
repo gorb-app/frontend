@@ -14,7 +14,10 @@
 				</span>
 			</div>
 			<div class="message-text">
-				{{ text }}
+				<template v-for="word of text.split(' ')">
+					<NuxtLink v-if="/^http(s|):\/\/(?:www\.)?[\w-]{1,}\.[A-Za-z]{2,}[\/?]{0,1}[\w-=&\/#.]*$/.test(word)" :href="word" :external="true" target="_blank">{{ word }}</NuxtLInk>
+					<template v-else>{{ ' ' + word + ' ' }}</template>
+				</template>
 			</div>
 		</div>
 	</div>
@@ -28,7 +31,10 @@
 		</div>
 		<div class="message-data">
 			<div class="message-text">
-				{{ text }}
+				<template v-for="word of text.split(' ')">
+					<NuxtLink v-if="/^http(s|):\/\/(?:www\.)?[\w-]{1,}\.[A-Za-z]{2,}[\/?]{0,1}[\w-=&\/#.]*$/.test(word)" :href="word" :external="true" target="_blank">{{ word }}</NuxtLInk>
+					<template v-else>{{ word + ' ' }}</template>
+				</template>
 			</div>
 		</div>
 	</div>
