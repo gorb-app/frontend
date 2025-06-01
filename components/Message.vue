@@ -102,8 +102,8 @@ onMounted(async () => {
 	align-items: center;
 }
 
-.message-margin-bottom {
-	margin-bottom: 1dvh;
+.normal-message {
+	margin-top: 1dvh;
 }
 
 #last-message {
