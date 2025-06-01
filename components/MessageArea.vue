@@ -4,7 +4,7 @@
 			<Message v-for="(message, i) of messages" :username="message.user.display_name ?? message.user.username"
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
 				format="12" :type="messagesType[message.uuid]"
-				:margin-bottom="messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal'"
+				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
 				:last="i == messages.length - 1" />
 		</div>
 		<div id="message-box" class="rounded-corners">
@@ -34,50 +34,66 @@ const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
 );
 
-function groupMessage(message: MessageResponse) {
-	messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
+const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
+const previousMessage = ref<MessageResponse>();
 
-		console.log("message:", message.message);
-		const firstByUser = firstMessageByUsers.value[message.user.uuid];
-		if (firstByUser) {
-			console.log("first by user exists");
-			if (message.user.uuid != firstByUser.user.uuid) {
-				console.log("message is by new user, setting their first message")
-				firstMessageByUsers.value[message.user.uuid] = message;
-				console.log("RETURNING FALSE");
-				messagesType.value[message.uuid] = "normal";
-				return;
-			}
-		} else {
-			console.log("first by user doesn't exist");
-			console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
+async function groupMessage(message: MessageResponse, options?: { prevMessage?: MessageResponse, reverse?: boolean }) {
+	await nextTick();
+	messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
+	console.log("message:", message.message);
+	console.log("author:", message.user.username, `(${message.user.uuid})`);
+
+	if (!previousMessage.value || previousMessage.value && message.user.uuid != previousMessage.value.user.uuid) {
+		console.log("no previous message or author is different than last messsage's");
+		messagesType.value[message.uuid] = "normal";
+		previousMessage.value = message;
+		console.log("set previous message to:", previousMessage.value.message);
+		console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
+		firstMessageByUsers.value[message.user.uuid] = message;
+		return;
+	}
+
+
+	const firstByUser = firstMessageByUsers.value[message.user.uuid];
+	if (firstByUser) {
+		console.log("first by user exists:", firstByUser);
+		if (message.user.uuid != firstByUser.user.uuid) {
+			console.log("message is by new user, setting their first message")
 			firstMessageByUsers.value[message.user.uuid] = message;
 			console.log("RETURNING FALSE");
 			messagesType.value[message.uuid] = "normal";
 			return;
 		}
-		
-		const prevTimestamp = messageTimestamps.value[firstByUser.uuid];
-		const timestamp = messageTimestamps.value[message.uuid];
-		console.log("first message timestamp:", prevTimestamp);
-		console.log("timestamp:", timestamp);
-		const diff = (timestamp - prevTimestamp);
-		console.log("min diff:", messageGroupingMaxDifference);
-		console.log("diff:", diff);
-		const lessThanMax = diff <= messageGroupingMaxDifference;
-		console.log("group?", lessThanMax);
-		if (!lessThanMax) {
-			console.log("diff exceeds max");
-			console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`)
-			firstMessageByUsers.value[message.user.uuid] = message;
-			messagesType.value[message.uuid] = "normal";
-			return;
-		}
-		console.log("RETURNING " + lessThanMax.toString().toUpperCase());
-		messagesType.value[message.uuid] = "grouped";
+	} else {
+		console.log("first by user doesn't exist");
+		console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
+		firstMessageByUsers.value[message.user.uuid] = message;
+		console.log("RETURNING FALSE");
+		messagesType.value[message.uuid] = "normal";
+		return;
+	}
+	
+	const prevTimestamp = messageTimestamps.value[firstByUser.uuid];
+	const timestamp = messageTimestamps.value[message.uuid];
+	
+	console.log("first message timestamp:", prevTimestamp);
+	console.log("timestamp:", timestamp);
+	const diff = Math.abs(timestamp - prevTimestamp);
+	console.log("min diff:", messageGroupingMaxDifference);
+	console.log("diff:", diff);
+	const lessThanMax = diff <= messageGroupingMaxDifference;
+	console.log("group?", lessThanMax);
+	if (!lessThanMax) {
+		console.log("diff exceeds max");
+		console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`)
+		firstMessageByUsers.value[message.user.uuid] = message;
+		messagesType.value[message.uuid] = "normal";
+		return;
+	}
+	console.log("RETURNING " + lessThanMax.toString().toUpperCase());
+	messagesType.value[message.uuid] = "grouped";
 }
 
-const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
 if (messagesRes) {
 	messagesRes.reverse();
 	console.log("messages res:", messagesRes.map(msg => msg.message));
@@ -97,6 +113,7 @@ if (messagesRes) messages.value = messagesRes;
 const accessToken = useCookie("access_token").value;
 const apiBase = useCookie("api_base").value;
 const { refresh } = useAuth();
+const { fetchMessages } = useApi();
 
 let ws: WebSocket;
 
@@ -121,7 +138,7 @@ if (accessToken && apiBase) {
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
 		
-		groupMessage(parsedData);
+		await groupMessage(parsedData);
 		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
 		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
 		messages.value.push(parsedData);
@@ -147,9 +164,41 @@ function sendMessage(e: Event) {
 	}
 }
 
+const route = useRoute();
+
 onMounted(async () => {
+	if (import.meta.server) return;
 	if (messagesElement.value) {
 		scrollToBottom(messagesElement);
+		let fetched = false;
+		let offset = messages.value.length;
+		messagesElement.value.addEventListener("scroll", async (e) => {
+			if (e.target) {
+				const target = e.target as HTMLDivElement;
+				if (target.scrollTop <= target.scrollHeight * 0.1) {
+					if (fetched) return;
+					fetched = true;
+					console.log("scroll height is at 10% or less");
+					//console.log("current oldest:", currentOldestMessage);
+					const olderMessages = await fetchMessages(route.params.channelId as string, { amount: 2, offset: offset });
+					if (olderMessages) {
+						olderMessages.reverse();
+						console.log("older messages:", olderMessages);
+						if (olderMessages.length == 0) return;
+						for (const [i, oldMessage] of olderMessages.entries()) {
+							console.log("old message:", oldMessage);
+							messages.value.unshift(oldMessage);
+							for (const message of messages.value) {
+								await groupMessage(message);
+							}
+						}
+						offset += 2;
+					}
+				} else {
+					fetched = false;
+				}
+			}
+		});
 	}
 });
 
