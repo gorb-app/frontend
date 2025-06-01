@@ -1,12 +1,11 @@
 <template>
   <div>
-    <h1>hi</h1>
-    <h5>TEST</h5>
-    <h5>TEST</h5>
+    <h1>Privacy (TBA)</h1>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Button from '~/components/buttons/Button.vue';
 </script>
 
 <style scoped>
