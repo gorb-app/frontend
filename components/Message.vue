@@ -13,12 +13,7 @@
 					{{ messageDate }}
 				</span>
 			</div>
-			<div class="message-text">
-				<template v-for="word of text.split(' ')">
-					<NuxtLink v-if="/^http(s|):\/\/(?:www\.)?[\w-]{1,}\.[A-Za-z]{2,}[\/?]{0,1}[\w-=&\/#.]*$/.test(word)" :href="word" :external="true" target="_blank">{{ word }}</NuxtLInk>
-					<template v-else>{{ ' ' + word + ' ' }}</template>
-				</template>
-			</div>
+			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
 	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message">
@@ -30,17 +25,15 @@
 			</div>
 		</div>
 		<div class="message-data">
-			<div class="message-text">
-				<template v-for="word of text.split(' ')">
-					<NuxtLink v-if="/^http(s|):\/\/(?:www\.)?[\w-]{1,}\.[A-Za-z]{2,}[\/?]{0,1}[\w-=&\/#.]*$/.test(word)" :href="word" :external="true" target="_blank">{{ word }}</NuxtLInk>
-					<template v-else>{{ word + ' ' }}</template>
-				</template>
-			</div>
+			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
+import DOMPurify from 'dompurify';
+import { parseInline } from 'marked';
+
 const props = defineProps<{
 	class?: string,
 	img?: string | null,
@@ -81,6 +74,8 @@ console.log("message:", props.text);
 console.log("author:", props.username);
 
 onMounted(async () => {
+	const parsed = await parseInline(props.text, {gfm: true });
+	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a"] });
 	console.log("adding listeners")
 	await nextTick();
 	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
