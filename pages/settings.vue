@@ -6,17 +6,13 @@
         <ul>
           <template v-for="category in categories" :key="category.display_name">
             <h2>{{ category.display_name }}</h2>
-            <li 
-              v-for="page in category.pages" 
-              :key="page.display_name" 
-              @click="selectCategory(category, page)"
-              :class="{ 'sidebar-focus': selectedPage === page.display_name }"
-            >
+            <li v-for="page in category.pages" :key="page.display_name" @click="selectCategory(category, page)"
+              :class="{ 'sidebar-focus': selectedPage === page.display_name }">
               {{ page.display_name }}
             </li>
             <span class="spacer"></span>
           </template>
-          
+
           <ButtonScary text="Log Out" :callback=logout></ButtonScary>
         </ul>
       </div>
@@ -31,6 +27,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import ButtonScary from '~/components/buttons/ButtonScary.vue';
+
+const { logout } = useAuth()
 
 interface Page {
   display_name: string;
@@ -84,9 +82,6 @@ const selectCategory = (_category: Category, page: Page) => {
   console.log(`switching to ${page.display_name}`)
 };
 
-function logout() {
-  alert("hi")
-}
 </script>
 
 <style scoped>
@@ -109,7 +104,7 @@ function logout() {
   color: white;
   padding: 10px;
   margin-left: auto;
-  
+
   overflow-y: auto;
   height: 100vh;
 }
