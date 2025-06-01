@@ -69,17 +69,34 @@ const settingsCategories = {
       { display_name: "Language", page_data: Language },
     ]
   },
+  app_settings2: {
+    display_name: "App Settings",
+    pages: [
+      { display_name: "Appearance", page_data: Appearance },
+      { display_name: "Notifications", page_data: Notifications },
+      { display_name: "Keybinds", page_data: Keybinds },
+      { display_name: "Language", page_data: Language },
+    ]
+  },
+  app_settings3: {
+    display_name: "App Settings",
+    pages: [
+      { display_name: "Appearance", page_data: Appearance },
+      { display_name: "Notifications", page_data: Notifications },
+      { display_name: "Keybinds", page_data: Keybinds },
+      { display_name: "Language", page_data: Language },
+    ]
+  },
 };
 
 const categories = Object.values(settingsCategories);
 
 let currentPage = ref(categories[0].pages[0]);
-let selectedPage = ref(currentPage.value.display_name);
+let selectedPage = ref(currentPage.value.display_name); // used to highlight the current channel
 
 const selectCategory = (_category: Category, page: Page) => {
   currentPage.value = page;
   selectedPage.value = page.display_name;
-  console.log(`switching to ${page.display_name}`)
 };
 
 </script>
