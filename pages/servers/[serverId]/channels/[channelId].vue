@@ -88,10 +88,6 @@ function toggleInvitePopup(e: Event) {
 	gap: .5em;
 }
 
-#members-list {
-	padding-top: 3dvh;
-}
-
 #middle-left-column {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
@@ -99,6 +95,7 @@ function toggleInvitePopup(e: Event) {
 }
 
 #members-list {
+	padding-top: 3dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	border-left: 1px solid rgb(70, 70, 70);
