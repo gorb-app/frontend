@@ -53,10 +53,12 @@ const saveChanges = async () => {
   try {
     const formData = new FormData()
 
-    const upload_field = document.getElementById("hidden-pfp-uploader")
-    if (upload_field.files?.length && upload_field.files.length > 0) {
-      console.log(upload_field.files[0])
-      formData.append("avatar", upload_field.files[0])
+    const pfpInput = document.getElementById("hidden-pfp-uploader") as HTMLInputElement | null;
+    if (pfpInput) {
+      if (pfpInput.files?.length && pfpInput.files.length > 0) {
+        console.log(pfpInput.files[0])
+        formData.append("avatar", pfpInput.files[0])
+      }
     }
     
     const bytes = new TextEncoder().encode(JSON.stringify({
@@ -89,8 +91,8 @@ const removeAvatar = async () => {
 }
 
 const changeAvatar = async () => {
-  const upload_field: HTMLInputElement = document.getElementById("hidden-pfp-uploader")
-  
+  const pfpInput = document.getElementById("hidden-pfp-uploader") as HTMLInputElement | null;
+
   // upload_field.onchange = async(e) => {
   //   console.log(upload_field.files)
   //   if (upload_field.files?.length && upload_field.files.length > 0) {
@@ -105,7 +107,7 @@ const changeAvatar = async () => {
   //   }
   // }
 
-  upload_field?.click()
+  pfpInput?.click()
 }
 
 const resetPassword = async () => {
