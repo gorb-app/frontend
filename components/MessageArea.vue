@@ -37,8 +37,7 @@ const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
 const previousMessage = ref<MessageResponse>();
 
-async function groupMessage(message: MessageResponse, options?: { prevMessage?: MessageResponse, reverse?: boolean }) {
-	await nextTick();
+function groupMessage(message: MessageResponse, options?: { prevMessage?: MessageResponse, reverse?: boolean }) {
 	messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
 	console.log("message:", message.message);
 	console.log("author:", message.user.username, `(${message.user.uuid})`);
@@ -138,7 +137,7 @@ if (accessToken && apiBase) {
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
 		
-		await groupMessage(parsedData);
+		groupMessage(parsedData);
 		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
 		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
 		messages.value.push(parsedData);
@@ -190,7 +189,7 @@ onMounted(async () => {
 							console.log("old message:", oldMessage);
 							messages.value.unshift(oldMessage);
 							for (const message of messages.value) {
-								await groupMessage(message);
+								groupMessage(message);
 							}
 						}
 						offset += offset;
