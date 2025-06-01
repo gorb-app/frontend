@@ -4,14 +4,14 @@
       <div id="sidebar">
         <h4>(Search bar here)</h4>
         <ul>
-          <template v-for="category in categories" :key="category.display_name">
+          <div v-for="category in categories" :key="category.display_name">
             <h2>{{ category.display_name }}</h2>
             <li v-for="page in category.pages" :key="page.display_name" @click="selectCategory(category, page)"
               :class="{ 'sidebar-focus': selectedPage === page.display_name }">
               {{ page.display_name }}
             </li>
             <span class="spacer"></span>
-          </template>
+          </div>
 
           <ButtonScary text="Log Out" :callback=logout></ButtonScary>
         </ul>

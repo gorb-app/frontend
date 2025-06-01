@@ -1,5 +1,6 @@
 <template>
   <div>
+    <input id="hidden-pfp-uploader" type="file" accept="image/*" style="display: none;">
     <h1>My Account</h1>
     
     <div class="profile-and-user-data-fields">
@@ -52,21 +53,18 @@ const saveChanges = async () => {
   try {
     const formData = new FormData()
 
-    if (new_pfp_file) {
-      formData.append('avatar', new_pfp_file, new_pfp_file.name)
-      new_pfp_file = null
+    const upload_field = document.getElementById("hidden-pfp-uploader")
+    if (upload_field.files?.length && upload_field.files.length > 0) {
+      console.log(upload_field.files[0])
+      formData.append("avatar", upload_field.files[0])
     }
     
-    // oh lord praise deep seek v3
-    const jsonBlob = new Blob(
-      [JSON.stringify({
+    const bytes = new TextEncoder().encode(JSON.stringify({
         display_name: user.display_name,
         username: user.username,
         pronouns: user.pronouns,
-      })], 
-      { type: 'application/json' }
-    );
-    formData.append('json', jsonBlob, 'data.json');
+    }));
+    formData.append("json", new Blob([bytes], { type: "application/json" }));
     
     await fetchWithApi("/me", {
       method: "PATCH",
@@ -91,29 +89,23 @@ const removeAvatar = async () => {
 }
 
 const changeAvatar = async () => {
-  try {
-    let input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+  const upload_field: HTMLInputElement = document.getElementById("hidden-pfp-uploader")
+  
+  // upload_field.onchange = async(e) => {
+  //   console.log(upload_field.files)
+  //   if (upload_field.files?.length && upload_field.files.length > 0) {
+  //     const file = upload_field.files[0];
+  //     if (!file) return;
 
-    input.onchange = async(e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       user.avatar = e?.target?.result;
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
 
-      new_pfp_file = file;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        user.avatar = e?.target?.result;
-      };
-      reader.readAsDataURL(file);
-    }
-    
-    input.oncancel = () => alert("cancelled upload!");
-    input.click();
-  } catch (err) {
-    console.error('User canceled or error:', err);
-  }
+  upload_field?.click()
 }
 
 const resetPassword = async () => {
