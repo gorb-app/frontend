@@ -55,10 +55,6 @@ const dateHidden = ref<boolean>(true);
 
 const date = new Date(props.timestamp);
 
-console.log("Message.vue: message:", props.text);
-console.log("Message.vue: message type:", props.type);
-console.log("Message.vue: is last?", props.last);
-
 let dateHour = date.getHours();
 let dateMinute = date.getMinutes();
 if (props.format == "12") {
@@ -75,7 +71,12 @@ if (props.format == "12") {
 	messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute}`
 }
 
-onMounted(() => {
+console.log("message:", props.text);
+console.log("author:", props.username);
+
+onMounted(async () => {
+	console.log("adding listeners")
+	await nextTick();
 	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
 		dateHidden.value = false;
 	});
@@ -83,6 +84,7 @@ onMounted(() => {
 	messageElement.value?.addEventListener("mouseleave", (e: Event) => {
 		dateHidden.value = true;
 	});
+	console.log("added listeners");
 });
 
 //function toggleTooltip(e: Event) {
