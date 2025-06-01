@@ -89,7 +89,7 @@ function toggleInvitePopup(e: Event) {
 }
 
 #members-container {
-	padding-top: 3dvh;
+	padding-top: 1dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	border-left: 1px solid rgb(70, 70, 70);
