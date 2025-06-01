@@ -171,6 +171,7 @@ onMounted(async () => {
 	if (messagesElement.value) {
 		scrollToBottom(messagesElement);
 		let fetched = false;
+		const amount = messages.value.length;
 		let offset = messages.value.length;
 		messagesElement.value.addEventListener("scroll", async (e) => {
 			if (e.target) {
@@ -180,7 +181,7 @@ onMounted(async () => {
 					fetched = true;
 					console.log("scroll height is at 10% or less");
 					//console.log("current oldest:", currentOldestMessage);
-					const olderMessages = await fetchMessages(route.params.channelId as string, { amount: 2, offset: offset });
+					const olderMessages = await fetchMessages(route.params.channelId as string, { amount, offset });
 					if (olderMessages) {
 						olderMessages.reverse();
 						console.log("older messages:", olderMessages);
@@ -192,7 +193,7 @@ onMounted(async () => {
 								await groupMessage(message);
 							}
 						}
-						offset += 2;
+						offset += offset;
 					}
 				} else {
 					fetched = false;
