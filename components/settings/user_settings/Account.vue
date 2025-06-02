@@ -53,24 +53,23 @@ const user = user_me!
 let new_pfp_file: any = null
 
 const saveChanges = async () => {
+  const formData = new FormData()
+  
+  if (new_pfp_file !== null) {
+    formData.append("avatar", new_pfp_file)
+  }
+  
+  const bytes = new TextEncoder().encode(JSON.stringify({
+    display_name: user.display_name,
+    username: user.username,
+    pronouns: user.pronouns,
+    about: user.about,
+  }));
+  formData.append('json', new Blob([bytes], { type: 'application/json' }));
+  
   try {
-    const formData = new FormData()
-
-    const upload_field = document.getElementById("hidden-pfp-uploader")
-    if (upload_field.files?.length && upload_field.files.length > 0) {
-      console.log(upload_field.files[0])
-      formData.append("avatar", upload_field.files[0])
-    }
-    
-    const bytes = new TextEncoder().encode(JSON.stringify({
-        display_name: user.display_name,
-        username: user.username,
-        pronouns: user.pronouns,
-    }));
-    formData.append("json", new Blob([bytes], { type: "application/json" }));
-    
-    await fetchWithApi("/me", {
-      method: "PATCH",
+    await fetchWithApi('/me', {
+      method: 'PATCH',
       body: formData
     })
 
