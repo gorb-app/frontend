@@ -59,7 +59,7 @@ export interface UserResponse {
 	display_name: string | null,
 	avatar: string | null,
 	pronouns: string | null,
-	about_me: string | null,
+	about: string | null,
 	email?: string,
 	email_verified?: boolean
   }

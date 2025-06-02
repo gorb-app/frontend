@@ -2,21 +2,24 @@
   <div>
     <input id="hidden-pfp-uploader" type="file" accept="image/*" style="display: none;">
     <h1>My Account</h1>
-    
+
     <div class="profile-and-user-data-fields">
       <div class="user-data-fields">
         <h3 class="subtitle">AVATAR</h3>
         <Button text="Change Avatar" :callback="changeAvatar"></Button>
-        <Button text="Remove Avatar" :callback="removeAvatar" style="margin-left: 10px; background-color: grey;"></Button>
+        <Button text="Remove Avatar" :callback="removeAvatar"
+          style="margin-left: 10px; background-color: grey;"></Button>
         <h3 class="subtitle">DISPLAY NAME</h3>
-        <input type="text" v-model="user.display_name" placeholder="Enter display name" />
+        <input class="profile-data-input" type="text" v-model="user.display_name" placeholder="Enter display name" />
         <h3 class="subtitle">USERNAME</h3>
-        <input type="text" v-model="user.username" placeholder="Enter username" />
+        <input class="profile-data-input" type="text" v-model="user.username" placeholder="Enter username" />
         <h3 class="subtitle">PRONOUNS</h3>
-        <input type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
+        <input class="profile-data-input" type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
         <h3 class="subtitle">ABOUT ME</h3>
-        <p>{{ user?.about_me || "TBD" }}</p>
+        <input class="profile-data-input" type="text" v-model="user.about" placeholder="About You" />
 
+        <br>
+        <br>
         <Button text="Save Changes" :callback="saveChanges"></Button>
       </div>
       <Userpopup :user=user_me class="profile"></Userpopup>
@@ -29,10 +32,10 @@
     <br>
 
     <h2>Password (and eventually authenticator)</h2>
-    <Button text="Reset Password (tbd)" :callback=resetPassword></Button> 
+    <Button text="Reset Password (tbd)" :callback=resetPassword></Button>
 
     <h2>Account Deletion</h2>
-    <ButtonScary text="Delete Account (tbd)" :callback=deleteAccount></ButtonScary> 
+    <ButtonScary text="Delete Account (tbd)" :callback=deleteAccount></ButtonScary>
 
   </div>
 </template>
@@ -50,36 +53,33 @@ const user = user_me!
 let new_pfp_file: any = null
 
 const saveChanges = async () => {
+  const formData = new FormData()
+  
+  if (new_pfp_file !== null) {
+    formData.append("avatar", new_pfp_file)
+  }
+  
+  const bytes = new TextEncoder().encode(JSON.stringify({
+    display_name: user.display_name,
+    username: user.username,
+    pronouns: user.pronouns,
+    about: user.about,
+  }));
+  formData.append('json', new Blob([bytes], { type: 'application/json' }));
+  
   try {
-    const formData = new FormData()
-
-    const upload_field: HTMLInputElement = document.getElementById("hidden-pfp-uploader")
-    if (upload_field.files?.length && upload_field.files.length > 0) {
-      console.log(upload_field.files[0])
-      formData.append("avatar", upload_field.files[0])
-    }
-    
-    const bytes = new TextEncoder().encode(JSON.stringify({
-        display_name: user.display_name,
-        username: user.username,
-        pronouns: user.pronouns,
-    }));
-    formData.append("json", new Blob([bytes], { type: "application/json" }));
-    
-    await fetchWithApi("/me", {
-      method: "PATCH",
+    await fetchWithApi('/me', {
+      method: 'PATCH',
       body: formData
     })
 
-    user_reference = Object.assign({}, user_me)
-    alert("success!!")
+    user_reference = Object.assign({}, await fetchUser())
+    alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
-      const errorData = await error?.response?.json()
-
-      alert(`error ${error?.response?.status} met whilst trying to update profile info\n${errorData}`)
+      alert(`error ${error?.response?.status} met whilst trying to update profile info`)
     }
-  }  
+  }
 };
 
 
@@ -89,23 +89,28 @@ const removeAvatar = async () => {
 }
 
 const changeAvatar = async () => {
-  const upload_field: HTMLInputElement = document.getElementById("hidden-pfp-uploader")
-  
-  // upload_field.onchange = async(e) => {
-  //   console.log(upload_field.files)
-  //   if (upload_field.files?.length && upload_field.files.length > 0) {
-  //     const file = upload_field.files[0];
-  //     if (!file) return;
+  let input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
 
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       user.avatar = e?.target?.result;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+  input.onchange = async (e) => {
+    if (input.files?.length && input.files.length > 0) {
+      const file = input.files[0];
+      if (!file) return;
 
-  upload_field?.click()
+      new_pfp_file = file
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result && typeof e.target.result === 'string') {
+          user.avatar = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  input.click()
 }
 
 const resetPassword = async () => {
@@ -130,7 +135,8 @@ const deleteAccount = async () => {
   display: flex;
 }
 
-.profile-container, .user-data-fields {
+.profile-container,
+.user-data-fields {
   min-width: 350px;
 }
 
@@ -138,5 +144,17 @@ const deleteAccount = async () => {
   font-size: 14px;
   font-weight: 800;
   margin: 12px 0;
+}
+
+.profile-data-input {
+  min-width: 300px;
+  margin: 2px;
+  padding: 2px 10px;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  background-color: #54361b;
 }
 </style>

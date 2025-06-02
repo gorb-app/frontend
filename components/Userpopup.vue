@@ -10,7 +10,7 @@
         {{ props.user.username || "username" }} - {{ props.user.pronouns || "un/defined" }} 
       </p>
       <div id="about-me">
-        <span>About me</span>
+        {{ props.user.about || "about me" }}
       </div>
     </div>
   </div>
@@ -74,8 +74,11 @@ const props = defineProps<{
 }
 
 #about-me {
-  margin-top: 4px;
-  padding: 4px;
+  background-color: #34200f;
+  border-radius: 12px;
+
+  margin-top: 32px;
+  padding: 16px;
   font-size: 16px;
 }
 </style>

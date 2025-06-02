@@ -69,24 +69,6 @@ const settingsCategories = {
       { display_name: "Language", page_data: Language },
     ]
   },
-  app_settings2: {
-    display_name: "App Settings",
-    pages: [
-      { display_name: "Appearance", page_data: Appearance },
-      { display_name: "Notifications", page_data: Notifications },
-      { display_name: "Keybinds", page_data: Keybinds },
-      { display_name: "Language", page_data: Language },
-    ]
-  },
-  app_settings3: {
-    display_name: "App Settings",
-    pages: [
-      { display_name: "Appearance", page_data: Appearance },
-      { display_name: "Notifications", page_data: Notifications },
-      { display_name: "Keybinds", page_data: Keybinds },
-      { display_name: "Language", page_data: Language },
-    ]
-  },
 };
 
 const categories = Object.values(settingsCategories);
