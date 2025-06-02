@@ -73,6 +73,8 @@ if (props.format == "12") {
 console.log("message:", props.text);
 console.log("author:", props.username);
 
+const sanitized = ref<string>();
+
 onMounted(async () => {
 	const parsed = await parseInline(props.text, {gfm: true });
 	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a"] });
