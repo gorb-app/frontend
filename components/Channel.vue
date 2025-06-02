@@ -1,11 +1,11 @@
 <template>
-  <div v-if="isCurrentChannel" class="channel-list-link-container rounded-corners current-channel">
-	<NuxtLink class="channel-list-link" :href="props.href">
+  <div v-if="isCurrentChannel" class="channel-list-link-container rounded-corners current-channel" tabindex="0">
+	<NuxtLink class="channel-list-link" :href="props.href" tabindex="-1">
 		# {{ props.name }}
 	</NuxtLink>
   </div>
-  <div v-else class="channel-list-link-container rounded-corners">
-	<NuxtLink class="channel-list-link" :href="props.href">
+  <div v-else class="channel-list-link-container rounded-corners" tabindex="0">
+	<NuxtLink class="channel-list-link" :href="props.href" tabindex="-1">
 		# {{ props.name }}
 	</NuxtLink>
   </div>

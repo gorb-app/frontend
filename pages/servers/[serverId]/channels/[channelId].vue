@@ -26,7 +26,7 @@
 		<MessageArea :channel-url="channelUrlPath" />
 		<div id="members-container">
 			<div id="members-list">
-				<div class="member-item" v-for="member of members">
+				<div class="member-item" v-for="member of members" tabindex="0">
 					<img v-if="member.user.avatar" class="member-avatar" :src="member.user.avatar" :alt="member.user.display_name ?? member.user.username" />
 					<Icon v-else class="member-avatar" name="lucide:user" />
 					<span class="member-display-name">{{ member.user.display_name ?? member.user.username }}</span>
