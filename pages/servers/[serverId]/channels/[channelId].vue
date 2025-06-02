@@ -24,11 +24,13 @@
 			</div>
 		</div>
 		<MessageArea :channel-url="channelUrlPath" />
-		<div id="members-list">
-			<div class="member-item" v-for="member of members">
-				<img v-if="member.user.avatar" class="member-avatar" :src="member.user.avatar" :alt="member.user.display_name ?? member.user.username" />
-				<Icon v-else class="member-avatar" name="lucide:user" />
-				<span class="member-display-name">{{ member.user.display_name ?? member.user.username }}</span>
+		<div id="members-container">
+			<div id="members-list">
+				<div class="member-item" v-for="member of members" tabindex="0">
+					<img v-if="member.user.avatar" class="member-avatar" :src="member.user.avatar" :alt="member.user.display_name ?? member.user.username" />
+					<Icon v-else class="member-avatar" name="lucide:user" />
+					<span class="member-display-name">{{ member.user.display_name ?? member.user.username }}</span>
+				</div>
 			</div>
 		</div>
 	</NuxtLayout>
@@ -79,18 +81,6 @@ function toggleInvitePopup(e: Event) {
 </script>
 
 <style>
-.member-item {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: .5em;
-	margin-bottom: .5em;
-	gap: .5em;
-}
-
-#members-list {
-	padding-top: 3dvh;
-}
 
 #middle-left-column {
 	padding-left: 1dvw;
@@ -98,10 +88,27 @@ function toggleInvitePopup(e: Event) {
 	border-right: 1px solid rgb(70, 70, 70);
 }
 
-#members-list {
+#members-container {
+	padding-top: 1dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	border-left: 1px solid rgb(70, 70, 70);
+}
+
+#members-list {
+	display: grid;
+	grid-template-columns: auto;
+}
+
+.member-item {
+	display: grid;
+	grid-template-columns: 2dvw auto;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	gap: 1em;
+	align-items: center;
+	text-align: left;
+	
 }
 
 #channels-list {
@@ -114,6 +121,11 @@ function toggleInvitePopup(e: Event) {
 	height: 2.3em;
 	width: 2.3em;
 	border-radius: 50%;
+}
+
+.member-display-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message" :class="{ 'message-margin-bottom': props.marginBottom }">
+	<div v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message" :class="{ 'message-margin-bottom': props.marginBottom }" tabindex="0">
 		<div class="left-column">
 			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="username">
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
@@ -13,12 +13,10 @@
 					{{ messageDate }}
 				</span>
 			</div>
-			<div class="message-text">
-				{{ text }}
-			</div>
+			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message">
+	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" tabindex="0">
 		<div class="left-column">
 			<div>
 				<span :class="{ 'invisible': dateHidden }" class="message-date" :title="date.toString()">
@@ -27,14 +25,15 @@
 			</div>
 		</div>
 		<div class="message-data">
-			<div class="message-text">
-				{{ text }}
-			</div>
+			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
+import DOMPurify from 'dompurify';
+import { parseInline } from 'marked';
+
 const props = defineProps<{
 	class?: string,
 	img?: string | null,
@@ -74,7 +73,11 @@ if (props.format == "12") {
 console.log("message:", props.text);
 console.log("author:", props.username);
 
+const sanitized = ref<string>();
+
 onMounted(async () => {
+	const parsed = await parseInline(props.text, {gfm: true });
+	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a"] });
 	console.log("adding listeners")
 	await nextTick();
 	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
@@ -102,8 +105,8 @@ onMounted(async () => {
 	align-items: center;
 }
 
-.message-margin-bottom {
-	margin-bottom: 1dvh;
+.normal-message {
+	margin-top: 1dvh;
 }
 
 #last-message {

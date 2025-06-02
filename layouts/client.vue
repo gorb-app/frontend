@@ -123,30 +123,6 @@ const members = [
 	grid-row: 1;
 }
 
-#test {
-	grid-column: 3;
-	grid-row: 1;
-}
-
-.member-item {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-#message-history,
-#members-list {
-	padding-top: 3dvh;
-}
-
-#message-history {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	padding-left: 3dvw;
-	padding-right: 3dvw;
-}
-
 #left-column {
 	display: flex;
 	flex-direction: column;

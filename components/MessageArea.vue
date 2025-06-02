@@ -185,6 +185,7 @@ onMounted(async () => {
 						olderMessages.reverse();
 						console.log("older messages:", olderMessages);
 						if (olderMessages.length == 0) return;
+						olderMessages.reverse();
 						for (const [i, oldMessage] of olderMessages.entries()) {
 							console.log("old message:", oldMessage);
 							messages.value.unshift(oldMessage);
