@@ -53,7 +53,7 @@ const saveChanges = async () => {
   try {
     const formData = new FormData()
 
-    const upload_field = document.getElementById("hidden-pfp-uploader")
+    const upload_field: HTMLInputElement = document.getElementById("hidden-pfp-uploader")
     if (upload_field.files?.length && upload_field.files.length > 0) {
       console.log(upload_field.files[0])
       formData.append("avatar", upload_field.files[0])
