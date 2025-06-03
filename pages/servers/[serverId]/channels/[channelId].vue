@@ -97,12 +97,14 @@ function toggleInvitePopup(e: Event) {
 
 #members-list {
 	display: grid;
-	grid-template-columns: auto;
+	grid-template-columns: min-content 1fr;
+	gap: 2dvh;
+	align-items: center;
+	margin-top: 1dvh;
 }
 
 .member-item {
-	display: grid;
-	grid-template-columns: 2dvw auto;
+	display: contents;
 	margin-top: .5em;
 	margin-bottom: .5em;
 	gap: 1em;
