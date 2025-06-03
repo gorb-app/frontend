@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import DOMPurify from 'dompurify';
-import { parseInline } from 'marked';
+import { parse } from 'marked';
 
 const props = defineProps<{
 	class?: string,
@@ -53,13 +53,13 @@ const dateHidden = ref<boolean>(true);
 const date = new Date(props.timestamp);
 
 console.log("message:", props.text);
-console.log("author:", props.username)
+console.log("author:", props.username);
 
 const sanitized = ref<string>();
 
 onMounted(async () => {
-	const parsed = await parseInline(props.text, {gfm: true });
-	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a"] });
+	const parsed = await parse(props.text, { gfm: true });
+	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a", "h1", "h2", "h3", "h4", "h5", "h6"] });
 	console.log("adding listeners")
 	await nextTick();
 	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
@@ -151,4 +151,17 @@ onMounted(async () => {
 	width: 20px;
 }
 */
+</style>
+
+<style module>
+.message-text ul {
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+	padding-left: 2dvw;
+}
+
+.message-text h1, h2, h3, h4, h5, h6 {
+	margin-top: 1dvh;
+	margin-bottom: 1dvh;
+}
 </style>
