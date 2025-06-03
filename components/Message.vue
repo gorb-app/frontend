@@ -19,7 +19,7 @@
 	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" tabindex="0">
 		<div class="left-column">
 			<div>
-				<span :class="{ 'invisible': dateHidden }" class="message-date" :title="date.toString()">
+				<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
 					{{ messageDate }}
 				</span>
 			</div>
@@ -140,7 +140,7 @@ onMounted(async () => {
 }
 
 .left-column {
-	margin-right: .5dvw;
+	min-width: 4dvw;
 	text-align: center;
 	align-content: center;
 }
@@ -154,6 +154,10 @@ onMounted(async () => {
 	font-size: .7em;
 	color: rgb(150, 150, 150);
 	cursor: default;
+}
+
+.side-message-date {
+	font-size: .625em;
 }
 
 /*
