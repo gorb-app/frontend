@@ -10,7 +10,7 @@
 					{{ username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
-					{{ messageDate }}
+					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
 				</span>
 			</div>
 			<div class="message-text" v-html="sanitized"></div>
@@ -20,7 +20,7 @@
 		<div class="left-column">
 			<div>
 				<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
-					{{ messageDate }}
+					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
 				</span>
 			</div>
 		</div>
@@ -46,32 +46,14 @@ const props = defineProps<{
 	last: boolean
 }>();
 
-const messageDate = ref<string>();
-
 const messageElement = ref<HTMLDivElement>();
 
 const dateHidden = ref<boolean>(true);
 
 const date = new Date(props.timestamp);
 
-let dateHour = date.getHours();
-let dateMinute = date.getMinutes();
-if (props.format == "12") {
-	if (dateHour > 12) {
-		dateHour = dateHour - 12;
-		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute} PM`
-	} else {
-		if (dateHour == 0) {
-			dateHour = 12;
-		}
-		messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute} ${dateHour >= 0 && dateHour < 13 ? "AM" : "PM"}`
-	}
-} else {
-	messageDate.value = `${dateHour}:${dateMinute < 10 ? "0" + dateMinute : dateMinute}`
-}
-
 console.log("message:", props.text);
-console.log("author:", props.username);
+console.log("author:", props.username)
 
 const sanitized = ref<string>();
 
