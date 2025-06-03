@@ -5,18 +5,18 @@
 
     <div class="profile-and-user-data-fields">
       <div class="user-data-fields">
-        <h3 class="subtitle">AVATAR</h3>
+        <p class="subtitle">AVATAR</p>
         <Button text="Change Avatar" :callback="changeAvatar"></Button>
         <Button text="Remove Avatar" :callback="removeAvatar"
           style="margin-left: 10px; background-color: grey;"></Button>
-        <h3 class="subtitle">DISPLAY NAME</h3>
-        <input class="profile-data-input" type="text" v-model="user.display_name" placeholder="Enter display name" />
-        <h3 class="subtitle">USERNAME</h3>
-        <input class="profile-data-input" type="text" v-model="user.username" placeholder="Enter username" />
-        <h3 class="subtitle">PRONOUNS</h3>
-        <input class="profile-data-input" type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
-        <h3 class="subtitle">ABOUT ME</h3>
-        <input class="profile-data-input" type="text" v-model="user.about" placeholder="About You" />
+        <label for="profile-display-name-input" class="subtitle">DISPLAY NAME</label>
+        <input id="profile-display-name-input" class="profile-data-input" type="text" v-model="user.display_name" placeholder="Enter display name" />
+        <label for="profile-username-input" class="subtitle">USERNAME</label>
+        <input id="profile-username-input" class="profile-data-input" type="text" v-model="user.username" placeholder="Enter username" />
+        <label for="profile-pronouns-input" class="subtitle">PRONOUNS</label>
+        <input id="profile-pronouns-input" class="profile-data-input" type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
+        <label for="profile-about-me-input" class="subtitle">ABOUT ME</label>
+        <input id="profile-about-me-input" class="profile-data-input" type="text" v-model="user.about" placeholder="About me" />
 
         <br>
         <br>
@@ -141,6 +141,7 @@ const deleteAccount = async () => {
 }
 
 .subtitle {
+  display: block;
   font-size: 14px;
   font-weight: 800;
   margin: 12px 0;
