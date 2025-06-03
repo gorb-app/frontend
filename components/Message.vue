@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message" :class="{ 'message-margin-bottom': props.marginBottom }" tabindex="0">
+	<div v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message">
 		<div class="left-column">
 			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="username">
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
@@ -16,7 +16,7 @@
 			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" class="message grouped-message" tabindex="0">
+	<div v-else ref="messageElement" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }">
 		<div class="left-column">
 			<div>
 				<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
@@ -86,6 +86,10 @@ onMounted(async () => {
 	align-items: center;
 }
 
+.message-margin-bottom > * {
+	margin-bottom: 1dvh;
+}
+
 .normal-message {
 	margin-top: 1dvh;
 }
@@ -121,7 +125,6 @@ onMounted(async () => {
 }
 
 .left-column {
-	min-width: 4dvw;
 	text-align: center;
 	align-content: center;
 	white-space: nowrap;
