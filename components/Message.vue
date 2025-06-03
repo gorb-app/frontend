@@ -16,7 +16,7 @@
 			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" tabindex="0">
+	<div v-else ref="messageElement" class="message grouped-message" tabindex="0">
 		<div class="left-column">
 			<div>
 				<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
@@ -24,7 +24,7 @@
 				</span>
 			</div>
 		</div>
-		<div class="message-data">
+		<div class="message-data" :id="props.last ? 'last-message' : undefined">
 			<div class="message-text" v-html="sanitized"></div>
 		</div>
 	</div>
@@ -100,8 +100,7 @@ onMounted(async () => {
 .message {
 	text-align: left;
 	/* border: 1px solid lightcoral; */
-	display: grid;
-	grid-template-columns: 1fr 19fr;
+	display: contents;
 	align-items: center;
 }
 
@@ -110,7 +109,7 @@ onMounted(async () => {
 }
 
 #last-message {
-	margin-bottom: 2dvh;
+	margin-bottom: 1dvh;
 }
 
 .message-metadata {
@@ -143,6 +142,7 @@ onMounted(async () => {
 	min-width: 4dvw;
 	text-align: center;
 	align-content: center;
+	white-space: nowrap;
 }
 
 .author-username {

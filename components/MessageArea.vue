@@ -245,8 +245,8 @@ onMounted(async () => {
 
 #messages {
 	overflow-y: scroll;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: min-content 1fr;
 	gap: 1dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
