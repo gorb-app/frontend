@@ -16,15 +16,13 @@
 			<div class="message-text" v-html="sanitized" tabindex="0"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }">
+	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }">
 		<div class="left-column">
-			<div>
-				<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
-					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
-				</span>
-			</div>
+			<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
+				{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
+			</span>
 		</div>
-		<div class="message-data" :id="props.last ? 'last-message' : undefined">
+		<div class="message-data">
 			<div class="message-text" :class="$style['message-text']" v-html="sanitized" tabindex="0"></div>
 		</div>
 	</div>
@@ -82,12 +80,15 @@ onMounted(async () => {
 .message {
 	text-align: left;
 	/* border: 1px solid lightcoral; */
-	display: contents;
+	display: grid;
+	grid-template-columns: 2dvw 1fr;
 	align-items: center;
+	column-gap: 1dvw;
+	width: 100%;
 }
 
-.message-margin-bottom > * {
-	margin-bottom: 1dvh;
+.message:hover {
+	background-color: rgb(20, 20, 20);
 }
 
 .normal-message {
@@ -95,7 +96,7 @@ onMounted(async () => {
 }
 
 #last-message {
-	margin-bottom: 1dvh;
+	margin-bottom: 2dvh;
 }
 
 .message-metadata {
@@ -109,8 +110,8 @@ onMounted(async () => {
 	margin-left: .5dvw;
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
-	height: 100%;
+	height: fit-content;
+	width: 100%;
 }
 
 .message-author {
@@ -119,15 +120,15 @@ onMounted(async () => {
 }
 
 .message-author-avatar {
-	height: 2.3em;
-	width: 2.3em;
+	width: 100%;
 	border-radius: 50%;
 }
 
 .left-column {
+	display: flex;
 	text-align: center;
-	align-content: center;
 	white-space: nowrap;
+	
 }
 
 .author-username {
@@ -143,6 +144,9 @@ onMounted(async () => {
 
 .side-message-date {
 	font-size: .625em;
+	display: flex;
+	align-items: center;
+	align-content: center;
 }
 
 /*
@@ -154,14 +158,13 @@ onMounted(async () => {
 </style>
 
 <style module>
-.message-text ul {
-	margin-top: 1dvh;
-	margin-bottom: 1dvh;
-	padding-left: 2dvw;
+.message-text ul, h1, h2, h3, h4, h5, h6 {
+	padding-top: 1dvh;
+	padding-bottom: 1dvh;
+	margin: 0;
 }
 
-.message-text h1, h2, h3, h4, h5, h6 {
-	margin-top: 1dvh;
-	margin-bottom: 1dvh;
+.message-text ul  {
+	padding-left: 2dvw;
 }
 </style>
