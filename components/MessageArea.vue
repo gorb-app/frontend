@@ -144,7 +144,7 @@ if (accessToken && apiBase) {
 		await nextTick();
 		if (messagesElement.value) {
 			console.log("scrolling to bottom");
-			scrollToBottom(messagesElement);
+			scrollToBottom(messagesElement.value);
 		}
 	});
 
@@ -168,7 +168,7 @@ const route = useRoute();
 onMounted(async () => {
 	if (import.meta.server) return;
 	if (messagesElement.value) {
-		scrollToBottom(messagesElement);
+		scrollToBottom(messagesElement.value);
 		let fetched = false;
 		const amount = messages.value.length;
 		let offset = messages.value.length;
