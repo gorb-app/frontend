@@ -12,6 +12,12 @@ const banner = useState("banner", () => false);
 </script>
 
 <style>
+:root {
+  --background-color: rgb(30, 30, 30);
+  --main-text-color: rgb(190, 190, 190);
+  --outline-border: 1px solid rgb(150, 150, 150);
+}
+
 html,
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -22,7 +28,7 @@ body {
 }
 
 *:focus-visible {
-	outline: 1px solid rgb(150, 150, 150);
+	outline: var(--outline-border);
 }
 
 a {
