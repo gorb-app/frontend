@@ -95,6 +95,10 @@ onMounted(async () => {
 	margin-top: 1dvh;
 }
 
+.grouped-message {
+	margin-top: .3em;
+}
+
 #last-message {
 	margin-bottom: 2dvh;
 }
