@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
@@ -206,6 +206,34 @@ onMounted(async () => {
 		});
 	}
 });
+
+let scrollPosition = ref<Record<string, ScrollPosition>>({});
+
+onActivated(async () => {
+	await nextTick();
+	console.log("scroll activated");
+	if (messagesElement.value) {
+		if (scrollPosition.value[route.params.channelId as string]) {
+			console.log("saved scroll position:", scrollPosition.value);
+			setScrollPosition(messagesElement.value, scrollPosition.value[route.params.channelId as string]);
+			console.log("scrolled to saved scroll position");
+		} else {
+			scrollToBottom(messagesElement.value);
+			console.log("scrolled to bottom");
+		}
+	}
+});
+
+const router = useRouter();
+
+router.beforeEach((to, from, next) => {
+	console.log("scroll hi");
+  	if (messagesElement.value && from.params.channelId) {
+    	scrollPosition.value[from.params.channelId as string] = getScrollPosition(messagesElement.value)
+		console.log("set saved scroll position to:", scrollPosition.value);
+  	}
+  	next()
+})
 
 </script>
 

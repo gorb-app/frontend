@@ -70,3 +70,14 @@ export interface StatsResponse {
     email_verification_required: boolean,
     build_number: string
 }
+
+export interface ScrollPosition {
+	scrollHeight: number,
+	scrollWidth: number,
+	scrollTop: number,
+	scrollLeft: number
+	offsetHeight: number,
+	offsetWidth: number,
+	offsetTop: number,
+	offsetLeft: number
+}
