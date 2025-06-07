@@ -101,6 +101,11 @@ if (messagesRes) {
 	}
 }
 
+function pushMessage(message: MessageResponse) {
+	groupMessage(message);
+	messages.value.push(message);
+}
+
 const messages = ref<MessageResponse[]>([]);
 
 const messageInput = ref<string>();
@@ -137,10 +142,9 @@ if (accessToken && apiBase) {
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
 		
-		groupMessage(parsedData);
 		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
 		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
-		messages.value.push(parsedData);
+		pushMessage(parsedData);
 		await nextTick();
 		if (messagesElement.value) {
 			console.log("scrolling to bottom");
