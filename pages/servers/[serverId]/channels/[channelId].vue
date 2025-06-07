@@ -1,21 +1,13 @@
 <template>
 	<NuxtLayout name="client">
 		<div id="middle-left-column" class="main-grid-row">
-			<div id="server-title">
-				<h3>
-					{{ server?.name }}
-					<span>
-						<button @click="showGuildSettings">
-							<Icon name="lucide:settings" />
-						</button>
-					</span>
-					<span>
-						<button @click="toggleInvitePopup">
-							<Icon name="lucide:share-2" />
-						</button>
-					</span>
-					<InvitePopup v-if="showInvitePopup" />
-				</h3>
+			<div id="server-name-container">
+				<span id="server-name">{{ server?.name }}</span>
+				<button id="server-settings-button" @click="toggleGuildSettings">
+					<Icon id="server-settings-icon" name="lucide:chevron-down" />
+				</button>
+				<GuildOptionsMenu v-if="showGuildSettings" />
+				<InvitePopup v-if="showInvitePopup" />
 			</div>
 			<div id="channels-list">
 				<Channel v-for="channel of channels" :name="channel.name"
@@ -49,6 +41,7 @@ const channels = ref<ChannelResponse[] | undefined>();
 const channel = ref<ChannelResponse | undefined>();
 
 const showInvitePopup = ref(false);
+const showGuildSettings = ref(false);
 
 import type { ChannelResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
@@ -72,7 +65,10 @@ onMounted(async () => {
 	console.log("channelid: set loading to false");
 });
 
-function showGuildSettings() { }
+function toggleGuildSettings(e: Event) {
+	e.preventDefault();
+	showGuildSettings.value = !showGuildSettings.value;
+}
 
 function toggleInvitePopup(e: Event) {
 	e.preventDefault();
@@ -130,6 +126,26 @@ function toggleInvitePopup(e: Event) {
 .member-display-name {
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+#server-name-container {
+	padding-top: 3dvh;
+	padding-bottom: 3dvh;
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+
+#server-name {
+	font-size: 1.5em;
+}
+
+#server-settings-button {
+	background-color: transparent;
+	font-size: 1em;
+	color: white;
+	border: none;
+	padding: 0%;
 }
 
 </style>
