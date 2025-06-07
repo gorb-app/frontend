@@ -6,14 +6,21 @@
 				main bar
 			</div>
 			</div>
-				<div id="left-column">
-			<NuxtLink id="home-button" href="/">
-				<Icon name="lucide:house" class="white" size="2rem" />
-			</NuxtLink>
-			<div id="servers-list">
-				<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-					<Icon name="lucide:server" class="white" size="2rem" />
+		<div id="left-column">
+			<div id="left-column-top">
+				<NuxtLink id="home-button" href="/">
+					<Icon name="lucide:house" class="white" size="2rem" />
 				</NuxtLink>
+				<div id="servers-list">
+					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
+						<Icon name="lucide:server" class="white" size="2rem" />
+					</NuxtLink>
+				</div>
+			</div>
+			<div id="left-column-bottom">
+				<button id="join-server-button">
+				<Icon id="join-server-icon" name="lucide:square-plus" />
+				</button>
 			</div>
 		</div>
 		<slot />
@@ -26,6 +33,9 @@ import type { GuildResponse } from '~/types/interfaces';
 const loading = useState("loading", () => false);
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
+for (let i = 0; i < 20; i++) {
+	guilds?.push(guilds[0]);
+}
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("servers:", servers);
@@ -124,13 +134,24 @@ const members = [
 }
 
 #left-column {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	overflow-y: hidden;
+	border-right: 1px solid rgb(70, 70, 70);
+	padding-top: 1dvh;
+	padding-bottom: 1dvh;
+}
+
+#left-column-top {
 	display: flex;
 	flex-direction: column;
-	gap: 2dvh;
-	padding-left: .5dvw;
-	padding-right: .5dvw;
-	border-right: 1px solid rgb(70, 70, 70);
-	padding-top: 1.5dvh;
+	gap: 1.5dvh;
+	overflow-y: scroll;
+}
+
+#left-column-bottom {
+	padding-top: 1dvh;
+	border-top: 1px solid rgb(70, 70, 70);
 }
 
 #middle-left-column {
@@ -148,6 +169,21 @@ const members = [
 	display: flex;
 	flex-direction: column;
 	gap: 1dvh;
+	overflow-y: scroll;
+}
+
+#join-server-button {
+	color: white;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 2rem;
+	padding: 0;
+	display: inline-block;
+}
+
+#join-server-icon {
+	float: left;
 }
 
 </style>
