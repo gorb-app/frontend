@@ -208,9 +208,7 @@ onMounted(async () => {
 <style scoped>
 #message-area {
 	display: grid;
-	grid-template-columns: 1fr;
 	grid-template-rows: 8fr 1fr;
-	justify-content: space-between;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
