@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import ButtonScary from '~/components/buttons/ButtonScary.vue';
+import ButtonScary from '~/components/Buttons/ButtonScary.vue';
 
 const { logout } = useAuth()
 
@@ -40,15 +40,15 @@ interface Category {
   pages: Page[];
 }
 
-import Account from '~/components/settings/user_settings/Account.vue';
-import Privacy from '~/components/settings/user_settings/Privacy.vue';
-import Devices from '~/components/settings/user_settings/Devices.vue';
-import Connections from '~/components/settings/user_settings/Connections.vue';
+import Account from '~/components/Settings/UserSettings/Account.vue';
+import Privacy from '~/components/Settings/UserSettings/Privacy.vue';
+import Devices from '~/components/Settings/UserSettings/Devices.vue';
+import Connections from '~/components/Settings/UserSettings/Connections.vue';
 
-import Appearance from '~/components/settings/app_settings/Appearance.vue';
-import Notifications from '~/components/settings/app_settings/Notifications.vue';
-import Keybinds from '~/components/settings/app_settings/Keybinds.vue';
-import Language from '~/components/settings/app_settings/Language.vue';
+import Appearance from '~/components/Settings/AppSettings/Appearance.vue';
+import Notifications from '~/components/Settings/AppSettings/Notifications.vue';
+import Keybinds from '~/components/Settings/AppSettings/Keybinds.vue';
+import Language from '~/components/Settings/AppSettings/Language.vue';
 
 const settingsCategories = {
   user_settings: {
@@ -97,11 +97,11 @@ const selectCategory = (_category: Category, page: Page) => {
 }
 
 #sidebar {
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 25dvw;
+  max-width: 25dvw;
   background-color: #2f3136;
   color: white;
-  padding: 10px;
+  padding: 1dvh 1dvw;
   margin-left: auto;
 
   overflow-y: auto;
@@ -109,8 +109,8 @@ const selectCategory = (_category: Category, page: Page) => {
 }
 
 #sidebar h2 {
-  font-size: 2em;
-  padding: 0 8px;
+  font-size: 0.8rem;
+  padding: 0 0.8dvw;
 }
 
 #sidebar ul {
@@ -121,9 +121,8 @@ const selectCategory = (_category: Category, page: Page) => {
 
 #sidebar li {
   border-radius: 8px;
-  padding: 8px;
-  font-size: 1.3em;
-  margin: 2px 0;
+  padding: 0.8dvh 0.8dvw;
+  font-size: 1.1em;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -138,8 +137,9 @@ const selectCategory = (_category: Category, page: Page) => {
 
 #sub_page {
   flex-grow: 1;
-  max-width: 800px;
-  margin-left: 1.5rem;
+  min-width: 70dvw;
+  max-width: 70dvw;
+  padding-left: 1.5rem;
   margin-right: auto;
 
   overflow-y: auto;
@@ -149,18 +149,12 @@ const selectCategory = (_category: Category, page: Page) => {
 .spacer {
   height: 2px;
   display: block;
-  margin: 8px 10px;
+  margin: 0.8dvh 1dvw;
   background-color: #2c2e32;
 }
 
-.setting-item {
-  margin-bottom: 15px;
-}
-</style>
-
-<!-- not scoped, these are used by children] -->
-<style>
-h5 {
+/* applies to child pages too */
+:deep(h5) {
   color: red;
 }
 </style>

@@ -4,13 +4,14 @@
     <div id="cover-colour"></div>
     <div id="main-body">
       <p id="display-name">
-        <strong>{{ props.user.display_name || "display_name" }}</strong>
+        <strong>{{ props.user.display_name }}</strong>
       </p>
       <p id="username-and-pronouns">
-        {{ props.user.username || "username" }} - {{ props.user.pronouns || "un/defined" }} 
+        {{ props.user.username }}
+        <span v-if="props.user.pronouns"> - {{ props.user.pronouns }}</span>
       </p>
       <div id="about-me">
-        {{ props.user.about || "about me" }}
+        {{ props.user.about }}
       </div>
     </div>
   </div>
@@ -22,7 +23,7 @@ import type { UserResponse } from '~/types/interfaces';
 const { fetchMembers } = useApi();
 
 const props = defineProps<{
-	user: UserResponse | any, // actually UserResponse | null but TS is yelling at me again
+	user: UserResponse
 }>();
 
 </script>

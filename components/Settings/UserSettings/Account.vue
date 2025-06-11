@@ -1,14 +1,13 @@
 <template>
   <div>
-    <input id="hidden-pfp-uploader" type="file" accept="image/*" style="display: none;">
     <h1>My Account</h1>
 
     <div class="profile-and-user-data-fields">
       <div class="user-data-fields">
         <p class="subtitle">AVATAR</p>
-        <Button text="Change Avatar" :callback="changeAvatar"></Button>
-        <Button text="Remove Avatar" :callback="removeAvatar"
-          style="margin-left: 10px; background-color: grey;"></Button>
+        <Button text="Change Avatar" :callback="changeAvatar" style="margin-right: 0.8dvw;"></Button>
+        <Button text="Remove Avatar" :callback="removeAvatar" style="background-color: grey;"></Button>
+        
         <label for="profile-display-name-input" class="subtitle">DISPLAY NAME</label>
         <input id="profile-display-name-input" class="profile-data-input" type="text" v-model="user.display_name" placeholder="Enter display name" />
         <label for="profile-username-input" class="subtitle">USERNAME</label>
@@ -19,19 +18,13 @@
         <input id="profile-about-me-input" class="profile-data-input" type="text" v-model="user.about" placeholder="About me" />
 
         <br>
-        <br>
-        <Button text="Save Changes" :callback="saveChanges"></Button>
+        <Button style="margin-top: 1dvh" text="Save Changes" :callback="saveChanges"></Button>
       </div>
-      <Userpopup :user=user_me class="profile"></Userpopup>
+
+      <UserPopup :user=user class="profile-popup"></UserPopup>
     </div>
 
-    <!-- i love html -->
-    <br>
-    <br>
-    <br>
-    <br>
-
-    <h2>Password (and eventually authenticator)</h2>
+    <h2 style="margin-top: 8dvh">Password (and eventually authenticator)</h2>
     <Button text="Reset Password (tbd)" :callback=resetPassword></Button>
 
     <h2>Account Deletion</h2>
@@ -41,22 +34,27 @@
 </template>
 
 <script lang="ts" setup>
-import Button from '~/components/buttons/Button.vue';
-import ButtonScary from '~/components/buttons/ButtonScary.vue';
+import Button from '~/components/Buttons/Button.vue';
+import ButtonScary from '~/components/Buttons/ButtonScary.vue';
+import type { UserResponse } from '~/types/interfaces';
 
 const { fetchUser } = useAuth();
 
 const user_me = await fetchUser()
-let user_reference = Object.assign({}, user_me)
-const user = user_me!
+if (user_me === undefined) {
+  alert("could not fetch user info, aborting :(")
+}
 
-let new_pfp_file: any = null
+let userReference = Object.assign({}, user_me)
+const user: UserResponse = user_me!
+
+let newPfpFile: any = null
 
 const saveChanges = async () => {
   const formData = new FormData()
   
-  if (new_pfp_file !== null) {
-    formData.append("avatar", new_pfp_file)
+  if (newPfpFile !== null) {
+    formData.append("avatar", newPfpFile)
   }
   
   const bytes = new TextEncoder().encode(JSON.stringify({
@@ -73,7 +71,7 @@ const saveChanges = async () => {
       body: formData
     })
 
-    user_reference = Object.assign({}, await fetchUser())
+    userReference = Object.assign({}, await fetchUser())
     alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
@@ -93,12 +91,12 @@ const changeAvatar = async () => {
   input.type = 'file';
   input.accept = 'image/*';
 
-  input.onchange = async (e) => {
+  input.addEventListener("change", (e: Event) => {
     if (input.files?.length && input.files.length > 0) {
       const file = input.files[0];
       if (!file) return;
 
-      new_pfp_file = file
+      newPfpFile = file
       
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -108,7 +106,7 @@ const changeAvatar = async () => {
       };
       reader.readAsDataURL(file);
     }
-  }
+  })
 
   input.click()
 }
@@ -124,38 +122,35 @@ const deleteAccount = async () => {
 </script>
 
 <style scoped>
-.profile-container {
-  min-width: 250px;
-  min-height: 200px;
-  padding: 8px;
-  border-radius: 8px;
-}
-
 .profile-and-user-data-fields {
   display: flex;
 }
 
-.profile-container,
-.user-data-fields {
-  min-width: 350px;
-}
-
 .subtitle {
   display: block;
-  font-size: 14px;
+  font-size: 0.8em;
   font-weight: 800;
-  margin: 12px 0;
+  margin: 1.5dvh 0 0.5dvh 0.25dvw;
+}
+
+.user-data-fields {
+  min-width: 35dvw;
+  max-width: 35dvw;
 }
 
 .profile-data-input {
-  min-width: 300px;
+  min-width: 30dvw;
   margin: 2px;
-  padding: 2px 10px;
-  height: 40px;
-  font-size: 16px;
+  padding: 0.1dvh 0.7dvw;
+  height: 2.5em;
+  font-size: 1em;
   border-radius: 8px;
   border: none;
   color: white;
   background-color: #54361b;
+}
+
+.profile-popup {
+  margin-left: 2dvw;
 }
 </style>
