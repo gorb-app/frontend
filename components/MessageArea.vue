@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
@@ -101,6 +101,11 @@ if (messagesRes) {
 	}
 }
 
+function pushMessage(message: MessageResponse) {
+	groupMessage(message);
+	messages.value.push(message);
+}
+
 const messages = ref<MessageResponse[]>([]);
 
 const messageInput = ref<string>();
@@ -137,14 +142,13 @@ if (accessToken && apiBase) {
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
 		
-		groupMessage(parsedData);
 		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
 		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
-		messages.value.push(parsedData);
+		pushMessage(parsedData);
 		await nextTick();
 		if (messagesElement.value) {
 			console.log("scrolling to bottom");
-			scrollToBottom(messagesElement);
+			scrollToBottom(messagesElement.value);
 		}
 	});
 
@@ -168,7 +172,7 @@ const route = useRoute();
 onMounted(async () => {
 	if (import.meta.server) return;
 	if (messagesElement.value) {
-		scrollToBottom(messagesElement);
+		scrollToBottom(messagesElement.value);
 		let fetched = false;
 		const amount = messages.value.length;
 		let offset = messages.value.length;
@@ -203,14 +207,40 @@ onMounted(async () => {
 	}
 });
 
+let scrollPosition = ref<Record<string, ScrollPosition>>({});
+
+onActivated(async () => {
+	await nextTick();
+	console.log("scroll activated");
+	if (messagesElement.value) {
+		if (scrollPosition.value[route.params.channelId as string]) {
+			console.log("saved scroll position:", scrollPosition.value);
+			setScrollPosition(messagesElement.value, scrollPosition.value[route.params.channelId as string]);
+			console.log("scrolled to saved scroll position");
+		} else {
+			scrollToBottom(messagesElement.value);
+			console.log("scrolled to bottom");
+		}
+	}
+});
+
+const router = useRouter();
+
+router.beforeEach((to, from, next) => {
+	console.log("scroll hi");
+  	if (messagesElement.value && from.params.channelId) {
+    	scrollPosition.value[from.params.channelId as string] = getScrollPosition(messagesElement.value)
+		console.log("set saved scroll position to:", scrollPosition.value);
+  	}
+  	next()
+})
+
 </script>
 
 <style scoped>
 #message-area {
 	display: grid;
-	grid-template-columns: 1fr;
 	grid-template-rows: 8fr 1fr;
-	justify-content: space-between;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
@@ -247,7 +277,6 @@ onMounted(async () => {
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 }

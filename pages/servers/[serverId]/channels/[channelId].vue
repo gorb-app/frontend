@@ -96,13 +96,17 @@ function toggleInvitePopup(e: Event) {
 }
 
 #members-list {
-	display: grid;
-	grid-template-columns: auto;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
+	padding-left: 1dvw;
+	padding-right: 1dvw;
+	margin-top: 1dvh;
 }
 
 .member-item {
 	display: grid;
-	grid-template-columns: 2dvw auto;
+	grid-template-columns: 2dvw 1fr;
 	margin-top: .5em;
 	margin-bottom: .5em;
 	gap: 1em;

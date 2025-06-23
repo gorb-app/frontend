@@ -9,8 +9,6 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
     path = path.slice(0, path.lastIndexOf("/"));
   }
   console.log("formatted path:", path);
-  const accessToken = useCookie("access_token");
-  console.log("access token:", accessToken.value);
   const apiBase = useCookie("api_base").value;
   const apiVersion = useRuntimeConfig().public.apiVersion;
   console.log("heyoooo")
@@ -21,23 +19,24 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
   }
   console.log("path:", path)
   const { revoke, refresh } = useAuth();
-  console.log("access token 2:", accessToken.value);
-
+  
   let headers: HeadersInit = {};
-
-  if (accessToken.value) {
-    headers = {
-      ...options.headers,
-      "Authorization": `Bearer ${accessToken.value}`
-    };
-  } else {
-    headers = {
-      ...options.headers
-    };
-  }
-
+  
+  
   let reauthFailed = false;
   while (!reauthFailed) {
+    const accessToken = useCookie("access_token");
+    console.log("access token:", accessToken.value);
+    if (accessToken.value) {
+      headers = {
+        ...options.headers,
+        "Authorization": `Bearer ${accessToken.value}`
+      };
+    } else {
+      headers = {
+        ...options.headers
+      };
+    }
     try {
       console.log("fetching:", URL.parse(apiBase + path));
       const res = await $fetch<T>(URL.parse(apiBase + path)!.href, {
@@ -74,9 +73,10 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
           console.log("Path is refresh endpoint, throwing error");
           throw error;
         }
+      } else {
+        console.log("throwing error:", error);
+        throw error;
       }
-      console.log("throwing error");
-      throw error;
     }
   }
 }
