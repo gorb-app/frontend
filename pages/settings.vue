@@ -6,7 +6,7 @@
         <ul>
           <div v-for="category in categories" :key="category.displayName">
             <h2>{{ category.displayName }}</h2>
-            <li v-for="page in category.pages" :key="page.displayName" @click="selectCategory(category, page)"
+            <li v-for="page in category.pages" :key="page.displayName" @click="selectCategory(page)"
               :class="{ 'sidebar-focus': selectedPage === page.displayName }">
               {{ page.displayName }}
             </li>
@@ -75,7 +75,7 @@ const categories = Object.values(settingsCategories);
 let currentPage = ref(categories[0].pages[0]);
 let selectedPage = ref(currentPage.value.displayName); // used to highlight the current channel
 
-const selectCategory = (_category: Category, page: Page) => {
+function selectCategory(page: Page) {
   currentPage.value = page;
   selectedPage.value = page.displayName;
 };
@@ -146,7 +146,7 @@ const selectCategory = (_category: Category, page: Page) => {
 }
 
 .spacer {
-  height: 2px;
+  height: 0.2dvh;
   display: block;
   margin: 0.8dvh 1dvw;
   background-color: #2c2e32;

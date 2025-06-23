@@ -21,11 +21,11 @@ const props = defineProps<{
 	background-color: #b35719;
 	color: #ffffff;
 
-	padding: 8px 18px;
-	font-size: 18px;
+	padding: 0.7dvh 1.2dvw;
+	font-size: 1.1em;
 	transition: background-color 0.2s;
 
-	border-radius: 12px;
+	border-radius: 0.7rem;
 	text-decoration: none;
 	display: inline-block;
 }
@@ -38,7 +38,7 @@ const props = defineProps<{
 	background-color: grey;
 }
 
-#button:hover {
+.button:hover {
 	background-color: #934410;
 }
 </style>

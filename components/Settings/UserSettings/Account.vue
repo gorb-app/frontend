@@ -2,8 +2,8 @@
   <div>
     <h1>My Account</h1>
 
-    <div class="profile-and-user-data-fields">
-      <div class="user-data-fields">
+    <div class="profile-container">
+      <div class="user-data-fields" v-if="user">
         <p class="subtitle">AVATAR</p>
         <Button text="Change Avatar" :callback="changeAvatar" style="margin-right: 0.8dvw;"></Button>
         <Button text="Remove Avatar" :callback="removeAvatar" variant="neutral"></Button>
@@ -21,14 +21,14 @@
         <Button style="margin-top: 1dvh" text="Save Changes" :callback="saveChanges"></Button>
       </div>
 
-      <UserPopup :user=user class="profile-popup"></UserPopup>
+      <UserPopup v-if="user" :user="user" class="profile-popup"></UserPopup>
     </div>
 
-    <h2 style="margin-top: 8dvh">Password (and eventually authenticator)</h2>
+    <h2 style="margin-top: 8duservh">Password (and eventually authenticator)</h2>
     <Button text="Reset Password (tbd)" :callback=resetPassword></Button>
-
+    
     <h2>Account Deletion</h2>
-    <ButtonScary text="Delete Account (tbd)" :callback=deleteAccount></ButtonScary>
+    <Button text="Delete Account (tbd)" :callback=deleteAccount variant="scary"></Button>
 
   </div>
 </template>
@@ -39,20 +39,19 @@ import type { UserResponse } from '~/types/interfaces';
 
 const { fetchUser } = useAuth();
 
-const user_me = await fetchUser()
-if (user_me === undefined) {
+const user: UserResponse | undefined = await fetchUser()
+if (!user) {
   alert("could not fetch user info, aborting :(")
 }
 
-let userReference = Object.assign({}, user_me)
-const user: UserResponse = user_me!
-
-let newPfpFile: any = null
+let newPfpFile: File;
 
 const saveChanges = async () => {
+  if (!user) return;
+  
   const formData = new FormData()
   
-  if (newPfpFile !== null) {
+  if (newPfpFile) {
     formData.append("avatar", newPfpFile)
   }
   
@@ -70,7 +69,6 @@ const saveChanges = async () => {
       body: formData
     })
 
-    userReference = Object.assign({}, await fetchUser())
     alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
@@ -86,7 +84,9 @@ const removeAvatar = async () => {
 }
 
 const changeAvatar = async () => {
-  let input = document.createElement('input');
+  if (!user) return;
+
+  const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'image/*';
 
@@ -98,7 +98,7 @@ const changeAvatar = async () => {
       newPfpFile = file
       
       const reader = new FileReader();
-      reader.addEventListener("onload", (e: Event) => {
+      reader.addEventListener("onload", () => {
         if (reader.result && typeof reader.result === 'string') {
           user.avatar = reader.result;
         }
@@ -121,7 +121,7 @@ const deleteAccount = async () => {
 </script>
 
 <style scoped>
-.profile-and-user-data-fields {
+.profile-container {
   display: flex;
 }
 
@@ -139,7 +139,7 @@ const deleteAccount = async () => {
 
 .profile-data-input {
   min-width: 30dvw;
-  margin: 2px;
+  margin: 0.07dvh;
   padding: 0.1dvh 0.7dvw;
   height: 2.5em;
   font-size: 1em;
