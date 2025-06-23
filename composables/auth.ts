@@ -75,7 +75,7 @@ export const useAuth = () => {
   async function fetchUser() {
     if (!accessToken.value) return;
     console.log("fetchuser access token:", accessToken.value);
-    const res = await fetchWithApi("/users/me") as UserResponse;
+    const res = await fetchWithApi("/me") as UserResponse;
     user.value = res;
     return user.value;
   }
@@ -86,6 +86,20 @@ export const useAuth = () => {
       await fetchUser();
     }
     return user.value;
+  }
+
+  
+  // as in email the password link
+  async function resetPassword() {
+    // ...
+  }
+
+  async function disableAccount() {
+    // ...
+  }
+
+  async function deleteAccount() {
+    // ...
   }
 
   return {
