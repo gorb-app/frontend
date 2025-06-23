@@ -6,7 +6,7 @@
       <div class="user-data-fields">
         <p class="subtitle">AVATAR</p>
         <Button text="Change Avatar" :callback="changeAvatar" style="margin-right: 0.8dvw;"></Button>
-        <Button text="Remove Avatar" :callback="removeAvatar" style="background-color: grey;"></Button>
+        <Button text="Remove Avatar" :callback="removeAvatar" variant="neutral"></Button>
         
         <label for="profile-display-name-input" class="subtitle">DISPLAY NAME</label>
         <input id="profile-display-name-input" class="profile-data-input" type="text" v-model="user.display_name" placeholder="Enter display name" />
@@ -34,8 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import Button from '~/components/Buttons/Button.vue';
-import ButtonScary from '~/components/Buttons/ButtonScary.vue';
+import Button from '~/components/Button.vue';
 import type { UserResponse } from '~/types/interfaces';
 
 const { fetchUser } = useAuth();
@@ -99,11 +98,11 @@ const changeAvatar = async () => {
       newPfpFile = file
       
       const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result && typeof e.target.result === 'string') {
-          user.avatar = e.target.result;
+      reader.addEventListener("onload", (e: Event) => {
+        if (reader.result && typeof reader.result === 'string') {
+          user.avatar = reader.result;
         }
-      };
+      });
       reader.readAsDataURL(file);
     }
   })

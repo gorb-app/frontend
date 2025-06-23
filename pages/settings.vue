@@ -4,20 +4,20 @@
       <div id="sidebar">
         <h4>(Search bar here)</h4>
         <ul>
-          <div v-for="category in categories" :key="category.display_name">
-            <h2>{{ category.display_name }}</h2>
-            <li v-for="page in category.pages" :key="page.display_name" @click="selectCategory(category, page)"
-              :class="{ 'sidebar-focus': selectedPage === page.display_name }">
-              {{ page.display_name }}
+          <div v-for="category in categories" :key="category.displayName">
+            <h2>{{ category.displayName }}</h2>
+            <li v-for="page in category.pages" :key="page.displayName" @click="selectCategory(category, page)"
+              :class="{ 'sidebar-focus': selectedPage === page.displayName }">
+              {{ page.displayName }}
             </li>
             <span class="spacer"></span>
           </div>
 
-          <ButtonScary text="Log Out" :callback=logout></ButtonScary>
+          <Button text="Log Out" :callback=logout variant="scary"></Button>
         </ul>
       </div>
-      <div id="sub_page">
-        <component :is="currentPage.page_data" />
+      <div id="sub-page">
+        <component :is="currentPage.pageData" />
       </div>
     </div>
   </div>
@@ -25,18 +25,17 @@
 
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import ButtonScary from '~/components/Buttons/ButtonScary.vue';
+import Button from '~/components/Button.vue';
 
 const { logout } = useAuth()
 
 interface Page {
-  display_name: string;
-  page_data: any; // is actually Component but TS is yelling at me :(
+  displayName: string;
+  pageData: any; // is actually Component but TS is yelling at me :(
 }
-
+  
 interface Category {
-  display_name: string;
+  displayName: string;
   pages: Page[];
 }
 
@@ -51,22 +50,22 @@ import Keybinds from '~/components/Settings/AppSettings/Keybinds.vue';
 import Language from '~/components/Settings/AppSettings/Language.vue';
 
 const settingsCategories = {
-  user_settings: {
-    display_name: "User Settings",
+  userSettings: {
+    displayName: "User Settings",
     pages: [
-      { display_name: "My Account", page_data: Account },
-      { display_name: "Privacy", page_data: Privacy },
-      { display_name: "Devices", page_data: Devices },
-      { display_name: "Connections", page_data: Connections },
+      { displayName: "My Account", pageData: Account },
+      { displayName: "Privacy", pageData: Privacy },
+      { displayName: "Devices", pageData: Devices },
+      { displayName: "Connections", pageData: Connections },
     ]
   },
-  app_settings: {
-    display_name: "App Settings",
+  appSettings: {
+    displayName: "App Settings",
     pages: [
-      { display_name: "Appearance", page_data: Appearance },
-      { display_name: "Notifications", page_data: Notifications },
-      { display_name: "Keybinds", page_data: Keybinds },
-      { display_name: "Language", page_data: Language },
+      { displayName: "Appearance", pageData: Appearance },
+      { displayName: "Notifications", pageData: Notifications },
+      { displayName: "Keybinds", pageData: Keybinds },
+      { displayName: "Language", pageData: Language },
     ]
   },
 };
@@ -74,11 +73,11 @@ const settingsCategories = {
 const categories = Object.values(settingsCategories);
 
 let currentPage = ref(categories[0].pages[0]);
-let selectedPage = ref(currentPage.value.display_name); // used to highlight the current channel
+let selectedPage = ref(currentPage.value.displayName); // used to highlight the current channel
 
 const selectCategory = (_category: Category, page: Page) => {
   currentPage.value = page;
-  selectedPage.value = page.display_name;
+  selectedPage.value = page.displayName;
 };
 
 </script>
@@ -109,7 +108,7 @@ const selectCategory = (_category: Category, page: Page) => {
 }
 
 #sidebar h2 {
-  font-size: 0.8rem;
+  font-size: 0.95em;
   padding: 0 0.8dvw;
 }
 
@@ -122,7 +121,7 @@ const selectCategory = (_category: Category, page: Page) => {
 #sidebar li {
   border-radius: 8px;
   padding: 0.8dvh 0.8dvw;
-  font-size: 1.1em;
+  font-size: 1.4em;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -135,7 +134,7 @@ const selectCategory = (_category: Category, page: Page) => {
   background-color: #40444b;
 }
 
-#sub_page {
+#sub-page {
   flex-grow: 1;
   min-width: 70dvw;
   max-width: 70dvw;

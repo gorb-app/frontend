@@ -10,7 +10,7 @@
         {{ props.user.username }}
         <span v-if="props.user.pronouns"> - {{ props.user.pronouns }}</span>
       </p>
-      <div id="about-me">
+      <div id="about-me" v-if="props.user.about">
         {{ props.user.about }}
       </div>
     </div>
