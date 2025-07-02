@@ -26,11 +26,7 @@
 		<MessageArea :channel-url="channelUrlPath" />
 		<div id="members-container">
 			<div id="members-list">
-				<div class="member-item" v-for="member of members" tabindex="0">
-					<img v-if="member.user.avatar" class="member-avatar" :src="member.user.avatar" :alt="member.user.display_name ?? member.user.username" />
-					<Icon v-else class="member-avatar" name="lucide:user" />
-					<span class="member-display-name">{{ member.user.display_name ?? member.user.username }}</span>
-				</div>
+				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
 			</div>
 		</div>
 	</NuxtLayout>
@@ -50,7 +46,8 @@ const channel = ref<ChannelResponse | undefined>();
 
 const showInvitePopup = ref(false);
 
-import type { ChannelResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
+import UserPopup from "~/components/UserPopup.vue";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);
@@ -77,6 +74,9 @@ function showGuildSettings() { }
 function toggleInvitePopup(e: Event) {
 	e.preventDefault();
 	showInvitePopup.value = !showInvitePopup.value;
+}
+
+function handleMemberClick(member: GuildMemberResponse) {
 }
 </script>
 
@@ -112,7 +112,7 @@ function toggleInvitePopup(e: Event) {
 	gap: 1em;
 	align-items: center;
 	text-align: left;
-	
+	cursor: pointer;
 }
 
 #channels-list {

@@ -81,7 +81,7 @@ onMounted(async () => {
 	text-align: left;
 	/* border: 1px solid lightcoral; */
 	display: grid;
-	grid-template-columns: 2dvw 1fr;
+	grid-template-columns: 2rem 1fr;
 	align-items: center;
 	column-gap: 1dvw;
 	width: 100%;
@@ -129,10 +129,11 @@ onMounted(async () => {
 }
 
 .left-column {
+	min-width: 2rem;
 	display: flex;
+	justify-content: center;
 	text-align: center;
 	white-space: nowrap;
-	
 }
 
 .author-username {
