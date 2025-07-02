@@ -85,14 +85,15 @@ function toggleInvitePopup(e: Event) {
 #middle-left-column {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
-	border-right: 1px solid rgb(70, 70, 70);
+	border-right: 1px solid var(--padding-color);
+	background-color: var(--sidebar-background-color);
 }
 
 #members-container {
 	padding-top: 1dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
-	border-left: 1px solid rgb(70, 70, 70);
+	border-left: 1px solid var(--padding-color);
 }
 
 #members-list {

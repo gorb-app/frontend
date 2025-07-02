@@ -145,8 +145,8 @@ const deleteAccount = async () => {
   font-size: 1em;
   border-radius: 8px;
   border: none;
-  color: white;
-  background-color: #54361b;
+  color: var(--text-color);
+  background-color: var(--accent-color);
 }
 
 .profile-popup {

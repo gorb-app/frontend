@@ -1,5 +1,6 @@
 <template>
   <div>
+    <link :href="'/themes/' + current_theme + '.css'" rel="stylesheet" type="text/css"></link>
     <Banner v-if="banner" />
     <NuxtPage :keepalive="true" />
   </div>
@@ -9,21 +10,20 @@
 
 const banner = useState("banner", () => false);
 
+let current_theme = "dark" // default theme
+const saved_theme = localStorage.getItem("selectedTheme");
+if (saved_theme) {
+	current_theme = saved_theme;
+}
 </script>
 
 <style>
-:root {
-  --background-color: rgb(30, 30, 30);
-  --main-text-color: rgb(190, 190, 190);
-  --outline-border: 1px solid rgb(150, 150, 150);
-}
-
 html,
 body {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
-  color: rgb(190, 190, 190);
-  background-color: rgb(30, 30, 30);
+  color: var(--text-color);
+  background-color: var(--chat-background-color);
   margin: 0;
 }
 
@@ -40,15 +40,15 @@ a {
 }
 
 .bottom-border {
-	border-bottom: 1px solid rgb(70, 70, 70);
+	border-bottom: 1px solid var(--padding-color);
 }
 
 .left-border {
-	border-left: 1px solid rgb(70, 70, 70);
+	border-left: 1px solid var(--padding-color);
 }
 
 .right-border {
-	border-right: 1px solid rgb(70, 70, 70);
+	border-right: 1px solid var(--padding-color);
 }
 
 .rounded-corners {

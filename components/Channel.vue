@@ -36,6 +36,6 @@ const isCurrentChannel = props.uuid == props.currentUuid;
 }
 
 .current-channel {
-	background-color: rgb(70, 70, 70);
+	background-color: var(--sidebar-highlighted-background-color);
 }
 </style>
