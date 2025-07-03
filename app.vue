@@ -15,11 +15,13 @@ if (savedTheme) {
 	currentTheme = savedTheme;
 }
 
+const baseURL = useRuntimeConfig().app.baseURL;
+
 useHead({
   link: [
     {
       rel: "stylesheet",
-      href: `/themes/${currentTheme}.css`
+      href: `${baseURL}/themes/${currentTheme}.css`
     }
   ]
 })
