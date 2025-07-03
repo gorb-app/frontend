@@ -31,6 +31,7 @@ import type { UserResponse } from '~/types/interfaces';
 
 const { fetchUser } = useAuth();
 
+
 const user: UserResponse | undefined = await fetchUser()
 if (!user) {
   alert("could not fetch user info, aborting :(")
@@ -90,7 +91,7 @@ async function changeAvatar() {
       newPfpFile = file
       
       const reader = new FileReader();
-      reader.addEventListener("onload", () => {
+      reader.addEventListener("load", () => {
         if (reader.result && typeof reader.result === 'string') {
           user.avatar = reader.result;
         }
