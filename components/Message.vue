@@ -10,6 +10,8 @@
 					{{ username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
+					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
+					<span v-else-if="getDayDifference(date, currentDate) > 1 ">{{ date.toLocaleDateString(undefined) }},</span>
 					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
 				</span>
 			</div>
@@ -49,6 +51,7 @@ const messageElement = ref<HTMLDivElement>();
 const dateHidden = ref<boolean>(true);
 
 const date = new Date(props.timestamp);
+const currentDate: Date = new Date()
 
 console.log("message:", props.text);
 console.log("author:", props.username);
@@ -73,6 +76,20 @@ onMounted(async () => {
 //function toggleTooltip(e: Event) {
 //	showHover.value = !showHover.value;
 //}
+
+function getDayDifference(date_1: Date, date_2: Date) {
+// Normalize both dates to midnight
+    const midnight1 = new Date(date_1.getFullYear(), date_1.getMonth(), date_1.getDate());
+    const midnight2 = new Date(date_2.getFullYear(), date_2.getMonth(), date_2.getDate());
+
+    // Calculate the difference in time
+    const timeDifference = midnight2.getTime() - midnight1.getTime();
+
+    // Convert time difference from milliseconds to days
+    const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+    return Math.round(dayDifference); // Round to the nearest whole number
+}
 
 </script>
 
