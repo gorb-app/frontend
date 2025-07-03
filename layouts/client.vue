@@ -5,8 +5,8 @@
 			<div class="homebar-item">
 				main bar
 			</div>
-			</div>
-				<div id="left-column">
+		</div>
+		<div id="left-column">
 			<NuxtLink id="home-button" href="/">
 				<img class="sidebar-icon" src="/public/icon.svg"/>
 			</NuxtLink>
@@ -16,6 +16,9 @@
 					<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
 				</NuxtLink>
 			</div>
+			<NuxtLink id="settings-menu" href="/settings">
+				<Icon name="lucide:settings" class="sidebar-icon white" alt="Settings menu" />
+			</NuxtLink>
 		</div>
 		<slot />
 	</div>
@@ -108,6 +111,11 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 #home-button {
 	border-bottom: 1px solid var(--padding-color);
 	padding-bottom: 1dvh;
+}
+
+#settings-menu {
+	position: absolute;
+	bottom: .25dvh
 }
 
 #servers-list {
