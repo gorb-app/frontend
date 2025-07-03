@@ -62,7 +62,7 @@ export interface UserResponse {
 	about: string | null,
 	email?: string,
 	email_verified?: boolean
-  }
+}
 
 export interface StatsResponse {
 	accounts: number,
