@@ -78,17 +78,14 @@ onMounted(async () => {
 //}
 
 function getDayDifference(date1: Date, date2: Date) {
-// Normalize both dates to midnight
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
     const midnight2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
 
-    // Calculate the difference in time
     const timeDifference = midnight2.getTime() - midnight1.getTime();
 
-    // Convert time difference from milliseconds to days
     const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
 
-    return Math.round(dayDifference); // Round to the nearest whole number
+    return Math.round(dayDifference);
 }
 
 </script>
