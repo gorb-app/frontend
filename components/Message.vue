@@ -77,10 +77,10 @@ onMounted(async () => {
 //	showHover.value = !showHover.value;
 //}
 
-function getDayDifference(date_1: Date, date_2: Date) {
+function getDayDifference(date1: Date, date2: Date) {
 // Normalize both dates to midnight
-    const midnight1 = new Date(date_1.getFullYear(), date_1.getMonth(), date_1.getDate());
-    const midnight2 = new Date(date_2.getFullYear(), date_2.getMonth(), date_2.getDate());
+    const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const midnight2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
 
     // Calculate the difference in time
     const timeDifference = midnight2.getTime() - midnight1.getTime();

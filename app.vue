@@ -1,6 +1,6 @@
 <template>
   <div>
-    <link :href="'/themes/' + current_theme + '.css'" rel="stylesheet" type="text/css"></link>
+    <link :href="'/themes/' + currentTheme + '.css'" rel="stylesheet" type="text/css"></link>
     <Banner v-if="banner" />
     <NuxtPage :keepalive="true" />
   </div>
@@ -10,10 +10,10 @@
 
 const banner = useState("banner", () => false);
 
-let current_theme = "dark" // default theme
-const saved_theme = localStorage.getItem("selectedTheme");
-if (saved_theme) {
-	current_theme = saved_theme;
+let currentTheme = "dark" // default theme
+const savedTheme = localStorage.getItem("selectedTheme");
+if (savedTheme) {
+	currentTheme = savedTheme;
 }
 </script>
 
