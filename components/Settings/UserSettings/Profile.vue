@@ -65,7 +65,7 @@ async function saveChanges() {
     alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
-      alert(`error ${error?.response?.status} met whilst trying to update profile info`)
+      alert(`error ${error?.response?.status} met whilst trying to update profile info\n"${error?.response._data?.message}"`)
     }
   }
 };
