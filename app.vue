@@ -9,17 +9,17 @@
 
 const banner = useState("banner", () => false);
 
-let current_theme = "dark" // default theme
-const saved_theme = localStorage.getItem("selectedTheme");
-if (saved_theme) {
-	current_theme = saved_theme;
+let currentTheme = "dark" // default theme
+const savedTheme = localStorage.getItem("selectedTheme");
+if (savedTheme) {
+	currentTheme = savedTheme;
 }
 
 useHead({
   link: [
     {
       rel: "stylesheet",
-      href: `/themes/${current_theme}.css`
+      href: `/themes/${currentTheme}.css`
     }
   ]
 })

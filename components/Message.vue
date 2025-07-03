@@ -10,6 +10,8 @@
 					{{ username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
+					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
+					<span v-else-if="getDayDifference(date, currentDate) > 1 ">{{ date.toLocaleDateString(undefined) }},</span>
 					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
 				</span>
 			</div>
@@ -49,6 +51,7 @@ const messageElement = ref<HTMLDivElement>();
 const dateHidden = ref<boolean>(true);
 
 const date = new Date(props.timestamp);
+const currentDate: Date = new Date()
 
 console.log("message:", props.text);
 console.log("author:", props.username);
@@ -74,6 +77,17 @@ onMounted(async () => {
 //	showHover.value = !showHover.value;
 //}
 
+function getDayDifference(date1: Date, date2: Date) {
+    const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const midnight2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+    const timeDifference = midnight2.getTime() - midnight1.getTime();
+
+    const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+    return Math.round(dayDifference);
+}
+
 </script>
 
 <style scoped>
@@ -81,7 +95,7 @@ onMounted(async () => {
 	text-align: left;
 	/* border: 1px solid lightcoral; */
 	display: grid;
-	grid-template-columns: 2dvw 1fr;
+	grid-template-columns: 2rem 1fr;
 	align-items: center;
 	column-gap: 1dvw;
 	width: 100%;
@@ -129,10 +143,11 @@ onMounted(async () => {
 }
 
 .left-column {
+	min-width: 2rem;
 	display: flex;
+	justify-content: center;
 	text-align: center;
 	white-space: nowrap;
-	
 }
 
 .author-username {
