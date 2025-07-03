@@ -251,7 +251,7 @@ router.beforeEach((to, from, next) => {
 	flex-direction: column;
 	justify-content: center;
 	align-content: center;
-	border: 1px solid rgb(70, 70, 70);
+	border: 1px solid var(--padding-color);
 	padding-bottom: 1dvh;
 	padding-top: 1dvh;
 	margin-bottom: 1dvh;
@@ -266,7 +266,7 @@ router.beforeEach((to, from, next) => {
 
 #message-box-input {
 	width: 80%;
-	background-color: rgb(50, 50, 50);
+	background-color: var(--sidebar-background-color);
 	border: none;
 	color: inherit;
 	padding-left: 1dvw;
@@ -284,11 +284,13 @@ router.beforeEach((to, from, next) => {
 #submit-button {
 	background-color: inherit;
 	border: none;
-	color: rgb(200, 200, 200);
+	color: var(--primary-color);
+	transition: color 100ms;
 	font-size: 1.5em;
 }
 
 #submit-button:hover {
-	color: rgb(255, 255, 255);
+	color: var(--primary-highlighted-color);
+	cursor: pointer;
 }
 </style>

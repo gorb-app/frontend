@@ -55,12 +55,13 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+	background-color: var(--topbar-background-color);
 	padding-left: 5dvw;
 	padding-right: 5dvw;
 }
 
 #client-root>div:nth-child(-n+4) {
-	border-bottom: 1px solid rgb(70, 70, 70);
+	border-bottom: 1px solid var(--padding-color);
 }
 
 #__nuxt {
@@ -93,18 +94,19 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	gap: 2dvh;
 	padding-left: .5dvw;
 	padding-right: .5dvw;
-	border-right: 1px solid rgb(70, 70, 70);
+	border-right: 1px solid var(--padding-color);
+	background-color: var(--sidebar-background-color);
 	padding-top: 1.5dvh;
 }
 
 #middle-left-column {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
-	border-right: 1px solid rgb(70, 70, 70);
+	border-right: 1px solid var(--padding-color);
 }
 
 #home-button {
-	border-bottom: 1px solid rgb(70, 70, 70);
+	border-bottom: 1px solid var(--padding-color);
 	padding-bottom: 1dvh;
 }
 
