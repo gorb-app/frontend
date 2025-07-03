@@ -1,6 +1,5 @@
 <template>
   <div>
-    <link :href="'/themes/' + currentTheme + '.css'" rel="stylesheet" type="text/css"></link>
     <Banner v-if="banner" />
     <NuxtPage :keepalive="true" />
   </div>
@@ -15,6 +14,15 @@ const savedTheme = localStorage.getItem("selectedTheme");
 if (savedTheme) {
 	currentTheme = savedTheme;
 }
+
+useHead({
+  link: [
+    {
+      rel: "stylesheet",
+      href: `/themes/${currentTheme}.css`
+    }
+  ]
+})
 </script>
 
 <style>
