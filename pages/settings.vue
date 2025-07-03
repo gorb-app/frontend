@@ -39,6 +39,7 @@ interface Category {
   pages: Page[];
 }
 
+import Profile from '~/components/Settings/UserSettings/Profile.vue';
 import Account from '~/components/Settings/UserSettings/Account.vue';
 import Privacy from '~/components/Settings/UserSettings/Privacy.vue';
 import Devices from '~/components/Settings/UserSettings/Devices.vue';
@@ -53,7 +54,8 @@ const settingsCategories = {
   userSettings: {
     displayName: "User Settings",
     pages: [
-      { displayName: "My Account", pageData: Account },
+      { displayName: "Profile", pageData: Profile },
+      { displayName: "Account", pageData: Account },
       { displayName: "Privacy", pageData: Privacy },
       { displayName: "Devices", pageData: Devices },
       { displayName: "Connections", pageData: Connections },
