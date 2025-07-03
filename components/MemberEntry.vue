@@ -19,7 +19,8 @@ const props = defineProps<{
 const isPopupVisible = ref(false);
 
 const togglePopup = () => {
-    isPopupVisible.value = !isPopupVisible.value;
+    isPopupVisible.value = false;
+    // isPopupVisible.value = !isPopupVisible.value;
 };
 
 const hidePopup = () => {
