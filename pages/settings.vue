@@ -98,8 +98,8 @@ function selectCategory(page: Page) {
 #sidebar {
   min-width: 25dvw;
   max-width: 25dvw;
-  background-color: #2f3136;
-  color: white;
+  background-color: var(--sidebar-background-color);
+  color: var(--text-color);
   padding: 1dvh 1dvw;
   margin-left: auto;
 
@@ -127,11 +127,11 @@ function selectCategory(page: Page) {
 }
 
 .sidebar-focus {
-  background-color: #383B41;
+  background-color: var(--sidebar-highlighted-background-color);
 }
 
 #sidebar li:hover {
-  background-color: #40444b;
+  background-color: var(--sidebar-highlighted-background-color);
 }
 
 #sub-page {
@@ -149,7 +149,7 @@ function selectCategory(page: Page) {
   height: 0.2dvh;
   display: block;
   margin: 0.8dvh 1dvw;
-  background-color: #2c2e32;
+  background-color: var(--spacing-color);
 }
 
 /* applies to child pages too */

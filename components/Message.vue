@@ -88,7 +88,7 @@ onMounted(async () => {
 }
 
 .message:hover {
-	background-color: rgb(20, 20, 20);
+	background-color: var(--chat-highlighted-background-color);
 }
 
 .normal-message {
@@ -143,7 +143,7 @@ onMounted(async () => {
 
 .message-date {
 	font-size: .7em;
-	color: rgb(150, 150, 150);
+	color: var(--secondary-text-color);
 	cursor: default;
 }
 
