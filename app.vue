@@ -21,7 +21,7 @@ useHead({
   link: [
     {
       rel: "stylesheet",
-      href: `${baseURL}/themes/${currentTheme}.css`
+      href: `${baseURL}themes/${currentTheme}.css`
     }
   ]
 })
