@@ -12,7 +12,8 @@
 			</NuxtLink>
 			<div id="servers-list">
 				<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-					<Icon name="lucide:server" class="white" size="2rem" />
+					<img v-if="guild.icon" class="server-icon" :src="guild.icon" :alt="guild.name"/>
+					<Icon v-else name="lucide:server" class="server-icon white" :alt="guild.name" />
 				</NuxtLink>
 			</div>
 		</div>
@@ -26,48 +27,6 @@ import type { GuildResponse } from '~/types/interfaces';
 const loading = useState("loading", () => false);
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
-
-//const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
-//console.log("servers:", servers);
-const members = [
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	}
-];
-
 </script>
 
 <style>
@@ -117,6 +76,11 @@ const members = [
 #home {
 	padding-left: .5dvw;
 	padding-right: .5dvw;
+}
+
+.server-icon {
+	width: 3rem;
+	height: 3rem;
 }
 
 #current-info {
