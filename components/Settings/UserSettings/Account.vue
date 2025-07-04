@@ -93,8 +93,4 @@ async function deleteAccount() {
   color: var(--text-color);
   background-color: var(--accent-color);
 }
-
-.profile-popup {
-  margin-left: 2dvw;
-}
 </style>

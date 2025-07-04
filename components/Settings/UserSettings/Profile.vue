@@ -20,7 +20,7 @@
         <Button style="margin-top: 2dvh" text="Save Changes" :callback="saveChanges"></Button>
       </div>
 
-      <UserPopup v-if="user" :user="user" class="profile-popup"></UserPopup>
+      <UserPopup v-if="user" :user="user" id="profile-popup"></UserPopup>
     </div>
   </div>
 </template>
@@ -133,7 +133,7 @@ async function changeAvatar() {
   background-color: var(--accent-color);
 }
 
-.profile-popup {
+#profile-popup {
   margin-left: 2dvw;
 }
 </style>
