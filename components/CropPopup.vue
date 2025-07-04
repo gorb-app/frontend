@@ -1,9 +1,6 @@
 <template>
   <div class="crop-popup">
-    <div class="crop-container">
-      <img ref="image" :src="imageSrc" alt="Picture">
-    </div>
-    <div class="image-preview"></div>
+    <img ref="image" :src="imageSrc" style="min-height: 500px;">
     <Button text="Crop" :callback="cropImage"></Button>
     <Button text="Cancel" :callback="closePopup"></Button>
   </div>
@@ -25,18 +22,23 @@ const cropper = ref<Cropper | null>(null);
 watch(image, (newValue) => {
   if (newValue) {
     cropper.value = new Cropper(newValue)
-    const selection = cropper.value.getCropperSelection()
-    if (selection) {
-      selection.precise = true
-      selection.aspectRatio = 1
-      selection.initialCoverage = 1
+    const cropperCanvas = cropper.value.getCropperCanvas()
+    const cropperSelection = cropper.value.getCropperSelection()
+    
+    if (cropperCanvas) {
+      cropperCanvas.background = false
+    }
+
+    if (cropperSelection) {
+      cropperSelection.precise = true
+      cropperSelection.aspectRatio = 1
+      cropperSelection.initialCoverage = 1
     }
   }
 });
 
 async function cropImage() {
   if (cropper) {
-    cropper.value?.element
     const selection = cropper.value?.getCropperSelection();
     if (selection) {
       const canvas = await selection.$toCanvas({width: 256, height: 256})
@@ -58,4 +60,12 @@ function closePopup() {
 </script>
 
 <style scoped>
+.crop-popup, #image-preview{
+  min-width: 20dvw;
+  min-height: 20dvh;
+}
+
+cropper-canvas {
+  min-height: 500px;
+}
 </style>

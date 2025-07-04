@@ -22,16 +22,15 @@
 
       <UserPopup v-if="user" :user="user" id="profile-popup"></UserPopup>
 
-      <CropPopup 
-        v-if="isCropPopupVisible" 
-        :imageSrc="cropImageSrc" 
-        :onCrop="handleCrop" 
-        :onClose="closeCropPopup" 
-      />
     </div>
   </div>
-
-  <div id="crop-container">
+  <div v-if="isCropPopupVisible" id="crop-popup-container">
+    <CropPopup
+      :imageSrc="cropImageSrc"
+      :onCrop="handleCrop"
+      :onClose="closeCropPopup"
+      id="crop-popup-preview"
+    />
   </div>
 </template>
 
@@ -101,8 +100,6 @@ async function changeAvatar() {
       const file = input.files[0];
       if (!file) return;
 
-      newPfpFile = file
-      
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         if (reader.result && typeof reader.result === 'string') {
@@ -170,5 +167,22 @@ function closeCropPopup() {
 
 #profile-popup {
   margin-left: 2dvw;
+}
+
+#crop-popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: rgba(0,0,0,0.5);
+}
+
+#crop-popup-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
