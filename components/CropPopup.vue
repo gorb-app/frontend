@@ -1,8 +1,10 @@
 <template>
-  <div class="crop-popup">
-    <img ref="image" :src="imageSrc" style="min-height: 500px;">
-    <Button text="Crop" :callback="cropImage"></Button>
-    <Button text="Cancel" :callback="closePopup"></Button>
+  <div id="fullscreen-container">
+    <div id="crop-preview">
+      <img ref="image" :src="imageSrc" style="min-height: 500px;">
+      <Button class="button" text="Crop" :callback="cropImage"></Button>
+      <Button class="button" text="Cancel" :callback="closePopup"></Button>
+    </div>
   </div>
 </template>
 
@@ -60,12 +62,24 @@ function closePopup() {
 </script>
 
 <style scoped>
-.crop-popup, #image-preview{
-  min-width: 20dvw;
-  min-height: 20dvh;
+.button {
+  margin: 0.2em
 }
 
-cropper-canvas {
-  min-height: 500px;
+#fullscreen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: rgba(0,0,0,0.5);
+}
+
+#crop-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
