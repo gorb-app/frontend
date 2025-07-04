@@ -66,7 +66,6 @@ import Appearance from '~/components/Settings/AppSettings/Appearance.vue';
 import Notifications from '~/components/Settings/AppSettings/Notifications.vue';
 import Keybinds from '~/components/Settings/AppSettings/Keybinds.vue';
 import Language from '~/components/Settings/AppSettings/Language.vue';
-import { WINDOW } from 'cropperjs';
 
 const settingsCategories = {
   userSettings: {
