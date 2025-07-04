@@ -55,7 +55,7 @@ async function cropImage() {
               }
             }
           });
-          const file = new File([blob], 'image.png', { type: 'image/png' })
+          const file = new File([blob], 'preview.png', { type: 'image/png' })
           reader.readAsDataURL(file)
         }
       });

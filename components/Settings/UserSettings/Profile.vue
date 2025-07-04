@@ -46,8 +46,8 @@ if (!user) {
 }
 
 let newPfpFile: File;
-const isCropPopupVisible = ref(false); // State to manage the visibility of the CropPopup
-const cropImageSrc = ref(''); // State to hold the image source for cropping
+const isCropPopupVisible = ref(false);
+const cropImageSrc = ref('');
 
 async function saveChanges() {
   if (!user) return;
