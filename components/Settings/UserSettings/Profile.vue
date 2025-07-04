@@ -21,12 +21,23 @@
       </div>
 
       <UserPopup v-if="user" :user="user" id="profile-popup"></UserPopup>
+
+      <CropPopup 
+        v-if="isCropPopupVisible" 
+        :imageSrc="cropImageSrc" 
+        :onCrop="handleCrop" 
+        :onClose="closeCropPopup" 
+      />
     </div>
+  </div>
+
+  <div id="crop-container">
   </div>
 </template>
 
 <script lang="ts" setup>
 import Button from '~/components/Button.vue';
+import CropPopup from '~/components/CropPopup.vue';
 import type { UserResponse } from '~/types/interfaces';
 
 const { fetchUser } = useAuth();
@@ -38,6 +49,8 @@ if (!user) {
 }
 
 let newPfpFile: File;
+const isCropPopupVisible = ref(false); // State to manage the visibility of the CropPopup
+const cropImageSrc = ref(''); // State to hold the image source for cropping
 
 async function saveChanges() {
   if (!user) return;
@@ -93,7 +106,8 @@ async function changeAvatar() {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         if (reader.result && typeof reader.result === 'string') {
-          user.avatar = reader.result;
+          cropImageSrc.value = reader.result;
+          isCropPopupVisible.value = true;
         }
       });
       reader.readAsDataURL(file);
@@ -101,6 +115,27 @@ async function changeAvatar() {
   })
 
   input.click()
+}
+
+
+function handleCrop(blob: Blob) {
+  if (!user) return;
+
+  newPfpFile = new File([blob], 'avatar.png', { type: 'image/png' })
+
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    if (reader.result && typeof reader.result === 'string') {
+      user.avatar = reader.result;
+    }
+  });
+  reader.readAsDataURL(newPfpFile)
+
+  closeCropPopup()
+}
+
+function closeCropPopup() {
+  isCropPopupVisible.value = false
 }
 </script>
 
