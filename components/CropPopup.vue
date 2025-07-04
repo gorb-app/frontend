@@ -44,10 +44,19 @@ async function cropImage() {
     const selection = cropper.value?.getCropperSelection();
     if (selection) {
       const canvas = await selection.$toCanvas({width: 256, height: 256})
-      console.log(canvas)
+
       canvas.toBlob((blob) => {
         if (blob && props.onCrop) {
-          props.onCrop(blob);
+          const reader = new FileReader();
+          reader.addEventListener("load", () => {
+            if (reader.result && typeof reader.result === 'string') {
+              if (props.onCrop) {
+                props.onCrop(blob, reader.result)
+              }
+            }
+          });
+          const file = new File([blob], 'image.png', { type: 'image/png' })
+          reader.readAsDataURL(file)
         }
       });
     }

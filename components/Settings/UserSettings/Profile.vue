@@ -113,19 +113,11 @@ async function changeAvatar() {
 }
 
 
-function handleCrop(blob: Blob) {
+function handleCrop(blob: Blob, url: string) {
   if (!user) return;
 
+  user.avatar = url;
   newPfpFile = new File([blob], 'avatar.png', { type: 'image/png' })
-
-  const reader = new FileReader();
-  reader.addEventListener("load", () => {
-    if (reader.result && typeof reader.result === 'string') {
-      user.avatar = reader.result;
-    }
-  });
-  reader.readAsDataURL(newPfpFile)
-
   closeCropPopup()
 }
 
