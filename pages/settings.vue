@@ -40,9 +40,6 @@
 
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import Button from '~/components/Button.vue';
-
 const { logout } = useAuth()
 const appConfig = useRuntimeConfig()
 
