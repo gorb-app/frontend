@@ -4,13 +4,13 @@
     
     <p class="subtitle">THEMES</p>
     <div class="themes">
-      <p v-for="theme of themes">
+      <div v-for="theme of themes" class="theme-preview-container">
         <span class="theme-preview" :title="theme.displayName" :style="{background:`linear-gradient(${theme.previewGradient})`}">
           <span class="theme-title" :style="{color:`${theme.complementaryColor}`}">
             {{ theme.displayName }}
           </span>
         </span>
-      </p>
+      </div>
     </div>
 
     <p class="subtitle">ICONS</p>
@@ -48,9 +48,19 @@ await fetchThemes()
 </script>
 
 <style scoped>
+.themes {
+  display: flex;
+}
+
+.theme-preview-container {
+  margin: .5em;
+  width: 5em;
+  height: 5em;
+}
+
 .theme-preview {
-  min-width: 6em;
-  min-height: 6em;
+  width: 5em;
+  height: 5em;
   border-radius: 100%;
   border: .1em solid var(--primary-color);
 
@@ -61,6 +71,6 @@ await fetchThemes()
 
 .theme-title {
   font-size: .8em;
-  line-height: 6em; /* same height as the parent to centre it vertically */
+  line-height: 5em; /* same height as the parent to centre it vertically */
 }
 </style>
