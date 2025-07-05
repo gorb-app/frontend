@@ -8,7 +8,7 @@
         <span class="theme-preview"
           :title="theme.displayName"
           :style="{background:`linear-gradient(${theme.previewGradient})`}"
-          @click="changeTheme(theme.ID, theme.themeURL)"
+          @click="changeTheme(theme.id, theme.themeUrl)"
         >
           <span class="theme-title" :style="{color:`${theme.complementaryColor}`}">
             {{ theme.displayName }}
@@ -34,19 +34,19 @@ let themeLinkElement: HTMLLinkElement | null = null;
 const themes: Array<Theme> = []
 
 interface Theme {
-  ID: string
+  id: string
   displayName: string
   previewGradient: string
   complementaryColor: string
-  themeURL: string
+  themeUrl: string
 }
 
-function changeTheme(ID: string, URL: string) {
-  if (themeLinkElement && themeLinkElement.getAttribute('href') === `${baseURL}themes/${URL}`) {
+function changeTheme(id: string, url: string) {
+  if (themeLinkElement && themeLinkElement.getAttribute('href') === `${baseURL}themes/${url}`) {
     return;
   }
 
-  localStorage.setItem("selectedTheme", ID);
+  localStorage.setItem("selectedTheme", id);
 
   // if the theme didn't originally load for some reason, create it
   if (!themeLinkElement) {
@@ -55,14 +55,14 @@ function changeTheme(ID: string, URL: string) {
     document.head.appendChild(themeLinkElement);
   }
 
-  themeLinkElement.href = `${baseURL}themes/${URL}`;
+  themeLinkElement.href = `${baseURL}themes/${url}`;
 }
 
 const fetchThemes = async () => {
   for (const theme of defaultThemes) {
     const themeConfig = await fetch(`${baseURL}themes/${theme}.json`)
     const themeConfigJson = await themeConfig.json() as Theme
-    themeConfigJson.ID = theme
+    themeConfigJson.id = theme
 
     themes.push(themeConfigJson)
   }
