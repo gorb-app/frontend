@@ -24,9 +24,9 @@
           </p>
           
           <p style="font-size: .8em; color: var(--secondary-text-color)">
-            Version Hash: {{ appConfig.gitHash }}
+            Version Hash: {{ appConfig.public.gitHash }}
             <br>
-            Build Time: {{ appConfig.buildTimeString }}
+            Build Time: {{ appConfig.public.buildTimeString }}
           </p>
 
         </ul>
@@ -44,7 +44,7 @@ import Button from '~/components/Button.vue';
 
 const { logout } = useAuth()
 
-const appConfig = useAppConfig()
+const appConfig = useRuntimeConfig()
 
 interface Page {
   displayName: string;
