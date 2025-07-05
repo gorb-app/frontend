@@ -158,10 +158,12 @@ if (accessToken && apiBase) {
 
 function sendMessage(e: Event) {
 	e.preventDefault();
-	const text = messageInput.value;
-	console.log("text:", text);
-	if (text) {
-		ws.send(text);
+	const message = {
+		message: messageInput.value
+	}
+	console.log("message:", message);
+	if (message.message) {
+		ws.send(JSON.stringify(message));
 		messageInput.value = "";
 		console.log("MESSAGE SENT!!!");
 	}
