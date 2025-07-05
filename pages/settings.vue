@@ -40,10 +40,10 @@
 
 
 <script lang="ts" setup>
+import { onMounted } from 'vue';
 import Button from '~/components/Button.vue';
 
 const { logout } = useAuth()
-
 const appConfig = useRuntimeConfig()
 
 interface Page {
@@ -99,6 +99,16 @@ function selectCategory(page: Page) {
   selectedPage.value = page.displayName;
 };
 
+// redirects to you privacy if you go to settings#privacy
+onMounted(() => {
+  const hash = window.location.hash.substring(1).toLowerCase();
+  const foundPage = categories.flatMap(category => category.pages).find(page => page.displayName.toLowerCase() === hash);
+
+  if (foundPage) {
+    currentPage.value = foundPage;
+    selectedPage.value = foundPage.displayName;
+  }
+});
 </script>
 
 <style scoped>
