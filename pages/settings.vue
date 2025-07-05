@@ -180,7 +180,10 @@ function selectCategory(page: Page) {
 }
 
 /* applies to child pages too */
-:deep(h5) {
-  color: red;
+:deep(.subtitle) {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 800;
+  margin: 4dvh 0 0.5dvh 0.25dvw;
 }
 </style>

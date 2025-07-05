@@ -70,13 +70,6 @@ async function deleteAccount() {
 </script>
 
 <style scoped>
-.subtitle {
-  display: block;
-  font-size: 0.8em;
-  font-weight: 800;
-  margin: 4dvh 0 0.5dvh 0.25dvw;
-}
-
 .user-data-fields {
   min-width: 35dvw;
   max-width: 35dvw;
