@@ -30,6 +30,9 @@ export default defineNuxtConfig({
       messageGroupingMaxDifference: 300000,
       buildTimeString: new Date().toISOString(),
       gitHash: process.env.GIT_SHORT_REV || "N/A",
+      defaultThemes: [
+        "light", "ash", "dark"
+      ]
     }
   },
   /* nitro: {
