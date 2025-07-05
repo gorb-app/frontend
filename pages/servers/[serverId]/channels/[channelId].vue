@@ -100,6 +100,7 @@ function handleMemberClick(member: GuildMemberResponse) {
 	display: flex;
 	flex-direction: column;
 	overflow-y: scroll;
+	max-height: 92dvh;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	margin-top: 1dvh;
