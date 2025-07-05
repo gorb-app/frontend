@@ -1,0 +1,6 @@
+{
+	"displayName": "Dark",
+	"previewGradient": "45deg, #1f1e1d, #36322b",
+	"complementaryColor": "white",
+	"themeUrl": "dark.css"
+}
