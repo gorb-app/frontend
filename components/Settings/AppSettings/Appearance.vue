@@ -58,7 +58,7 @@ function changeTheme(id: string, url: string) {
   themeLinkElement.href = `${baseURL}themes/${url}`;
 }
 
-const fetchThemes = async () => {
+async function fetchThemes() {
   for (const theme of defaultThemes) {
     const themeConfig = await $fetch(`${baseURL}themes/${theme}.json`) as Theme
     themeConfig.id = theme
