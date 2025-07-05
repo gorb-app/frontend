@@ -60,14 +60,11 @@ function changeTheme(id: string, url: string) {
 
 const fetchThemes = async () => {
   for (const theme of defaultThemes) {
-    const themeConfig = await fetch(`${baseURL}themes/${theme}.json`)
-    const themeConfigJson = await themeConfig.json() as Theme
-    themeConfigJson.id = theme
+    const themeConfig = await $fetch(`${baseURL}themes/${theme}.json`) as Theme
+    themeConfig.id = theme
 
-    themes.push(themeConfigJson)
+    themes.push(themeConfig)
   }
-
-  console.log(themes)
 }
 
 await fetchThemes()
