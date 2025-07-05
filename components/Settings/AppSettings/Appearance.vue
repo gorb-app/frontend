@@ -5,7 +5,11 @@
     <p class="subtitle">THEMES</p>
     <div class="themes">
       <div v-for="theme of themes" class="theme-preview-container">
-        <span class="theme-preview" :title="theme.displayName" :style="{background:`linear-gradient(${theme.previewGradient})`}">
+        <span class="theme-preview"
+          :title="theme.displayName"
+          :style="{background:`linear-gradient(${theme.previewGradient})`}"
+          @click="changeTheme(theme.ID, theme.themeURL)"
+        >
           <span class="theme-title" :style="{color:`${theme.complementaryColor}`}">
             {{ theme.displayName }}
           </span>
@@ -25,23 +29,45 @@
 const runtimeConfig = useRuntimeConfig()
 const defaultThemes = runtimeConfig.public.defaultThemes
 const baseURL = runtimeConfig.app.baseURL;
+let themeLinkElement: HTMLLinkElement | null = null;
 
 const themes: Array<Theme> = []
 
 interface Theme {
+  ID: string
   displayName: string
   previewGradient: string
   complementaryColor: string
   themeURL: string
 }
 
+function changeTheme(ID: string, URL: string) {
+  if (themeLinkElement && themeLinkElement.getAttribute('href') === `${baseURL}themes/${URL}`) {
+    return;
+  }
+
+  localStorage.setItem("selectedTheme", ID);
+
+  // if the theme didn't originally load for some reason, create it
+  if (!themeLinkElement) {
+    themeLinkElement = document.createElement('link');
+    themeLinkElement.rel = 'stylesheet';
+    document.head.appendChild(themeLinkElement);
+  }
+
+  themeLinkElement.href = `${baseURL}themes/${URL}`;
+}
 
 const fetchThemes = async () => {
   for (const theme of defaultThemes) {
     const themeConfig = await fetch(`${baseURL}themes/${theme}.json`)
     const themeConfigJson = await themeConfig.json() as Theme
+    themeConfigJson.ID = theme
+
     themes.push(themeConfigJson)
   }
+
+  console.log(themes)
 }
 
 await fetchThemes()
@@ -67,6 +93,7 @@ await fetchThemes()
   display: inline-block;
   text-align: center;
   align-content: center;
+  cursor: pointer;
 }
 
 .theme-title {

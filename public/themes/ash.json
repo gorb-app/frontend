@@ -2,5 +2,5 @@
 	"displayName": "Ash",
 	"previewGradient": "45deg, #2f2e2d, #46423b",
 	"complementaryColor": "white",
-	"themeData": "ash.css"
+	"themeURL": "ash.css"
 }

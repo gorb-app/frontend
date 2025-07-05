@@ -2,5 +2,5 @@
 	"displayName": "Light",
 	"previewGradient": "45deg, #f0ebe8, #d4d0ca",
 	"complementaryColor": "black",
-	"themeData": "light.css"
+	"themeURL": "light.css"
 }
