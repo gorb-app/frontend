@@ -33,21 +33,18 @@
 </template>
 
 <script lang="ts" setup>
-import Button from '~/components/Button.vue';
-import CropPopup from '~/components/CropPopup.vue';
 import type { UserResponse } from '~/types/interfaces';
 
+let newPfpFile: File;
+const isCropPopupVisible = ref(false);
+const cropImageSrc = ref("")
+;
 const { fetchUser } = useAuth();
-
 
 const user: UserResponse | undefined = await fetchUser()
 if (!user) {
   alert("could not fetch user info, aborting :(")
 }
-
-let newPfpFile: File;
-const isCropPopupVisible = ref(false);
-const cropImageSrc = ref('');
 
 async function saveChanges() {
   if (!user) return;

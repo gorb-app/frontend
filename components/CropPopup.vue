@@ -1,15 +1,14 @@
 <template>
   <div id="fullscreen-container">
     <div id="crop-preview">
-      <img ref="image" :src="imageSrc" style="min-height: 500px;">
-      <Button class="button" text="Crop" :callback="cropImage"></Button>
-      <Button class="button" text="Cancel" :callback="closePopup"></Button>
+      <img ref="image" :src="imageSrc" style="min-height: 35dvh;">
+      <Button text="Crop" :callback="cropImage"></Button>
+      <Button text="Cancel" :callback="closePopup"></Button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
 import Cropper from 'cropperjs';
 
 const props = defineProps({
@@ -82,7 +81,7 @@ function closePopup() {
   width: 100%;
   height: 100%;
   z-index: 10;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 #crop-preview {
