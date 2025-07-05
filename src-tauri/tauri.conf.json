@@ -1,0 +1,59 @@
+{
+  "productName": "Gorb",
+  "version": "0.1.0",
+  "identifier": "app.gorb.Gorb",
+  "build": {
+    "beforeBuildCommand": "pnpm run build --prerender",
+    "beforeDevCommand": "pnpm run dev",
+    "devUrl": "http://localhost:3000",
+    "frontendDist": "../.output/public"
+  },
+  "app": {
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 600,
+        "resizable": true,
+        "title": "Gorb",
+        "width": 800
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "copyright": "",
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    },
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "longDescription": "",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "shortDescription": "",
+    "targets": "all",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  }
+}
