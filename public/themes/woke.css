@@ -2,11 +2,11 @@
 	--text-color: #161518;
 	--secondary-text-color: #2b2930;
 
-    --chat-background-color: #808080;
-    --chat-highlighted-background-color: #808080;
-	--sidebar-background-color: #808080;
-	--sidebar-highlighted-background-color: #808080;
-	--topbar-background-color: #808080;
+    --chat-background-color: #80808000;
+    --chat-highlighted-background-color: #ffffff20;
+	--sidebar-background-color: #80808000;
+	--sidebar-highlighted-background-color: #ffffff20;
+	--topbar-background-color: #80808000;
 
     --padding-color: #80808000;
     
