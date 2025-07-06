@@ -20,6 +20,9 @@ importers:
       '@pinia/nuxt':
         specifier: 0.11.0
         version: 0.11.0(magicast@0.3.5)(pinia@3.0.2(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))
+      '@tauri-apps/plugin-http':
+        specifier: ~2.5.0
+        version: 2.5.0
       dompurify:
         specifier: ^3.2.6
         version: 3.2.6
@@ -1186,6 +1189,9 @@ packages:
     peerDependencies:
       eslint: '>=9.0.0'
 
+  '@tauri-apps/api@2.6.0':
+    resolution: {integrity: sha512-hRNcdercfgpzgFrMXWwNDBN0B7vNzOzRepy6ZAmhxi5mDLVPNrTpo9MGg2tN/F7JRugj4d2aF7E1rtPXAHaetg==}
+
   '@tauri-apps/cli-darwin-arm64@2.6.2':
     resolution: {integrity: sha512-YlvT+Yb7u2HplyN2Cf/nBplCQARC/I4uedlYHlgtxg6rV7xbo9BvG1jLOo29IFhqA2rOp5w1LtgvVGwsOf2kxw==}
     engines: {node: '>= 10'}
@@ -1256,6 +1262,9 @@ packages:
     resolution: {integrity: sha512-s1/eyBHxk0wG1blLeOY2IDjgZcxVrkxU5HFL8rNDwjYGr0o7yr3RAtwmuUPhz13NO+xGAL1bJZaLFBdp+5joKg==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@tauri-apps/plugin-http@2.5.0':
+    resolution: {integrity: sha512-l4M2DUIsOBIMrbj4dJZwrB4mJiB7OA/2Tj3gEbX2fjq5MOpETklJPKfDvzUTDwuq4lIKCKKykz8E8tpOgvi0EQ==}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -6202,6 +6211,8 @@ snapshots:
       - supports-color
       - typescript
 
+  '@tauri-apps/api@2.6.0': {}
+
   '@tauri-apps/cli-darwin-arm64@2.6.2':
     optional: true
 
@@ -6248,6 +6259,10 @@ snapshots:
       '@tauri-apps/cli-win32-arm64-msvc': 2.6.2
       '@tauri-apps/cli-win32-ia32-msvc': 2.6.2
       '@tauri-apps/cli-win32-x64-msvc': 2.6.2
+
+  '@tauri-apps/plugin-http@2.5.0':
+    dependencies:
+      '@tauri-apps/api': 2.6.0
 
   '@trysound/sax@0.2.0': {}
 
