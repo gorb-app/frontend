@@ -158,7 +158,6 @@ onMounted(() => {
 }
 
 .sidebar-focus {
-  background: var(--optional-topbar-background);
   background-color: var(--sidebar-highlighted-background-color);
 }
 
