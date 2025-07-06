@@ -40,7 +40,6 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	grid-template-columns: 1fr 4fr 18fr 4fr;
 	grid-template-rows: 4dvh auto;
 	text-align: center;
-	
 }
 
 .hidden {
@@ -58,6 +57,7 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+	background: var(--optional-topbar-background);
 	background-color: var(--topbar-background-color);
 	padding-left: 5dvw;
 	padding-right: 5dvw;
@@ -98,6 +98,7 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	padding-left: .5dvw;
 	padding-right: .5dvw;
 	border-right: 1px solid var(--padding-color);
+	background: var(--optional-sidebar-background);
 	background-color: var(--sidebar-background-color);
 	padding-top: 1.5dvh;
 }
