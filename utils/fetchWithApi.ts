@@ -1,6 +1,13 @@
 import type { NitroFetchRequest, NitroFetchOptions } from "nitropack";
+import { fetch as tauriFetch, type ClientOptions } from '@tauri-apps/plugin-http';
 
-export default async <T>(path: string, options: NitroFetchOptions<string> = {}) => {
+declare global {
+    interface Window {
+        __TAURI_INTERNALS__: Record<string, unknown>;
+    }
+}
+
+export default async <T>(path: string, options: NitroFetchOptions<string> | (RequestInit & ClientOptions) = {}) => {
   console.log("path received:", path);
   if (!path.startsWith("/")) {
     path = "/" + path;
@@ -18,7 +25,7 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
     return;
   }
   console.log("path:", path)
-  const { revoke, refresh } = useAuth();
+  const { logout, refresh } = useAuth();
   
   let headers: HeadersInit = {};
   
@@ -38,12 +45,24 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
       };
     }
     try {
-      console.log("fetching:", URL.parse(apiBase + path));
-      const res = await $fetch<T>(URL.parse(apiBase + path)!.href, {
-        ...options,
-        headers,
-        credentials: "include"
-      });
+	  let res;
+	  if (window.__TAURI_INTERNALS__) {
+	    // Use Tauri's HTTP client
+		console.log("USING TAURI'S FUCKING BITCHASS FETCH SHIT")
+	    res = await tauriFetch(URL.parse(apiBase + path)!.href, {
+			...options,
+			headers,
+			credentials: "include"
+		} as RequestInit & ClientOptions)
+	  } else {
+		console.log("USING GOATED EPIC NUXT FETCH")
+		console.log("fetching:", URL.parse(apiBase + path));
+		res = await $fetch<T>(URL.parse(apiBase + path)!.href, {
+		  ...options,
+		  headers,
+		  credentials: "include"
+		} as NitroFetchOptions<string>);
+	  }
 
       return res;
     } catch (error: any) {
@@ -62,7 +81,7 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
               console.log("Refresh returned 401");
               reauthFailed = true;
               console.log("Revoking");
-              await revoke();
+              await logout();
               console.log("Redirecting to login");
               await navigateTo("/login");
               console.log("redirected");
