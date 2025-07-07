@@ -108,6 +108,7 @@ function getDayDifference(date1: Date, date2: Date) {
 	align-items: center;
 	column-gap: 1dvw;
 	width: 100%;
+	overflow-wrap: anywhere;
 }
 
 .message:hover {
