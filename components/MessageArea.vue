@@ -9,11 +9,23 @@
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
+				<div id="message-box-left-elements">
+					<span class="message-box-button">
+						<Icon name="lucide:file-plus-2" />
+					</span>
+				</div>
+
 				<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text"
 					name="message-input" autocomplete="off">
-				<button id="submit-button" type="submit">
-					<Icon name="lucide:send" />
-				</button>
+				
+				<div id="message-box-right-elements">
+					<button class="message-box-button" type="submit">
+						<Icon name="lucide:send" />
+					</button>
+					<span class="message-box-button">
+						<Icon name="lucide:image-play" />
+					</span>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -249,31 +261,49 @@ router.beforeEach((to, from, next) => {
 }
 
 #message-box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-content: center;
-	border: 1px solid var(--padding-color);
-	padding-bottom: 1dvh;
-	padding-top: 1dvh;
-	margin-bottom: 1dvh;
+	/* flex-direction: column; */
+	/* justify-content: center; */
+	/* align-content: center; */
+	/* padding-bottom: 1dvh; */
+	/* padding-top: 1dvh; */
+	margin-bottom: 2dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
-	background: var(--optional-message-box-background);
+	/* background: var(--optional-message-box-background); */
 }
 
 #message-form {
 	display: flex;
+	flex-direction: row;
+	
+	border: 1px solid var(--padding-color);
+	height: 100%;
+	padding-left: 2%;
+	padding-right: 2%;
+
+	min-height: 100%;
 	justify-content: center;
+	background-color: var(--chatbox-background-color);
 }
 
 #message-box-input {
-	width: 80%;
+	height: 100%;
+	width: 100%;
+	margin-left: 1.5%;
+	margin-right: 1.5%;
+
+	box-sizing: border-box;
+	display: inline-block;
+	vertical-align: top;
+
 	border: none;
 	color: inherit;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
 	background-color: var(--chatbox-background-color);
+}
+
+#message-box-left-elements, #message-box-right-elements {
+	display: flex;
+	align-items: center;
 }
 
 #messages {
@@ -284,7 +314,7 @@ router.beforeEach((to, from, next) => {
 	padding-right: 1dvw;
 }
 
-#submit-button {
+.message-box-button {
 	background-color: inherit;
 	border: none;
 	color: var(--primary-color);
@@ -292,7 +322,7 @@ router.beforeEach((to, from, next) => {
 	font-size: 1.5em;
 }
 
-#submit-button:hover {
+.message-box-button:hover {
 	color: var(--primary-highlighted-color);
 	cursor: pointer;
 }
