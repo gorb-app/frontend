@@ -7,7 +7,6 @@
 					<Icon id="server-settings-icon" name="lucide:chevron-down" />
 				</button>
 				<GuildOptionsMenu v-if="showGuildSettings" />
-				<InvitePopup v-if="showInvitePopup" />
 			</div>
 			<div id="channels-list">
 				<Channel v-for="channel of channels" :name="channel.name"
@@ -77,7 +76,6 @@ function toggleInvitePopup(e: Event) {
 </script>
 
 <style>
-
 #middle-left-column {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
@@ -108,7 +106,7 @@ function toggleInvitePopup(e: Event) {
 	gap: 1em;
 	align-items: center;
 	text-align: left;
-	
+
 }
 
 #channels-list {
@@ -147,5 +145,4 @@ function toggleInvitePopup(e: Event) {
 	border: none;
 	padding: 0%;
 }
-
 </style>
