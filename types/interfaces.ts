@@ -81,3 +81,9 @@ export interface ScrollPosition {
 	offsetTop: number,
 	offsetLeft: number
 }
+
+export interface DropdownOption {
+	name: string,
+	value: string | number,
+	callback: () => void
+}
