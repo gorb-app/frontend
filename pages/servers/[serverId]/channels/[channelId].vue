@@ -86,6 +86,7 @@ function handleMemberClick(member: GuildMemberResponse) {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	border-right: 1px solid var(--padding-color);
+	background: var(--optional-channel-list-background);
 	background-color: var(--sidebar-background-color);
 }
 

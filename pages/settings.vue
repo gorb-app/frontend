@@ -124,6 +124,7 @@ onMounted(() => {
 #sidebar {
   min-width: 25dvw;
   max-width: 25dvw;
+  background: var(--optional-channel-list-background);
   background-color: var(--sidebar-background-color);
   color: var(--text-color);
   padding: 1dvh 1dvw;
