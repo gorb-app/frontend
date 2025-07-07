@@ -4,11 +4,13 @@
       <button class="guild-option-button" @click="setting.action">{{ setting.name }}</button>
     </div>
   </div>
+  <InviteModal ref="modal" v-if="showInviteModal" />
 </template>
 
 <script lang="ts" setup>
-import { InvitePopup } from '#components';
+import { InviteModal } from '#components';
 
+const modal = ref<HTMLDialogElement>();
 
 const showInviteModal = ref(false);
 
@@ -17,16 +19,33 @@ const settings = [
   { name: "Invite", icon: "lucide:letter", action: openInviteModal }
 ]
 
+onMounted(() => {
+  if (modal.value) {
+    modal.value.addEventListener("close", () => {
+      console.log("MODAL CLOSED");
+      showInviteModal.value = false;
+    });
+
+    modal.value.addEventListener("cancel", () => {
+      console.log("MODAL CANCELED");
+      showInviteModal.value = false;
+    });
+  }
+});
+
 function openInviteModal() {
-  //showInviteModal.value = !showInviteModal.value;
-  //const invitePopup = createApp(InvitePopup);
-  //invitePopup
+  showInviteModal.value = true;
+  const invitePopup = h(InviteModal);
+}
+
+function toggleInviteModal(e: Event) {
+  e.preventDefault();
+  showInviteModal.value = !showInviteModal.value;
 }
 
 </script>
 
 <style>
-
 #guild-options-container {
   display: flex;
   flex-direction: column;
@@ -54,5 +73,4 @@ function openInviteModal() {
   background-color: transparent;
   color: var(--main-text-color);
 }
-
 </style>
