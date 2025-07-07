@@ -4,9 +4,9 @@
       <div id="sidebar">
         <ul>
           <p>
-            <button @click="$router.go(-1)">
-              <Icon name="lucide:circle-arrow-left" alt="Back"></Icon>
-            </button>
+            <span @click="$router.go(-1)">
+              <Icon class="back-button" size="2em" name="lucide:circle-arrow-left" alt="Back"></Icon>
+            </span>
           </p>
           <span class="spacer"></span>
 
@@ -180,6 +180,16 @@ onMounted(() => {
 
   overflow-y: auto;
   height: 100vh;
+}
+
+.back-button {
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: color 100ms;
+}
+
+.back-button:hover{
+  color: var(--primary-highlighted-color);
 }
 
 #links-and-socials * {
