@@ -1,13 +1,15 @@
 <template>
-  <div id="invite-popup">
-    <div v-if="invite">
-      <p>{{ invite }}</p>
-      <button @click="copyInvite">Copy Link</button>
+  <Modal title="Create an invite">
+    <div id="invite-popup">
+      <div v-if="invite">
+        <p>{{ invite }}</p>
+        <button @click="copyInvite">Copy Link</button>
+      </div>
+      <div v-else>
+        <button @click="generateInvite">Generate Invite</button>
+      </div>
     </div>
-    <div v-else>
-      <button @click="generateInvite">Generate Invite</button>
-    </div>
-  </div>
+  </Modal>
 </template>
 
 <script lang="ts" setup>
@@ -19,9 +21,14 @@ const invite = ref<string>();
 const route = useRoute();
 
 async function generateInvite(): Promise<void> {
+  const chars = "ABCDEFGHIJKLMNOQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+  let randCode = "";
+  for (let i = 0; i < 6; i++) {
+    randCode += chars[Math.floor(Math.random() * chars.length)];
+  }
   const createdInvite: InviteResponse | undefined = await fetchWithApi(
     `/guilds/${route.params.serverId}/invites`,
-    { method: "POST", body: { custom_id: "oijewfoiewf" } }
+    { method: "POST", body: { custom_id: randCode } }
   );
 
   invite.value = createdInvite?.id;

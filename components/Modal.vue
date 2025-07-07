@@ -1,41 +1,39 @@
 <template>
-  <div class="modal-top-container">
-    <div v-if="heavy" class="modal-container modal-heavy">
-    </div>
-    <div v-else class="modal-container modal-light">
-    </div>
-    <div class="modal-div">
-      <slot />
-    </div>
-  </div>
+  <dialog ref="dialog" class="modal">
+    <h1 class="modal-title">{{ title }}</h1>
+    <slot />
+  </dialog>
 </template>
 
 <script lang="ts" setup>
 
-const props = defineProps<{ heavy?: boolean }>();
+const props = defineProps<{ title: string, heavy?: boolean }>();
+const dialog = ref<HTMLDialogElement>();
+
+onMounted(() => {
+  if (dialog) {
+    dialog.value?.showModal();
+  }
+});
+
 
 </script>
 
 <style>
-
-.modal-container {
-  position: fixed;
-  border: 1px solid cyan;
-  height: 100%;
-  width: 100%;
-  opacity: 70%;
-  z-index: 10;
-  background-color: var(--background-color);
-}
-
-.modal-div {
+.modal {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(50, 50, 50);
+  flex-direction: column;
   opacity: 100%;
-  z-index: 11;
   padding: 1%;
+  background-color: var(--background-color);
+  color: var(--main-text-color);
+}
+
+.modal::backdrop {
+  background-color: rgb(50, 50, 50);
+  opacity: 70%;
 }
 
 .modal-top-container {
@@ -47,4 +45,7 @@ const props = defineProps<{ heavy?: boolean }>();
   width: 100%;
 }
 
+.modal-title {
+  font-size: 1.5rem;
+}
 </style>
