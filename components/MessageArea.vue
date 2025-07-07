@@ -259,6 +259,7 @@ router.beforeEach((to, from, next) => {
 	margin-bottom: 1dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
+	background: var(--optional-message-box-background);
 }
 
 #message-form {
@@ -268,11 +269,11 @@ router.beforeEach((to, from, next) => {
 
 #message-box-input {
 	width: 80%;
-	background-color: var(--sidebar-background-color);
 	border: none;
 	color: inherit;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
+	background-color: var(--chatbox-background-color);
 }
 
 #messages {
