@@ -60,7 +60,16 @@ const sanitized = ref<string>();
 
 onMounted(async () => {
 	const parsed = await parse(props.text, { gfm: true });
-	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a", "h1", "h2", "h3", "h4", "h5", "h6"] });
+	sanitized.value = DOMPurify.sanitize(parsed, {
+		ALLOWED_TAGS: [
+			"strong", "em", "br", "blockquote",
+			"code", "ul", "ol", "li", "a", "h1",
+			"h2", "h3", "h4", "h5", "h6"
+		],
+		ALLOW_DATA_ATTR: false,
+		ALLOW_SELF_CLOSE_IN_ATTR: false,
+		ALLOWED_ATTR: []
+	});
 	console.log("adding listeners")
 	await nextTick();
 	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
