@@ -3,6 +3,13 @@
     <div id="settings-page">
       <div id="sidebar">
         <ul>
+          <p>
+            <button @click="$router.go(-1)">
+              <Icon name="lucide:circle-arrow-left" alt="Back"></Icon>
+            </button>
+          </p>
+          <span class="spacer"></span>
+
           <!-- categories and dynamic settings pages -->
           <div v-for="category in categories" :key="category.displayName">
             <h2>{{ category.displayName }}</h2>
@@ -28,7 +35,6 @@
             <br>
             Build Time: {{ appConfig.public.buildTimeString }}
           </p>
-
         </ul>
       </div>
       <div id="sub-page">
