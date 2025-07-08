@@ -27,7 +27,6 @@
 		<div id="members-container">
 			<div id="members-list">
 				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
-				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
 			</div>
 		</div>
 	</NuxtLayout>
