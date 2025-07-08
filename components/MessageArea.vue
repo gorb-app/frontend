@@ -261,15 +261,9 @@ router.beforeEach((to, from, next) => {
 }
 
 #message-box {
-	/* flex-direction: column; */
-	/* justify-content: center; */
-	/* align-content: center; */
-	/* padding-bottom: 1dvh; */
-	/* padding-top: 1dvh; */
 	margin-bottom: 2dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
-	/* background: var(--optional-message-box-background); */
 }
 
 #message-form {
@@ -298,7 +292,7 @@ router.beforeEach((to, from, next) => {
 
 	border: none;
 	color: inherit;
-	background-color: var(--chatbox-background-color);
+	background-color: #00000000; /* completely transparent colour */
 }
 
 #message-box-left-elements, #message-box-right-elements {
