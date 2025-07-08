@@ -3,7 +3,9 @@
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
 		<div id="homebar">
 			<div class="homebar-item">
-				main bar
+				<marquee>
+					gorb!!!!!
+				</marquee>
 			</div>
 		</div>
 		<div id="left-column">
@@ -61,6 +63,11 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	background-color: var(--topbar-background-color);
 	padding-left: 5dvw;
 	padding-right: 5dvw;
+
+}
+
+.homebar-item {
+	width: 100dvw;
 }
 
 #client-root>div:nth-child(-n+4) {
