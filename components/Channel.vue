@@ -30,7 +30,7 @@ const isCurrentChannel = props.uuid == props.currentUuid;
 .channel-list-link-container {
 	text-align: left;
 	display: flex;
-	height: 4dvh;
+	height: 1.5em;
 	white-space: nowrap;
 	align-items: center;
 }

@@ -91,9 +91,8 @@ function handleMemberClick(member: GuildMemberResponse) {
 }
 
 #members-container {
-	padding-top: 1dvh;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	min-width: 12rem;
+	padding-top: 1em;
 	border-left: 1px solid var(--padding-color);
 }
 
@@ -102,14 +101,14 @@ function handleMemberClick(member: GuildMemberResponse) {
 	flex-direction: column;
 	overflow-y: scroll;
 	max-height: 92dvh;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	padding-left: 1.3em;
+	padding-right: 1.3em;
 	margin-top: 1dvh;
 }
 
 .member-item {
 	display: grid;
-	grid-template-columns: 2dvw 1fr;
+	grid-template-columns: 1.5em 1fr;
 	margin-top: .5em;
 	margin-bottom: .5em;
 	gap: 1em;
@@ -121,7 +120,7 @@ function handleMemberClick(member: GuildMemberResponse) {
 #channels-list {
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
+	gap: .5em;
 }
 
 .member-avatar {
