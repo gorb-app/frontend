@@ -7,7 +7,7 @@
 			</div>
 		</div>
 		<div id="left-column">
-			<NuxtLink id="home-button" href="/home">
+			<NuxtLink id="home-button" href="/">
 				<img class="sidebar-icon" src="/public/icon.svg"/>
 			</NuxtLink>
 			<div id="servers-list">
