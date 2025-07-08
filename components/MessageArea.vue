@@ -246,6 +246,7 @@ router.beforeEach((to, from, next) => {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
+	flex-grow: 1;
 }
 
 #message-box {

@@ -27,6 +27,7 @@
 		<div id="members-container">
 			<div id="members-list">
 				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
+				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
 			</div>
 		</div>
 	</NuxtLayout>
@@ -83,35 +84,35 @@ function handleMemberClick(member: GuildMemberResponse) {
 <style>
 
 #middle-left-column {
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	padding-left: .5em;
+	padding-right: .5em;
 	border-right: 1px solid var(--padding-color);
 	background: var(--optional-channel-list-background);
 	background-color: var(--sidebar-background-color);
 }
 
 #members-container {
-	min-width: 12rem;
-	padding-top: 1em;
+	width: 12rem;
 	border-left: 1px solid var(--padding-color);
 }
 
 #members-list {
 	display: flex;
 	flex-direction: column;
+	overflow-x: hidden;
 	overflow-y: scroll;
-	max-height: 92dvh;
-	padding-left: 1.3em;
-	padding-right: 1.3em;
-	margin-top: 1dvh;
+	padding-left: 1.25em;
+	padding-right: 1.25em;
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
+	max-height: calc(100% - 0.75em * 2); /* 100% - top and bottom */
 }
 
 .member-item {
-	display: grid;
-	grid-template-columns: 1.5em 1fr;
+	display: flex;
 	margin-top: .5em;
 	margin-bottom: .5em;
-	gap: 1em;
+	gap: .5em;
 	align-items: center;
 	text-align: left;
 	cursor: pointer;

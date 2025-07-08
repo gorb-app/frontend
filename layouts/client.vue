@@ -74,27 +74,27 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 #left-column {
 	display: flex;
 	flex-direction: column;
-	gap: 2dvh;
-	padding-left: .5dvw;
-	padding-right: .5dvw;
+	gap: .75em;
+	padding-left: .25em;
+	padding-right: .25em;
 	border-right: 1px solid var(--padding-color);
 	background: var(--optional-sidebar-background);
 	background-color: var(--sidebar-background-color);
-	padding-top: 1.5dvh;
+	padding-top: .5em;
 }
 
 #servers-list {
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
+	gap: 1em;
 	width: 3.2rem;	
 }
 
 #middle-left-column {
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	padding-left: .25em;
+	padding-right: .25em;
 	border-right: 1px solid var(--padding-color);
-	min-width: 10rem;
+	min-width: 10em;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
@@ -106,12 +106,12 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
 #home-button {
 	border-bottom: 1px solid var(--padding-color);
-	padding-bottom: 1dvh;
+	padding-bottom: .375em;
 }
 
 #settings-menu {
 	position: absolute;
-	bottom: .25dvh
+	bottom: .25em
 }
 
 </style>
