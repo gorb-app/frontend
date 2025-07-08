@@ -7,7 +7,7 @@
         Welcome to gorb :3
       </h1>
 	  <p>
-		Click on a server to the left to view a guild.
+		Click on a guild to the left to view a guild.
 		<br>
 		Or click the button in the bottom left to join a guild.
 	  </p>
