@@ -75,6 +75,11 @@ onMounted(async () => {
 //	showHover.value = !showHover.value;
 //}
 
+const nuxtApp = useNuxtApp();
+function emitId() {
+	// nuxtApp.callHook()
+}
+
 </script>
 
 <style scoped>
