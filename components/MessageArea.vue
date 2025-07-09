@@ -14,11 +14,14 @@
 						<Icon name="lucide:file-plus-2" />
 					</span>
 				</div>
-				<textarea v-model="messageInput" id="message-box-input" ref="messageInputField"
-						class="rounded-corners" type="text" name="message-input"
-						autocomplete="off" contenteditable="true" spellcheck="true"
-						@keydown="handleMessageKeyDown">
-				</textarea>
+
+				<div id="message-textarea">
+					<div id="message-textbox-input" class=""
+							role="textbox" ref="messageTextboxInput"
+							autocorrect="off" spellcheck="true" contenteditable="true"
+							@keydown="handleTextboxKeyDown" @input="handleTextboxInput">
+					</div>
+				</div>
 				
 				<div id="message-box-right-elements">
 					<button class="message-box-button" type="submit">
@@ -120,19 +123,38 @@ function pushMessage(message: MessageResponse) {
 	messages.value.push(message);
 }
 
-function handleMessageKeyDown(event: KeyboardEvent) {
-	if (event.key === "Enter" && event.shiftKey) {
-		event.preventDefault();
-		messageInput.value += "\n"
+function handleTextboxKeyDown(event: KeyboardEvent) {
+	if (event.key === "Enter" && event.shiftKey && messageTextboxInput.value) {
+		// this enters a newline, due to not preventing default
 	} else if (event.key === "Enter") {
-		// <send message>
+		event.preventDefault()
+		sendMessage(event)
+	}
+	
+	adjustTextboxHeight()
+}
+
+function handleTextboxInput() {
+	if (messageTextboxInput.value) {
+        messageInput.value = messageTextboxInput.value.innerText;
+    }
+
+	adjustTextboxHeight()
+}
+
+// this technically uses pixel units, but it's still set using dynamic units
+function adjustTextboxHeight() {
+	if (messageTextboxInput.value && messageTextboxDisplay.value) {
+		messageTextboxInput.value.style.height = "auto"
+		messageTextboxInput.value.style.height = `${messageTextboxInput.value.scrollHeight}px`
 	}
 }
 
 const messages = ref<MessageResponse[]>([]);
-const messageInput = ref<string>();
+const messageInput = ref<string>("");
 const messagesElement = ref<HTMLDivElement>();
-const messageInputField = ref<HTMLTextAreaElement>();
+const messageTextboxInput = ref<HTMLDivElement>();
+const messageTextboxDisplay = ref<HTMLDivElement>();
 
 if (messagesRes) messages.value = messagesRes;
 
@@ -180,14 +202,21 @@ if (accessToken && apiBase) {
 
 function sendMessage(e: Event) {
 	e.preventDefault();
-	const message = {
-		message: messageInput.value
-	}
-	console.log("message:", message);
-	if (message.message) {
+	if (messageInput.value && messageInput.value.trim() !== "") {
+		const message = {
+			message: messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
+		}
+
+		console.log("message:", message);
 		ws.send(JSON.stringify(message));
-		messageInput.value = "";
-		console.log("MESSAGE SENT!!!");
+
+		// reset input field
+		messageInput.value = ""
+		if (messageTextboxInput.value) {
+			messageTextboxInput.value.innerText = ""
+		}
+
+		adjustTextboxHeight()
 	}
 }
 
@@ -278,35 +307,42 @@ router.beforeEach((to, from, next) => {
 	padding-left: 2%;
 	padding-right: 2%;
 	
-	min-height: 5em;
-	max-height: 50%;
-	flex-grow: 1;
-
+	align-items: center;
+	
+	color: var(--text-color);
 	border: 1px solid var(--padding-color);
 	background-color: var(--chatbox-background-color);
 }
 
 #message-form {
-	height: 100%;
-
 	display: flex;
 	flex-direction: row;
-	gap: .5em;
+	gap: .55em;
 }
 
-#message-box-input {
+#message-textarea {
 	flex-grow: 1;
+	min-height: 2.35em;
+}
 
-	color: inherit;
-	font: inherit;
+#message-textbox-input {
+	width: 100%;
+	max-height: 50dvh;
+
+	padding: 0.5em 0;
+	user-select: text;
+
+	font-family: inherit;
+	font-size: inherit;
+	line-height: normal;
 	border: none;
 	background-color: #40404000; /* completely transparent colour */
 
-	box-sizing: border-box;
-	display: inline-block;
+	text-align: left;
+	word-break: break-word;
+	overflow-wrap: break-word;
 	
-	overflow: auto;
-	resize: none;
+	overflow-y: auto;
 }
 
 #message-box-left-elements, #message-box-right-elements {
