@@ -43,6 +43,14 @@ async function changeEmail() {
       body: formData
     })
 
+	const apiBase = useCookie("api_base").value;
+
+	if (apiBase) {
+		const stats = await useApi().fetchInstanceStats(apiBase);
+		if (stats.email_verification_required) {
+			return window.location.reload();
+		}
+	}
     alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
