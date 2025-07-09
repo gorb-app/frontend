@@ -28,7 +28,6 @@
 
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
-import type { StatsResponse } from '~/types/interfaces';
 
 const instanceUrl = ref<string | null | undefined>(null);
 const instanceUrlInput = ref<string>();
