@@ -20,30 +20,7 @@
 				<slot />
 			</div>
 			<div v-if="instanceUrl">
-				Instance URL is set to {{ instanceUrl }}
-			</div>
-			<div v-if="auth.accessToken.value">
-				You're logged in!
-				<form @submit="logout">
-					<div>
-						<label for="logout-password">Password</label>
-						<br>
-						<input type="password" name="logout-password" id="logout-password" v-model="form.password"
-							required>
-					</div>
-					<div>
-						<button type="submit">Log out</button>
-					</div>
-				</form>
-				<div>
-					<button @click="refresh">Refresh</button>
-				</div>
-				<div>
-					<button @click="showUser">Show user</button>
-				</div>
-				<div>
-					<button @click="getUser">Get me</button>
-				</div>
+				Instance URL is set to <span style="color: var(--primary-color);">{{ instanceUrl }}</span>
 			</div>
 		</div>
 	</div>
@@ -51,7 +28,6 @@
 
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
-import type { StatsResponse } from '~/types/interfaces';
 
 const instanceUrl = ref<string | null | undefined>(null);
 const instanceUrlInput = ref<string>();
@@ -63,9 +39,7 @@ const registrationEnabled = useState("registrationEnabled", () => true);
 const auth = useAuth();
 
 onMounted(async () => {
-	const cookie = useCookie("instance_url").value;
-	instanceUrl.value = cookie;
-	console.log(cookie);
+	instanceUrl.value = useCookie("instance_url").value;
 	console.log("set instance url to:", instanceUrl.value);
 });
 
@@ -73,8 +47,8 @@ async function selectInstance(e: Event) {
 	e.preventDefault();
 	console.log("trying input instance");
 	if (instanceUrlInput.value) {
-		console.log("input has value");
 		const gorbTxtUrl = new URL(`/.well-known/gorb.txt`, instanceUrlInput.value);
+		console.log("input has value");
 		try {
 			console.log("trying to get gorb.txt:", gorbTxtUrl);
 			const res = await $fetch.raw(gorbTxtUrl.href, { responseType: "text" });
@@ -87,10 +61,10 @@ async function selectInstance(e: Event) {
 				instanceUrl.value = origin;
 				useCookie("instance_url").value = origin;
 				console.log("set instance url to:", origin);
-				const { status, data, error } = await useFetch<StatsResponse>(`${apiBase.value}/stats`);
-				if (status.value == "success" && data.value) {
-					registrationEnabled.value = data.value.registration_enabled;
-					console.log("set registration enabled value to:", data.value.registration_enabled);
+				const stats = await useApi().fetchInstanceStats(apiBase.value);
+				if (stats) {
+					registrationEnabled.value = stats.registration_enabled;
+					console.log("set registration enabled value to:", stats.registration_enabled);
 				}
 				return;
 			}
@@ -148,18 +122,22 @@ async function showUser(e: Event) {
 	align-items: center;
 }
 
-#auth-form-container,
-#auth-form-container form {
+#auth-form-container {
 	display: flex;
-	width: 50dvw;
+	width: 20dvw;
 	flex-direction: column;
 	align-items: center;
+	text-align: center;
 	gap: 1em;
+	margin-bottom: 2dvh;
 }
 
 #auth-form-container form {
+	display: flex;
+	flex-direction: column;
 	text-align: left;
 	margin-top: 10dvh;
+	gap: 1em;
 }
 
 #instance-error-container {
