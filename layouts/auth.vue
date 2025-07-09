@@ -122,18 +122,22 @@ async function showUser(e: Event) {
 	align-items: center;
 }
 
-#auth-form-container,
-#auth-form-container form {
+#auth-form-container {
 	display: flex;
-	width: 50dvw;
+	width: 20dvw;
 	flex-direction: column;
 	align-items: center;
+	text-align: center;
 	gap: 1em;
+	margin-bottom: 2dvh;
 }
 
 #auth-form-container form {
+	display: flex;
+	flex-direction: column;
 	text-align: left;
 	margin-top: 10dvh;
+	gap: 1em;
 }
 
 #instance-error-container {
