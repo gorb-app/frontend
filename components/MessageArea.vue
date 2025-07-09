@@ -5,7 +5,7 @@
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
 				format="12" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
-				:last="i == messages.length - 1" />
+				:last="i == messages.length - 1" :message-id="message.uuid" />
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">

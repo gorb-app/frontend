@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message">
+	<div @click="emitId" v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message" :data-message-id="props.messageId">
 		<div class="left-column">
 			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="username" />
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
@@ -16,7 +16,7 @@
 			<div class="message-text" v-html="sanitized" tabindex="0"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }">
+	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }" :data-message-id="props.messageId">
 		<div class="left-column">
 			<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
 				{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
@@ -41,7 +41,8 @@ const props = defineProps<{
 	format: "12" | "24",
 	type: "normal" | "grouped",
 	marginBottom: boolean,
-	last: boolean
+	last: boolean,
+	messageId: string
 }>();
 
 const messageElement = ref<HTMLDivElement>();
