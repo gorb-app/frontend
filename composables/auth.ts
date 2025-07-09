@@ -7,6 +7,7 @@ export const useAuth = () => {
   async function clearAuth() {
     accessToken.value = null;
     user.value = null;
+	await navigateTo("/login");
   }
 
   async function register(username: string, email: string, password: string) {
