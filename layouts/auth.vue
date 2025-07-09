@@ -39,9 +39,7 @@ const registrationEnabled = useState("registrationEnabled", () => true);
 const auth = useAuth();
 
 onMounted(async () => {
-	const cookie = useCookie("instance_url").value;
-	instanceUrl.value = cookie;
-	console.log(cookie);
+	instanceUrl.value = useCookie("instance_url").value;
 	console.log("set instance url to:", instanceUrl.value);
 });
 
@@ -49,8 +47,8 @@ async function selectInstance(e: Event) {
 	e.preventDefault();
 	console.log("trying input instance");
 	if (instanceUrlInput.value) {
-		console.log("input has value");
 		const gorbTxtUrl = new URL(`/.well-known/gorb.txt`, instanceUrlInput.value);
+		console.log("input has value");
 		try {
 			console.log("trying to get gorb.txt:", gorbTxtUrl);
 			const res = await $fetch.raw(gorbTxtUrl.href, { responseType: "text" });
