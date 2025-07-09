@@ -61,10 +61,10 @@ async function selectInstance(e: Event) {
 				instanceUrl.value = origin;
 				useCookie("instance_url").value = origin;
 				console.log("set instance url to:", origin);
-				const { status, data, error } = await useFetch<StatsResponse>(`${apiBase.value}/stats`);
-				if (status.value == "success" && data.value) {
-					registrationEnabled.value = data.value.registration_enabled;
-					console.log("set registration enabled value to:", data.value.registration_enabled);
+				const stats = await useApi().fetchInstanceStats(apiBase.value);
+				if (stats) {
+					registrationEnabled.value = stats.registration_enabled;
+					console.log("set registration enabled value to:", stats.registration_enabled);
 				}
 				return;
 			}
