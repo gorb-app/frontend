@@ -14,9 +14,11 @@
 						<Icon name="lucide:file-plus-2" />
 					</span>
 				</div>
-
-				<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text"
-					name="message-input" autocomplete="off">
+				<textarea v-model="messageInput" id="message-box-input" ref="messageInputField"
+						class="rounded-corners" type="text" name="message-input"
+						autocomplete="off" contenteditable="true" spellcheck="true"
+						@keydown="handleMessageKeyDown">
+				</textarea>
 				
 				<div id="message-box-right-elements">
 					<button class="message-box-button" type="submit">
@@ -118,11 +120,19 @@ function pushMessage(message: MessageResponse) {
 	messages.value.push(message);
 }
 
+function handleMessageKeyDown(event: KeyboardEvent) {
+	if (event.key === "Enter" && event.shiftKey) {
+		event.preventDefault();
+		messageInput.value += "\n"
+	} else if (event.key === "Enter") {
+		// <send message>
+	}
+}
+
 const messages = ref<MessageResponse[]>([]);
-
 const messageInput = ref<string>();
-
 const messagesElement = ref<HTMLDivElement>();
+const messageInputField = ref<HTMLTextAreaElement>();
 
 if (messagesRes) messages.value = messagesRes;
 
@@ -253,8 +263,8 @@ router.beforeEach((to, from, next) => {
 
 <style scoped>
 #message-area {
-	display: grid;
-	grid-template-rows: 8fr 1fr;
+	display: flex;
+	flex-direction: column;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
@@ -264,35 +274,39 @@ router.beforeEach((to, from, next) => {
 	margin-bottom: 2dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
-}
 
-#message-form {
-	display: flex;
-	flex-direction: row;
-	
-	border: 1px solid var(--padding-color);
-	height: 100%;
 	padding-left: 2%;
 	padding-right: 2%;
+	
+	min-height: 5em;
+	max-height: 50%;
+	flex-grow: 1;
 
-	min-height: 100%;
-	justify-content: center;
+	border: 1px solid var(--padding-color);
 	background-color: var(--chatbox-background-color);
 }
 
-#message-box-input {
+#message-form {
 	height: 100%;
-	width: 100%;
-	margin-left: 1.5%;
-	margin-right: 1.5%;
+
+	display: flex;
+	flex-direction: row;
+	gap: .5em;
+}
+
+#message-box-input {
+	flex-grow: 1;
+
+	color: inherit;
+	font: inherit;
+	border: none;
+	background-color: #40404000; /* completely transparent colour */
 
 	box-sizing: border-box;
 	display: inline-block;
-	vertical-align: top;
-
-	border: none;
-	color: inherit;
-	background-color: #00000000; /* completely transparent colour */
+	
+	overflow: auto;
+	resize: none;
 }
 
 #message-box-left-elements, #message-box-right-elements {
