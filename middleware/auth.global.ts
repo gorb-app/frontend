@@ -33,6 +33,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				if (parsed.ApiBaseUrl) {
 					apiBase.value = `${parsed.ApiBaseUrl}/v${apiVersion}`;
 					console.log("set apiBase to:", parsed.ApiBaseUrl);
+					console.log("hHEYOO");
+					const instanceUrl = useCookie("instance_url");
+					console.log("hHEYOO 2");
+					console.log("instance url:", instanceUrl.value);
+					if (!instanceUrl.value) {
+						instanceUrl.value = `${requestUrl.protocol}//${requestUrl.host}`;
+						console.log("set instance url to:", instanceUrl.value);
+					}
 				}
 			}
 		}
