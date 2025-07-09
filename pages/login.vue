@@ -44,10 +44,9 @@ const apiBase = useCookie("api_base");
 
 if (apiBase.value) {
 	console.log("apiBase:", apiBase.value);
-	const statsUrl = new URL("/stats", apiBase.value).href;
-	const { status, data } = await useFetch<StatsResponse>(statsUrl);
-	if (status.value == "success" && data.value) {
-		registrationEnabled.value = data.value.registration_enabled;
+	const stats = await useApi().fetchInstanceStats(apiBase.value);
+	if (stats) {
+		registrationEnabled.value = stats.registration_enabled;
 	}
 }
 
