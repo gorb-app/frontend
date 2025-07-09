@@ -20,30 +20,7 @@
 				<slot />
 			</div>
 			<div v-if="instanceUrl">
-				Instance URL is set to {{ instanceUrl }}
-			</div>
-			<div v-if="auth.accessToken.value">
-				You're logged in!
-				<form @submit="logout">
-					<div>
-						<label for="logout-password">Password</label>
-						<br>
-						<input type="password" name="logout-password" id="logout-password" v-model="form.password"
-							required>
-					</div>
-					<div>
-						<button type="submit">Log out</button>
-					</div>
-				</form>
-				<div>
-					<button @click="refresh">Refresh</button>
-				</div>
-				<div>
-					<button @click="showUser">Show user</button>
-				</div>
-				<div>
-					<button @click="getUser">Get me</button>
-				</div>
+				Instance URL is set to <span style="color: var(--primary-color);">{{ instanceUrl }}</span>
 			</div>
 		</div>
 	</div>
