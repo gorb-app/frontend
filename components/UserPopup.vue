@@ -59,11 +59,13 @@ const props = defineProps<{
   width: 96px;
   height: 96px;
   border: 5px solid #4b3018;
+  background-color: var(--secondary-color);
   border-radius: 100%;
   position: absolute;
   left: 16px;
   top: 16px;
 }
+
 
 #display-name {
   margin-top: 60px;
