@@ -21,7 +21,7 @@ const props = defineProps<{
 	background-color: var(--primary-color);
 	color: var(--text-color);
 
-	padding: 0.7dvh 1.2dvw;
+	padding: 0.4em 0.75em;
 	font-size: 1.1em;
 	transition: background-color 0.2s;
 

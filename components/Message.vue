@@ -188,12 +188,12 @@ function getDayDifference(date1: Date, date2: Date) {
 
 <style module>
 .message-text ul, h1, h2, h3, h4, h5, h6 {
-	padding-top: 1dvh;
-	padding-bottom: 1dvh;
+	padding-top: .5em;
+	padding-bottom: .5em;
 	margin: 0;
 }
 
 .message-text ul  {
-	padding-left: 2dvw;
+	padding-left: 1em;
 }
 </style>

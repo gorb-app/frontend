@@ -23,14 +23,14 @@ const isCurrentChannel = props.uuid == props.currentUuid;
 .channel-list-link {
 	text-decoration: none;
 	color: inherit;
-	padding-left: .5dvw;
-	padding-right: .5dvw;
+	padding-left: .25em;
+	padding-right: .25em;
 }
 
 .channel-list-link-container {
 	text-align: left;
 	display: flex;
-	height: 4dvh;
+	height: 1.5em;
 	white-space: nowrap;
 	align-items: center;
 }

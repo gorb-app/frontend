@@ -33,7 +33,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: var(--text-color);
-	background: var(--optional-chat-background);
+	background: var(--optional-body-background);
   background-color: var(--chat-background-color);
   margin: 0;
 }
