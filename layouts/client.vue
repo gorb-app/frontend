@@ -166,8 +166,7 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
 #settings-menu {
 	position: absolute;
-	bottom: .25em
-	bottom: .25em
+	bottom: .25em;
 }
 
 </style>
