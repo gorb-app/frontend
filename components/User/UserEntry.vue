@@ -24,7 +24,12 @@ const props = defineProps<{
 	margin-bottom: .5em;
 	gap: .5em;
     
-	cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-item:hover {
+    background-color: #00000020
 }
 
 .user-avatar {
