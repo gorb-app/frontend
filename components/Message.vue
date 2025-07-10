@@ -1,5 +1,5 @@
 <template>
-	<div @click="emitId" v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message" :data-message-id="props.messageId">
+	<div v-if="props.type == 'normal'" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined" class="message normal-message" :data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
 			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="author?.display_name || author?.username" />
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
@@ -16,7 +16,7 @@
 			<div class="message-text" v-html="sanitized" tabindex="0"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }" :data-message-id="props.messageId">
+	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }" :data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
 			<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
 				{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
@@ -61,14 +61,16 @@ onMounted(async () => {
 	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a", "h1", "h2", "h3", "h4", "h5", "h6"] });
 	console.log("adding listeners")
 	await nextTick();
-	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
-		dateHidden.value = false;
-	});
-
-	messageElement.value?.addEventListener("mouseleave", (e: Event) => {
-		dateHidden.value = true;
-	});
-	console.log("added listeners");
+	if (messageElement.value?.classList.contains("grouped-message")) {
+		messageElement.value?.addEventListener("mouseenter", (e: Event) => {
+			dateHidden.value = false;
+		});
+	
+		messageElement.value?.addEventListener("mouseleave", (e: Event) => {
+			dateHidden.value = true;
+		});
+		console.log("added listeners");
+	}
 });
 
 //function toggleTooltip(e: Event) {
