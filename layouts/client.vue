@@ -71,6 +71,10 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	width: 100dvw;
 }
 
+.homebar-item {
+	width: 100dvw;
+}
+
 #page-content {
 	display: flex;
 	flex-direction: row;
