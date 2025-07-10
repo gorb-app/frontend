@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-import Button from '~/components/Button.vue';
 import type { UserResponse } from '~/types/interfaces';
 
 const { fetchUser } = useAuth();

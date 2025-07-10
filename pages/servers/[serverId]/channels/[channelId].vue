@@ -46,7 +46,6 @@ const channel = ref<ChannelResponse | undefined>();
 
 const showInvitePopup = ref(false);
 
-import UserPopup from "~/components/UserPopup.vue";
 import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
