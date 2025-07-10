@@ -18,7 +18,7 @@
 				</h3>
 			</div>
 			<div id="channels-list">
-				<Channel v-for="channel of channels" :name="channel.name"
+				<ChannelEntry v-for="channel of channels" :name="channel.name"
 					:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
 					:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
 			</div>
@@ -33,6 +33,7 @@
 </template>
 
 <script lang="ts" setup>
+import ChannelEntry from "~/components/Guild/ChannelEntry.vue";
 
 const route = useRoute();
 
@@ -90,7 +91,8 @@ function handleMemberClick(member: GuildMemberResponse) {
 }
 
 #members-container {
-	width: 15rem;
+	min-width: 15rem;
+	max-width: 15rem;
 	border-left: 1px solid var(--padding-color);
 	background: var(--optional-member-list-background);
 }
