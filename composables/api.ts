@@ -1,4 +1,4 @@
-import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse, StatsResponse } from "~/types/interfaces";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse, StatsResponse, UserResponse } from "~/types/interfaces";
 
 export const useApi = () => {
 	async function fetchGuilds(): Promise<GuildResponse[] | undefined> {
@@ -24,13 +24,17 @@ export const useApi = () => {
 	async function fetchMember(guildId: string, memberId: string): Promise<GuildMemberResponse | undefined> {
 		return await fetchWithApi(`/guilds/${guildId}/members/${memberId}`);
 	}
-
+	
 	async function fetchUsers() {
 		return await fetchWithApi(`/users`);
 	}
-
+	
 	async function fetchUser(userId: string) {
 		return await fetchWithApi(`/users/${userId}`);
+	}
+	
+	async function fetchFriends(): Promise<UserResponse[] | undefined> {
+		return await fetchWithApi('/me/friends')
 	}
 
 	async function fetchMessages(channelId: string, options?: { amount?: number, offset?: number }): Promise<MessageResponse[] | undefined> {
@@ -59,6 +63,7 @@ export const useApi = () => {
 		fetchMember,
 		fetchUsers,
 		fetchUser,
+		fetchFriends,
 		fetchMessages,
 		fetchMessage,
 		fetchInstanceStats,
