@@ -75,11 +75,14 @@ onMounted(async () => {
 //	showHover.value = !showHover.value;
 //}
 
-const nuxtApp = useNuxtApp();
-function emitId() {
-	// nuxtApp.callHook()
-}
+const menuItems = [
+	{ name: "Reply", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
+]
 
+console.log("me:", props.me);
+if (props.author?.uuid == props.me.uuid) {
+	menuItems.push({ name: "Edit", callback: () => { if (messageElement.value) editMessage(messageElement.value, props) } });
+}
 </script>
 
 <style scoped>

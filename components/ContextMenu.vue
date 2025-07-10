@@ -5,14 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ cursorX: number, cursorY: number }>();
+import type { ContextMenuItem } from '~/types/interfaces';
 
-
-
-const menuItems = [
-	{ name: "Edit", callback: editMessage },
-	{ name: "Reply", callback: replyMessage }
-];
+const props = defineProps<{ menuItems: ContextMenuItem[], cursorX: number, cursorY: number }>();
 
 onMounted(() => {
 	const contextMenu = document.getElementById("context-menu");
