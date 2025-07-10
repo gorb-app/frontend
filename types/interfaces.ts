@@ -83,3 +83,8 @@ export interface ScrollPosition {
 	offsetTop: number,
 	offsetLeft: number
 }
+
+export interface ContextMenuItem {
+	name: string,
+	callback: (...args: any[]) => any;
+}
