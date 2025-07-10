@@ -16,7 +16,7 @@
 				</div>
 
 				<div id="message-textarea">
-					<div id="message-textbox-input" class=""
+					<div id="message-textbox-input"
 							role="textbox" ref="messageTextboxInput"
 							autocorrect="off" spellcheck="true" contenteditable="true"
 							@keydown="handleTextboxKeyDown" @input="handleTextboxInput">
