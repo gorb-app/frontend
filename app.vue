@@ -1,6 +1,13 @@
 <template>
   <div>
     <Banner v-if="banner" />
+    <div id="homebar">
+			<div class="homebar-item">
+				<marquee>
+					gorb!!!!!
+				</marquee>
+			</div>
+		</div>
     <NuxtPage :keepalive="true" />
   </div>
 </template>
@@ -69,6 +76,23 @@ a {
 
 .invisible {
 	visibility: hidden;
+}
+
+#homebar {
+	grid-row: 1;
+	grid-column: 1 / -1;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	background: var(--optional-topbar-background);
+	background-color: var(--topbar-background-color);
+	padding-left: 5dvw;
+	padding-right: 5dvw;
+
+}
+
+.homebar-item {
+	width: 100dvw;
 }
 
 </style>

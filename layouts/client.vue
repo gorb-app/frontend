@@ -1,13 +1,6 @@
 <template>
 	<Loading v-show="loading" />
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
-		<div id="homebar">
-			<div class="homebar-item">
-				<marquee>
-					gorb!!!!!
-				</marquee>
-			</div>
-		</div>
 		<div id="left-column">
 			<NuxtLink id="home-button" href="/">
 				<img class="sidebar-icon" src="/public/icon.svg"/>
@@ -40,7 +33,7 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	height: 100dvh;
 	display: grid;
 	grid-template-columns: 1fr 4fr 18fr 4fr;
-	grid-template-rows: 4dvh auto;
+	grid-template-rows: auto;
 	text-align: center;
 }
 
@@ -51,23 +44,6 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 .visible {
 	opacity: 100%;
 	transition-duration: 500ms;
-}
-
-#homebar {
-	grid-row: 1;
-	grid-column: 1 / -1;
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	background: var(--optional-topbar-background);
-	background-color: var(--topbar-background-color);
-	padding-left: 5dvw;
-	padding-right: 5dvw;
-
-}
-
-.homebar-item {
-	width: 100dvw;
 }
 
 #client-root>div:nth-child(-n+4) {
