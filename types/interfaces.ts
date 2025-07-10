@@ -61,7 +61,8 @@ export interface UserResponse {
 	pronouns: string | null,
 	about: string | null,
 	email?: string,
-	email_verified?: boolean
+	email_verified?: boolean,
+	friends_since: string | null,
 }
 
 export interface StatsResponse {
