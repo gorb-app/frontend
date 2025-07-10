@@ -10,7 +10,7 @@
 		</div>
 		<div id = "page-content">
 			<div id="left-column">
-				<NuxtLink id="home-button" href="/">
+				<NuxtLink id="home-button" href="/me">
 					<img class="sidebar-icon" src="/public/icon.svg"/>
 				</NuxtLink>
 				<div id="servers-list">
