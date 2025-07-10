@@ -33,6 +33,9 @@
 </template>
 
 <script lang="ts" setup>
+import UserPopup from '~/components/User/UserPopup.vue';
+import Button from '~/components/UserInterface/Button.vue';
+
 import type { UserResponse } from '~/types/interfaces';
 
 let newPfpFile: File;

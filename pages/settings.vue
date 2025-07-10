@@ -8,7 +8,7 @@
               <Icon class="back-button" size="2em" name="lucide:circle-arrow-left" alt="Back"></Icon>
             </span>
           </p>
-          <verticalSpacer />
+          <VerticalSpacer />
 
           <!-- categories and dynamic settings pages -->
           <div v-for="category in categories" :key="category.displayName">
@@ -46,6 +46,9 @@
 
 
 <script lang="ts" setup>
+import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
+import Button from '~/components/UserInterface/Button.vue';
+
 const { logout } = useAuth()
 const appConfig = useRuntimeConfig()
 
