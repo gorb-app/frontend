@@ -16,7 +16,7 @@
 				</div>
 
 				<div id="message-textarea">
-					<div id="message-textbox-input" class=""
+					<div id="message-textbox-input"
 							role="textbox" ref="messageTextboxInput"
 							autocorrect="off" spellcheck="true" contenteditable="true"
 							@keydown="handleTextboxKeyDown" @input="handleTextboxInput">
@@ -348,7 +348,7 @@ router.beforeEach((to, from, next) => {
 
 #message-box-left-elements, #message-box-right-elements {
 	display: flex;
-	align-items: center;
+	align-items: end;
 }
 
 #messages {
