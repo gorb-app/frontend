@@ -1,4 +1,4 @@
-import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse, StatsResponse } from "~/types/interfaces";
 
 export const useApi = () => {
 	async function fetchGuilds(): Promise<GuildResponse[] | undefined> {
@@ -41,6 +41,15 @@ export const useApi = () => {
 		return await fetchWithApi(`/channels/${channelId}/messages/${messageId}`);
 	}
 
+	async function fetchInstanceStats(apiBase: string): Promise<StatsResponse> {
+		return await $fetch(`${apiBase}/stats`, { method: "GET" });
+	}
+
+	async function sendVerificationEmail(): Promise<void> {
+		const email = useAuth().user.value?.email;
+		await fetchWithApi("/auth/verify-email", { method: "POST", body: { email } });
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -51,6 +60,8 @@ export const useApi = () => {
 		fetchUsers,
 		fetchUser,
 		fetchMessages,
-		fetchMessage
+		fetchMessage,
+		fetchInstanceStats,
+		sendVerificationEmail
 	}
 }

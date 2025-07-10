@@ -1,7 +1,9 @@
 <template>
   <div id="profile-popup">
     <img v-if="props.user.avatar" id="avatar" :src="props.user.avatar" alt="profile avatar">
-    <div id="cover-colour"></div>
+    <Icon v-else id="avatar" name="lucide:user" />
+
+    <div id="cover-color"></div>
     <div id="main-body">
       <p id="display-name">
         <strong>{{ props.user.display_name }}</strong>
@@ -38,17 +40,17 @@ const props = defineProps<{
   flex-direction: column;
 }
 
-#cover-colour {
+#cover-color {
   border-radius: 12px 12px 0 0;
   min-height: 60px;
-  background-color: #442505;
+  background-color: var(--primary-color);
 }
 
 #main-body {
   border-radius: 0 0 12px 12px;
   padding: 12px;
   min-height: 280px;
-  background-color: #4b3018;
+  background-color: var(--accent-color);
   overflow-wrap: break-word;
   hyphens: manual;
 }
@@ -57,11 +59,13 @@ const props = defineProps<{
   width: 96px;
   height: 96px;
   border: 5px solid #4b3018;
+  background-color: var(--secondary-color);
   border-radius: 100%;
   position: absolute;
   left: 16px;
   top: 16px;
 }
+
 
 #display-name {
   margin-top: 60px;
@@ -75,7 +79,7 @@ const props = defineProps<{
 }
 
 #about-me {
-  background-color: #34200f;
+  background-color: var(--secondary-color);
   border-radius: 12px;
 
   margin-top: 32px;

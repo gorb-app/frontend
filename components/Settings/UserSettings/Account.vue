@@ -1,33 +1,16 @@
 <template>
-  <div>
-    <h1>My Account</h1>
+  <div v-if="user">
+    <h1>Account</h1>
 
-    <div class="profile-container">
-      <div class="user-data-fields" v-if="user">
-        <p class="subtitle">AVATAR</p>
-        <Button text="Change Avatar" :callback="changeAvatar" style="margin-right: 0.8dvw;"></Button>
-        <Button text="Remove Avatar" :callback="removeAvatar" variant="neutral"></Button>
-        
-        <label for="profile-display-name-input" class="subtitle">DISPLAY NAME</label>
-        <input id="profile-display-name-input" class="profile-data-input" type="text" v-model="user.display_name" placeholder="Enter display name" />
-        <label for="profile-username-input" class="subtitle">USERNAME</label>
-        <input id="profile-username-input" class="profile-data-input" type="text" v-model="user.username" placeholder="Enter username" />
-        <label for="profile-pronouns-input" class="subtitle">PRONOUNS</label>
-        <input id="profile-pronouns-input" class="profile-data-input" type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
-        <label for="profile-about-me-input" class="subtitle">ABOUT ME</label>
-        <input id="profile-about-me-input" class="profile-data-input" type="text" v-model="user.about" placeholder="About me" />
-
-        <br>
-        <Button style="margin-top: 1dvh" text="Save Changes" :callback="saveChanges"></Button>
-      </div>
-
-      <UserPopup v-if="user" :user="user" class="profile-popup"></UserPopup>
-    </div>
-
-    <h2 style="margin-top: 8duservh">Password (and eventually authenticator)</h2>
-    <Button text="Reset Password (tbd)" :callback=resetPassword></Button>
+    <p class="subtitle">E-MAIL</p>
+    <input id="profile-about-me-input" class="profile-data-input" type="text" v-model="user.email" placeholder="john@example.org" />
+    <br>
+    <Button text="Submit" :callback=changeEmail style="margin-top: .4em"></Button>
     
-    <h2>Account Deletion</h2>
+    <p class="subtitle">PASSWORD</p>
+    <Button text="Reset Password" :callback=resetPassword></Button>
+    
+    <p class="subtitle">ACCOUNT DELETION</p>
     <Button text="Delete Account (tbd)" :callback=deleteAccount variant="scary"></Button>
 
   </div>
@@ -44,22 +27,13 @@ if (!user) {
   alert("could not fetch user info, aborting :(")
 }
 
-let newPfpFile: File;
-
-const saveChanges = async () => {
+async function changeEmail() {
   if (!user) return;
-  
+
+
   const formData = new FormData()
-  
-  if (newPfpFile) {
-    formData.append("avatar", newPfpFile)
-  }
-  
   const bytes = new TextEncoder().encode(JSON.stringify({
-    display_name: user.display_name,
-    username: user.username,
-    pronouns: user.pronouns,
-    about: user.about,
+    email: user.email,
   }));
   formData.append('json', new Blob([bytes], { type: 'application/json' }));
   
@@ -69,6 +43,14 @@ const saveChanges = async () => {
       body: formData
     })
 
+	const apiBase = useCookie("api_base").value;
+
+	if (apiBase) {
+		const stats = await useApi().fetchInstanceStats(apiBase);
+		if (stats.email_verification_required) {
+			return window.location.reload();
+		}
+	}
     alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
@@ -78,60 +60,24 @@ const saveChanges = async () => {
 };
 
 
-const removeAvatar = async () => {
-  alert("TBD")
-  // await fetchWithApi(`/auth/reset-password`);
-}
-
-const changeAvatar = async () => {
-  if (!user) return;
-
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-
-  input.addEventListener("change", (e: Event) => {
-    if (input.files?.length && input.files.length > 0) {
-      const file = input.files[0];
-      if (!file) return;
-
-      newPfpFile = file
-      
-      const reader = new FileReader();
-      reader.addEventListener("onload", () => {
-        if (reader.result && typeof reader.result === 'string') {
-          user.avatar = reader.result;
-        }
-      });
-      reader.readAsDataURL(file);
+async function resetPassword () {
+  await fetchWithApi("/auth/reset-password", {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    query: {
+      identifier: user?.username
     }
-  })
-
-  input.click()
+  });
 }
 
-const resetPassword = async () => {
-  alert("TBD")
-  // await fetchWithApi(`/auth/reset-password`);
-}
-
-const deleteAccount = async () => {
+async function deleteAccount() {
   alert("TBD")
 }
 </script>
 
 <style scoped>
-.profile-container {
-  display: flex;
-}
-
-.subtitle {
-  display: block;
-  font-size: 0.8em;
-  font-weight: 800;
-  margin: 1.5dvh 0 0.5dvh 0.25dvw;
-}
-
 .user-data-fields {
   min-width: 35dvw;
   max-width: 35dvw;
@@ -145,11 +91,7 @@ const deleteAccount = async () => {
   font-size: 1em;
   border-radius: 8px;
   border: none;
-  color: white;
-  background-color: #54361b;
-}
-
-.profile-popup {
-  margin-left: 2dvw;
+  color: var(--text-color);
+  background-color: var(--accent-color);
 }
 </style>

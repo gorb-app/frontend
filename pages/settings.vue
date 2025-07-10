@@ -2,8 +2,15 @@
   <div id="settings-page-container">
     <div id="settings-page">
       <div id="sidebar">
-        <h4>(Search bar here)</h4>
         <ul>
+          <p>
+            <span @click="$router.go(-1)">
+              <Icon class="back-button" size="2em" name="lucide:circle-arrow-left" alt="Back"></Icon>
+            </span>
+          </p>
+          <span class="spacer"></span>
+
+          <!-- categories and dynamic settings pages -->
           <div v-for="category in categories" :key="category.displayName">
             <h2>{{ category.displayName }}</h2>
             <li v-for="page in category.pages" :key="page.displayName" @click="selectCategory(page)"
@@ -12,8 +19,22 @@
             </li>
             <span class="spacer"></span>
           </div>
+          
+          <p>
+            <Button text="Log Out" :callback=logout variant="scary"></Button>
+          </p>
+          <span class="spacer"></span>
 
-          <Button text="Log Out" :callback=logout variant="scary"></Button>
+          <p id="links-and-socials">
+            <NuxtLink href="https://git.gorb.app/gorb/frontend" title="Source"><Icon name="lucide:git-branch-plus" /></NuxtLink>
+            <NuxtLink href="https://docs.gorb.app" title="Backend Documentation"><Icon name="lucide:book-open-text" /></NuxtLink>
+          </p>
+          
+          <p style="font-size: .8em; color: var(--secondary-text-color)">
+            Version Hash: {{ appConfig.public.gitHash }}
+            <br>
+            Build Time: {{ appConfig.public.buildTimeString }}
+          </p>
         </ul>
       </div>
       <div id="sub-page">
@@ -25,9 +46,8 @@
 
 
 <script lang="ts" setup>
-import Button from '~/components/Button.vue';
-
 const { logout } = useAuth()
+const appConfig = useRuntimeConfig()
 
 interface Page {
   displayName: string;
@@ -39,6 +59,7 @@ interface Category {
   pages: Page[];
 }
 
+import Profile from '~/components/Settings/UserSettings/Profile.vue';
 import Account from '~/components/Settings/UserSettings/Account.vue';
 import Privacy from '~/components/Settings/UserSettings/Privacy.vue';
 import Devices from '~/components/Settings/UserSettings/Devices.vue';
@@ -53,7 +74,8 @@ const settingsCategories = {
   userSettings: {
     displayName: "User Settings",
     pages: [
-      { displayName: "My Account", pageData: Account },
+      { displayName: "Profile", pageData: Profile },
+      { displayName: "Account", pageData: Account },
       { displayName: "Privacy", pageData: Privacy },
       { displayName: "Devices", pageData: Devices },
       { displayName: "Connections", pageData: Connections },
@@ -80,6 +102,16 @@ function selectCategory(page: Page) {
   selectedPage.value = page.displayName;
 };
 
+// redirects to you privacy if you go to settings#privacy
+onMounted(() => {
+  const hash = window.location.hash.substring(1).toLowerCase();
+  const foundPage = categories.flatMap(category => category.pages).find(page => page.displayName.toLowerCase() === hash);
+
+  if (foundPage) {
+    currentPage.value = foundPage;
+    selectedPage.value = foundPage.displayName;
+  }
+});
 </script>
 
 <style scoped>
@@ -98,10 +130,11 @@ function selectCategory(page: Page) {
 #sidebar {
   min-width: 25dvw;
   max-width: 25dvw;
-  background-color: #2f3136;
-  color: white;
+  background: var(--optional-channel-list-background);
+  background-color: var(--sidebar-background-color);
+  color: var(--text-color);
   padding: 1dvh 1dvw;
-  margin-left: auto;
+  margin-left: 0;
 
   overflow-y: auto;
   height: 100vh;
@@ -126,12 +159,16 @@ function selectCategory(page: Page) {
   transition: background-color 0.3s;
 }
 
+#sidebar p {
+  margin: 2dvh 0.8dvw;
+}
+
 .sidebar-focus {
-  background-color: #383B41;
+  background-color: var(--sidebar-highlighted-background-color);
 }
 
 #sidebar li:hover {
-  background-color: #40444b;
+  background-color: var(--sidebar-highlighted-background-color);
 }
 
 #sub-page {
@@ -145,15 +182,32 @@ function selectCategory(page: Page) {
   height: 100vh;
 }
 
+.back-button {
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: color 100ms;
+}
+
+.back-button:hover{
+  color: var(--primary-highlighted-color);
+}
+
+#links-and-socials * {
+  margin-right: 0.2em;
+}
+
 .spacer {
   height: 0.2dvh;
   display: block;
   margin: 0.8dvh 1dvw;
-  background-color: #2c2e32;
+  background-color: var(--padding-color);
 }
 
 /* applies to child pages too */
-:deep(h5) {
-  color: red;
+:deep(.subtitle) {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 800;
+  margin: 4dvh 0 0.5dvh 0.25dvw;
 }
 </style>

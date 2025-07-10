@@ -1,0 +1,20 @@
+:root {
+	--text-color: #f7eee8;
+	--secondary-text-color: #f0e8e4;
+
+	--chat-background-color: #1f1e1d;
+    --chat-highlighted-background-color: #2f2b28;
+	--sidebar-background-color: #2e2a27;
+	--sidebar-highlighted-background-color: #36322b;
+	--topbar-background-color: #2a2723;
+	--chatbox-background-color: #1a1713;
+
+    --padding-color: #484848;
+    
+	--primary-color: #f4741f;
+	--primary-highlighted-color: #f68a3f;
+	--secondary-color: #7c4018;
+	--secondary-highlighted-color: #8f5b2c;
+	--accent-color: #b35719;
+	--accent-highlighted-color: #c76a2e;
+}

@@ -18,10 +18,10 @@ const props = defineProps<{
 .button {
 	cursor: pointer;
 
-	background-color: #b35719;
-	color: #ffffff;
+	background-color: var(--primary-color);
+	color: var(--text-color);
 
-	padding: 0.7dvh 1.2dvw;
+	padding: 0.4em 0.75em;
 	font-size: 1.1em;
 	transition: background-color 0.2s;
 
@@ -30,15 +30,22 @@ const props = defineProps<{
 	display: inline-block;
 }
 
+.button:hover {
+	background-color: var(--primary-highlighted-color);
+}
+
 .scary-button {
+	background-color: red;
+}
+.scary-button:hover {
 	background-color: red;
 }
 
 .neutral-button {
-	background-color: grey;
+	background-color: var(--accent-color);
+}
+.neutral-button:hover {
+	background-color: var(--accent-highlighted-color);
 }
 
-.button:hover {
-	background-color: #934410;
-}
 </style>

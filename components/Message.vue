@@ -10,6 +10,8 @@
 					{{ author?.display_name || author?.username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
+					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
+					<span v-else-if="getDayDifference(date, currentDate) > 1 ">{{ date.toLocaleDateString(undefined) }},</span>
 					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
 				</span>
 			</div>
@@ -40,6 +42,7 @@ const messageElement = ref<HTMLDivElement>();
 const dateHidden = ref<boolean>(true);
 
 const date = new Date(props.timestamp);
+const currentDate: Date = new Date()
 
 console.log("message:", props.text);
 console.log("author:", props.author);
@@ -48,7 +51,16 @@ const sanitized = ref<string>();
 
 onMounted(async () => {
 	const parsed = await parse(props.text, { gfm: true });
-	sanitized.value = DOMPurify.sanitize(parsed, { ALLOWED_TAGS: ["strong", "em", "br", "blockquote", "code", "ul", "ol", "li", "a", "h1", "h2", "h3", "h4", "h5", "h6"] });
+	sanitized.value = DOMPurify.sanitize(parsed, {
+		ALLOWED_TAGS: [
+			"strong", "em", "br", "blockquote",
+			"code", "ul", "ol", "li", "a", "h1",
+			"h2", "h3", "h4", "h5", "h6"
+		],
+		ALLOW_DATA_ATTR: false,
+		ALLOW_SELF_CLOSE_IN_ATTR: false,
+		ALLOWED_ATTR: []
+	});
 	console.log("adding listeners")
 	await nextTick();
 	if (messageElement.value?.classList.contains("grouped-message")) {
@@ -75,6 +87,18 @@ console.log("me:", props.me);
 if (props.author?.uuid == props.me.uuid) {
 	menuItems.push({ name: "Edit", callback: () => { if (messageElement.value) editMessage(messageElement.value, props) } });
 }
+
+function getDayDifference(date1: Date, date2: Date) {
+    const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const midnight2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+    const timeDifference = midnight2.getTime() - midnight1.getTime();
+
+    const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+    return Math.round(dayDifference);
+}
+
 </script>
 
 <style scoped>
@@ -82,14 +106,15 @@ if (props.author?.uuid == props.me.uuid) {
 	text-align: left;
 	/* border: 1px solid lightcoral; */
 	display: grid;
-	grid-template-columns: 2dvw 1fr;
+	grid-template-columns: 2rem 1fr;
 	align-items: center;
 	column-gap: 1dvw;
 	width: 100%;
+	overflow-wrap: anywhere;
 }
 
 .message:hover {
-	background-color: rgb(20, 20, 20);
+	background-color: var(--chat-highlighted-background-color);
 }
 
 .normal-message {
@@ -130,10 +155,11 @@ if (props.author?.uuid == props.me.uuid) {
 }
 
 .left-column {
+	min-width: 2rem;
 	display: flex;
+	justify-content: center;
 	text-align: center;
 	white-space: nowrap;
-	
 }
 
 .author-username {
@@ -143,7 +169,7 @@ if (props.author?.uuid == props.me.uuid) {
 
 .message-date {
 	font-size: .7em;
-	color: rgb(150, 150, 150);
+	color: var(--secondary-text-color);
 	cursor: default;
 }
 
@@ -164,12 +190,12 @@ if (props.author?.uuid == props.me.uuid) {
 
 <style module>
 .message-text ul, h1, h2, h3, h4, h5, h6 {
-	padding-top: 1dvh;
-	padding-bottom: 1dvh;
+	padding-top: .5em;
+	padding-bottom: .5em;
 	margin: 0;
 }
 
 .message-text ul  {
-	padding-left: 2dvw;
+	padding-left: 1em;
 }
 </style>

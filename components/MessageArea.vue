@@ -9,11 +9,28 @@
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
-				<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text"
-					name="message-input" autocomplete="off">
-				<button id="submit-button" type="submit">
-					<Icon name="lucide:send" />
-				</button>
+				<div id="message-box-left-elements">
+					<span class="message-box-button">
+						<Icon name="lucide:file-plus-2" />
+					</span>
+				</div>
+
+				<div id="message-textarea">
+					<div id="message-textbox-input"
+							role="textbox" ref="messageTextboxInput"
+							autocorrect="off" spellcheck="true" contenteditable="true"
+							@keydown="handleTextboxKeyDown" @input="handleTextboxInput">
+					</div>
+				</div>
+				
+				<div id="message-box-right-elements">
+					<button class="message-box-button" type="submit">
+						<Icon name="lucide:send" />
+					</button>
+					<span class="message-box-button">
+						<Icon name="lucide:image-play" />
+					</span>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -108,11 +125,38 @@ function pushMessage(message: MessageResponse) {
 	messages.value.push(message);
 }
 
+function handleTextboxKeyDown(event: KeyboardEvent) {
+	if (event.key === "Enter" && event.shiftKey && messageTextboxInput.value) {
+		// this enters a newline, due to not preventing default
+	} else if (event.key === "Enter") {
+		event.preventDefault()
+		sendMessage(event)
+	}
+	
+	adjustTextboxHeight()
+}
+
+function handleTextboxInput() {
+	if (messageTextboxInput.value) {
+        messageInput.value = messageTextboxInput.value.innerText;
+    }
+
+	adjustTextboxHeight()
+}
+
+// this technically uses pixel units, but it's still set using dynamic units
+function adjustTextboxHeight() {
+	if (messageTextboxInput.value && messageTextboxDisplay.value) {
+		messageTextboxInput.value.style.height = "auto"
+		messageTextboxInput.value.style.height = `${messageTextboxInput.value.scrollHeight}px`
+	}
+}
+
 const messages = ref<MessageResponse[]>([]);
-
-const messageInput = ref<string>();
-
+const messageInput = ref<string>("");
 const messagesElement = ref<HTMLDivElement>();
+const messageTextboxInput = ref<HTMLDivElement>();
+const messageTextboxDisplay = ref<HTMLDivElement>();
 
 if (messagesRes) messages.value = messagesRes;
 
@@ -160,12 +204,21 @@ if (accessToken && apiBase) {
 
 function sendMessage(e: Event) {
 	e.preventDefault();
-	const text = messageInput.value;
-	console.log("text:", text);
-	if (text) {
-		ws.send(text);
-		messageInput.value = "";
-		console.log("MESSAGE SENT!!!");
+	if (messageInput.value && messageInput.value.trim() !== "") {
+		const message = {
+			message: messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
+		}
+
+		console.log("message:", message);
+		ws.send(JSON.stringify(message));
+
+		// reset input field
+		messageInput.value = ""
+		if (messageTextboxInput.value) {
+			messageTextboxInput.value.innerText = ""
+		}
+
+		adjustTextboxHeight()
 	}
 }
 
@@ -241,38 +294,63 @@ router.beforeEach((to, from, next) => {
 
 <style scoped>
 #message-area {
-	display: grid;
-	grid-template-rows: 8fr 1fr;
+	display: flex;
+	flex-direction: column;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
+	flex-grow: 1;
 }
 
 #message-box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-content: center;
-	border: 1px solid rgb(70, 70, 70);
-	padding-bottom: 1dvh;
-	padding-top: 1dvh;
-	margin-bottom: 1dvh;
+	margin-bottom: 2dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
+
+	padding-left: 2%;
+	padding-right: 2%;
+	
+	align-items: center;
+	
+	color: var(--text-color);
+	border: 1px solid var(--padding-color);
+	background-color: var(--chatbox-background-color);
 }
 
 #message-form {
 	display: flex;
-	justify-content: center;
+	flex-direction: row;
+	gap: .55em;
 }
 
-#message-box-input {
-	width: 80%;
-	background-color: rgb(50, 50, 50);
+#message-textarea {
+	flex-grow: 1;
+	min-height: 2.35em;
+}
+
+#message-textbox-input {
+	width: 100%;
+	max-height: 50dvh;
+
+	padding: 0.5em 0;
+	user-select: text;
+
+	font-family: inherit;
+	font-size: inherit;
+	line-height: normal;
 	border: none;
-	color: inherit;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	background-color: #40404000; /* completely transparent colour */
+
+	text-align: left;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	
+	overflow-y: auto;
+}
+
+#message-box-left-elements, #message-box-right-elements {
+	display: flex;
+	align-items: end;
 }
 
 #messages {
@@ -283,14 +361,16 @@ router.beforeEach((to, from, next) => {
 	padding-right: 1dvw;
 }
 
-#submit-button {
+.message-box-button {
 	background-color: inherit;
 	border: none;
-	color: rgb(200, 200, 200);
+	color: var(--primary-color);
+	transition: color 100ms;
 	font-size: 1.5em;
 }
 
-#submit-button:hover {
-	color: rgb(255, 255, 255);
+.message-box-button:hover {
+	color: var(--primary-highlighted-color);
+	cursor: pointer;
 }
 </style>

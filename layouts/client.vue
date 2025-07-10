@@ -3,20 +3,28 @@
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
 		<div id="homebar">
 			<div class="homebar-item">
-				main bar
-			</div>
-			</div>
-				<div id="left-column">
-			<NuxtLink id="home-button" href="/">
-				<Icon name="lucide:house" class="white" size="2rem" />
-			</NuxtLink>
-			<div id="servers-list">
-				<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-					<Icon name="lucide:server" class="white" size="2rem" />
-				</NuxtLink>
+				<marquee>
+					gorb!!!!!
+				</marquee>
 			</div>
 		</div>
-		<slot />
+		<div id = "page-content">
+			<div id="left-column">
+				<NuxtLink id="home-button" href="/">
+					<img class="sidebar-icon" src="/public/icon.svg"/>
+				</NuxtLink>
+				<div id="servers-list">
+					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
+						<img v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
+						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
+					</NuxtLink>
+				</div>
+				<NuxtLink id="settings-menu" href="/settings">
+					<Icon name="lucide:settings" class="sidebar-icon white" alt="Settings menu" />
+				</NuxtLink>
+			</div>
+			<slot />
+		</div>
 	</div>
 </template>
 
@@ -26,59 +34,15 @@ import type { GuildResponse } from '~/types/interfaces';
 const loading = useState("loading", () => false);
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
-
-//const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
-//console.log("servers:", servers);
-const members = [
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	}
-];
-
 </script>
 
 <style>
 #client-root {
-	/* border: 1px solid white; */
 	height: 100dvh;
-	display: grid;
-	grid-template-columns: 1fr 4fr 18fr 4fr;
-	grid-template-rows: 4dvh auto;
+	width: 100dvw;
+	display: flex;
+	flex-direction: column;
 	text-align: center;
-	
 }
 
 .hidden {
@@ -87,67 +51,77 @@ const members = [
 
 .visible {
 	opacity: 100%;
-	transition-duration: 500ms;
+	transition: opacity 500ms;
 }
 
 #homebar {
-	grid-row: 1;
-	grid-column: 1 / -1;
+	min-height: 4dvh;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+	background: var(--optional-topbar-background);
+	background-color: var(--topbar-background-color);
+	border-bottom: 1px solid var(--padding-color);
 	padding-left: 5dvw;
 	padding-right: 5dvw;
 }
 
-#client-root>div:nth-child(-n+4) {
-	border-bottom: 1px solid rgb(70, 70, 70);
+.homebar-item {
+	width: 100dvw;
 }
 
-#__nuxt {
+#page-content {
 	display: flex;
-	flex-flow: column;
-}
-
-.grid-column {
-	padding-top: 1dvh;
-}
-
-#home {
-	padding-left: .5dvw;
-	padding-right: .5dvw;
-}
-
-#current-info {
-	grid-column: 2;
-	grid-row: 1;
+	flex-direction: row;
+	flex-grow: 1;
+    overflow: auto;
 }
 
 #left-column {
 	display: flex;
 	flex-direction: column;
-	gap: 2dvh;
-	padding-left: .5dvw;
-	padding-right: .5dvw;
-	border-right: 1px solid rgb(70, 70, 70);
-	padding-top: 1.5dvh;
-}
-
-#middle-left-column {
-	padding-left: 1dvw;
-	padding-right: 1dvw;
-	border-right: 1px solid rgb(70, 70, 70);
-}
-
-#home-button {
-	border-bottom: 1px solid rgb(70, 70, 70);
-	padding-bottom: 1dvh;
+	gap: .75em;
+	padding-left: .25em;
+	padding-right: .25em;
+	padding-top: .5em;
+	border-right: 1px solid var(--padding-color);
+	background: var(--optional-sidebar-background);
+	background-color: var(--sidebar-background-color);
 }
 
 #servers-list {
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
+	gap: 1em;
+	width: 3.2rem;	
+	padding-top: .5em;
+}
+
+#middle-left-column {
+	padding-left: .25em;
+	padding-right: .25em;
+	border-right: 1px solid var(--padding-color);
+	min-width: 13em;
+	max-width: 13em;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.sidebar-icon {
+	width: 3rem;
+	height: 3rem;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#home-button {
+	border-bottom: 1px solid var(--padding-color);
+	padding-bottom: .375em;
+}
+
+#settings-menu {
+	position: absolute;
+	bottom: .25em;
 }
 
 </style>

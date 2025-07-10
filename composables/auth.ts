@@ -7,6 +7,7 @@ export const useAuth = () => {
   async function clearAuth() {
     accessToken.value = null;
     user.value = null;
+	await navigateTo("/login");
   }
 
   async function register(username: string, email: string, password: string) {
@@ -37,13 +38,19 @@ export const useAuth = () => {
     //await fetchUser();
   }
 
-  async function logout(password: string) {
-    console.log("password:", password);
+  async function logout() {
     console.log("access:", accessToken.value);
-    const hashedPass = await hashPassword(password);
-    console.log("hashed");
 
-    const res = await fetchWithApi("/auth/revoke", {
+    await fetchWithApi("/auth/logout", { method: "GET", credentials: "include" });
+    clearAuth();
+
+	return await navigateTo("/login");
+  }
+
+  async function revoke(password: string) {
+    const hashedPass = await hashPassword(password);
+
+    await fetchWithApi("/auth/revoke", {
       method: "POST",
       body:
       {
@@ -51,10 +58,6 @@ export const useAuth = () => {
       }
     });
 
-    clearAuth();
-  }
-
-  async function revoke() {
     clearAuth();
   }
 
