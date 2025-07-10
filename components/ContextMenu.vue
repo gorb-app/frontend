@@ -1,5 +1,5 @@
 <template>
-	<div v-for="item of menuItems" class="context-menu-item">
+	<div v-for="item of props.menuItems" class="context-menu-item" @click="runCallback(item)">
 		{{ item.name }}
 	</div>
 </template>
@@ -18,12 +18,9 @@ onMounted(() => {
 });
 
 
-function editMessage() {
-	//
-}
-
-function replyMessage(id: string) {
-	//
+function runCallback(item: ContextMenuItem) {
+	removeContextMenu();
+	item.callback();
 }
 
 </script>
