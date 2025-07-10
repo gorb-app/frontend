@@ -98,6 +98,7 @@ let currentPage = ref(categories[0].pages[0]);
 let selectedPage = ref(currentPage.value.displayName); // used to highlight the current channel
 
 function selectCategory(page: Page) {
+  window.location.hash = page.displayName.toLowerCase()
   currentPage.value = page;
   selectedPage.value = page.displayName;
 };
