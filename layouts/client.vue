@@ -102,6 +102,7 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	padding-right: .25em;
 	border-right: 1px solid var(--padding-color);
 	min-width: 13em;
+	max-width: 13em;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
@@ -109,7 +110,6 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 .sidebar-icon {
 	width: 3rem;
 	height: 3rem;
-	min-width: 10em;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
