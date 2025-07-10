@@ -6,7 +6,7 @@
 	
 	<div id="add-friend-search-bar">
 		<input id="add-friend-search-input" ref="inputField"
-				placeholder="blahaj.enjoyer?" maxlength="32" @keypress.enter="sendRequest"/> <!-- REMEMBER TO CHANGE THIS WHEN WE ADD FEDERATION--> 
+				placeholder="blahaj.enjoyer" maxlength="32" @keypress.enter="sendRequest"/> <!-- REMEMBER TO CHANGE THIS WHEN WE ADD FEDERATION--> 
 		<Button id="friend-request-button" :callback="sendRequest" text="Send Friend Request"></Button>
 	</div>
 </template>
