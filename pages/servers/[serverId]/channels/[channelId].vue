@@ -91,7 +91,7 @@ function handleMemberClick(member: GuildMemberResponse) {
 }
 
 #members-container {
-	width: 12rem;
+	width: 15rem;
 	border-left: 1px solid var(--padding-color);
 	background: var(--optional-member-list-background);
 }
