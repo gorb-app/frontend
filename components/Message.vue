@@ -1,13 +1,13 @@
 <template>
 	<div @click="emitId" v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message" :data-message-id="props.messageId">
 		<div class="left-column">
-			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="username" />
+			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="author?.display_name || author?.username" />
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
 				<span class="message-author-username" tabindex="0">
-					{{ username }}
+					{{ author?.display_name || author?.username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
 					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
@@ -52,7 +52,7 @@ const dateHidden = ref<boolean>(true);
 const date = new Date(props.timestamp);
 
 console.log("message:", props.text);
-console.log("author:", props.username);
+console.log("author:", props.author);
 
 const sanitized = ref<string>();
 

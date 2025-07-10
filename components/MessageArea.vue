@@ -5,7 +5,7 @@
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
 				format="12" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
-				:last="i == messages.length - 1" :message-id="message.uuid" />
+				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me" />
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
@@ -20,10 +20,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse, ScrollPosition } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
+
+const me = await fetchWithApi("/me") as UserResponse;
 
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
