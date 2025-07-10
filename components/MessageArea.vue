@@ -347,7 +347,7 @@ router.beforeEach((to, from, next) => {
 
 #message-box-left-elements, #message-box-right-elements {
 	display: flex;
-	align-items: center;
+	align-items: end;
 }
 
 #messages {
