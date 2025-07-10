@@ -31,9 +31,6 @@ const friends = await fetchFriends()
 const props = defineProps<{
     variant: string
 }>();
-
-console.log("props", props.variant)
-
 </script>
 
 <style>

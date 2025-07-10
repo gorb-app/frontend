@@ -25,7 +25,6 @@ import FriendsList from '~/components/Me/FriendsList.vue';
 
 let windowHash = ref(window.location.hash)
 
-
 function updateHash(newHash: string) {
 	window.location.hash = newHash
 	windowHash.value = `#${newHash}`;

@@ -1,7 +1,7 @@
 <template>
 	<div id="middle-left-column">
 		<div id="friend-sidebar">
-			<div id="server-title">
+			<div>
 				<h3>Direct Messages</h3>
 			</div>
 			<VerticalSpacer />
@@ -23,17 +23,9 @@
 <script lang="ts" setup>
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 
-
 const { fetchFriends } = useApi();
 
 const friends = await fetchFriends()
-
-console.log(friends)
-
-definePageMeta({
-	layout: "client"
-});
-
 </script>
 
 <style>

@@ -6,12 +6,6 @@
 
 <script lang="ts" setup>
 import DirectMessagesSidebar from '~/components/Me/DirectMessagesSidebar.vue';
-
-
-definePageMeta({
-	layout: "client"
-});
-
 </script>
 
 <style>
