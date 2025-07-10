@@ -25,23 +25,6 @@
 			</div>
 			<slot />
 		</div>
-		<div id = "page-content">
-			<div id="left-column">
-				<NuxtLink id="home-button" href="/">
-					<img class="sidebar-icon" src="/public/icon.svg"/>
-				</NuxtLink>
-				<div id="servers-list">
-					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<img v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
-					</NuxtLink>
-				</div>
-				<NuxtLink id="settings-menu" href="/settings">
-					<Icon name="lucide:settings" class="sidebar-icon white" alt="Settings menu" />
-				</NuxtLink>
-			</div>
-			<slot />
-		</div>
 	</div>
 </template>
 
@@ -69,11 +52,9 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 .visible {
 	opacity: 100%;
 	transition: opacity 500ms;
-	transition: opacity 500ms;
 }
 
 #homebar {
-	min-height: 4dvh;
 	min-height: 4dvh;
 	display: flex;
 	justify-content: space-evenly;
@@ -81,14 +62,8 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	background: var(--optional-topbar-background);
 	background-color: var(--topbar-background-color);
 	border-bottom: 1px solid var(--padding-color);
-	border-bottom: 1px solid var(--padding-color);
 	padding-left: 5dvw;
 	padding-right: 5dvw;
-
-}
-
-.homebar-item {
-	width: 100dvw;
 }
 
 .homebar-item {
@@ -100,9 +75,6 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	flex-direction: row;
 	flex-grow: 1;
     overflow: auto;
-	flex-direction: row;
-	flex-grow: 1;
-    overflow: auto;
 }
 
 #left-column {
@@ -111,13 +83,10 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	gap: .75em;
 	padding-left: .25em;
 	padding-right: .25em;
-	gap: .75em;
-	padding-left: .25em;
-	padding-right: .25em;
+	padding-top: .5em;
 	border-right: 1px solid var(--padding-color);
 	background: var(--optional-sidebar-background);
 	background-color: var(--sidebar-background-color);
-	padding-top: .5em;
 }
 
 #servers-list {
@@ -126,18 +95,9 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	gap: 1em;
 	width: 3.2rem;	
 	padding-top: .5em;
-}
-
-#servers-list {
-	display: flex;
-	flex-direction: column;
-	gap: 1em;
-	width: 3.2rem;	
 }
 
 #middle-left-column {
-	padding-left: .25em;
-	padding-right: .25em;
 	padding-left: .25em;
 	padding-right: .25em;
 	border-right: 1px solid var(--padding-color);
@@ -152,11 +112,6 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	min-width: 10em;
 	overflow-y: scroll;
 	overflow-x: hidden;
-}
-
-.sidebar-icon {
-	width: 3rem;
-	height: 3rem;
 }
 
 #home-button {
