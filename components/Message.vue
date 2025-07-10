@@ -31,19 +31,9 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
+import type { MessageProps } from '~/types/props';
 
-const props = defineProps<{
-	class?: string,
-	img?: string | null,
-	username: string,
-	text: string,
-	timestamp: number,
-	format: "12" | "24",
-	type: "normal" | "grouped",
-	marginBottom: boolean,
-	last: boolean,
-	messageId: string
-}>();
+const props = defineProps<MessageProps>();
 
 const messageElement = ref<HTMLDivElement>();
 
