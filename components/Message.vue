@@ -204,7 +204,11 @@ function getDayDifference(date1: Date, date2: Date) {
 */
 
 .mentioned {
-	background-color: rgba(90, 255, 200, 0.123);
+	background-color: rgba(0, 255, 166, 0.123);
+}
+
+.mentioned:hover {
+	background-color: rgba(90, 255, 200, 0.233);
 }
 
 </style>
