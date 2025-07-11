@@ -1,6 +1,6 @@
 <template>
 	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
-			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid }" :data-message-id="props.messageId"
+			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid && props.replyMessage?.user.uuid == props.me.uuid }" :data-message-id="props.messageId"
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<MessageReply v-if="props.replyMessage" :author="props.replyMessage.user.display_name || props.replyMessage.user.username" :text="props.replyMessage?.message"
 			:id="props.message.uuid" :reply-id="props.replyMessage.uuid" max-width="reply" />
