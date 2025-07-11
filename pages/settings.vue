@@ -3,6 +3,13 @@
     <div id="settings-page">
       <div id="sidebar">
         <ul>
+          <p>
+            <span @click="$router.go(-1)">
+              <Icon class="back-button" size="2em" name="lucide:circle-arrow-left" alt="Back"></Icon>
+            </span>
+          </p>
+          <span class="spacer"></span>
+
           <!-- categories and dynamic settings pages -->
           <div v-for="category in categories" :key="category.displayName">
             <h2>{{ category.displayName }}</h2>
@@ -24,11 +31,10 @@
           </p>
           
           <p style="font-size: .8em; color: var(--secondary-text-color)">
-            Version Hash: {{ appConfig.gitHash }}
+            Version Hash: {{ appConfig.public.gitHash }}
             <br>
-            Build Time: {{ appConfig.buildTimeString }}
+            Build Time: {{ appConfig.public.buildTimeString }}
           </p>
-
         </ul>
       </div>
       <div id="sub-page">
@@ -40,11 +46,8 @@
 
 
 <script lang="ts" setup>
-import Button from '~/components/Button.vue';
-
 const { logout } = useAuth()
-
-const appConfig = useAppConfig()
+const appConfig = useRuntimeConfig()
 
 interface Page {
   displayName: string;
@@ -99,6 +102,16 @@ function selectCategory(page: Page) {
   selectedPage.value = page.displayName;
 };
 
+// redirects to you privacy if you go to settings#privacy
+onMounted(() => {
+  const hash = window.location.hash.substring(1).toLowerCase();
+  const foundPage = categories.flatMap(category => category.pages).find(page => page.displayName.toLowerCase() === hash);
+
+  if (foundPage) {
+    currentPage.value = foundPage;
+    selectedPage.value = foundPage.displayName;
+  }
+});
 </script>
 
 <style scoped>
@@ -117,6 +130,7 @@ function selectCategory(page: Page) {
 #sidebar {
   min-width: 25dvw;
   max-width: 25dvw;
+  background: var(--optional-channel-list-background);
   background-color: var(--sidebar-background-color);
   color: var(--text-color);
   padding: 1dvh 1dvw;
@@ -168,6 +182,16 @@ function selectCategory(page: Page) {
   height: 100vh;
 }
 
+.back-button {
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: color 100ms;
+}
+
+.back-button:hover{
+  color: var(--primary-highlighted-color);
+}
+
 #links-and-socials * {
   margin-right: 0.2em;
 }
@@ -180,7 +204,10 @@ function selectCategory(page: Page) {
 }
 
 /* applies to child pages too */
-:deep(h5) {
-  color: red;
+:deep(.subtitle) {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 800;
+  margin: 4dvh 0 0.5dvh 0.25dvw;
 }
 </style>

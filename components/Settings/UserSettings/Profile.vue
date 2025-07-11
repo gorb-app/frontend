@@ -20,23 +20,31 @@
         <Button style="margin-top: 2dvh" text="Save Changes" :callback="saveChanges"></Button>
       </div>
 
-      <UserPopup v-if="user" :user="user" class="profile-popup"></UserPopup>
+      <UserPopup v-if="user" :user="user" id="profile-popup"></UserPopup>
+
     </div>
   </div>
+  <CropPopup
+    v-if="isCropPopupVisible"
+    :imageSrc="cropImageSrc"
+    :onCrop="handleCrop"
+    :onClose="closeCropPopup"
+  />
 </template>
 
 <script lang="ts" setup>
-import Button from '~/components/Button.vue';
 import type { UserResponse } from '~/types/interfaces';
 
+let newPfpFile: File;
+const isCropPopupVisible = ref(false);
+const cropImageSrc = ref("")
+;
 const { fetchUser } = useAuth();
 
 const user: UserResponse | undefined = await fetchUser()
 if (!user) {
   alert("could not fetch user info, aborting :(")
 }
-
-let newPfpFile: File;
 
 async function saveChanges() {
   if (!user) return;
@@ -64,7 +72,7 @@ async function saveChanges() {
     alert('success!!')
   } catch (error: any) {
     if (error?.response?.status !== 200) {
-      alert(`error ${error?.response?.status} met whilst trying to update profile info`)
+      alert(`error ${error?.response?.status} met whilst trying to update profile info\n"${error?.response._data?.message}"`)
     }
   }
 };
@@ -87,12 +95,11 @@ async function changeAvatar() {
       const file = input.files[0];
       if (!file) return;
 
-      newPfpFile = file
-      
       const reader = new FileReader();
-      reader.addEventListener("onload", () => {
+      reader.addEventListener("load", () => {
         if (reader.result && typeof reader.result === 'string') {
-          user.avatar = reader.result;
+          cropImageSrc.value = reader.result;
+          isCropPopupVisible.value = true;
         }
       });
       reader.readAsDataURL(file);
@@ -101,18 +108,24 @@ async function changeAvatar() {
 
   input.click()
 }
+
+
+function handleCrop(blob: Blob, url: string) {
+  if (!user) return;
+
+  user.avatar = url;
+  newPfpFile = new File([blob], 'avatar.png', { type: 'image/png' })
+  closeCropPopup()
+}
+
+function closeCropPopup() {
+  isCropPopupVisible.value = false
+}
 </script>
 
 <style scoped>
 .profile-container {
   display: flex;
-}
-
-.subtitle {
-  display: block;
-  font-size: 0.8em;
-  font-weight: 800;
-  margin: 1.5dvh 0 0.5dvh 0.25dvw;
 }
 
 .user-data-fields {
@@ -132,7 +145,7 @@ async function changeAvatar() {
   background-color: var(--accent-color);
 }
 
-.profile-popup {
+#profile-popup {
   margin-left: 2dvw;
 }
 </style>

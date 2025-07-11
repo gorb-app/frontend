@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <form v-if="registrationEnabled" @submit="register">
+    <form v-if="registrationEnabled && !registrationSubmitted && !showEmailVerificationScreen" @submit="register">
       <div>
         <!--
         <span class="form-error" v-if="errors.username.length > 0">
@@ -32,32 +32,87 @@
         <button type="submit">Register</button>
       </div>
     </form>
+	<div v-else-if="registrationEnabled && (registrationSubmitted || showEmailVerificationScreen) && !emailSent">
+		<p v-if="emailVerificationRequired">
+			This instance requires email verification to use it.
+			<br><br>
+			<span v-if="registrationSubmitted">
+				Please open the link sent to your email.
+			</span>
+			<span v-else-if="showEmailVerificationScreen">
+				Please click on the link you've already received, or click on the button below to receive a new email.
+			</span>
+		</p>
+		<p v-else>
+			Would you like to verify your email?
+			<!--
+			<br>
+			This is required for resetting your password and making other important changes.
+			-->
+		</p>
+		<Button v-if="(!emailVerificationRequired || showEmailVerificationScreen) && !emailSent" text="Send email" variant="neutral" :callback="sendEmail"></Button>
+	</div>
+	<div v-else-if="emailSent">
+		<p>
+			An email has been sent and should arrive soon.
+			<br>
+			If you don't see it in your inbox, try checking the spam folder.
+		</p>
+	</div>
     <div v-else>
       <h3>This instance has disabled registration.</h3>
     </div>
-    <div>
-      Already have an account? <NuxtLink :href="loginUrl">Log in</NuxtLink>!
+    <div v-if="loggedIn">
+	  <Button text="Log out" variant="scary" :callback="() => {}"></Button>
+	</div>
+    <div v-else>
+	  Already have an account? <NuxtLink :href="loginUrl">Log in</NuxtLink>!
     </div>
   </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
-import type { StatsResponse } from '~/types/interfaces';
 definePageMeta({
   layout: "auth"
-})
+});
 
 const registrationEnabled = useState("registrationEnabled", () => true);
+const emailVerificationRequired = useState("emailVerificationRequired", () => false);
+const registrationSubmitted = ref(false);
+const emailSent = ref(false);
+
+const auth = useAuth();
+
+const loggedIn = ref(await auth.getUser());
+
+const query = new URLSearchParams(useRoute().query as Record<string, string>);
+
+const user = await useAuth().getUser();
+
+if (user?.email_verified) {
+	if (query.get("redirect_to")) {
+		await navigateTo(query.get("redirect_to"));
+	} else {
+		await navigateTo("/");
+	}
+}
+
+const showEmailVerificationScreen = query.get("special") == "verify_email";
+console.log("show email verification screen?", showEmailVerificationScreen);
+
+const { fetchInstanceStats, sendVerificationEmail } = useApi();
 
 console.log("wah");
 console.log("weoooo")
 const apiBase = useCookie("api_base");
 console.log("apiBase:", apiBase.value);
 if (apiBase.value) {
-	const { status, data, error } = await useFetch<StatsResponse>(`${apiBase.value}/stats`);
-	if (status.value == "success" && data.value) {
-		registrationEnabled.value = data.value.registration_enabled;
-		console.log("set registration enabled value to:", data.value.registration_enabled);
+	const stats = await fetchInstanceStats(apiBase.value);
+	if (stats) {
+		registrationEnabled.value = stats.registration_enabled;
+		console.log("set registration enabled value to:", stats.registration_enabled);
+		emailVerificationRequired.value = stats.email_verification_required;
+		console.log("set email verification required value to:", stats.email_verification_required);
 	}
 }
 
@@ -90,8 +145,6 @@ const errorMessages = reactive({
 */
 
 //const authStore = useAuthStore();
-const auth = useAuth();
-const query = useRoute().query as Record<string, string>;
 const searchParams = new URLSearchParams(query);
 const loginUrl = `/login?${searchParams}`
 
@@ -133,11 +186,20 @@ async function register(e: Event) {
   console.log("Sending registration data");
   try {
     await auth.register(form.username, form.email, form.password);
-    return await navigateTo(query.redirect_to);
+	if (!emailVerificationRequired.value) {
+		return await navigateTo(query.get("redirect_to"));
+	}
+	await sendVerificationEmail();
+	registrationSubmitted.value = true;
   } catch (error) {
     console.error("Error registering:", error);
   }
   //return navigateTo(redirectTo ? redirectTo as string : useAppConfig().baseURL as string);
+}
+
+async function sendEmail() {
+	await sendVerificationEmail();
+	emailSent.value = true;
 }
 
 </script>

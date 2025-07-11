@@ -1,0 +1,29 @@
+/* this is not a real theme, but rather a template for themes */
+:root {
+	--text-color: #161518;
+	--secondary-text-color: #2b2930;
+
+    --chat-background-color: #80808000;
+    --chat-highlighted-background-color: #ffffff20;
+	--sidebar-background-color: #80808000;
+	--sidebar-highlighted-background-color: #ffffff20;
+	--topbar-background-color: #80808000;
+	--chatbox-background-color: #80808000;
+
+    --padding-color: #80808000;
+    
+    --primary-color: #21b1ff80;
+    --primary-highlighted-color: #18a0df80;
+    --secondary-color: #ffd80080;
+    --secondary-highlighted-color: #dfb80080;
+    --accent-color: #ff218c80;
+    --accent-highlighted-color: #df1b6f80;
+
+    --optional-body-background: ; /* background element for the body */
+    --optional-chat-background: ; /* background element for the chat box */
+	--optional-topbar-background: ; /* background element for the topbar */
+	--optional-sidebar-background: ; /* background element for left server sidebar */
+	--optional-channel-list-background: ; /* background element for channel list and settings list */
+	--optional-member-list-background: ; /* background element for member list */
+	--optional-message-box-background: ; /* background element for message box */
+}
