@@ -26,6 +26,8 @@
 </template>
 
 <script lang="ts" setup>
+import settingSave from '~/utils/settingSave';
+
 const runtimeConfig = useRuntimeConfig()
 const defaultThemes = runtimeConfig.public.defaultThemes
 const baseURL = runtimeConfig.app.baseURL;
@@ -46,7 +48,7 @@ function changeTheme(id: string, url: string) {
     return;
   }
 
-  localStorage.setItem("selectedTheme", id);
+  settingSave("selectedThemeUrl", id)
 
   // if the theme didn't originally load for some reason, create it
   if (!themeLinkElement) {
