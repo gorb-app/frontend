@@ -5,7 +5,9 @@
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
 				format="12" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
-				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me" />
+				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me"
+				:message="message" :is-reply="message.reply_to"
+				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined" />
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
@@ -116,6 +118,7 @@ if (messagesRes) {
 	messagesRes.reverse();
 	console.log("messages res:", messagesRes.map(msg => msg.message));
 	for (const message of messagesRes) {
+		console.log("[MSG] processing message:", message);
 		groupMessage(message);
 	}
 }
@@ -187,6 +190,7 @@ if (accessToken && apiBase) {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
+		console.log("[MSG] parsed message:", parsedData);
 		
 		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
 		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
@@ -205,11 +209,18 @@ if (accessToken && apiBase) {
 function sendMessage(e: Event) {
 	e.preventDefault();
 	if (messageInput.value && messageInput.value.trim() !== "") {
-		const message = {
+		const message: Record<string, string> = {
 			message: messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
 		}
 
-		console.log("message:", message);
+		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
+		console.log("[MSG] message reply:", messageReply);
+		if (messageReply && messageReply.dataset.messageId) {
+			console.log("[MSG] message is a reply");
+			message.reply_to = messageReply.dataset.messageId;
+		}
+
+		console.log("[MSG] sent message:", message);
 		ws.send(JSON.stringify(message));
 
 		// reset input field
@@ -222,10 +233,22 @@ function sendMessage(e: Event) {
 	}
 }
 
+function getReplyMessage(id: string) {
+	console.log("[REPLYMSG] id:", id);
+	const messagesValues = Object.values(messages.value);
+	console.log("[REPLYMSG] messages values:", messagesValues);
+	for (const message of messagesValues) {
+		console.log("[REPLYMSG] message:", message);
+		console.log("[REPLYMSG] IDs match?", message.uuid == id);
+		if (message.uuid == id) return message;
+	}
+}
+
 const route = useRoute();
 
 onMounted(async () => {
 	if (import.meta.server) return;
+	console.log("[MSG] messages keys:", Object.values(messages.value));
 	if (messagesElement.value) {
 		scrollToBottom(messagesElement.value);
 		let fetched = false;

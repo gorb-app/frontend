@@ -1,5 +1,9 @@
 <template>
-	<div v-if="props.type == 'normal'" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined" class="message normal-message" :data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid }" :data-message-id="props.messageId"
+			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
+		<MessageReply v-if="props.replyMessage" :author="props.message.user.display_name || props.message.user.username" :text="props.replyMessage?.message"
+			:id="props.message.uuid" :reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
 			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="author?.display_name || author?.username" />
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
@@ -18,7 +22,9 @@
 			<div class="message-text" v-html="sanitized" tabindex="0"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }" :data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
+	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
+			:data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
 			<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
 				{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
@@ -44,8 +50,9 @@ const dateHidden = ref<boolean>(true);
 const date = new Date(props.timestamp);
 const currentDate: Date = new Date()
 
-console.log("message:", props.text);
+console.log("[MSG] message to render:", props.message);
 console.log("author:", props.author);
+console.log("[MSG] reply message:", props.replyMessage);
 
 const sanitized = ref<string>();
 
@@ -113,6 +120,11 @@ function getDayDifference(date1: Date, date2: Date) {
 	overflow-wrap: anywhere;
 }
 
+.message-reply-preview {
+	grid-row: 1;
+	grid-column: 2;
+}
+
 .message:hover {
 	background-color: var(--chat-highlighted-background-color);
 }
@@ -142,6 +154,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	flex-direction: column;
 	height: fit-content;
 	width: 100%;
+	grid-row: 2;
+	grid-column: 2;
 }
 
 .message-author {
@@ -160,6 +174,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	justify-content: center;
 	text-align: center;
 	white-space: nowrap;
+	grid-row: 2;
+	grid-column: 1;
 }
 
 .author-username {
@@ -186,6 +202,11 @@ function getDayDifference(date1: Date, date2: Date) {
 	width: 20px;
 }
 */
+
+.mentioned {
+	background-color: var(--secondary-color);
+}
+
 </style>
 
 <style module>
