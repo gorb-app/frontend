@@ -77,10 +77,11 @@ function scrollToReply(e: MouseEvent) {
 }
 
 #reply-text {
-	color: var(--secondary-text-color);
+	color: rgb(150, 150, 150);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	margin-bottom: 0;
 
 }
 

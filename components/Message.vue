@@ -204,7 +204,7 @@ function getDayDifference(date1: Date, date2: Date) {
 */
 
 .mentioned {
-	background-color: var(--secondary-color);
+	background-color: rgba(90, 255, 200, 0.123);
 }
 
 </style>
