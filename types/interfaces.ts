@@ -44,7 +44,8 @@ export interface MessageResponse {
 	channel_uuid: string,
 	user_uuid: string,
 	message: string,
-	user: UserResponse
+	reply_to: string | null,
+	user: UserResponse,
 }
 
 export interface InviteResponse {
