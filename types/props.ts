@@ -1,4 +1,4 @@
-import type { UserResponse } from "./interfaces";
+import type { MessageResponse, UserResponse } from "./interfaces";
 
 export interface MessageProps {
 	class?: string,
@@ -14,4 +14,7 @@ export interface MessageProps {
 	replyingTo?: boolean,
 	editing?: boolean,
 	me: UserResponse
+	message: MessageResponse,
+	replyMessage?: MessageResponse
+	isMentioned?: boolean,
 }
