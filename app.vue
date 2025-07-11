@@ -26,6 +26,13 @@ onMounted(() => {
 			e.target.contentEditable = "false";
 		}
 	});
+	document.addEventListener("keyup", (e) => {
+		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
+		if (e.key == "Escape" && messageReply) {
+			e.preventDefault();
+			messageReply.remove();
+		}
+	});
 });
 
 function contextMenuHandler(e: MouseEvent) {
