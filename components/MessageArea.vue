@@ -326,6 +326,7 @@ router.beforeEach((to, from, next) => {
 }
 
 #message-box {
+	margin-top: auto; /* force it to the bottom of the screen */
 	margin-bottom: 2dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
