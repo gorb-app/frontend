@@ -1,13 +1,17 @@
 <template>
-	<div v-if="props.type == 'normal'" :id="props.last ? 'last-message' : undefined" class="message normal-message">
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid }" :data-message-id="props.messageId"
+			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
+		<MessageReply v-if="props.replyMessage" :author="props.message.user.display_name || props.message.user.username" :text="props.replyMessage?.message"
+			:id="props.message.uuid" :reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="username" />
+			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="author?.display_name || author?.username" />
 			<Icon v-else name="lucide:user" class="message-author-avatar" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
 				<span class="message-author-username" tabindex="0">
-					{{ username }}
+					{{ author?.display_name || author?.username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
 					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
@@ -18,7 +22,9 @@
 			<div class="message-text" v-html="sanitized" tabindex="0"></div>
 		</div>
 	</div>
-	<div v-else ref="messageElement" :id="props.last ? 'last-message' : undefined" class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom }">
+	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
+			:data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
 			<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
 				{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
@@ -33,18 +39,9 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
+import type { MessageProps } from '~/types/props';
 
-const props = defineProps<{
-	class?: string,
-	img?: string | null,
-	username: string,
-	text: string,
-	timestamp: number,
-	format: "12" | "24",
-	type: "normal" | "grouped",
-	marginBottom: boolean,
-	last: boolean
-}>();
+const props = defineProps<MessageProps>();
 
 const messageElement = ref<HTMLDivElement>();
 
@@ -53,8 +50,9 @@ const dateHidden = ref<boolean>(true);
 const date = new Date(props.timestamp);
 const currentDate: Date = new Date()
 
-console.log("message:", props.text);
-console.log("author:", props.username);
+console.log("[MSG] message to render:", props.message);
+console.log("author:", props.author);
+console.log("[MSG] reply message:", props.replyMessage);
 
 const sanitized = ref<string>();
 
@@ -72,19 +70,30 @@ onMounted(async () => {
 	});
 	console.log("adding listeners")
 	await nextTick();
-	messageElement.value?.addEventListener("mouseenter", (e: Event) => {
-		dateHidden.value = false;
-	});
-
-	messageElement.value?.addEventListener("mouseleave", (e: Event) => {
-		dateHidden.value = true;
-	});
-	console.log("added listeners");
+	if (messageElement.value?.classList.contains("grouped-message")) {
+		messageElement.value?.addEventListener("mouseenter", (e: Event) => {
+			dateHidden.value = false;
+		});
+	
+		messageElement.value?.addEventListener("mouseleave", (e: Event) => {
+			dateHidden.value = true;
+		});
+		console.log("added listeners");
+	}
 });
 
 //function toggleTooltip(e: Event) {
 //	showHover.value = !showHover.value;
 //}
+
+const menuItems = [
+	{ name: "Reply", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
+]
+
+console.log("me:", props.me);
+if (props.author?.uuid == props.me.uuid) {
+	menuItems.push({ name: "Edit", callback: () => { if (messageElement.value) editMessage(messageElement.value, props) } });
+}
 
 function getDayDifference(date1: Date, date2: Date) {
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
@@ -109,6 +118,11 @@ function getDayDifference(date1: Date, date2: Date) {
 	column-gap: 1dvw;
 	width: 100%;
 	overflow-wrap: anywhere;
+}
+
+.message-reply-preview {
+	grid-row: 1;
+	grid-column: 2;
 }
 
 .message:hover {
@@ -140,6 +154,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	flex-direction: column;
 	height: fit-content;
 	width: 100%;
+	grid-row: 2;
+	grid-column: 2;
 }
 
 .message-author {
@@ -158,6 +174,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	justify-content: center;
 	text-align: center;
 	white-space: nowrap;
+	grid-row: 2;
+	grid-column: 1;
 }
 
 .author-username {
@@ -184,6 +202,11 @@ function getDayDifference(date1: Date, date2: Date) {
 	width: 20px;
 }
 */
+
+.mentioned {
+	background-color: var(--secondary-color);
+}
+
 </style>
 
 <style module>

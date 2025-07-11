@@ -6,8 +6,42 @@
 </template>
 
 <script lang="ts" setup>
+import ContextMenu from '~/components/ContextMenu.vue';
+import { render } from 'vue';
 
 const banner = useState("banner", () => false);
+
+onMounted(() => {
+	document.removeEventListener("contextmenu", contextMenuHandler);
+	document.addEventListener("contextmenu", (e) => {
+		contextMenuHandler(e);
+	});
+	document.addEventListener("mousedown", (e) => {
+		if (e.target instanceof HTMLDivElement && e.target.closest("#context-menu")) return;
+		console.log("click");
+		console.log("target:", e.target);
+		console.log(e.target instanceof HTMLDivElement);
+		removeContextMenu();
+		if (e.target instanceof HTMLElement && e.target.classList.contains("message-text") && e.target.contentEditable) {
+			e.target.contentEditable = "false";
+		}
+	});
+	document.addEventListener("keyup", (e) => {
+		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
+		if (e.key == "Escape" && messageReply) {
+			e.preventDefault();
+			messageReply.remove();
+		}
+	});
+});
+
+function contextMenuHandler(e: MouseEvent) {
+	e.preventDefault();
+	//console.log("Opened context menu");
+	//createContextMenu(e, [
+	//	{ name: "Wah", callback: () => { return } }
+	//]);
+}
 
 let currentTheme = "dark" // default theme
 const savedTheme = localStorage.getItem("selectedTheme");
