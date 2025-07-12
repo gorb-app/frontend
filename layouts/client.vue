@@ -20,7 +20,7 @@
 					</NuxtLink>
 				</div>
 				<NuxtLink id="settings-menu" href="/settings">
-					<Icon name="lucide:settings" class="sidebar-icon" style="background-color: var(--primary-color)" alt="Settings menu" />
+					<Icon name="lucide:settings" class="sidebar-icon" alt="Settings menu" />
 				</NuxtLink>
 			</div>
 			<slot />
@@ -122,6 +122,12 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 #settings-menu {
 	position: absolute;
 	bottom: .25em;
+
+	background-color: var(--primary-color)
+}
+
+#settings-menu {
+	background-color: var(--primary-highlighted-color)
 }
 
 </style>
