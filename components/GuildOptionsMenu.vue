@@ -15,7 +15,6 @@ const modal = ref<HTMLDialogElement>();
 const showInviteModal = ref(false);
 
 const settings = [
-  { name: "Server Settings", icon: "lucide:cog" },
   { name: "Invite", icon: "lucide:letter", action: openInviteModal }
 ]
 
