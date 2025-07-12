@@ -88,30 +88,6 @@ async function selectInstance(e: Event) {
 const form = reactive({
 	password: ""
 });
-
-async function logout(e: Event) {
-	e.preventDefault();
-	await auth.logout(form.password);
-	console.log("logout");
-}
-
-async function refresh(e: Event) {
-	e.preventDefault();
-	await auth.refresh();
-	console.log("refreshed");
-}
-
-async function getUser(e: Event) {
-	e.preventDefault();
-	await auth.getUser();
-	console.log("user:", auth.user.value);
-}
-
-async function showUser(e: Event) {
-	e.preventDefault();
-	console.log("user:", auth.user.value);
-}
-
 </script>
 
 <style>

@@ -44,7 +44,7 @@ export const useAuth = () => {
     await fetchWithApi("/auth/logout", { method: "GET", credentials: "include" });
     clearAuth();
 
-	return await navigateTo("/login");
+	  return await navigateTo("/login");
   }
 
   async function revoke(password: string) {
