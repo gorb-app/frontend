@@ -41,7 +41,7 @@ function openInviteModal() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5dvh;
+  height: 2em;
 }
 
 .guild-option:hover {
