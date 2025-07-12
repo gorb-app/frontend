@@ -15,6 +15,12 @@ const dialog = ref<HTMLDialogElement>();
 onMounted(() => {
   if (dialog) {
     dialog.value?.showModal();
+    if (props.onClose) {
+      dialog.value?.addEventListener("close", props.onClose);
+    }
+    if (props.onCancel) {
+      dialog.value?.addEventListener("cancel", props.onCancel);
+    }
   }
 });
 
