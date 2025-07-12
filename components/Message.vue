@@ -2,6 +2,36 @@
 	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid && props.replyMessage?.user.uuid == props.me.uuid }" :data-message-id="props.messageId"
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
+		<div v-if="props.replyMessage" class="message-reply-svg">
+			<svg
+				width="1.5em"
+				height="1.5em"
+				viewBox="0 0 151.14355 87.562065"
+				version="1.1"
+				id="svg1"
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:svg="http://www.w3.org/2000/svg"
+				style="overflow: visible;">
+				<defs
+					id="defs1" />
+				<g
+					id="layer1"
+					transform="translate(40,-35)">
+					<g
+					id="g3"
+					transform="translate(-35,-20)">
+					<path
+						style="stroke:var(--reply-text-color);stroke-width:8;stroke-opacity:1"
+						d="m 120.02168,87.850978 100.76157,2.4e-5"
+						id="path3-5" />
+					<path
+						style="stroke:var(--reply-text-color);stroke-width:8;stroke-opacity:1"
+						d="M 69.899501,174.963 120.2803,87.700931"
+						id="path3-5-2" />
+					</g>
+				</g>
+			</svg>
+		</div>
 		<MessageReply v-if="props.replyMessage" :author="props.replyMessage.user.display_name || props.replyMessage.user.username" :text="props.replyMessage?.message"
 			:id="props.message.uuid" :reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
@@ -209,6 +239,11 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .mentioned:hover {
 	background-color: rgba(90, 255, 200, 0.233);
+}
+
+.message-reply-svg {
+	display: flex;
+	justify-content: center;
 }
 
 </style>
