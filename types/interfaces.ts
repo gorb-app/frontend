@@ -44,7 +44,8 @@ export interface MessageResponse {
 	channel_uuid: string,
 	user_uuid: string,
 	message: string,
-	user: UserResponse
+	reply_to: string | null,
+	user: UserResponse,
 }
 
 export interface InviteResponse {
@@ -83,4 +84,9 @@ export interface ScrollPosition {
 	offsetWidth: number,
 	offsetTop: number,
 	offsetLeft: number
+}
+
+export interface ContextMenuItem {
+	name: string,
+	callback: (...args: any[]) => any;
 }
