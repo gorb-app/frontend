@@ -17,20 +17,27 @@
       </div>
     </div>
 
-    <p class="subtitle">ICONS</p>
-    <div class="themes">
+    <!-- <p class="subtitle">Icons</p>
+    <div class="icons">
+    </div> -->
+
+    <p class="subtitle">TIME FORMAT</p>
+    <div class="icons">
+      <RadioButtons :button-count="3" :text-strings="timeFormatTextStrings"
+          :default-button-index="settingsLoad().timeFormat?.index ?? 0" :callback="onTimeFormatClicked"></RadioButtons>
     </div>
-
-
   </div>
 </template>
 
 <script lang="ts" setup>
+import RadioButtons from '~/components/UserInterface/RadioButtons.vue';
+import type { TimeFormat } from '~/types/settings';
 import settingSave from '~/utils/settingSave';
 
 const runtimeConfig = useRuntimeConfig()
 const defaultThemes = runtimeConfig.public.defaultThemes
 const baseURL = runtimeConfig.app.baseURL;
+const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 let themeLinkElement: HTMLLinkElement | null = null;
 
 const themes: Array<Theme> = []
@@ -70,6 +77,21 @@ async function fetchThemes() {
 }
 
 await fetchThemes()
+
+async function onTimeFormatClicked(index: number) {
+  let format: "auto" | "12" | "24" = "auto"
+
+  if (index == 0) {
+    format = "auto"
+  } else if (index == 1) {
+    format = "12"
+  } else if (index == 2) {
+    format = "24"
+  }
+
+  const timeFormat: TimeFormat = {index, format}
+  settingSave("timeFormat", timeFormat)
+}
 </script>
 
 <style scoped>

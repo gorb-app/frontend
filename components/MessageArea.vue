@@ -3,7 +3,7 @@
 		<div id="messages" ref="messagesElement">
 			<Message v-for="(message, i) of messages" :username="message.user.display_name ?? message.user.username"
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
-				format="12" :type="messagesType[message.uuid]"
+				:format="timeFormat" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
 				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me"
 				:message="message" :is-reply="message.reply_to"
@@ -49,6 +49,7 @@ const me = await fetchWithApi("/me") as UserResponse;
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
 const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference
+const timeFormat = getPreferredTimeFormat()
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,

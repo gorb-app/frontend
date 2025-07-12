@@ -1,10 +1,12 @@
-export default (key: string): any => {
+import type { ClientSettings } from "~/types/settings"
+
+export default (): ClientSettings => {
 	let clientSettingsItem: string | null = localStorage.getItem("clientSettings")
 	if (typeof clientSettingsItem != "string") {
 		clientSettingsItem = "{}"
 	}
 
-	let clientSettings: { [key: string]: any } = {}
+	let clientSettings: ClientSettings = {}
 	try {
 		clientSettings = JSON.parse(clientSettingsItem)
 	} catch {
@@ -15,5 +17,5 @@ export default (key: string): any => {
 		clientSettings = {}
 	}
 
-	return clientSettings[key]
+	return clientSettings
 }
