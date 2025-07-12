@@ -1,7 +1,7 @@
 <template>
   <div :id="props.maxWidth == 'full' ? 'message-reply' : undefined" :class="{ 'message-reply-preview' : props.maxWidth == 'reply' }"
   		:data-message-id="props.id" @click="scrollToReply">
-    <p id="reply-text">Replying to <span id="reply-author-field">{{ props.author }}:</span> <span v-html="sanitized"></span></p>
+    <span id="reply-text">Replying to <span id="reply-author-field">{{ props.author }}:</span> <span v-html="sanitized"></span></span>
 	<!-- <span id="message-reply-cancel"><Icon name="lucide:x" /></span> -->
   </div>
 </template>
@@ -61,7 +61,6 @@ function scrollToReply(e: MouseEvent) {
 #message-reply, .message-reply-preview {
 	display: flex;
 	text-align: left;
-	border-bottom: 1px solid var(--padding-color);
 	margin-bottom: .5rem;
 	cursor: pointer;
 	overflow: hidden;
@@ -72,16 +71,17 @@ function scrollToReply(e: MouseEvent) {
 }
 
 .message-reply-preview {
-	width: 30%;
 	margin-left: .5dvw;
 }
 
 #reply-text {
-	color: rgb(150, 150, 150);
+	color: var(--reply-text-color);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	margin-bottom: 0;
+	margin-top: .2rem;
+	border-bottom: 1px solid var(--padding-color);
 
 }
 

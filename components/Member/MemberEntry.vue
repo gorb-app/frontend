@@ -10,7 +10,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import type { GuildMemberResponse } from '~/types/interfaces';
-import UserPopup from './UserPopup.vue';
 
 const props = defineProps<{
     member: GuildMemberResponse

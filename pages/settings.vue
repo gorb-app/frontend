@@ -8,7 +8,7 @@
               <Icon class="back-button" size="2em" name="lucide:circle-arrow-left" alt="Back"></Icon>
             </span>
           </p>
-          <span class="spacer"></span>
+          <VerticalSpacer />
 
           <!-- categories and dynamic settings pages -->
           <div v-for="category in categories" :key="category.displayName">
@@ -17,13 +17,13 @@
               :class="{ 'sidebar-focus': selectedPage === page.displayName }">
               {{ page.displayName }}
             </li>
-            <span class="spacer"></span>
+            <VerticalSpacer />
           </div>
           
           <p>
             <Button text="Log Out" :callback=logout variant="scary"></Button>
           </p>
-          <span class="spacer"></span>
+          <VerticalSpacer />
 
           <p id="links-and-socials">
             <NuxtLink href="https://git.gorb.app/gorb/frontend" title="Source"><Icon name="lucide:git-branch-plus" /></NuxtLink>
@@ -46,6 +46,9 @@
 
 
 <script lang="ts" setup>
+import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
+import Button from '~/components/UserInterface/Button.vue';
+
 const { logout } = useAuth()
 const appConfig = useRuntimeConfig()
 
@@ -194,13 +197,6 @@ onMounted(() => {
 
 #links-and-socials * {
   margin-right: 0.2em;
-}
-
-.spacer {
-  height: 0.2dvh;
-  display: block;
-  margin: 0.8dvh 1dvw;
-  background-color: var(--padding-color);
 }
 
 /* applies to child pages too */
