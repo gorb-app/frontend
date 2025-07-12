@@ -45,6 +45,10 @@ export const useApi = () => {
 		return await fetchWithApi(`/guilds`, { method: "POST", body: { name } });
 	}
 
+	async function joinGuild(invite: string): Promise<GuildResponse> {
+		return await fetchWithApi(`/invites/${invite}`, { method: "POST" }) as GuildResponse;
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -57,5 +61,6 @@ export const useApi = () => {
 		fetchMessages,
 		fetchMessage,
 		createGuild,
+		joinGuild,
 	}
 }
