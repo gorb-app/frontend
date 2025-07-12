@@ -38,11 +38,11 @@ export const useApi = () => {
 	}
 
 	async function addFriend(username: string): Promise<void> {
-		await fetchWithApi('/me/friends', { method: "POST", body: { username } });
+		return await fetchWithApi('/me/friends', { method: "POST", body: { username } });
 	}
 
 	async function removeFriend(userId: string): Promise<void> {
-		await fetchWithApi(`/me/friends/${userId}`, { method: "DELETE" });
+		return await fetchWithApi(`/me/friends/${userId}`, { method: "DELETE" });
 	}
 
 	async function fetchMessages(channelId: string, options?: { amount?: number, offset?: number }): Promise<MessageResponse[] | undefined> {
