@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout name="client">
 	<DirectMessagesSidebar />
-	<div id="friends-page-content">
-		<div id="navigation-bar">
+	<div :id="$style['page-content']">
+		<div :id="$style['navigation-bar']">
 			<Button v-for="button of buttons" :text="button.label" variant="normal" :callback="button.updateFilter" />
 		</div>
 		
@@ -35,8 +35,8 @@ function updateFilter(newFilter: string) {
 }
 </script>
 
-<style>
-#friends-page-content {
+<style module>
+#page-content {
 	display: flex;
 	flex-direction: column;
 	
