@@ -20,7 +20,7 @@
 					</NuxtLink>
 				</div>
 				<NuxtLink id="settings-menu" href="/settings">
-					<Icon name="lucide:settings" class="sidebar-icon white" alt="Settings menu" />
+					<Icon name="lucide:settings" class="sidebar-icon" style="background-color: var(--primary-color)" alt="Settings menu" />
 				</NuxtLink>
 			</div>
 			<slot />
