@@ -3,27 +3,33 @@
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
 		<div id="homebar">
 			<div class="homebar-item">
-				main bar
+				<marquee>
+					gorb!!!!!
+				</marquee>
 			</div>
-			</div>
-		<div id="left-column">
-			<div id="left-column-top">
-				<NuxtLink id="home-button" href="/">
-					<Icon name="lucide:house" class="white" size="2rem" />
+		</div>
+		<div id = "page-content">
+			<div id="left-column">
+				<NuxtLink id="home-button" href="/me">
+					<img class="sidebar-icon" src="/public/icon.svg"/>
 				</NuxtLink>
 				<div id="servers-list">
 					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<Icon name="lucide:server" class="white" size="2rem" />
+						<img v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
+						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
 					</NuxtLink>
 				</div>
+				<div ref="joinServerButton" id="left-column-bottom">
+					<button id="join-server-button" @click.prevent="createDropdown">
+						<Icon id="join-server-icon" name="lucide:square-plus" />
+					</button>
+				</div>
+				<NuxtLink id="settings-menu" href="/settings">
+					<Icon name="lucide:settings" class="sidebar-icon" alt="Settings menu" />
+				</NuxtLink>
 			</div>
-			<div ref="joinServerButton" id="left-column-bottom">
-				<button id="join-server-button" @click.prevent="createDropdown">
-					<Icon id="join-server-icon" name="lucide:square-plus" />
-				</button>
-			</div>
+			<slot />
 		</div>
-		<slot />
 	</div>
 </template>
 
@@ -184,13 +190,11 @@ function createDropdown() {
 
 <style>
 #client-root {
-	/* border: 1px solid white; */
 	height: 100dvh;
-	display: grid;
-	grid-template-columns: 1fr 4fr 18fr 4fr;
-	grid-template-rows: 4dvh auto;
+	width: 100dvw;
+	display: flex;
+	flex-direction: column;
 	text-align: center;
-	
 }
 
 .hidden {
@@ -199,49 +203,42 @@ function createDropdown() {
 
 .visible {
 	opacity: 100%;
-	transition-duration: 500ms;
+	transition: opacity 500ms;
 }
 
 #homebar {
-	grid-row: 1;
-	grid-column: 1 / -1;
+	min-height: 4dvh;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+	background: var(--optional-topbar-background);
+	background-color: var(--topbar-background-color);
+	border-bottom: 1px solid var(--padding-color);
 	padding-left: 5dvw;
 	padding-right: 5dvw;
 }
 
-#client-root>div:nth-child(-n+4) {
-	border-bottom: 1px solid rgb(70, 70, 70);
+.homebar-item {
+	width: 100dvw;
 }
 
-#__nuxt {
+#page-content {
 	display: flex;
-	flex-flow: column;
-}
-
-.grid-column {
-	padding-top: 1dvh;
-}
-
-#home {
-	padding-left: .5dvw;
-	padding-right: .5dvw;
-}
-
-#current-info {
-	grid-column: 2;
-	grid-row: 1;
+	flex-direction: row;
+	flex-grow: 1;
+    overflow: auto;
 }
 
 #left-column {
-	display: grid;
-	grid-template-rows: 1fr auto;
-	overflow-y: hidden;
-	border-right: 1px solid rgb(70, 70, 70);
-	padding-top: 1dvh;
-	padding-bottom: 1dvh;
+	display: flex;
+	flex-direction: column;
+	gap: .75em;
+	padding-left: .25em;
+	padding-right: .25em;
+	padding-top: .5em;
+	border-right: 1px solid var(--padding-color);
+	background: var(--optional-sidebar-background);
+	background-color: var(--sidebar-background-color);
 }
 
 #left-column-top {
@@ -270,8 +267,9 @@ function createDropdown() {
 #servers-list {
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
-	overflow-y: scroll;
+	gap: 1em;
+	width: 3.2rem;	
+	padding-top: .5em;
 }
 
 #join-server-button {
@@ -286,6 +284,39 @@ function createDropdown() {
 
 #join-server-icon {
 	float: left;
+}
+
+#middle-left-column {
+	padding-left: .25em;
+	padding-right: .25em;
+	border-right: 1px solid var(--padding-color);
+	min-width: 13em;
+	max-width: 13em;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.sidebar-icon {
+	width: 3rem;
+	height: 3rem;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#home-button {
+	border-bottom: 1px solid var(--padding-color);
+	padding-bottom: .375em;
+}
+
+#settings-menu {
+	position: absolute;
+	bottom: .25em;
+
+	color: var(--primary-color)
+}
+
+#settings-menu:hover {
+	color: var(--primary-highlighted-color)
 }
 
 </style>

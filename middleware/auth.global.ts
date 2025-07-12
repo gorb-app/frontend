@@ -2,7 +2,21 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	console.log("to.fullPath:", to.fullPath);
 	const loading = useState("loading");
 	const accessToken = useCookie("access_token").value;
-	if (["/login", "/register"].includes(to.path)) {
+	const apiBase = useCookie("api_base").value;
+	const { fetchInstanceStats } = useApi();
+	
+	console.log("[AUTH] instance url:", apiBase);
+	if (apiBase && !Object.keys(to.query).includes("special") && to.path != "/verify-email") {
+		const user = await useAuth().getUser();
+		const stats = await fetchInstanceStats(apiBase);
+		console.log("[AUTH] stats:", stats);
+		console.log("[AUTH] email verification check:", user?.email && !user.email_verified && stats.email_verification_required);
+		if (user?.email && !user.email_verified && stats.email_verification_required) {
+			return await navigateTo("/register?special=verify_email");
+		}
+	}
+
+	if (["/login", "/register"].includes(to.path) && !Object.keys(to.query).includes("special")) {
 		console.log("path is login or register");
 		const apiBase = useCookie("api_base");
 		console.log("apiBase gotten:", apiBase.value);
@@ -19,6 +33,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				if (parsed.ApiBaseUrl) {
 					apiBase.value = `${parsed.ApiBaseUrl}/v${apiVersion}`;
 					console.log("set apiBase to:", parsed.ApiBaseUrl);
+					console.log("hHEYOO");
+					const instanceUrl = useCookie("instance_url");
+					console.log("hHEYOO 2");
+					console.log("instance url:", instanceUrl.value);
+					if (!instanceUrl.value) {
+						instanceUrl.value = `${requestUrl.protocol}//${requestUrl.host}`;
+						console.log("set instance url to:", instanceUrl.value);
+					}
 				}
 			}
 		}

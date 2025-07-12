@@ -9,7 +9,7 @@
 				<GuildOptionsMenu v-if="showGuildSettings" />
 			</div>
 			<div id="channels-list">
-				<Channel v-for="channel of channels" :name="channel.name"
+				<ChannelEntry v-for="channel of channels" :name="channel.name"
 					:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
 					:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
 			</div>
@@ -17,17 +17,14 @@
 		<MessageArea :channel-url="channelUrlPath" />
 		<div id="members-container">
 			<div id="members-list">
-				<div class="member-item" v-for="member of members" tabindex="0">
-					<img v-if="member.user.avatar" class="member-avatar" :src="member.user.avatar" :alt="member.user.display_name ?? member.user.username" />
-					<Icon v-else class="member-avatar" name="lucide:user" />
-					<span class="member-display-name">{{ member.user.display_name ?? member.user.username }}</span>
-				</div>
+				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
 			</div>
 		</div>
 	</NuxtLayout>
 </template>
 
 <script lang="ts" setup>
+import ChannelEntry from "~/components/Guild/ChannelEntry.vue";
 
 const route = useRoute();
 
@@ -44,7 +41,7 @@ const members = ref<GuildMemberResponse[]>();
 const showInvitePopup = ref(false);
 const showGuildSettings = ref(false);
 
-import { type ChannelResponse, type GuildMemberResponse, type GuildResponse, type MessageResponse } from "~/types/interfaces";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);
@@ -83,46 +80,53 @@ function toggleInvitePopup(e: Event) {
 	e.preventDefault();
 	showInvitePopup.value = !showInvitePopup.value;
 }
+
+function handleMemberClick(member: GuildMemberResponse) {
+}
 </script>
 
 <style>
 #middle-left-column {
-	padding-left: 1dvw;
-	padding-right: 1dvw;
-	border-right: 1px solid rgb(70, 70, 70);
+	padding-left: .5em;
+	padding-right: .5em;
+	border-right: 1px solid var(--padding-color);
+	background: var(--optional-channel-list-background);
+	background-color: var(--sidebar-background-color);
 }
 
 #members-container {
-	padding-top: 1dvh;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
-	border-left: 1px solid rgb(70, 70, 70);
+	min-width: 15rem;
+	max-width: 15rem;
+	border-left: 1px solid var(--padding-color);
+	background: var(--optional-member-list-background);
 }
 
 #members-list {
 	display: flex;
 	flex-direction: column;
+	overflow-x: hidden;
 	overflow-y: scroll;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
-	margin-top: 1dvh;
+	padding-left: 1.25em;
+	padding-right: 1.25em;
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
+	max-height: calc(100% - 0.75em * 2); /* 100% - top and bottom */
 }
 
 .member-item {
-	display: grid;
-	grid-template-columns: 2dvw 1fr;
+	display: flex;
 	margin-top: .5em;
 	margin-bottom: .5em;
-	gap: 1em;
+	gap: .5em;
 	align-items: center;
 	text-align: left;
-
+	cursor: pointer;
 }
 
 #channels-list {
 	display: flex;
 	flex-direction: column;
-	gap: 1dvh;
+	gap: .5em;
 }
 
 .member-avatar {
