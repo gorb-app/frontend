@@ -1,5 +1,12 @@
 <template>
   <div>
+	<div id="homebar">
+		<div class="homebar-item">
+			<marquee>
+				gorb!!!!!
+			</marquee>
+		</div>
+	</div>
     <Banner v-if="banner" />
     <NuxtPage :keepalive="true" />
   </div>
