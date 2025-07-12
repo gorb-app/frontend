@@ -1,6 +1,6 @@
 <template>
 	<div class="radio-buttons-container" ref="radioButtonsContainer">
-		<div v-for="index in incidies" :key="index" class="radio-button" @click="onClick(index)">
+		<div v-for="index in indices" :key="index" class="radio-button" @click="onClick(index)">
 			<span class="radio-button-radio"></span>
 			<span class="radio-button-text">{{ textStrings[index] }}</span>
 		</div>
@@ -19,7 +19,7 @@ const props = defineProps<{
 }>();
 
 // makes an array from 0 to buttonCount - 1
-const incidies = Array.from({ length: props.buttonCount }, (_, i) => i) 
+const indices = Array.from({ length: props.buttonCount }, (_, i) => i) 
 
 // select default selected button
 onMounted(async () => {
