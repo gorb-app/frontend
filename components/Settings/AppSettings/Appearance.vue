@@ -24,12 +24,13 @@
     <p class="subtitle">TIME FORMAT</p>
     <div class="icons">
       <RadioButtons :button-count="3" :text-strings="['Auto', '12-hour', '24-hour']"
-          default-button-index="0" :callback="onTimeFormatClicked"></RadioButtons>
+          :default-button-index="0" :callback="onTimeFormatClicked"></RadioButtons>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import RadioButtons from '~/components/UserInterface/RadioButtons.vue';
 import settingSave from '~/utils/settingSave';
 
 const runtimeConfig = useRuntimeConfig()
