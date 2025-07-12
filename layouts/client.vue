@@ -1,6 +1,13 @@
 <template>
 	<Loading v-show="loading" />
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
+		<div id="homebar">
+			<div class="homebar-item">
+				<marquee>
+					gorb!!!!!
+				</marquee>
+			</div>
+		</div>
 		<div id = "page-content">
 			<div id="left-column">
 				<NuxtLink id="home-button" href="/me">
