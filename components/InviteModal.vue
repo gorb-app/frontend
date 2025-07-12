@@ -2,8 +2,9 @@
   <Modal v-bind="props" :title="props.title || 'Create an invite'">
     <div id="invite-popup">
       <div v-if="invite">
-        <p>{{ invite }}</p>
-        <button @click="copyInvite">Copy Link</button>
+        <p id="invite-label">{{ invite }}</p>
+        <button @click="copyInvite('link')">Copy Link</button>
+        <button @click="copyInvite('code')">Copy Code</button>
       </div>
       <div v-else>
         <button @click="generateInvite">Generate Invite</button>
@@ -36,13 +37,25 @@ async function generateInvite(): Promise<void> {
   return;
 }
 
-function copyInvite() {
-  const inviteUrl = URL.parse(`invite/${invite.value}`, `${window.location.protocol}//${window.location.host}`);
-  navigator.clipboard.writeText(inviteUrl!.href);
+function copyInvite(type: "link" | "code") {
+  if (!invite.value) return;
+
+  if (type == "link") {
+    const inviteUrl = URL.parse(`invite/${invite.value}`, `${window.location.protocol}//${window.location.host}`);
+    if (inviteUrl) {
+      navigator.clipboard.writeText(inviteUrl.href);
+    }
+  } else {
+    navigator.clipboard.writeText(invite.value);
+  }
 }
 
 </script>
 
-<style>
+<style scoped>
+
+#invite-label {
+  text-align: center;
+}
 
 </style>
