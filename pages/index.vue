@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+await navigateTo("/me/", { replace: true })
 
 definePageMeta({
 	layout: "client"

@@ -18,7 +18,7 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
     return;
   }
   console.log("path:", path)
-  const { revoke, refresh } = useAuth();
+  const { clearAuth, refresh } = useAuth();
   
   let headers: HeadersInit = {};
   
@@ -61,8 +61,7 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
             if (error?.response?.status === 401) {
               console.log("Refresh returned 401");
               reauthFailed = true;
-              console.log("Revoking");
-              await revoke();
+              await clearAuth()
               console.log("Redirecting to login");
               await navigateTo("/login");
               console.log("redirected");

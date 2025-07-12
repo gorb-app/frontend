@@ -1,0 +1,21 @@
+:root {
+	--text-color: #170f08;
+	--secondary-text-color: #2f2b28;
+	--reply-text-color: #969696;
+
+    --chat-background-color: #f0ebe8;
+    --chat-highlighted-background-color: #e8e4e0;
+	--sidebar-background-color: #dbd8d4;
+	--sidebar-highlighted-background-color: #d4d0ca;
+	--topbar-background-color: #dfdbd6;
+	--chatbox-background-color: #dfdbd6;
+
+    --padding-color: #484848;
+    
+    --primary-color: #df5f0b;
+    --primary-highlighted-color: #ef6812;
+    --secondary-color: #e8ac84;
+    --secondary-highlighted-color: #f8b68a;
+    --accent-color: #e68b4e;
+    --accent-highlighted-color: #f69254;
+}

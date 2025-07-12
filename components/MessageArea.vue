@@ -3,31 +3,53 @@
 		<div id="messages" ref="messagesElement">
 			<Message v-for="(message, i) of messages" :username="message.user.display_name ?? message.user.username"
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
-				format="12" :type="messagesType[message.uuid]"
+				:format="timeFormat" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
-				:last="i == messages.length - 1" />
+				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me"
+				:message="message" :is-reply="message.reply_to"
+				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined" />
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
-				<input v-model="messageInput" id="message-box-input" class="rounded-corners" type="text"
-					name="message-input" autocomplete="off">
-				<button id="submit-button" type="submit">
-					<Icon name="lucide:send" />
-				</button>
+				<div id="message-box-left-elements">
+					<span class="message-box-button">
+						<Icon name="lucide:file-plus-2" />
+					</span>
+				</div>
+
+				<div id="message-textarea">
+					<div id="message-textbox-input"
+							role="textbox" ref="messageTextboxInput"
+							autocorrect="off" spellcheck="true" contenteditable="true"
+							@keydown="handleTextboxKeyDown" @input="handleTextboxInput">
+					</div>
+				</div>
+				
+				<div id="message-box-right-elements">
+					<button class="message-box-button" type="submit">
+						<Icon name="lucide:send" />
+					</button>
+					<span class="message-box-button">
+						<Icon name="lucide:image-play" />
+					</span>
+				</div>
 			</form>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse, ScrollPosition } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
+const me = await fetchWithApi("/me") as UserResponse;
+
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
 const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference
+const timeFormat = getPreferredTimeFormat()
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,
@@ -97,6 +119,7 @@ if (messagesRes) {
 	messagesRes.reverse();
 	console.log("messages res:", messagesRes.map(msg => msg.message));
 	for (const message of messagesRes) {
+		console.log("[MSG] processing message:", message);
 		groupMessage(message);
 	}
 }
@@ -106,11 +129,38 @@ function pushMessage(message: MessageResponse) {
 	messages.value.push(message);
 }
 
+function handleTextboxKeyDown(event: KeyboardEvent) {
+	if (event.key === "Enter" && event.shiftKey && messageTextboxInput.value) {
+		// this enters a newline, due to not preventing default
+	} else if (event.key === "Enter") {
+		event.preventDefault()
+		sendMessage(event)
+	}
+	
+	adjustTextboxHeight()
+}
+
+function handleTextboxInput() {
+	if (messageTextboxInput.value) {
+        messageInput.value = messageTextboxInput.value.innerText;
+    }
+
+	adjustTextboxHeight()
+}
+
+// this technically uses pixel units, but it's still set using dynamic units
+function adjustTextboxHeight() {
+	if (messageTextboxInput.value && messageTextboxDisplay.value) {
+		messageTextboxInput.value.style.height = "auto"
+		messageTextboxInput.value.style.height = `${messageTextboxInput.value.scrollHeight}px`
+	}
+}
+
 const messages = ref<MessageResponse[]>([]);
-
-const messageInput = ref<string>();
-
+const messageInput = ref<string>("");
 const messagesElement = ref<HTMLDivElement>();
+const messageTextboxInput = ref<HTMLDivElement>();
+const messageTextboxDisplay = ref<HTMLDivElement>();
 
 if (messagesRes) messages.value = messagesRes;
 
@@ -141,6 +191,7 @@ if (accessToken && apiBase) {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
 		const parsedData = JSON.parse(event.data);
+		console.log("[MSG] parsed message:", parsedData);
 		
 		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
 		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
@@ -158,12 +209,39 @@ if (accessToken && apiBase) {
 
 function sendMessage(e: Event) {
 	e.preventDefault();
-	const text = messageInput.value;
-	console.log("text:", text);
-	if (text) {
-		ws.send(text);
-		messageInput.value = "";
-		console.log("MESSAGE SENT!!!");
+	if (messageInput.value && messageInput.value.trim() !== "") {
+		const message: Record<string, string> = {
+			message: messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
+		}
+
+		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
+		console.log("[MSG] message reply:", messageReply);
+		if (messageReply && messageReply.dataset.messageId) {
+			console.log("[MSG] message is a reply");
+			message.reply_to = messageReply.dataset.messageId;
+		}
+
+		console.log("[MSG] sent message:", message);
+		ws.send(JSON.stringify(message));
+
+		// reset input field
+		messageInput.value = ""
+		if (messageTextboxInput.value) {
+			messageTextboxInput.value.innerText = ""
+		}
+
+		adjustTextboxHeight()
+	}
+}
+
+function getReplyMessage(id: string) {
+	console.log("[REPLYMSG] id:", id);
+	const messagesValues = Object.values(messages.value);
+	console.log("[REPLYMSG] messages values:", messagesValues);
+	for (const message of messagesValues) {
+		console.log("[REPLYMSG] message:", message);
+		console.log("[REPLYMSG] IDs match?", message.uuid == id);
+		if (message.uuid == id) return message;
 	}
 }
 
@@ -171,6 +249,7 @@ const route = useRoute();
 
 onMounted(async () => {
 	if (import.meta.server) return;
+	console.log("[MSG] messages keys:", Object.values(messages.value));
 	if (messagesElement.value) {
 		scrollToBottom(messagesElement.value);
 		let fetched = false;
@@ -239,38 +318,64 @@ router.beforeEach((to, from, next) => {
 
 <style scoped>
 #message-area {
-	display: grid;
-	grid-template-rows: 8fr 1fr;
+	display: flex;
+	flex-direction: column;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
 	overflow: hidden;
+	flex-grow: 1;
 }
 
 #message-box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-content: center;
-	border: 1px solid rgb(70, 70, 70);
-	padding-bottom: 1dvh;
-	padding-top: 1dvh;
-	margin-bottom: 1dvh;
+	margin-top: auto; /* force it to the bottom of the screen */
+	margin-bottom: 2dvh;
 	margin-left: 1dvw;
 	margin-right: 1dvw;
+
+	padding-left: 2%;
+	padding-right: 2%;
+	
+	align-items: center;
+	
+	color: var(--text-color);
+	border: 1px solid var(--padding-color);
+	background-color: var(--chatbox-background-color);
 }
 
 #message-form {
 	display: flex;
-	justify-content: center;
+	flex-direction: row;
+	gap: .55em;
 }
 
-#message-box-input {
-	width: 80%;
-	background-color: rgb(50, 50, 50);
+#message-textarea {
+	flex-grow: 1;
+	min-height: 2.35em;
+}
+
+#message-textbox-input {
+	width: 100%;
+	max-height: 50dvh;
+
+	padding: 0.5em 0;
+	user-select: text;
+
+	font-family: inherit;
+	font-size: inherit;
+	line-height: normal;
 	border: none;
-	color: inherit;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	background-color: #40404000; /* completely transparent colour */
+
+	text-align: left;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	
+	overflow-y: auto;
+}
+
+#message-box-left-elements, #message-box-right-elements {
+	display: flex;
+	align-items: end;
 }
 
 #messages {
@@ -281,14 +386,16 @@ router.beforeEach((to, from, next) => {
 	padding-right: 1dvw;
 }
 
-#submit-button {
+.message-box-button {
 	background-color: inherit;
 	border: none;
-	color: rgb(200, 200, 200);
+	color: var(--primary-color);
+	transition: color 100ms;
 	font-size: 1.5em;
 }
 
-#submit-button:hover {
-	color: rgb(255, 255, 255);
+.message-box-button:hover {
+	color: var(--primary-highlighted-color);
+	cursor: pointer;
 }
 </style>

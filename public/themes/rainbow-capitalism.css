@@ -1,0 +1,29 @@
+:root {
+	--text-color: #161518;
+	--secondary-text-color: #2b2930;
+	--reply-text-color: #969696;
+
+    --chat-background-color: #80808000;
+    --chat-highlighted-background-color: #ffffff20;
+	--sidebar-background-color: #80808000;
+	--sidebar-highlighted-background-color: #ffffff20;
+	--topbar-background-color: #80808000;
+	--chatbox-background-color: #80808040;
+
+    --padding-color: #80808000;
+    
+    --primary-color: #21b1ff80;
+    --primary-highlighted-color: #18a0df80;
+    --secondary-color: #ffd80080;
+    --secondary-highlighted-color: #dfb80080;
+    --accent-color: #ff218c80;
+    --accent-highlighted-color: #df1b6f80;
+
+    /* --optional-body-background: background */
+    --optional-body-background: linear-gradient(45deg, #ed222480, #ed222480, #ed222480, #ed222480, #ed222480, #ed222480, #f35b2280, #f9962180, #f5c11e80, #f1eb1b80, #f1eb1b80, #f1eb1b80, #63c72080, #0c9b4980, #21878d80, #3954a580, #61379b80, #93288e80);
+	--optional-topbar-background: linear-gradient(-12.5deg, cyan, pink, white, pink, cyan);
+	--optional-sidebar-background: linear-gradient(90deg, #55cdfcd0, #f7a8b8d0, #ffffffd0, #f7a8b8d0, #55cdfcd0);
+	--optional-channel-list-background: linear-gradient(82deg, #d52c00b0, #e29688b0, #ffffffb0, #d27fa4b0, #a20062b0);
+	--optional-member-list-background: linear-gradient(3deg, #ff0080, #c8259d, #8c4799, #442e9f, #0032a0);
+    --optional-message-box-background: linear-gradient(3deg, #ff0080, #c8259d, #8c4799, #442e9f, #0032a0);
+}

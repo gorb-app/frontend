@@ -44,7 +44,8 @@ export interface MessageResponse {
 	channel_uuid: string,
 	user_uuid: string,
 	message: string,
-	user: UserResponse
+	reply_to: string | null,
+	user: UserResponse,
 }
 
 export interface InviteResponse {
@@ -58,9 +59,12 @@ export interface UserResponse {
 	username: string,
 	display_name: string | null,
 	avatar: string | null,
+	pronouns: string | null,
+	about: string | null,
 	email?: string,
-	email_verified?: boolean
-  }
+	email_verified?: boolean,
+	friends_since: string | null,
+}
 
 export interface StatsResponse {
 	accounts: number,
@@ -80,4 +84,9 @@ export interface ScrollPosition {
 	offsetWidth: number,
 	offsetTop: number,
 	offsetLeft: number
+}
+
+export interface ContextMenuItem {
+	name: string,
+	callback: (...args: any[]) => any;
 }
