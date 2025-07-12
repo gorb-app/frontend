@@ -49,7 +49,7 @@ const me = await fetchWithApi("/me") as UserResponse;
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
 const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference
-const timeFormat = settingLoad("timeFormat") ?? "24"
+const timeFormat = getPreferredTimeFormat()
 
 const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
 	`${props.channelUrl}/messages`,

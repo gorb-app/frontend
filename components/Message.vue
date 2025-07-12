@@ -46,7 +46,8 @@
 				<span class="message-date" :title="date.toString()">
 					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
 					<span v-else-if="getDayDifference(date, currentDate) > 1 ">{{ date.toLocaleDateString(undefined) }},</span>
-					{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
+
+					{{ date.toLocaleTimeString(undefined, { hour12: props.format=="12", timeStyle: "short" }) }}
 				</span>
 			</div>
 			<div class="message-text" v-html="sanitized" tabindex="0"></div>
