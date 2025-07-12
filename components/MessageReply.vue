@@ -77,7 +77,7 @@ function scrollToReply(e: MouseEvent) {
 }
 
 #reply-text {
-	color: rgb(150, 150, 150);
+	color: var(--reply-text-color);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
