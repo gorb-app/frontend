@@ -1,7 +1,7 @@
 <template>
   <div id="guild-options-container">
     <div v-for="setting of settings" class="guild-option" tabindex="0">
-      <button class="guild-option-button" @click="setting.action">{{ setting.name }}</button>
+      <button class="guild-option-button" @click="setting.action" tabindex="0">{{ setting.name }}</button>
     </div>
   </div>
 </template>
