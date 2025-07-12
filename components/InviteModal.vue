@@ -20,8 +20,6 @@ const props = defineProps<ModalProps & { guildId: string }>();
 
 const invite = ref<string>();
 
-const route = useRoute();
-
 async function generateInvite(): Promise<void> {
   const chars = "ABCDEFGHIJKLMNOQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
   let randCode = "";
@@ -29,7 +27,7 @@ async function generateInvite(): Promise<void> {
     randCode += chars[Math.floor(Math.random() * chars.length)];
   }
   const createdInvite: InviteResponse | undefined = await fetchWithApi(
-    `/guilds/${route.params.serverId}/invites`,
+    `/guilds/${props.guildId}/invites`,
     { method: "POST", body: { custom_id: randCode } }
   );
 
