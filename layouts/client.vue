@@ -123,11 +123,11 @@ const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 	position: absolute;
 	bottom: .25em;
 
-	background-color: var(--primary-color)
+	color: var(--primary-color)
 }
 
-#settings-menu {
-	background-color: var(--primary-highlighted-color)
+#settings-menu:hover {
+	color: var(--primary-highlighted-color)
 }
 
 </style>
