@@ -7,24 +7,20 @@
 </template>
 
 <script lang="ts" setup>
-import { InviteModal } from '#components';
-
-const modal = ref<HTMLDialogElement>();
-
-const showInviteModal = ref(false);
+import { render } from 'vue';
+import InviteModal from './InviteModal.vue';
 
 const settings = [
   { name: "Invite", icon: "lucide:letter", action: openInviteModal }
 ]
 
 function openInviteModal() {
-  showInviteModal.value = true;
-  const invitePopup = h(InviteModal);
-}
-
-function toggleInviteModal(e: Event) {
-  e.preventDefault();
-  showInviteModal.value = !showInviteModal.value;
+  const div = document.createElement("div");
+  const guildId = useRoute().params.serverId as string;
+  console.log("guild id:", guildId);
+  const inviteModal = h(InviteModal, { guildId });
+  document.body.appendChild(div);
+  render(inviteModal, div);
 }
 
 </script>
