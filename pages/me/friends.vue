@@ -3,7 +3,10 @@
 	<DirectMessagesSidebar />
 	<div :id="$style['page-content']">
 		<div :id="$style['navigation-bar']">
-			<Button v-for="button of buttons" :text="button.label" variant="normal" :callback="button.updateFilter" />
+			<Button text="All Friends" variant="neutral" :callback="() => updateFilter('all')" />
+			<Button text="Online" variant="neutral" :callback="() => updateFilter('online')" />
+			<Button text="Pending" variant="neutral" :callback="() => updateFilter('pending')" />
+			<Button text="Add Friend" variant="normal" :callback="() => updateFilter('add')" />
 		</div>
 		
 		<div>
@@ -16,17 +19,10 @@
 </template>
 
 <script lang="ts" setup>
-import AddFriend from '~/components/Me/AddFriend.vue';
 import DirectMessagesSidebar from '~/components/Me/DirectMessagesSidebar.vue';
-import FriendsList from '~/components/Me/FriendsList.vue';
 import Button from '~/components/UserInterface/Button.vue';
-
-const buttons = [
-	{ label: "All Friends", updateFilter: () => updateFilter('all'), variant: "neutral" },
-	{ label: "Online", updateFilter: () => updateFilter('online'), variant: "neutral" },
-	{ label: "Pending", updateFilter: () => updateFilter('pending'), variant: "neutral" },
-	{ label: "Add Friend", updateFilter: () => updateFilter('add'), variant: "primary" },
-]
+import AddFriend from '~/components/Me/AddFriend.vue';
+import FriendsList from '~/components/Me/FriendsList.vue';
 
 let filter = ref("all");
 
