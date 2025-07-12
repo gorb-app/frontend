@@ -1,9 +1,9 @@
 export default (): "12" | "24" => {
-	const format = settingLoad("timeFormat").timeFormat ?? "auto"
+	const format = settingsLoad().timeFormat?.format ?? "auto"
 
-	if (format == "12-hour") {
+	if (format == "12") {
 		return "12"
-	} else if (format == "24-hour") {
+	} else if (format == "24") {
 		return "24"
 	}
 
