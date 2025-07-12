@@ -3,9 +3,9 @@
 	<DirectMessagesSidebar />
 	<div :id="$style['page-content']">
 		<div :id="$style['navigation-bar']">
-			<Button text="All Friends" variant="neutral" :callback="() => updateFilter('all')" />
-			<Button text="Online" variant="neutral" :callback="() => updateFilter('online')" />
-			<Button text="Pending" variant="neutral" :callback="() => updateFilter('pending')" />
+			<Button :text="`All Friends – ${friends?.length}`" variant="neutral" :callback="() => updateFilter('all')" />
+			<Button :text="`Online – ${0}`" variant="neutral" :callback="() => updateFilter('online')" />
+			<Button :text="`Pending – ${0}`" variant="neutral" :callback="() => updateFilter('pending')" />
 			<Button text="Add Friend" variant="normal" :callback="() => updateFilter('add')" />
 		</div>
 		
@@ -24,7 +24,11 @@ import Button from '~/components/UserInterface/Button.vue';
 import AddFriend from '~/components/Me/AddFriend.vue';
 import FriendsList from '~/components/Me/FriendsList.vue';
 
+const { fetchFriends } = useApi();
+
 let filter = ref("all");
+
+const friends = await fetchFriends()
 
 function updateFilter(newFilter: string) {
 	filter.value = newFilter;
