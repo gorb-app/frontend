@@ -17,11 +17,15 @@
       </div>
     </div>
 
-    <p class="subtitle">ICONS</p>
-    <div class="themes">
+    <!-- <p class="subtitle">Icons</p>
+    <div class="icons">
+    </div> -->
+
+    <p class="subtitle">TIME FORMAT</p>
+    <div class="icons">
+      <RadioButtons :button-count="3" :text-strings="['Auto', '12-hour', '24-hour']"
+          default-button-index="0" :callback="onTimeFormatClicked"></RadioButtons>
     </div>
-
-
   </div>
 </template>
 
@@ -70,6 +74,11 @@ async function fetchThemes() {
 }
 
 await fetchThemes()
+
+
+async function onTimeFormatClicked(index: number) {
+    console.log(index)
+}
 </script>
 
 <style scoped>
