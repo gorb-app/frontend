@@ -41,6 +41,10 @@ export const useApi = () => {
 		return await fetchWithApi(`/channels/${channelId}/messages/${messageId}`);
 	}
 
+	async function createGuild(name: string): Promise<void> {
+		return await fetchWithApi(`/guilds`, { method: "POST", body: { name } });
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -51,6 +55,7 @@ export const useApi = () => {
 		fetchUsers,
 		fetchUser,
 		fetchMessages,
-		fetchMessage
+		fetchMessage,
+		createGuild,
 	}
 }
