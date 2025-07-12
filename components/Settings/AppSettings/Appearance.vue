@@ -48,7 +48,7 @@ function changeTheme(id: string, url: string) {
     return;
   }
 
-  settingSave("selectedThemeUrl", id)
+  settingSave("selectedThemeId", id)
 
   // if the theme didn't originally load for some reason, create it
   if (!themeLinkElement) {

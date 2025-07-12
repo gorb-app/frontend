@@ -44,7 +44,7 @@ function contextMenuHandler(e: MouseEvent) {
 	//]);
 }
 
-const currentTheme = settingLoad("selectedThemeUrl") ?? "dark"
+const currentTheme = settingLoad("selectedThemeId") ?? "dark"
 const baseURL = useRuntimeConfig().app.baseURL;
 
 useHead({
