@@ -87,3 +87,10 @@ export interface DropdownOption {
 	value: string | number,
 	callback: () => void
 }
+
+export interface ModalProps {
+	title?: string,
+	heavy?: boolean,
+	onClose?: () => void,
+	onCancel?: () => void
+}

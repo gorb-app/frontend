@@ -1,5 +1,5 @@
 <template>
-  <Modal title="Create an invite">
+  <Modal v-bind="props" :title="props.title || 'Create an invite'">
     <div id="invite-popup">
       <div v-if="invite">
         <p>{{ invite }}</p>
@@ -13,8 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { InviteResponse } from '~/types/interfaces';
+import type { InviteResponse, ModalProps } from '~/types/interfaces';
 
+const props = defineProps<ModalProps & { guildId: string }>();
 
 const invite = ref<string>();
 

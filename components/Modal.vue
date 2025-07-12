@@ -6,8 +6,10 @@
 </template>
 
 <script lang="ts" setup>
+import type { ModalProps } from '~/types/interfaces';
 
-const props = defineProps<{ title: string, heavy?: boolean }>();
+
+const props = defineProps<ModalProps>();
 const dialog = ref<HTMLDialogElement>();
 
 onMounted(() => {
