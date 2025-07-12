@@ -17,9 +17,9 @@
 					</NuxtLink>
 				</div>
 			</div>
-			<div id="left-column-bottom">
-				<button id="join-server-button">
-				<Icon id="join-server-icon" name="lucide:square-plus" />
+			<div ref="joinServerButton" id="left-column-bottom">
+				<button id="join-server-button" @click.prevent="createDropdown">
+					<Icon id="join-server-icon" name="lucide:square-plus" />
 				</button>
 			</div>
 		</div>
@@ -28,9 +28,96 @@
 </template>
 
 <script lang="ts" setup>
+import { render } from 'vue';
+import Dropdown from '~/components/Dropdown.vue';
+import Modal from '~/components/Modal.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
 const loading = useState("loading", () => false);
+
+const joinServerButton = ref<HTMLButtonElement>();
+
+const api = useApi();
+
+const options = [
+	{ name: "Join", value: "join", callback: async () => {
+			console.log("join guild!");
+			const div = document.createElement("div");
+			const guildJoinModal = h(Modal, {
+				title: "Join Guild",
+				id: "guild-join-modal",
+				onClose: () => {
+					unrender(div);
+				},
+				onCancel: () => {
+					unrender(div);
+				}
+			},
+			[
+				h("input", {
+					id: "guild-invite-input",
+					type: "text",
+					placeholder: "oyqICZ",
+				}),
+				h("button", {
+					onClick: async () => {
+						const input = document.getElementById("guild-invite-input") as HTMLInputElement;
+						const invite = input.value;
+						if (invite.length == 6) {
+							try {
+								const joinedGuild = await api.joinGuild(invite);
+								guilds?.push(joinedGuild);
+								return await navigateTo(`/servers/${joinedGuild.uuid}`);
+							} catch (error) {
+								alert(`Couldn't use invite: ${error}`);
+							}
+						}
+					}
+				},
+				"Join")
+			]);
+			document.body.appendChild(div);
+			render(guildJoinModal, div);
+		}
+	},
+	{ name: "Create", value: "create", callback: async () => {
+			console.log("create guild");
+			const user = await useAuth().getUser();
+			const div = document.createElement("div");
+			const guildCreateModal = h(Modal, {
+				title: "Join Guild",
+				id: "guild-join-modal",
+				onClose: () => {
+					unrender(div);
+				},
+				onCancel: () => {
+					unrender(div);
+				}
+			},
+			[
+				h("input", {
+					id: "guild-name-input",
+					type: "text",
+					placeholder: `${user?.display_name || user?.username}'s Awesome Bouncy Castle'`,
+				}),
+				h("button", {
+					onClick: async () => {
+						const input = document.getElementById("guild-name-input") as HTMLInputElement;
+						const name = input.value;
+						try {
+							await api.createGuild(name);
+						} catch (error) {
+							alert(`Couldn't create guild: ${error}`);
+						}
+					}
+				},
+				"Create")
+			]);
+			document.body.appendChild(div);
+			render(guildCreateModal, div);
+		}
+	}
+];
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
@@ -74,6 +161,24 @@ const members = [
 		displayName: "SauceyRed"
 	}
 ];
+
+function createDropdown() {
+	const dropdown = h(Dropdown, { options });
+	const div = document.createElement("div");
+	div.classList.add("dropdown", "destroy-on-click");
+	if (joinServerButton.value) {
+		joinServerButton.value.appendChild(div);
+	} else {
+		document.body.appendChild(div);
+	}
+	render(dropdown, div);
+	div.addEventListener("keyup", (e) => {
+		if (e.key == "Escape") {
+			unrender(div);
+		}
+	});
+	div.focus();
+}
 
 </script>
 
