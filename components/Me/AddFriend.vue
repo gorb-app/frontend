@@ -1,7 +1,7 @@
 <template>
 	<div style="text-align: left;">
 		<h3>Add a Friend</h3>
-		Enter a friend's Gorb ID to send them a friend request.
+		Enter a friend's Gorb username to send them a friend request.
 	</div>
 	
 	<div id="add-friend-search-bar">
