@@ -3,15 +3,12 @@
 	<DirectMessagesSidebar />
 	<div id="friends-page-content">
 		<div id="navigation-bar">
-			<NuxtLink class="friends-sub-page-button" @click.prevent="updateHash('all')">All Friends</NuxtLink>
-			<NuxtLink class="friends-sub-page-button" @click.prevent="updateHash('online')">Online</NuxtLink>
-			<NuxtLink class="friends-sub-page-button" @click.prevent="updateHash('pending')">Pending</NuxtLink>
-			<NuxtLink class="friends-sub-page-button friend-primary-button" @click.prevent="updateHash('addfriend')">Add Friend</NuxtLink>
+			<Button v-for="button of buttons" :text="button.label" variant="normal" :callback="button.updateFilter" />
 		</div>
 		
 		<div>
-			<AddFriend v-if="windowHash == '#addfriend'"></AddFriend>
-			<FriendsList v-else :variant="windowHash"></FriendsList>
+			<AddFriend v-if="filter == 'add'"></AddFriend>
+			<FriendsList v-else :variant="filter"></FriendsList>
 		</div>
 
 	</div>
@@ -22,12 +19,19 @@
 import AddFriend from '~/components/Me/AddFriend.vue';
 import DirectMessagesSidebar from '~/components/Me/DirectMessagesSidebar.vue';
 import FriendsList from '~/components/Me/FriendsList.vue';
+import Button from '~/components/UserInterface/Button.vue';
 
-let windowHash = ref(window.location.hash)
+const buttons = [
+	{ label: "All Friends", updateFilter: () => updateFilter('all'), variant: "neutral" },
+	{ label: "Online", updateFilter: () => updateFilter('online'), variant: "neutral" },
+	{ label: "Pending", updateFilter: () => updateFilter('pending'), variant: "neutral" },
+	{ label: "Add Friend", updateFilter: () => updateFilter('add'), variant: "primary" },
+]
 
-function updateHash(newHash: string) {
-	window.location.hash = newHash
-	windowHash.value = `#${newHash}`;
+let filter = ref("all");
+
+function updateFilter(newFilter: string) {
+	filter.value = newFilter;
 }
 </script>
 

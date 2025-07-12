@@ -3,16 +3,16 @@
 
 	<!-- we aren't checking for the #all hash, since this is the default and fallback one -->
 
-	<p v-if="props.variant === '#online'" style="text-align: left;">Online – {{ "N/A" }}</p>
-	<p v-else-if="props.variant === '#pending'" style="text-align: left;">Friend Requests – {{ "N/A" }}</p>
-	<p v-else style="text-align: left;">Friends – {{ friends?.length || "N/A" }}</p>
+	<p v-if="props.variant === 'online'" style="text-align: left;">Online – 0</p>
+	<p v-else-if="props.variant === 'pending'" style="text-align: left;">Friend Requests – 0</p>
+	<p v-else style="text-align: left;">Friends – {{ friends?.length || 0 }} (N/A Online)</p>
 
 	<div id="friends-list">
-		<div v-if="props.variant === '#online'">
+		<div v-if="props.variant === 'online'">
 			Not Implemented
 		</div>
 
-		<div v-else-if="props.variant === '#pending'">
+		<div v-else-if="props.variant === 'pending'">
 			Not Implemented
 		</div>
 
