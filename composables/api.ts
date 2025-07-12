@@ -49,6 +49,10 @@ export const useApi = () => {
 		return await fetchWithApi(`/invites/${invite}`, { method: "POST" }) as GuildResponse;
 	}
 
+	async function createChannel(guildId: string, name: string, description?: string): Promise<void> {
+		return await fetchWithApi(`/guilds/${guildId}/channels`, { method: "POST", body: { name, description } });
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -62,5 +66,6 @@ export const useApi = () => {
 		fetchMessage,
 		createGuild,
 		joinGuild,
+		createChannel
 	}
 }
