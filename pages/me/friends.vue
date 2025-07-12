@@ -53,33 +53,4 @@ function updateFilter(newFilter: string) {
 
 	gap: .5em;
 }
-
-.friends-sub-page-button {
-	text-decoration: none;
-	color: inherit;
-	font-weight: medium;
-
-	padding: 0.2em .5em;
-	
-	flex-shrink: 0;
-	border-radius: 1em;
-	background-color: var(--accent-color);
-
-	display: inline-block;
-	text-align: center;
-	align-content: center;
-	cursor: pointer;
-
-	transition: background-color 300ms;
-}
-.friends-sub-page-button:hover {
-	background-color: var(--accent-highlighted-color);
-}
-
-.friend-primary-button {
-	background-color: var(--primary-color);
-}
-.friend-primary-button:hover {
-	background-color: var(--primary-highlighted-color);
-}
 </style>
