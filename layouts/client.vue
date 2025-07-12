@@ -33,9 +33,6 @@ import type { GuildResponse } from '~/types/interfaces';
 const loading = useState("loading", () => false);
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
-for (let i = 0; i < 20; i++) {
-	guilds?.push(guilds[0]);
-}
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("servers:", servers);
