@@ -17,13 +17,13 @@
               :class="{ 'sidebar-focus': selectedPage === page.displayName }">
               {{ page.displayName }}
             </li>
-            <verticalSpacer />
+            <VerticalSpacer />
           </div>
           
           <p>
             <Button text="Log Out" :callback=logout variant="scary"></Button>
           </p>
-          <verticalSpacer />
+          <VerticalSpacer />
 
           <p id="links-and-socials">
             <NuxtLink href="https://git.gorb.app/gorb/frontend" title="Source"><Icon name="lucide:git-branch-plus" /></NuxtLink>
