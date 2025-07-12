@@ -1,7 +1,7 @@
 <template>
-  <div class="dropdown">
+  <div class="dropdown-body">
     <div v-for="option of props.options" class="dropdown-option">
-      <button class="button" :data-value="option.value" @click.prevent="option.callback">{{ option.name }}</button>
+      <button class="button" :data-value="option.value" @click.prevent="option.callback" tabindex="0">{{ option.name }}</button>
     </div>
   </div>
 </template>
@@ -15,19 +15,19 @@ const props = defineProps<{ options: DropdownOption[] }>();
 
 <style scoped>
 
-.dropdown {
+.dropdown-body {
   position: absolute;
   z-index: 100;
   left: 4dvw;
   bottom: 2dvh;
   background-color: var(--background-color);
-  width: 10dvw;
+  width: 8rem;
   display: flex;
   flex-direction: column;
 }
 
 .dropdown-option {
-  border: .09rem solid brown;
+  border: .09rem solid rgb(70, 70, 70);
 }
 
 .button {
