@@ -8,6 +8,7 @@
 <script lang="ts" setup>
 import ContextMenu from '~/components/ContextMenu.vue';
 import { render } from 'vue';
+import settingLoad from './utils/settingLoad';
 
 const banner = useState("banner", () => false);
 
@@ -43,21 +44,14 @@ function contextMenuHandler(e: MouseEvent) {
 	//]);
 }
 
-let currentTheme = "dark" // default theme
-const savedTheme = localStorage.getItem("selectedTheme");
-if (savedTheme) {
-	currentTheme = savedTheme;
-}
-
+const currentTheme = settingLoad("selectedThemeId") ?? "dark"
 const baseURL = useRuntimeConfig().app.baseURL;
 
 useHead({
-  link: [
-    {
-      rel: "stylesheet",
-      href: `${baseURL}themes/${currentTheme}.css`
-    }
-  ]
+  link: [{
+		rel: "stylesheet",
+		href: `${baseURL}themes/${currentTheme}.css`
+	}]
 })
 </script>
 
