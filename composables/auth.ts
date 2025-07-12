@@ -106,7 +106,7 @@ export const useAuth = () => {
   }
 
   return {
-    accessToken,
+	clearAuth,
     register,
     login,
     logout,
