@@ -117,7 +117,8 @@ const options = [
 						const input = document.getElementById("guild-name-input") as HTMLInputElement;
 						const name = input.value;
 						try {
-							await api.createGuild(name);
+							const guild = (await api.createGuild(name)) as GuildResponse;
+							await api.createChannel(guild.uuid, "general");
 						} catch (error) {
 							alert(`Couldn't create guild: ${error}`);
 						}
