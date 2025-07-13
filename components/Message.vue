@@ -118,8 +118,6 @@ onMounted(async () => {
 //	showHover.value = !showHover.value;
 //}
 
-console.log(props.authorColor)
-
 const menuItems = [
 	{ name: "Reply", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
 ]
