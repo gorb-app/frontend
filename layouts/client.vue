@@ -57,7 +57,8 @@ const options = [
 				},
 				onCancel: () => {
 					unrender(div);
-				}
+				},
+				style: "height: 20dvh; width: 15dvw"
 			},
 			[
 				h("input", {
@@ -65,8 +66,10 @@ const options = [
 					type: "text",
 					placeholder: "oyqICZ",
 				}),
-				h("button", {
-					onClick: async () => {
+				h(Button, {
+					text: "Join",
+					variant: "normal",
+					callback: async () => {
 						const input = document.getElementById("guild-invite-input") as HTMLInputElement;
 						const invite = input.value;
 						if (invite.length == 6) {
@@ -79,8 +82,7 @@ const options = [
 							}
 						}
 					}
-				},
-				"Join")
+				})
 			]);
 			document.body.appendChild(div);
 			render(guildJoinModal, div);
@@ -91,23 +93,27 @@ const options = [
 			const user = await useAuth().getUser();
 			const div = document.createElement("div");
 			const guildCreateModal = h(Modal, {
-				title: "Join Guild",
+				title: "Create a Guild",
 				id: "guild-join-modal",
 				onClose: () => {
 					unrender(div);
 				},
 				onCancel: () => {
 					unrender(div);
-				}
+				},
+				style: "height: 20dvh; width: 15dvw;"
 			},
 			[
 				h("input", {
 					id: "guild-name-input",
 					type: "text",
 					placeholder: `${user?.display_name || user?.username}'s Awesome Bouncy Castle'`,
+					style: "width: 100%"
 				}),
-				h("button", {
-					onClick: async () => {
+				h(Button, {
+					text: "Create!",
+					variant: "normal",
+					callback: async () => {
 						const input = document.getElementById("guild-name-input") as HTMLInputElement;
 						const name = input.value;
 						try {
@@ -116,8 +122,7 @@ const options = [
 							alert(`Couldn't create guild: ${error}`);
 						}
 					}
-				},
-				"Create")
+				})
 			]);
 			document.body.appendChild(div);
 			render(guildCreateModal, div);
