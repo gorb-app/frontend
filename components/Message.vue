@@ -71,6 +71,7 @@
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
+import MessageReply from './UserInterface/MessageReply.vue';
 
 const props = defineProps<MessageProps>();
 

@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ModalBase } from '#components';
 import { render } from 'vue';
 import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
-import Modal from '~/components/Modals/Modal.vue';
 import Button from '~/components/UserInterface/Button.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
@@ -54,7 +54,7 @@ const options = [
 	{ name: "Join", value: "join", callback: async () => {
 			console.log("join guild!");
 			const div = document.createElement("div");
-			const guildJoinModal = h(Modal, {
+			const guildJoinModal = h(ModalBase, {
 				title: "Join Guild",
 				id: "guild-join-modal",
 				onClose: () => {
@@ -97,7 +97,7 @@ const options = [
 			console.log("create guild");
 			const user = await useAuth().getUser();
 			const div = document.createElement("div");
-			const guildCreateModal = h(Modal, {
+			const guildCreateModal = h(ModalBase, {
 				title: "Create a Guild",
 				id: "guild-join-modal",
 				onClose: () => {
