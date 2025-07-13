@@ -30,7 +30,7 @@ function openInviteModal() {
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: rgb(20, 20, 20);
+  background-color: var(--chat-background-color);
   top: 8dvh;
   z-index: 10;
   width: 100%;
@@ -42,15 +42,18 @@ function openInviteModal() {
   justify-content: center;
   align-items: center;
   height: 2em;
+  box-sizing: border-box;
 }
 
 .guild-option:hover {
-  border: var(--outline-border);
+  background-color: var(--padding-color);
 }
 
 .guild-option-button {
   border: 0;
   background-color: transparent;
   color: var(--main-text-color);
+  height: 100%;
+  width: 100%;
 }
 </style>
