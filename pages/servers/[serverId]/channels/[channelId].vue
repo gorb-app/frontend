@@ -25,6 +25,9 @@
 
 <script lang="ts" setup>
 import ChannelEntry from "~/components/Guild/ChannelEntry.vue";
+import GuildOptionsMenu from "~/components/Guild/GuildOptionsMenu.vue";
+import MemberEntry from "~/components/Member/MemberEntry.vue";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 const route = useRoute();
 
@@ -40,8 +43,6 @@ const members = ref<GuildMemberResponse[]>();
 
 const showInvitePopup = ref(false);
 const showGuildSettings = ref(false);
-
-import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);

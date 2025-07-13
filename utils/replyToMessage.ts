@@ -1,5 +1,5 @@
 import { render } from "vue";
-import MessageReply from "~/components/MessageReply.vue";
+import MessageReply from "~/components/UserInterface/MessageReply.vue";
 import type { MessageProps } from "~/types/props";
 
 export default (element: HTMLDivElement, props: MessageProps) => {

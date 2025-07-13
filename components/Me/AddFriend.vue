@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import Button from '../UserInterface/Button.vue';
+import Button from '~/components/UserInterface/Button.vue';
 
 const inputField = ref<HTMLInputElement>();
 const { addFriend } = useApi();
