@@ -97,7 +97,7 @@ onMounted(async () => {
 		],
 		ALLOW_DATA_ATTR: false,
 		ALLOW_SELF_CLOSE_IN_ATTR: false,
-		ALLOWED_ATTR: []
+		ALLOWED_ATTR: ["href"]
 	});
 	console.log("adding listeners")
 	await nextTick();
