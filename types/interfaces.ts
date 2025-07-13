@@ -86,6 +86,19 @@ export interface ScrollPosition {
 	offsetLeft: number
 }
 
+export interface DropdownOption {
+	name: string,
+	value: string | number,
+	callback: () => void
+}
+
+export interface ModalProps {
+	title?: string,
+	obscure?: boolean,
+	onClose?: () => void,
+	onCancel?: () => void
+}
+
 export interface ContextMenuItem {
 	name: string,
 	callback: (...args: any[]) => any;

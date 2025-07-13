@@ -25,6 +25,13 @@ onMounted(() => {
 		if (e.target instanceof HTMLElement && e.target.classList.contains("message-text") && e.target.contentEditable) {
 			e.target.contentEditable = "false";
 		}
+		const destroyOnClick = document.getElementsByClassName("destroy-on-click");
+		for (const element of destroyOnClick) {
+			const closest = (e.target as HTMLElement).closest(".destroy-on-click");
+			if (element != closest) {
+				unrender(element);
+			}
+		}
 	});
 	document.addEventListener("keyup", (e) => {
 		const messageReply = document.getElementById("message-reply") as HTMLDivElement;

@@ -53,6 +53,18 @@ export const useApi = () => {
 		return await fetchWithApi(`/channels/${channelId}/messages/${messageId}`);
 	}
 
+	async function createGuild(name: string): Promise<GuildResponse | undefined> {
+		return await fetchWithApi(`/guilds`, { method: "POST", body: { name } });
+	}
+
+	async function joinGuild(invite: string): Promise<GuildResponse> {
+		return await fetchWithApi(`/invites/${invite}`, { method: "POST" }) as GuildResponse;
+	}
+
+	async function createChannel(guildId: string, name: string, description?: string): Promise<void> {
+		return await fetchWithApi(`/guilds/${guildId}/channels`, { method: "POST", body: { name, description } });
+	}
+	
 	async function fetchInstanceStats(apiBase: string): Promise<StatsResponse> {
 		return await $fetch(`${apiBase}/stats`, { method: "GET" });
 	}
@@ -76,6 +88,9 @@ export const useApi = () => {
 		removeFriend,
 		fetchMessages,
 		fetchMessage,
+		createGuild,
+		joinGuild,
+		createChannel,
 		fetchInstanceStats,
 		sendVerificationEmail
 	}
