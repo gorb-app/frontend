@@ -257,17 +257,17 @@ function createDropdown() {
 
 #left-column-bottom {
 	padding-top: 1dvh;
-	border-top: 1px solid rgb(70, 70, 70);
+	border-top: 1px solid var(--padding-color);
 }
 
 #middle-left-column {
 	padding-left: 1dvw;
 	padding-right: 1dvw;
-	border-right: 1px solid rgb(70, 70, 70);
+	border-right: 1px solid var(--padding-color);
 }
 
 #home-button {
-	border-bottom: 1px solid rgb(70, 70, 70);
+	border-bottom: 1px solid var(--padding-color);
 	padding-bottom: 1dvh;
 }
 
