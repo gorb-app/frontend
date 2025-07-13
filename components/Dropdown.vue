@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown-body">
     <div v-for="option of props.options" class="dropdown-option">
-      <button class="button" :data-value="option.value" @click.prevent="option.callback" tabindex="0">{{ option.name }}</button>
+      <button class="dropdown-button" :data-value="option.value" @click.prevent="option.callback" tabindex="0">{{ option.name }}</button>
     </div>
   </div>
 </template>
@@ -19,8 +19,8 @@ const props = defineProps<{ options: DropdownOption[] }>();
   position: absolute;
   z-index: 100;
   left: 4dvw;
-  bottom: 2dvh;
-  background-color: var(--background-color);
+  bottom: 4dvh;
+  background-color: var(--chat-background-color);
   width: 8rem;
   display: flex;
   flex-direction: column;
@@ -30,17 +30,17 @@ const props = defineProps<{ options: DropdownOption[] }>();
   border: .09rem solid rgb(70, 70, 70);
 }
 
-.button {
+.dropdown-button {
   padding-top: .5dvh;
   padding-bottom: .5dvh;
-  color: var(--main-text-color);
+  color: var(--text-color);
   background-color: transparent;
   width: 100%;
   border: none;
 }
 
-.button:hover {
-  background-color: rgb(70, 70, 70);
+.dropdown-button:hover {
+  background-color: var(--padding-color);
 }
 
 </style>
