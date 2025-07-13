@@ -1,6 +1,6 @@
 import { render } from "vue";
 
-export default (div: HTMLDivElement) => {
+export default (div: Element) => {
   render(null, div);
   div.remove();
 }
