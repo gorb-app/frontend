@@ -1,5 +1,5 @@
 <template>
-  <div id="guild-options-container">
+  <div id="guild-options-menu" class="destroy-on-click">
     <div v-for="setting of settings" class="guild-option" tabindex="0">
       <button class="guild-option-button" @click="setting.action" tabindex="0">{{ setting.name }}</button>
     </div>
@@ -26,7 +26,7 @@ function openInviteModal() {
 </script>
 
 <style>
-#guild-options-container {
+#guild-options-menu {
   display: flex;
   flex-direction: column;
   position: relative;
