@@ -37,6 +37,7 @@
 import { render } from 'vue';
 import Dropdown from '~/components/Dropdown.vue';
 import Modal from '~/components/Modal.vue';
+import Button from '~/components/UserInterface/Button.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
 const loading = useState("loading", () => false);
