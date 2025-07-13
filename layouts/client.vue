@@ -261,6 +261,12 @@ function createDropdown() {
 	align-items: center;
 	gap: 1.5dvh;
 	overflow-y: scroll;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+#left-column-top::-webkit-scrollbar, #left-column-bottom::-webkit-scrollbar {
+	display: none;
 }
 
 #left-column-bottom {
