@@ -94,7 +94,7 @@ export interface DropdownOption {
 
 export interface ModalProps {
 	title?: string,
-	heavy?: boolean,
+	obscure?: boolean,
 	onClose?: () => void,
 	onCancel?: () => void
 }
