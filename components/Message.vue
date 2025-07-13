@@ -58,7 +58,7 @@
 			:data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
 			<span :class="{ 'invisible': dateHidden }" class="message-date side-message-date" :title="date.toString()">
-				{{ date.toLocaleTimeString(undefined, { timeStyle: "short" }) }}
+				{{ date.toLocaleTimeString(undefined, { hour12: props.format == "12", timeStyle: "short" }) }}
 			</span>
 		</div>
 		<div class="message-data">
