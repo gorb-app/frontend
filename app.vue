@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import ContextMenu from '~/components/ContextMenu.vue';
+import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
 import { render } from 'vue';
 
 const banner = useState("banner", () => false);

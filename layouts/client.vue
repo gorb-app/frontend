@@ -39,8 +39,8 @@
 
 <script lang="ts" setup>
 import { render } from 'vue';
-import Dropdown from '~/components/Dropdown.vue';
-import Modal from '~/components/Modal.vue';
+import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
+import Modal from '~/components/Modals/Modal.vue';
 import Button from '~/components/UserInterface/Button.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
@@ -180,7 +180,7 @@ const members = [
 ];
 
 function createDropdown() {
-	const dropdown = h(Dropdown, { options });
+	const dropdown = h(GuildDropdown, { options });
 	const div = document.createElement("div");
 	div.classList.add("dropdown", "destroy-on-click");
 	if (createButtonContainer.value) {

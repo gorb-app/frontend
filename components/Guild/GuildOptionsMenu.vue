@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { render } from 'vue';
-import InviteModal from './InviteModal.vue';
+import InviteModal from '../Modals/InviteModal.vue';
 
 const settings = [
   { name: "Invite", icon: "lucide:letter", action: openInviteModal }

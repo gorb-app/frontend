@@ -1,5 +1,5 @@
 import { render } from "vue";
-import ContextMenu from "~/components/ContextMenu.vue";
+import ContextMenu from "~/components/UserInterface/ContextMenu.vue";
 import type { ContextMenuItem } from "~/types/interfaces";
 
 export default (e: MouseEvent, menuItems: ContextMenuItem[]) => {
