@@ -53,7 +53,7 @@ export const useApi = () => {
 		return await fetchWithApi(`/channels/${channelId}/messages/${messageId}`);
 	}
 
-	async function createGuild(name: string): Promise<void> {
+	async function createGuild(name: string): Promise<GuildResponse | undefined> {
 		return await fetchWithApi(`/guilds`, { method: "POST", body: { name } });
 	}
 
