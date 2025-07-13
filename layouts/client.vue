@@ -10,23 +10,27 @@
 		</div>
 		<div id = "page-content">
 			<div id="left-column">
-				<NuxtLink id="home-button" href="/me">
-					<img class="sidebar-icon" src="/public/icon.svg"/>
-				</NuxtLink>
-				<div id="servers-list">
-					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<img v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
+				<div id="left-column-top">
+					<NuxtLink id="home-button" href="/me">
+						<img class="sidebar-icon" src="/public/icon.svg"/>
+					</NuxtLink>
+					<div id="servers-list">
+						<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
+							<img v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
+							<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
+						</NuxtLink>
+					</div>
+				</div>
+				<div id="left-column-bottom">
+					<div ref="createButtonContainer">
+						<button id="create-button" @click.prevent="createDropdown">
+							<Icon id="create-icon" name="lucide:square-plus" />
+						</button>
+					</div>
+					<NuxtLink id="settings-menu" href="/settings">
+						<Icon name="lucide:settings" class="sidebar-icon" alt="Settings menu" />
 					</NuxtLink>
 				</div>
-				<div ref="joinServerButton" id="left-column-bottom">
-					<button id="join-server-button" @click.prevent="createDropdown">
-						<Icon id="join-server-icon" name="lucide:square-plus" />
-					</button>
-				</div>
-				<NuxtLink id="settings-menu" href="/settings">
-					<Icon name="lucide:settings" class="sidebar-icon" alt="Settings menu" />
-				</NuxtLink>
 			</div>
 			<slot />
 		</div>
@@ -42,7 +46,7 @@ import type { GuildResponse } from '~/types/interfaces';
 
 const loading = useState("loading", () => false);
 
-const joinServerButton = ref<HTMLButtonElement>();
+const createButtonContainer = ref<HTMLButtonElement>();
 
 const api = useApi();
 
@@ -179,8 +183,8 @@ function createDropdown() {
 	const dropdown = h(Dropdown, { options });
 	const div = document.createElement("div");
 	div.classList.add("dropdown", "destroy-on-click");
-	if (joinServerButton.value) {
-		joinServerButton.value.appendChild(div);
+	if (createButtonContainer.value) {
+		createButtonContainer.value.appendChild(div);
 	} else {
 		document.body.appendChild(div);
 	}
@@ -239,6 +243,8 @@ function createDropdown() {
 #left-column {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	gap: .75em;
 	padding-left: .25em;
 	padding-right: .25em;
@@ -248,9 +254,11 @@ function createDropdown() {
 	background-color: var(--sidebar-background-color);
 }
 
-#left-column-top {
+#left-column-top, #left-column-bottom {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	gap: 1.5dvh;
 	overflow-y: scroll;
 }
@@ -279,8 +287,8 @@ function createDropdown() {
 	padding-top: .5em;
 }
 
-#join-server-button {
-	color: white;
+#create-button {
+	color: var(--primary-color);
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
@@ -289,7 +297,7 @@ function createDropdown() {
 	display: inline-block;
 }
 
-#join-server-icon {
+#create-icon {
 	float: left;
 }
 
@@ -316,9 +324,6 @@ function createDropdown() {
 }
 
 #settings-menu {
-	position: absolute;
-	bottom: .25em;
-
 	color: var(--primary-color)
 }
 
