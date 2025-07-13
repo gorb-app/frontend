@@ -40,7 +40,7 @@
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
-				<span class="message-author-username" tabindex="0">
+				<span class="message-author-username" tabindex="0" :style="`color: ${props.authorColor}`">
 					{{ author?.display_name || author?.username }}
 				</span>
 				<span class="message-date" :title="date.toString()">
@@ -71,6 +71,7 @@
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
+import generateIrcColor from '~/utils/generateIrcColor';
 
 const props = defineProps<MessageProps>();
 
@@ -116,6 +117,8 @@ onMounted(async () => {
 //function toggleTooltip(e: Event) {
 //	showHover.value = !showHover.value;
 //}
+
+console.log(props.authorColor)
 
 const menuItems = [
 	{ name: "Reply", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
