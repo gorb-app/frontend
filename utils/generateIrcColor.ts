@@ -5,11 +5,9 @@ let h64: CallableFunction;
 	h64 = (await xxhash()).h64;
 })();
 
-export default (seed: string): string => {
-	const lightness = 50
-	
-	// this should probably be cached eventually
-	const idHash = h64(seed)
+export default (seed: string, saturation: number = 100, lightness: number = 50): string => {
+	const idHash = useState(`h64Hash-${seed}`, () => h64(seed))
+	const hashValue: bigint = idHash.value
 
-	return `hsl(${idHash % 360n}, 100%, ${lightness}%)`
+	return `hsl(${hashValue % 360n}, ${saturation}%, ${lightness}%)`
 }
