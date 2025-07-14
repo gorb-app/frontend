@@ -50,8 +50,9 @@
 					{{ date.toLocaleTimeString(undefined, { hour12: props.format == "12", timeStyle: "short" }) }}
 				</span>
 			</div>
-			<div class="message-text" v-html="sanitized" tabindex="0"></div>
+			<div class="message-text" v-html="sanitized" :hidden="hasEmbed" tabindex="0"></div>
 		</div>
+		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
 	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
@@ -62,8 +63,9 @@
 			</span>
 		</div>
 		<div class="message-data">
-			<div class="message-text" :class="$style['message-text']" v-html="sanitized" tabindex="0"></div>
+			<div class="message-text" :class="$style['message-text']" v-html="sanitized" :hidden="hasEmbed" tabindex="0"></div>
 		</div>
+		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
 </template>
 
@@ -71,6 +73,7 @@
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
+import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
 
 const props = defineProps<MessageProps>();
@@ -85,6 +88,13 @@ const currentDate: Date = new Date()
 console.log("[MSG] message to render:", props.message);
 console.log("author:", props.author);
 console.log("[MSG] reply message:", props.replyMessage);
+
+const linkRegex = /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g;
+const linkMatches = props.message.message.matchAll(linkRegex).map(link => link[0]);
+const mediaLinks: string[] = [];
+console.log("link matches:", linkMatches);
+
+const hasEmbed = ref(false);
 
 const sanitized = ref<string>();
 
@@ -112,6 +122,27 @@ onMounted(async () => {
 		});
 		console.log("added listeners");
 	}
+
+	for (const link of linkMatches) {
+	console.log("link:", link);
+	try {
+		const res = await $fetch.raw(link);
+		if (res.ok && res.headers.get("content-type")?.match(/^image\/(apng|gif|jpeg|png|webp)$/)) {
+			console.log("link is image");
+			mediaLinks.push(link);
+		}
+		if (mediaLinks.length) {
+			hasEmbed.value = true
+			setTimeout(() => {
+				scrollToBottom(document.getElementById("messages") as HTMLDivElement);
+			}, 500);
+		};
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+console.log("media links:", mediaLinks);
 });
 
 //function toggleTooltip(e: Event) {
