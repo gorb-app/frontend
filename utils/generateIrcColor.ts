@@ -1,6 +1,9 @@
 import xxhash from "xxhash-wasm"
 
-const { h64 } = await xxhash()
+let h64: CallableFunction;
+(async () => {
+	h64 = (await xxhash()).h64;
+})();
 
 export default (seed: string): string => {
 	const lightness = 50
