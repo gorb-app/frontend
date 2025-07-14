@@ -18,11 +18,17 @@
 				<VerticalSpacer />
 				<div class="left-column-segment" id="left-column-middle">
 					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<NuxtImg v-else-if="!blockedCanvas" class="sidebar-icon" :src="generateDefaultIcon(guild.name, guild.uuid)" :alt="guild.name"/>
+						<NuxtImg v-if="guild.icon"
+							class="sidebar-icon"
+							:alt="guild.name"
+							:src="guild.icon" />
+						<NuxtImg v-else-if="!blockedCanvas"
+							class="sidebar-icon"
+							:alt="guild.name"
+							:src="generateDefaultIcon(guild.name, guild.uuid)" />
 						<Icon v-else name="lucide:server"
-							:style="`color: ${generateIrcColor(guild.uuid, 50)}`"
-							class="sidebar-icon white" :alt="guild.name" />
+							class="`sidebar-icon ${generateIrcColor(guild.uuid, 50)}``"
+							:alt="guild.name" />
 					</NuxtLink>
 				</div>
 				<VerticalSpacer />
