@@ -27,7 +27,8 @@ export default (name: string, seed: string): string => {
 		ctx.fillStyle = 'white'
 		ctx.textAlign = 'center'
 		ctx.textBaseline = 'middle'
-		ctx.font = 'bold 96px Arial, Helvetica, sans-serif'
+		const preferredFont = document.documentElement.style.getPropertyValue("--preferred-font")
+		ctx.font = `bold 96px ${preferredFont}, Arial, Helvetica, sans-serif`
 		// 136 isn't actually centered, but it *looks* centered
 		ctx.fillText(previewName, 128, 136)
 
