@@ -14,6 +14,7 @@ const banner = useState("banner", () => false);
 onMounted(() => {
 	document.removeEventListener("contextmenu", contextMenuHandler);
 	document.addEventListener("contextmenu", (e) => {
+		if (e.target instanceof Element && e.target.classList.contains("default-contextmenu")) return;
 		contextMenuHandler(e);
 	});
 	document.addEventListener("mousedown", (e) => {
