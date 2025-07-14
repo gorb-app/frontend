@@ -1,8 +1,9 @@
 <template>
-	<Icon v-if="canvasBlocked"
-		name="lucide:user" />
-	<NuxtImg v-else 
+	<NuxtImg v-if="displayAvatar" 
 		:src="displayAvatar"
+		:alt="displayName" />
+	<Icon v-else
+		name="lucide:user"
 		:alt="displayName" />
 </template>
 
@@ -17,8 +18,7 @@ const props = defineProps<{
 
 
 let displayName: string
-let displayAvatar: string
-let canvasBlocked = false
+let displayAvatar: string | null
 
 const user = props.user || props.member?.user
 
@@ -29,8 +29,10 @@ if (user) {
 	
 	if (user.avatar) {
 		displayAvatar = user.avatar
-	} else {
+	} else if (!isCanvasBlocked()){
 		displayAvatar = generateDefaultIcon(displayName, user.uuid)
+	} else {
+		displayAvatar = null
 	}
 }
 
