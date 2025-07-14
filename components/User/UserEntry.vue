@@ -37,6 +37,5 @@ const displayName = props.user.display_name || props.user.username
 .user-avatar {
     width: 2.3em;
     height: 2.3em;
-    border-radius: 50%;
 }
 </style>
