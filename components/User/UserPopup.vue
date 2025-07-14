@@ -1,7 +1,6 @@
 <template>
   <div id="profile-popup">
-    <img v-if="props.user.avatar" id="avatar" :src="props.user.avatar" alt="profile avatar">
-    <Icon v-else id="avatar" name="lucide:user" />
+    <Avatar :user="props.user" id="avatar"/>
 
     <div id="cover-color"></div>
     <div id="main-body">

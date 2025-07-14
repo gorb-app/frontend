@@ -19,7 +19,7 @@
 				<div class="left-column-segment" id="left-column-middle">
 					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
 						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
+						<NuxtImg v-else class="sidebar-icon" :src="generateDefaultIcon(guild.name, guild.uuid)" :alt="guild.name"/>
 					</NuxtLink>
 				</div>
 				<VerticalSpacer />
