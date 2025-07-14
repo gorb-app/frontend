@@ -19,6 +19,11 @@
     --accent-color: #ff218c80;
     --accent-highlighted-color: #df1b6f80;
 
+    --sidebar-width: 3em;
+	--standard-radius: .5em;
+	--button-radius: .6em;
+	--pfp-radius: 100%;
+
     /* --optional-body-background: background */
     --optional-body-background: linear-gradient(45deg, #ed222480, #ed222480, #ed222480, #ed222480, #ed222480, #ed222480, #f35b2280, #f9962180, #f5c11e80, #f1eb1b80, #f1eb1b80, #f1eb1b80, #63c72080, #0c9b4980, #21878d80, #3954a580, #61379b80, #93288e80);
 	--optional-topbar-background: linear-gradient(-12.5deg, cyan, pink, white, pink, cyan);

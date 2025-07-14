@@ -20,6 +20,11 @@
     --accent-color: #ff218c80;
     --accent-highlighted-color: #df1b6f80;
 
+	--sidebar-width: 3em;
+	--standard-radius: .5em;
+	--button-radius: .6em;
+	--pfp-radius: 100%;
+
     --optional-body-background: ; /* background element for the body */
     --optional-chat-background: ; /* background element for the chat box */
 	--optional-topbar-background: ; /* background element for the topbar */
