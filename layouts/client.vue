@@ -21,14 +21,6 @@
 						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
 						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
 					</NuxtLink>
-					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
-					</NuxtLink>
-					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
-					</NuxtLink>
 				</div>
 				<VerticalSpacer />
 				<div class="left-column-segment">
@@ -290,12 +282,12 @@ function createDropdown() {
 }
 
 #home-button {
-	height: 3em;
+	height: var(--sidebar-width);
 }
 
 .sidebar-icon {
-	width: 3rem;
-	height: 3rem;
+	width: var(--sidebar-width);
+	height: var(--sidebar-width);
 }
 
 .sidebar-bottom-buttons {
