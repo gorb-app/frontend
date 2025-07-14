@@ -74,6 +74,14 @@ export const useApi = () => {
 		await fetchWithApi("/auth/verify-email", { method: "POST", body: { email } });
 	}
 
+	async function sendPasswordResetEmail(identifier: string): Promise<void> {
+		await fetchWithApi("/auth/reset-password", { method: "GET", query: { identifier } });
+	}
+
+	async function resetPassword(password: string, token: string) {
+		await fetchWithApi("/auth/reset-password", { method: "POST", body: { password, token } });
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -92,6 +100,8 @@ export const useApi = () => {
 		joinGuild,
 		createChannel,
 		fetchInstanceStats,
-		sendVerificationEmail
+		sendVerificationEmail,
+		sendPasswordResetEmail,
+		resetPassword
 	}
 }
