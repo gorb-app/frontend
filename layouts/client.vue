@@ -27,7 +27,8 @@
 							:alt="guild.name"
 							:src="generateDefaultIcon(guild.name, guild.uuid)" />
 						<Icon v-else name="lucide:server"
-							class="`sidebar-icon ${generateIrcColor(guild.uuid, 50)}``"
+							:style="`color: ${generateIrcColor(guild.uuid, 50)}`"
+							class="sidebar-icon"
 							:alt="guild.name" />
 					</NuxtLink>
 				</div>
