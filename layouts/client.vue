@@ -138,47 +138,6 @@ const options = [
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
-//const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
-//console.log("servers:", servers);
-const members = [
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	}
-];
-
 function createDropdown() {
 	const dropdown = h(GuildDropdown, { options });
 	const div = document.createElement("div");
