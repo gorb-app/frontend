@@ -19,7 +19,10 @@
 				<div class="left-column-segment" id="left-column-middle">
 					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
 						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<NuxtImg v-else class="sidebar-icon" :src="generateDefaultIcon(guild.name, guild.uuid)" :alt="guild.name"/>
+						<NuxtImg v-else-if="!blockedCanvas" class="sidebar-icon" :src="generateDefaultIcon(guild.name, guild.uuid)" :alt="guild.name"/>
+						<Icon v-else name="lucide:server"
+							:style="`color: ${generateIrcColor(guild.uuid, 50)}`"
+							class="sidebar-icon white" :alt="guild.name" />
 					</NuxtLink>
 				</div>
 				<VerticalSpacer />
@@ -52,6 +55,8 @@ const loading = useState("loading", () => false);
 const createButtonContainer = ref<HTMLButtonElement>();
 
 const api = useApi();
+
+const blockedCanvas = isCanvasBlocked()
 
 const options = [
 	{ name: "Join", value: "join", callback: async () => {
