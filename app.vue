@@ -65,7 +65,7 @@ useHead({
 <style>
 html,
 body {
-  font-family: var(--preferred-font);
+  font-family: var(--preferred-font), Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: var(--text-color);
 	background: var(--optional-body-background);
