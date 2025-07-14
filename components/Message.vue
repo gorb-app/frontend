@@ -4,14 +4,10 @@
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div v-if="props.replyMessage" class="message-reply-svg">
 			<svg
-				width="1.5em"
-				height="1.5em"
-				viewBox="0 0 151.14355 87.562065"
-				version="1.1"
-				id="svg1"
-				xmlns="http://www.w3.org/2000/svg"
-				xmlns:svg="http://www.w3.org/2000/svg"
+				width="1.5em" height="1.5em"
+				viewBox="0 0 150 87.5" version="1.1" id="svg1"
 				style="overflow: visible;">
+				<defs id="defs1" />
 				<defs
 					id="defs1" />
 				<g
