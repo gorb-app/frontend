@@ -38,6 +38,7 @@ const form = reactive({
 
 const query = useRoute().query as Record<string, string>;
 const searchParams = new URLSearchParams(query);
+searchParams.delete("token");
 
 const registrationEnabled = ref<boolean>(true);
 const apiBase = useCookie("api_base");
@@ -50,7 +51,7 @@ if (apiBase.value) {
 	}
 }
 
-const registerUrl = `/register?${searchParams}`
+const registerUrl = `/register?${searchParams}`;
 
 const { login } = useAuth();
 

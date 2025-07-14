@@ -18,6 +18,7 @@
 			</div>
 			<div v-else id="auth-form-container">
 				<slot />
+				<div v-if="useRoute().path != '/reset-password'">Forgot password? Recover <NuxtLink :href="resetPasswordUrl">here</NuxtLink>!</div>
 			</div>
 			<div v-if="instanceUrl">
 				Instance URL is set to <span style="color: var(--primary-color);">{{ instanceUrl }}</span>
@@ -35,6 +36,12 @@ const instanceError = ref<string>();
 const apiVersion = useRuntimeConfig().public.apiVersion;
 const apiBase = useCookie("api_base");
 const registrationEnabled = useState("registrationEnabled", () => true);
+
+const query = useRoute().query as Record<string, string>;
+const searchParams = new URLSearchParams(query);
+searchParams.delete("token");
+
+const resetPasswordUrl = `/reset-password?${searchParams}`;
 
 const auth = useAuth();
 
@@ -111,6 +118,7 @@ const form = reactive({
 #auth-form-container form {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	text-align: left;
 	margin-top: 10dvh;
 	gap: 1em;
