@@ -26,7 +26,7 @@
 				<div class="left-column-segment">
 					<div ref="createButtonContainer">
 						<button id="create-button" class="sidebar-bottom-buttons" @click.prevent="createDropdown">
-							<Icon id="create-icon" name="lucide:square-plus" alt="Create guild"/>
+							<Icon id="create-icon" name="lucide:square-plus" alt="Create or join guild"/>
 						</button>
 					</div>
 					<NuxtLink id="settings-menu" class="sidebar-bottom-buttons" href="/settings">
