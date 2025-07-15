@@ -17,9 +17,8 @@ export const useAuth = () => {
       {
         email, identifier: username, password: hashedPass, device_name: "Linux Laptop"
       }
-    }) as { access_token: string, refresh_token: string };
+    });
     //authStore.setAccessToken(accessToken);
-    accessToken.value = res.access_token;
   }
 
   async function login(username: string, password: string, device_name: string) {
@@ -31,9 +30,8 @@ export const useAuth = () => {
       {
         username, password: hashedPass, device_name: "Linux Laptop"
       }
-    }) as { access_token: string, refresh_token: string };
+    });
     console.log("hi");
-    accessToken.value = res.access_token;
     console.log("access token:", accessToken.value);
     //await fetchUser();
   }
@@ -67,8 +65,7 @@ export const useAuth = () => {
       method: "POST"
     }) as any;
     console.log("finished refreshing:", res);
-    if (res && res.access_token) {
-      accessToken.value = res.access_token;
+    if (res) {
       console.log("set new access token");
     } else {
       console.log("refresh didn't return access token");
