@@ -1,6 +1,6 @@
 <template>
 	<NuxtImg v-if="displayAvatar" 
-		id="display-avatar"
+		class="display-avatar"
 		:src="displayAvatar"
 		:alt="displayName" />
 	<Icon v-else
@@ -40,7 +40,7 @@ if (user) {
 </script>
 
 <style scoped>
-#display-avatar {
+.display-avatar {
 	border-radius: var(--pfp-radius);
 }
 </style>
