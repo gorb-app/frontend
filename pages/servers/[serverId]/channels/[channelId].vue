@@ -64,9 +64,7 @@ onActivated(async () => {
 });
 
 async function setArrayVariables() {
-	members.value = await fetchMembers(route.params.serverId as string).then((response) => {
-		return response.sort((a, b) => getDisplayName(a.user, a).localeCompare(getDisplayName(b.user, b)))
-	});
+	members.value = sortMembers(await fetchMembers(route.params.serverId as string))
 	const guildUrl = `guilds/${route.params.serverId}`;
 	channels.value = await fetchWithApi(`${guildUrl}/channels`);
 	console.log("channels:", channels.value);
