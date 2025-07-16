@@ -5,9 +5,7 @@
 		<div v-if="props.replyMessage" class="message-reply-svg">
 			<svg
 				width="1.5em" height="1.5em"
-				viewBox="0 0 151.14355 87.562065" version="1.1" id="svg1"
-				xmlns="http://www.w3.org/2000/svg"
-				xmlns:svg="http://www.w3.org/2000/svg"
+				viewBox="0 0 150 87.5" version="1.1" id="svg1"
 				style="overflow: visible;">
 				<defs id="defs1" />
 				<g id="layer1"
@@ -68,9 +66,12 @@
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
+import generateIrcColor from '~/utils/generateIrcColor';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
+=========
 import generateIrcColor from '~/utils/generateIrcColor';
+>>>>>>>>> Temporary merge branch 2
 
 const props = defineProps<MessageProps>();
 

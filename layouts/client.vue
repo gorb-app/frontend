@@ -36,7 +36,7 @@
 				<div class="left-column-segment">
 					<div ref="createButtonContainer">
 						<button id="create-button" class="sidebar-bottom-buttons" @click.prevent="createDropdown">
-							<Icon id="create-icon" name="lucide:square-plus" alt="Create guild"/>
+							<Icon id="create-icon" name="lucide:square-plus" alt="Create or join guild"/>
 						</button>
 					</div>
 					<NuxtLink id="settings-menu" class="sidebar-bottom-buttons" href="/settings">
@@ -152,47 +152,6 @@ const options = [
 ];
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
-
-//const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
-//console.log("servers:", servers);
-const members = [
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	}
-];
 
 function createDropdown() {
 	const dropdown = h(GuildDropdown, { options });
