@@ -21,8 +21,6 @@
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
 
-const { fetchMembers } = useApi();
-
 const props = defineProps<{
 	user: UserResponse
 }>();
