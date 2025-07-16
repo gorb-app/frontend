@@ -6,14 +6,14 @@
 			</div>
 			<VerticalSpacer />
 
-			<NuxtLink class="user-item" :href="`/me/friends`" tabindex="0">
+			<NuxtLink class="user-item" :href="`/me`" tabindex="0">
 				<Icon class="user-avatar" name="lucide:user" />
 				<span class="user-display-name">Friends</span>
 			</NuxtLink>
 			<VerticalSpacer />
 			
 			<div id="direct-message-list">
-				<UserEntry v-for="user of friends" :user="user" :name="user.display_name || user.username"
+				<UserEntry v-for="user of friends" :user="user"
 						:href="`/me/${user.uuid}`"/> 
 			</div>
 		</div>

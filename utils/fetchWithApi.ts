@@ -1,4 +1,4 @@
-import type { NitroFetchRequest, NitroFetchOptions } from "nitropack";
+import type { NitroFetchOptions } from "nitropack";
 
 export default async <T>(path: string, options: NitroFetchOptions<string> = {}) => {
   console.log("path received:", path);
