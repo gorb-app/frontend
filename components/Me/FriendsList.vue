@@ -17,7 +17,7 @@
 		</div>
 
 		<div v-else>
-			<UserEntry v-for="user of friends" :user="user" :name="user.display_name || user.username"
+			<UserEntry v-for="user of friends" :user="user" :name="getDisplayName(user)"
 			:href="`/me/${user.uuid}`"/> 
 		</div>
 	</div>

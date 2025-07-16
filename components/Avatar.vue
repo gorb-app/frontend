@@ -24,9 +24,7 @@ let displayAvatar: string | null
 const user = props.user || props.member?.user
 
 if (user) {
-	displayName = props.member?.nickname
-						|| user.display_name
-						|| user.username
+	displayName = getDisplayName(user, props.member)
 	
 	if (user.avatar) {
 		displayAvatar = user.avatar

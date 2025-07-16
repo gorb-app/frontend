@@ -25,7 +25,7 @@
 			</svg>
 		</div>
 		<MessageReply v-if="props.replyMessage" :id="props.message.uuid"
-			:author="props.replyMessage.user.display_name || props.replyMessage.user.username"
+			:author="getDisplayName(props.author)"
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
@@ -34,7 +34,7 @@
 		<div class="message-data">
 			<div class="message-metadata">
 				<span class="message-author-username" tabindex="0" :style="`color: ${props.authorColor}`">
-					{{ displayName }}
+					{{ getDisplayName(props.author) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
 					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
@@ -77,7 +77,6 @@ const dateHidden = ref<boolean>(true);
 
 const date = new Date(props.timestamp);
 const currentDate: Date = new Date()
-const displayName = props.author?.display_name || props.author?.username
 
 console.log("[MSG] message to render:", props.message);
 console.log("author:", props.author);
