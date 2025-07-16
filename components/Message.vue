@@ -25,7 +25,7 @@
 			</svg>
 		</div>
 		<MessageReply v-if="props.replyMessage" :id="props.message.uuid"
-			:author="getDisplayName(props.author)"
+			:author="getDisplayName(props.replyMessage.user)"
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
