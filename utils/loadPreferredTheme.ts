@@ -5,10 +5,6 @@ export default function loadPreferredTheme() {
   const baseURL = runtimeConfig.app.baseURL;
   const currentTheme = settingsLoad().selectedThemeId ?? "dark"
 
-  if (themeLinkElement && themeLinkElement.getAttribute('href') === `${baseURL}themes/${currentTheme}.css`) {
-    return;
-  }
-
   if (themeLinkElement) {
     themeLinkElement.href = `${baseURL}themes/${currentTheme}.css`;
   } else {
