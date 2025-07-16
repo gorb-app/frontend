@@ -1,3 +1,3 @@
-export function validateUsername(username: string) {
+export default (username: string) => {
   return /^[\w.-]+$/.test(username);
 }
