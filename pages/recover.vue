@@ -12,7 +12,7 @@
         </div>
       </form>
       <div v-else>
-        If an account with that username/email exists, an email will be sent to it shortly.
+        If an account with that username or email exists, an email will be sent to it shortly.
       </div>
     <div v-if="registrationEnabled">
       Don't have an account? <NuxtLink :href="registerUrl">Register</NuxtLink> one!
