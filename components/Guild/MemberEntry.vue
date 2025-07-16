@@ -1,7 +1,7 @@
 <template>
     <div class="member-item" @click="togglePopup" @blur="hidePopup" tabindex="0">
         <Avatar :member="props.member" class="member-avatar"/>
-        <span class="member-display-name">{{ props.member.user.display_name || props.member.user.username }}</span>
+        <span class="member-display-name">{{ getDisplayName(props.member.user, props.member) }}</span>
         <UserPopup v-if="isPopupVisible" :user="props.member.user" id="profile-popup" />
     </div>
 </template>

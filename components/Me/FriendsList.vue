@@ -17,7 +17,7 @@
 		</div>
 
 		<div v-else>
-			<UserEntry v-for="user of friends" :user="user" :name="user.display_name || user.username"
+			<UserEntry v-for="user of friends" :user="user" :name="getDisplayName(user)"
 			:href="`/me/${user.uuid}`"/> 
 		</div>
 	</div>
@@ -26,7 +26,9 @@
 <script lang="ts" setup>
 const { fetchFriends } = useApi();
 
-const friends = await fetchFriends()
+const friends = await fetchFriends().then((response) => {
+	return response.sort((a, b) => getDisplayName(a).localeCompare(getDisplayName(b)))
+})
 
 const props = defineProps<{
     variant: string

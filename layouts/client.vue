@@ -127,7 +127,7 @@ const options = [
 				h("input", {
 					id: "guild-name-input",
 					type: "text",
-					placeholder: `${user?.display_name || user?.username}'s Awesome Bouncy Castle'`,
+					placeholder: `${getDisplayName(user!)}'s Awesome Bouncy Castle'`,
 					style: "width: 100%"
 				}),
 				h(Button, {
