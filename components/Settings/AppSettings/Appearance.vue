@@ -32,13 +32,13 @@
 <script lang="ts" setup>
 import RadioButtons from '~/components/UserInterface/RadioButtons.vue';
 import type { TimeFormat } from '~/types/settings';
+import loadPreferredTheme from '~/utils/loadPreferredTheme';
 import settingSave from '~/utils/settingSave';
 
 const runtimeConfig = useRuntimeConfig()
 const defaultThemes = runtimeConfig.public.defaultThemes
 const baseURL = runtimeConfig.app.baseURL;
 const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
-let themeLinkElement: HTMLLinkElement | null = null;
 
 const themes: Array<Theme> = []
 
@@ -51,20 +51,8 @@ interface Theme {
 }
 
 function changeTheme(id: string, url: string) {
-  if (themeLinkElement && themeLinkElement.getAttribute('href') === `${baseURL}themes/${url}`) {
-    return;
-  }
-
   settingSave("selectedThemeId", id)
-
-  // if the theme didn't originally load for some reason, create it
-  if (!themeLinkElement) {
-    themeLinkElement = document.createElement('link');
-    themeLinkElement.rel = 'stylesheet';
-    document.head.appendChild(themeLinkElement);
-  }
-
-  themeLinkElement.href = `${baseURL}themes/${url}`;
+  loadPreferredTheme()
 }
 
 async function fetchThemes() {
