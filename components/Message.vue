@@ -66,7 +66,6 @@
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
-import generateIrcColor from '~/utils/generateIrcColor';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
 

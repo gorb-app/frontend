@@ -22,8 +22,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { StatsResponse } from '~/types/interfaces';
-
 
 definePageMeta({
 	layout: "auth"
