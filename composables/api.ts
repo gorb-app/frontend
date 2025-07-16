@@ -33,8 +33,13 @@ export const useApi = () => {
 		return await fetchWithApi(`/users/${userId}`);
 	}
 	
-	async function fetchFriends(): Promise<UserResponse[] | undefined> {
-		return await fetchWithApi('/me/friends')
+	async function fetchFriends(): Promise<UserResponse[]> {
+		const response = await fetchWithApi('/me/friends')
+		if (Array.isArray(response)) {
+			return response
+		} else {
+			return []
+		}
 	}
 
 	async function addFriend(username: string): Promise<void> {

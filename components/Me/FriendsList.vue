@@ -26,7 +26,9 @@
 <script lang="ts" setup>
 const { fetchFriends } = useApi();
 
-const friends = await fetchFriends()
+const friends = await fetchFriends().then((response) => {
+	return response.sort((a, b) => getDisplayName(a).localeCompare(getDisplayName(b)))
+})
 
 const props = defineProps<{
     variant: string
