@@ -86,6 +86,7 @@ const auth = useAuth();
 const loggedIn = ref(await auth.getUser());
 
 const query = new URLSearchParams(useRoute().query as Record<string, string>);
+query.delete("token");
 
 const user = await useAuth().getUser();
 
