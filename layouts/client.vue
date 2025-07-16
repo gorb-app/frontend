@@ -224,6 +224,8 @@ function createDropdown() {
 	
 	background: var(--optional-sidebar-background);
 	background-color: var(--sidebar-background-color);
+
+	border-right: 1px solid var(--padding-color);
 }
 
 .left-column-segment {
