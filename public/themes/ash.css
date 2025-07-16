@@ -12,15 +12,17 @@
 
     --padding-color: #e0e0e0;
 
-	--sidebar-width: 2.5em;
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--pfp-radius: 100%;
-    
 	--primary-color: #f07028;
 	--primary-highlighted-color: #f28f4b;
 	--secondary-color: #683820;
 	--secondary-highlighted-color: #885830;
 	--accent-color: #a04b24;
 	--accent-highlighted-color: #b86038;
+
+	--sidebar-width: 2.5em;
+	--standard-radius: .5em;
+	--button-radius: .6em;
+	--guild-icon-radius: 20%;
+	--pfp-radius: 50%;
+	--preferred-font: Arial;
 }

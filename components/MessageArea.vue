@@ -42,6 +42,7 @@
 <script lang="ts" setup>
 import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
+import { generateIrcColor } from '#imports';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 

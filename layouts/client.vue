@@ -18,8 +18,18 @@
 				<VerticalSpacer />
 				<div class="left-column-segment" id="left-column-middle">
 					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-						<NuxtImg v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-						<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
+						<NuxtImg v-if="guild.icon"
+							class="sidebar-icon guild-icon"
+							:alt="guild.name"
+							:src="guild.icon" />
+						<NuxtImg v-else-if="!blockedCanvas"
+							class="sidebar-icon guild-icon"
+							:alt="guild.name"
+							:src="generateDefaultIcon(guild.name, guild.uuid)" />
+						<Icon v-else name="lucide:server"
+							:style="`color: ${generateIrcColor(guild.uuid, 50)}`"
+							class="sidebar-icon guild-icon"
+							:alt="guild.name" />
 					</NuxtLink>
 				</div>
 				<VerticalSpacer />
@@ -52,6 +62,8 @@ const loading = useState("loading", () => false);
 const createButtonContainer = ref<HTMLButtonElement>();
 
 const api = useApi();
+
+const blockedCanvas = isCanvasBlocked()
 
 const options = [
 	{ name: "Join", value: "join", callback: async () => {
@@ -206,8 +218,8 @@ function createDropdown() {
 	display: flex;
 	flex-direction: column;
 
-	padding-left: .25em;
-	padding-right: .25em;
+	padding-left: var(--sidebar-margin);
+	padding-right: var(--sidebar-margin);
 	padding-top: .5em;
 	
 	background: var(--optional-sidebar-background);
@@ -228,6 +240,7 @@ function createDropdown() {
 #left-column-middle {
 	overflow-y: scroll;
 	flex-grow: 1;
+	gap: var(--sidebar-icon-gap);
 }
 
 #middle-left-column {
@@ -241,12 +254,16 @@ function createDropdown() {
 }
 
 #home-button {
-	height: var(--sidebar-width);
+	height: var(--sidebar-icon-width);
+}
+
+.guild-icon {
+	border-radius: var(--guild-icon-radius);
 }
 
 .sidebar-icon {
-	width: var(--sidebar-width);
-	height: var(--sidebar-width);
+	width: var(--sidebar-icon-width);
+	height: var(--sidebar-icon-width);
 }
 
 .sidebar-bottom-buttons {

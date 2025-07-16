@@ -19,8 +19,13 @@
 	--accent-color: #b35719;
 	--accent-highlighted-color: #c76a2e;
 
-	--sidebar-width: 2.5em;
+	--sidebar-icon-width: 2.5em;
+	--sidebar-icon-gap: .25em;
+	--sidebar-margin: .5em;
+	
 	--standard-radius: .5em;
 	--button-radius: .6em;
-	--pfp-radius: 100%;
+	--guild-icon-radius: 15%;
+	--pfp-radius: 50%;
+	--preferred-font: Arial;
 }

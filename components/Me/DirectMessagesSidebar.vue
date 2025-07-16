@@ -13,7 +13,7 @@
 			<VerticalSpacer />
 			
 			<div id="direct-message-list">
-				<UserEntry v-for="user of friends" :user="user" :name="user.display_name || user.username"
+				<UserEntry v-for="user of friends" :user="user"
 						:href="`/me/${user.uuid}`"/> 
 			</div>
 		</div>
