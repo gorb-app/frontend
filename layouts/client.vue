@@ -95,7 +95,7 @@ const options = [
 						if (invite.length == 6) {
 							try {
 								const joinedGuild = await api.joinGuild(invite);
-								guilds?.push(joinedGuild);
+								guilds.push(joinedGuild);
 								return await navigateTo(`/servers/${joinedGuild.uuid}`);
 							} catch (error) {
 								alert(`Couldn't use invite: ${error}`);
@@ -151,7 +151,7 @@ const options = [
 	}
 ];
 
-const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
+const guilds = await api.fetchMyGuilds();
 
 function createDropdown() {
 	const dropdown = h(GuildDropdown, { options });

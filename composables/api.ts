@@ -17,6 +17,10 @@ export const useApi = () => {
 		return await fetchWithApi(`/guilds/${guildId}`);
 	}
 
+	async function fetchMyGuilds(): Promise<GuildResponse[]> {
+		return ensureIsArray(await fetchWithApi(`/me/guilds`));
+	}
+
 	async function fetchChannels(guildId: string): Promise<ChannelResponse[]> {
 		return ensureIsArray(await fetchWithApi(`/guilds/${guildId}/channels`));
 	}
@@ -85,6 +89,7 @@ export const useApi = () => {
 	return {
 		fetchGuilds,
 		fetchGuild,
+		fetchMyGuilds,
 		fetchChannels,
 		fetchChannel,
 		fetchMembers,
