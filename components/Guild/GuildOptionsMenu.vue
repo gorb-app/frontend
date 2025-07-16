@@ -4,23 +4,20 @@
       <button class="guild-option-button" @click="setting.action" tabindex="0">{{ setting.name }}</button>
     </div>
   </div>
+  <ModalInvite v-if="showInviteModal" :guild-id="guildId" />
 </template>
 
 <script lang="ts" setup>
-import { render } from 'vue';
-import InviteModal from './InviteModal.vue';
 
 const settings = [
   { name: "Invite", icon: "lucide:letter", action: openInviteModal }
 ]
 
+const guildId = useRoute().params.serverId as string;
+const showInviteModal = ref(false);
+
 function openInviteModal() {
-  const div = document.createElement("div");
-  const guildId = useRoute().params.serverId as string;
-  console.log("guild id:", guildId);
-  const inviteModal = h(InviteModal, { guildId });
-  document.body.appendChild(div);
-  render(inviteModal, div);
+  showInviteModal.value = true;
 }
 
 </script>

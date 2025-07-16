@@ -252,6 +252,8 @@ onMounted(async () => {
 	if (import.meta.server) return;
 	console.log("[MSG] messages keys:", Object.values(messages.value));
 	if (messagesElement.value) {
+		await nextTick();
+		await nextTick();
 		scrollToBottom(messagesElement.value);
 		let fetched = false;
 		const amount = messages.value.length;

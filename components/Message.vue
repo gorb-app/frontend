@@ -4,14 +4,10 @@
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div v-if="props.replyMessage" class="message-reply-svg">
 			<svg
-				width="1.5em"
-				height="1.5em"
-				viewBox="0 0 151.14355 87.562065"
-				version="1.1"
-				id="svg1"
-				xmlns="http://www.w3.org/2000/svg"
-				xmlns:svg="http://www.w3.org/2000/svg"
+				width="1.5em" height="1.5em"
+				viewBox="0 0 150 87.5" version="1.1" id="svg1"
 				style="overflow: visible;">
+				<defs id="defs1" />
 				<defs
 					id="defs1" />
 				<g
@@ -50,8 +46,9 @@
 					{{ date.toLocaleTimeString(undefined, { hour12: props.format == "12", timeStyle: "short" }) }}
 				</span>
 			</div>
-			<div class="message-text" v-html="sanitized" tabindex="0"></div>
+			<div class="message-text" v-html="sanitized" :hidden="hasEmbed" tabindex="0"></div>
 		</div>
+		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
 	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
@@ -62,8 +59,9 @@
 			</span>
 		</div>
 		<div class="message-data">
-			<div class="message-text" :class="$style['message-text']" v-html="sanitized" tabindex="0"></div>
+			<div class="message-text" :class="$style['message-text']" v-html="sanitized" :hidden="hasEmbed" tabindex="0"></div>
 		</div>
+		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
 </template>
 
@@ -72,6 +70,8 @@ import DOMPurify from 'dompurify';
 import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import generateIrcColor from '~/utils/generateIrcColor';
+import MessageMedia from './MessageMedia.vue';
+import MessageReply from './UserInterface/MessageReply.vue';
 
 const props = defineProps<MessageProps>();
 
@@ -86,6 +86,13 @@ console.log("[MSG] message to render:", props.message);
 console.log("author:", props.author);
 console.log("[MSG] reply message:", props.replyMessage);
 
+const linkRegex = /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g;
+const linkMatches = props.message.message.matchAll(linkRegex).map(link => link[0]);
+const mediaLinks: string[] = [];
+console.log("link matches:", linkMatches);
+
+const hasEmbed = ref(false);
+
 const sanitized = ref<string>();
 
 onMounted(async () => {
@@ -98,7 +105,7 @@ onMounted(async () => {
 		],
 		ALLOW_DATA_ATTR: false,
 		ALLOW_SELF_CLOSE_IN_ATTR: false,
-		ALLOWED_ATTR: []
+		ALLOWED_ATTR: ["href"]
 	});
 	console.log("adding listeners")
 	await nextTick();
@@ -112,6 +119,27 @@ onMounted(async () => {
 		});
 		console.log("added listeners");
 	}
+
+	for (const link of linkMatches) {
+	console.log("link:", link);
+	try {
+		const res = await $fetch.raw(link);
+		if (res.ok && res.headers.get("content-type")?.match(/^image\/(apng|gif|jpeg|png|webp)$/)) {
+			console.log("link is image");
+			mediaLinks.push(link);
+		}
+		if (mediaLinks.length) {
+			hasEmbed.value = true
+			setTimeout(() => {
+				scrollToBottom(document.getElementById("messages") as HTMLDivElement);
+			}, 500);
+		};
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+console.log("media links:", mediaLinks);
 });
 
 //function toggleTooltip(e: Event) {

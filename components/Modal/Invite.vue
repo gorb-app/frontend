@@ -1,5 +1,5 @@
 <template>
-	<Modal v-bind="props" :title="props.title || 'Create an invite'">
+	<ModalBase v-bind="props" :title="props.title || 'Create an invite'">
 		<div v-if="invite" id="invite-body">
 			<div id="invite-label">{{ invite }}</div>
 			<div id="invite-buttons">
@@ -10,12 +10,12 @@
 		<div v-else>
 			<Button text="Generate Invite" variant="normal" :callback="generateInvite">Generate Invite</Button>
 		</div>
-	</Modal>
+	</ModalBase>
 </template>
 
 <script lang="ts" setup>
 import type { InviteResponse, ModalProps } from '~/types/interfaces';
-import Button from './UserInterface/Button.vue';
+import Button from '~/components/UserInterface/Button.vue';
 
 const props = defineProps<ModalProps & { guildId: string }>();
 

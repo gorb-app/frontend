@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import type { ModalProps } from '~/types/interfaces';
-import Button from './UserInterface/Button.vue';
+import Button from '~/components/UserInterface/Button.vue';
 
 const props = defineProps<ModalProps>();
 const dialog = ref<HTMLDialogElement>();

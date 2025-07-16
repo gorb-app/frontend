@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ModalBase } from '#components';
 import { render } from 'vue';
-import Dropdown from '~/components/Dropdown.vue';
-import Modal from '~/components/Modal.vue';
+import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
 import Button from '~/components/UserInterface/Button.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
@@ -54,7 +54,7 @@ const options = [
 	{ name: "Join", value: "join", callback: async () => {
 			console.log("join guild!");
 			const div = document.createElement("div");
-			const guildJoinModal = h(Modal, {
+			const guildJoinModal = h(ModalBase, {
 				title: "Join Guild",
 				id: "guild-join-modal",
 				onClose: () => {
@@ -97,7 +97,7 @@ const options = [
 			console.log("create guild");
 			const user = await useAuth().getUser();
 			const div = document.createElement("div");
-			const guildCreateModal = h(Modal, {
+			const guildCreateModal = h(ModalBase, {
 				title: "Create a Guild",
 				id: "guild-join-modal",
 				onClose: () => {
@@ -138,49 +138,8 @@ const options = [
 
 const guilds: GuildResponse[] | undefined = await fetchWithApi("/me/guilds");
 
-//const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
-//console.log("servers:", servers);
-const members = [
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	},
-	{
-		id: "3287484395",
-		displayName: "SauceyRed"
-	}
-];
-
 function createDropdown() {
-	const dropdown = h(Dropdown, { options });
+	const dropdown = h(GuildDropdown, { options });
 	const div = document.createElement("div");
 	div.classList.add("dropdown", "destroy-on-click");
 	if (createButtonContainer.value) {
@@ -261,6 +220,11 @@ function createDropdown() {
 	align-items: center;
 	gap: 1.5dvh;
 	overflow-y: scroll;
+	scrollbar-width: none;
+}
+
+#left-column-top::-webkit-scrollbar, #left-column-bottom::-webkit-scrollbar {
+	display: none;
 }
 
 #left-column-bottom {
