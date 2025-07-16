@@ -1,25 +1,29 @@
 <template>
 	<NuxtLayout name="client">
-		<div id="middle-left-column" class="main-grid-row">
-			<div id="server-name-container">
-				<span id="server-name">{{ server?.name }}</span>
-				<button id="server-settings-button" @click="toggleGuildSettings">
-					<Icon id="server-settings-icon" name="lucide:chevron-down" />
-				</button>
-				<GuildOptionsMenu v-if="showGuildSettings" />
+		<ResizableSidebar width="14rem" min-width="10rem" max-width="20rem" border-sides="right">
+			<div id="middle-left-column" class="main-grid-row">
+				<div id="server-name-container">
+					<span id="server-name">{{ server?.name }}</span>
+					<button id="server-settings-button" @click="toggleGuildSettings">
+						<Icon id="server-settings-icon" name="lucide:chevron-down" />
+					</button>
+					<GuildOptionsMenu v-if="showGuildSettings" />
+				</div>
+				<div id="channels-list">
+					<ChannelEntry v-for="channel of channels" :name="channel.name"
+						:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
+						:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
+				</div>
 			</div>
-			<div id="channels-list">
-				<ChannelEntry v-for="channel of channels" :name="channel.name"
-					:uuid="channel.uuid" :current-uuid="(route.params.channelId as string)"
-					:href="`/servers/${route.params.serverId}/channels/${channel.uuid}`" />
-			</div>
-		</div>
+		</ResizableSidebar>
 		<MessageArea :channel-url="channelUrlPath" />
-		<div id="members-container">
-			<div id="members-list">
-				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
+		<ResizableSidebar width="15rem" min-width="13rem" max-width="30rem" border-sides="left">
+			<div id="members-container">
+				<div id="members-list">
+					<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
+				</div>
 			</div>
-		</div>
+		</ResizableSidebar>
 	</NuxtLayout>
 </template>
 
@@ -27,7 +31,8 @@
 import ChannelEntry from "~/components/Guild/ChannelEntry.vue";
 import GuildOptionsMenu from "~/components/Guild/GuildOptionsMenu.vue";
 import MemberEntry from "~/components/Guild/MemberEntry.vue";
-import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
+import ResizableSidebar from "~/components/UserInterface/ResizableSidebar.vue";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse } from "~/types/interfaces";
 
 const route = useRoute();
 
@@ -87,18 +92,7 @@ function handleMemberClick(member: GuildMemberResponse) {
 </script>
 
 <style>
-#middle-left-column {
-	padding-left: .5em;
-	padding-right: .5em;
-	border-right: 1px solid var(--padding-color);
-	background: var(--optional-channel-list-background);
-	background-color: var(--sidebar-background-color);
-}
-
 #members-container {
-	min-width: 15rem;
-	max-width: 15rem;
-	border-left: 1px solid var(--padding-color);
 	background: var(--optional-member-list-background);
 }
 
