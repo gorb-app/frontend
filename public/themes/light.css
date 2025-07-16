@@ -11,6 +11,11 @@
 	--chatbox-background-color: #dfdbd6;
 
     --padding-color: #484848;
+
+    --sidebar-width: 2.5em;
+	--standard-radius: .5em;
+	--button-radius: .6em;
+	--pfp-radius: 100%;
     
     --primary-color: #df5f0b;
     --primary-highlighted-color: #ef6812;
