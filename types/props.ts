@@ -9,6 +9,7 @@ export interface MessageProps {
 	format: "12" | "24",
 	type: "normal" | "grouped",
 	marginBottom: boolean,
+	authorColor: string,
 	last: boolean,
 	messageId: string,
 	replyingTo?: boolean,
