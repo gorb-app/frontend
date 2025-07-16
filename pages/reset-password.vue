@@ -11,6 +11,9 @@
         <Button type="submit" text="Submit" variant="normal" />
       </div>
     </form>
+	<div>
+	  Already have an account? <NuxtLink :href="loginUrl">Log in</NuxtLink>!
+    </div>
   </NuxtLayout>
 </template>
 
@@ -19,6 +22,9 @@ import Button from '~/components/UserInterface/Button.vue';
 
 const query = useRoute().query as Record<string, string>;
 const searchParams = new URLSearchParams(query);
+
+const loginUrl = `/login?${searchParams}`;
+
 const token = ref(searchParams.get("token"))
 
 if (!token.value) await navigateTo("/login");
