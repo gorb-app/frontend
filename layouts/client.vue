@@ -243,16 +243,6 @@ function createDropdown() {
 	gap: var(--sidebar-icon-gap);
 }
 
-#middle-left-column {
-	padding-left: .25em;
-	padding-right: .25em;
-	border-right: 1px solid var(--padding-color);
-	min-width: 13em;
-	max-width: 13em;
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
-
 #home-button {
 	height: var(--sidebar-icon-width);
 }
