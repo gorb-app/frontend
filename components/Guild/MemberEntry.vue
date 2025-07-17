@@ -1,33 +1,33 @@
 <template>
-    <div class="member-item" @click="togglePopup" @blur="hidePopup" tabindex="0">
-        <Avatar :member="props.member" class="member-avatar"/>
+    <div class="member-item" @click.prevent="createProfileModal(props.member)" tabindex="0">
+        <Avatar :profile="props.member" class="member-avatar"/>
         <span class="member-display-name">{{ getDisplayName(props.member) }}</span>
-        <UserPopup v-if="isPopupVisible" :user="props.member.user" id="profile-popup" />
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ModalProfilePopup } from '#components';
+import { render } from 'vue';
 import type { GuildMemberResponse } from '~/types/interfaces';
 
 const props = defineProps<{
     member: GuildMemberResponse
 }>();
 
-const isPopupVisible = ref(false);
+function createProfileModal(profile: GuildMemberResponse) {
+	const div = document.createElement("div");
+	const modal = h(ModalProfilePopup, {
+		profile: profile
+	});
+	
+	document.body.appendChild(div);
+	render(modal, div);
+}
 
-const togglePopup = () => {
-    isPopupVisible.value = false;
-    // isPopupVisible.value = !isPopupVisible.value;
-};
-
-const hidePopup = () => {
-    isPopupVisible.value = false;
-};
 </script>
 
 <style>
 .member-item {
-    position: relative; /* Set the position to relative for absolute positioning of the popup */
+    position: relative;
 }
 </style>
