@@ -1,6 +1,6 @@
 <template>
   <div id="profile-popup">
-    <Avatar :user="props.user" id="avatar"/>
+    <Avatar :profile="props.user" id="avatar"/>
 
     <div id="cover-color"></div>
     <div id="main-body">

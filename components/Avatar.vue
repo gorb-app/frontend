@@ -13,25 +13,29 @@ import { NuxtImg } from '#components';
 import type { GuildMemberResponse, UserResponse } from '~/types/interfaces';
 
 const props = defineProps<{
-	user?: UserResponse,
-	member?: GuildMemberResponse,
+	profile: UserResponse | GuildMemberResponse,
 }>();
 
-
-let displayName: string
+const displayName = getDisplayName(props.profile)
 let displayAvatar: string | null
 
-const user = props.user || props.member?.user
 
-if (user) {
-	displayName = getDisplayName(props.member ?? user)
-	
-	if (user.avatar) {
-		displayAvatar = user.avatar
-	} else if (!isCanvasBlocked()){
-		displayAvatar = generateDefaultIcon(displayName, user.uuid)
-	} else {
-		displayAvatar = null
+if ("username" in props.profile) {
+	// assume it's a UserRespone
+	displayAvatar = props.profile.avatar
+	if (!displayAvatar) {
+		if (!isCanvasBlocked()) {
+			displayAvatar = generateDefaultIcon(displayName, props.profile.uuid)
+		}
+	}
+
+} else {
+	// assume it's a GuildMemberResponse
+	displayAvatar = props.profile.user.avatar
+	if (!displayAvatar) {
+		if (!isCanvasBlocked()) {
+			displayAvatar = generateDefaultIcon(displayName, props.profile.user_uuid)
+		}
 	}
 }
 
