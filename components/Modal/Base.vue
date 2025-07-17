@@ -1,7 +1,7 @@
 <template>
   <dialog ref="dialog" class="modal" :class="props.obscure ? 'modal-obscure' : 'modal-regular'">
 	<span class="modal-exit-button-container" style="position: absolute; right: 2em; top: .2em; width: .5em; height: .5em;">
-		<Button text="X" variant="neutral" :callback="() => dialog?.remove()" />
+		<Button text="✕" variant="stealth" :callback="() => dialog?.remove()" />
 	</span>
 	<div class="modal-content">
 		<h1 class="modal-title">{{ title }}</h1>
@@ -42,9 +42,12 @@ onMounted(() => {
   flex-direction: column;
   gap: 1em;
   opacity: 100%;
-  padding: 1%;
-  background-color: var(--sidebar-highlighted-background-color);
+
+  padding: var(--standard-radius); 
+	border-radius: var(--standard-radius);
+	background-color: var(--chat-highlighted-background-color);
   color: var(--text-color);
+
   overflow: hidden;
 }
 
