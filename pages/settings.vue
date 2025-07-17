@@ -46,8 +46,12 @@
 
 
 <script lang="ts" setup>
+import { Profile, Account, Privacy, Devices, Connections } from '~/components/Settings/UserSettings';
+import { Appearance, Notifications, Keybinds, Language } from '~/components/Settings/AppSettings';
+
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import Button from '~/components/UserInterface/Button.vue';
+
 
 const { logout } = useAuth()
 const appConfig = useRuntimeConfig()
@@ -61,17 +65,6 @@ interface Category {
   displayName: string;
   pages: Page[];
 }
-
-import Profile from '~/components/Settings/UserSettings/Profile.vue';
-import Account from '~/components/Settings/UserSettings/Account.vue';
-import Privacy from '~/components/Settings/UserSettings/Privacy.vue';
-import Devices from '~/components/Settings/UserSettings/Devices.vue';
-import Connections from '~/components/Settings/UserSettings/Connections.vue';
-
-import Appearance from '~/components/Settings/AppSettings/Appearance.vue';
-import Notifications from '~/components/Settings/AppSettings/Notifications.vue';
-import Keybinds from '~/components/Settings/AppSettings/Keybinds.vue';
-import Language from '~/components/Settings/AppSettings/Language.vue';
 
 const settingsCategories = {
   userSettings: {

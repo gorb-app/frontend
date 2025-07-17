@@ -18,4 +18,10 @@
     --secondary-highlighted-color: #f8b68a;
     --accent-color: #e68b4e;
     --accent-highlighted-color: #f69254;
+
+	--sidebar-width: 2.5em;
+	--standard-radius: .5em;
+	--button-radius: .6em;
+	--pfp-radius: 50%;
+	--preferred-font: Arial;
 }

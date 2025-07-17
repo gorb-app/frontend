@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import ChannelEntry from "~/components/Guild/ChannelEntry.vue";
 import GuildOptionsMenu from "~/components/Guild/GuildOptionsMenu.vue";
-import MemberEntry from "~/components/Member/MemberEntry.vue";
+import MemberEntry from "~/components/Guild/MemberEntry.vue";
 import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse } from "~/types/interfaces";
 
 const route = useRoute();

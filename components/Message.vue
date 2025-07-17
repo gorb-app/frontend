@@ -8,14 +8,10 @@
 				viewBox="0 0 150 87.5" version="1.1" id="svg1"
 				style="overflow: visible;">
 				<defs id="defs1" />
-				<defs
-					id="defs1" />
-				<g
-					id="layer1"
+				<g id="layer1"
 					transform="translate(40,-35)">
-					<g
-					id="g3"
-					transform="translate(-35,-20)">
+					<g id="g3"
+						transform="translate(-35,-20)">
 					<path
 						style="stroke:var(--reply-text-color);stroke-width:8;stroke-opacity:1"
 						d="m 120.02168,87.850978 100.76157,2.4e-5"
@@ -28,16 +24,17 @@
 				</g>
 			</svg>
 		</div>
-		<MessageReply v-if="props.replyMessage" :author="props.replyMessage.user.display_name || props.replyMessage.user.username" :text="props.replyMessage?.message"
-			:id="props.message.uuid" :reply-id="props.replyMessage.uuid" max-width="reply" />
+		<MessageReply v-if="props.replyMessage" :id="props.message.uuid"
+			:author="getDisplayName(props.replyMessage.user)"
+			:text="props.replyMessage?.message"
+			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<img v-if="props.img" class="message-author-avatar" :src="props.img" :alt="author?.display_name || author?.username" />
-			<Icon v-else name="lucide:user" class="message-author-avatar" />
+			<Avatar :user="props.author" class="message-author-avatar"/>
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
-				<span class="message-author-username" tabindex="0">
-					{{ author?.display_name || author?.username }}
+				<span class="message-author-username" tabindex="0" :style="`color: ${props.authorColor}`">
+					{{ getDisplayName(props.author) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
 					<span v-if="getDayDifference(date, currentDate) === 1">Yesterday at</span>
@@ -224,7 +221,6 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .message-author-avatar {
 	width: 100%;
-	border-radius: 50%;
 }
 
 .left-column {

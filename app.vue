@@ -6,9 +6,6 @@
 </template>
 
 <script lang="ts" setup>
-import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
-import { render } from 'vue';
-
 const banner = useState("banner", () => false);
 
 onMounted(() => {
@@ -65,7 +62,7 @@ useHead({
 <style>
 html,
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--preferred-font), Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: var(--text-color);
 	background: var(--optional-body-background);

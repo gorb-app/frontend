@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		}
 	}
 
-	if (["/login", "/register"].includes(to.path) && !Object.keys(to.query).includes("special")) {
+	if (["/login", "/register", "/recover", "/reset-password"].includes(to.path) && !Object.keys(to.query).includes("special")) {
 		console.log("path is login or register");
 		const apiBase = useCookie("api_base");
 		console.log("apiBase gotten:", apiBase.value);

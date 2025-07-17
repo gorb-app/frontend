@@ -8,27 +8,39 @@
 				</marquee>
 			</div>
 		</div>
-		<div id = "page-content">
+		<div id="page-content">
 			<div id="left-column">
-				<div id="left-column-top">
+				<div class="left-column-segment">
 					<NuxtLink id="home-button" href="/me">
 						<img class="sidebar-icon" src="/public/icon.svg"/>
 					</NuxtLink>
-					<div id="servers-list">
-						<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
-							<img v-if="guild.icon" class="sidebar-icon" :src="guild.icon" :alt="guild.name"/>
-							<Icon v-else name="lucide:server" class="sidebar-icon white" :alt="guild.name" />
-						</NuxtLink>
-					</div>
 				</div>
-				<div id="left-column-bottom">
+				<VerticalSpacer />
+				<div class="left-column-segment" id="left-column-middle">
+					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
+						<NuxtImg v-if="guild.icon"
+							class="sidebar-icon guild-icon"
+							:alt="guild.name"
+							:src="guild.icon" />
+						<NuxtImg v-else-if="!blockedCanvas"
+							class="sidebar-icon guild-icon"
+							:alt="guild.name"
+							:src="generateDefaultIcon(guild.name, guild.uuid)" />
+						<Icon v-else name="lucide:server"
+							:style="`color: ${generateIrcColor(guild.uuid, 50)}`"
+							class="sidebar-icon guild-icon"
+							:alt="guild.name" />
+					</NuxtLink>
+				</div>
+				<VerticalSpacer />
+				<div class="left-column-segment">
 					<div ref="createButtonContainer">
-						<button id="create-button" @click.prevent="createDropdown">
-							<Icon id="create-icon" name="lucide:square-plus" />
+						<button id="create-button" class="sidebar-bottom-buttons" @click.prevent="createDropdown">
+							<Icon id="create-icon" name="lucide:square-plus" alt="Create or join guild"/>
 						</button>
 					</div>
-					<NuxtLink id="settings-menu" href="/settings">
-						<Icon name="lucide:settings" class="sidebar-icon" alt="Settings menu" />
+					<NuxtLink id="settings-menu" class="sidebar-bottom-buttons" href="/settings">
+						<Icon name="lucide:settings" alt="Settings menu" />
 					</NuxtLink>
 				</div>
 			</div>
@@ -42,6 +54,7 @@ import { ModalBase } from '#components';
 import { render } from 'vue';
 import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
 import Button from '~/components/UserInterface/Button.vue';
+import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
 const loading = useState("loading", () => false);
@@ -49,6 +62,8 @@ const loading = useState("loading", () => false);
 const createButtonContainer = ref<HTMLButtonElement>();
 
 const api = useApi();
+
+const blockedCanvas = isCanvasBlocked()
 
 const options = [
 	{ name: "Join", value: "join", callback: async () => {
@@ -112,7 +127,7 @@ const options = [
 				h("input", {
 					id: "guild-name-input",
 					type: "text",
-					placeholder: `${user?.display_name || user?.username}'s Awesome Bouncy Castle'`,
+					placeholder: `${getDisplayName(user!)}'s Awesome Bouncy Castle'`,
 					style: "width: 100%"
 				}),
 				h(Button, {
@@ -202,67 +217,30 @@ function createDropdown() {
 #left-column {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	gap: .75em;
-	padding-left: .25em;
-	padding-right: .25em;
+
+	padding-left: var(--sidebar-margin);
+	padding-right: var(--sidebar-margin);
 	padding-top: .5em;
-	border-right: 1px solid var(--padding-color);
+	
 	background: var(--optional-sidebar-background);
 	background-color: var(--sidebar-background-color);
 }
 
-#left-column-top, #left-column-bottom {
+.left-column-segment {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 1.5dvh;
-	overflow-y: scroll;
+
 	scrollbar-width: none;
 }
 
-#left-column-top::-webkit-scrollbar, #left-column-bottom::-webkit-scrollbar {
+.left-column-segment::-webkit-scrollbar {
 	display: none;
 }
 
-#left-column-bottom {
-	padding-top: 1dvh;
-	border-top: 1px solid var(--padding-color);
-}
-
-#middle-left-column {
-	padding-left: 1dvw;
-	padding-right: 1dvw;
-	border-right: 1px solid var(--padding-color);
-}
-
-#home-button {
-	border-bottom: 1px solid var(--padding-color);
-	padding-bottom: 1dvh;
-}
-
-#servers-list {
-	display: flex;
-	flex-direction: column;
-	gap: 1em;
-	width: 3.2rem;	
-	padding-top: .5em;
-}
-
-#create-button {
-	color: var(--primary-color);
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-	font-size: 2rem;
-	padding: 0;
-	display: inline-block;
-}
-
-#create-icon {
-	float: left;
+#left-column-middle {
+	overflow-y: scroll;
+	flex-grow: 1;
+	gap: var(--sidebar-icon-gap);
 }
 
 #middle-left-column {
@@ -275,24 +253,31 @@ function createDropdown() {
 	overflow-x: hidden;
 }
 
-.sidebar-icon {
-	width: 3rem;
-	height: 3rem;
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
-
 #home-button {
-	border-bottom: 1px solid var(--padding-color);
-	padding-bottom: .375em;
+	height: var(--sidebar-icon-width);
 }
 
-#settings-menu {
-	color: var(--primary-color)
+.guild-icon {
+	border-radius: var(--guild-icon-radius);
 }
 
-#settings-menu:hover {
-	color: var(--primary-highlighted-color)
+.sidebar-icon {
+	width: var(--sidebar-icon-width);
+	height: var(--sidebar-icon-width);
+}
+
+.sidebar-bottom-buttons {
+	color: var(--primary-color);
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 2.4rem;
+	padding: 0;
+	display: inline-block;
+}
+
+.sidebar-bottom-buttons:hover {
+	color: var(--primary-highlighted-color);
 }
 
 </style>
