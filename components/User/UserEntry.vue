@@ -2,7 +2,7 @@
     <NuxtLink class="user-item" :href="`/me/${user.uuid}`" tabindex="0">
         <Avatar :user="props.user" class="user-avatar"/>
 
-        <span class="user-display-name">{{ displayName }}</span>
+        <span class="user-display-name">{{ getDisplayName(props.user) }}</span>
 	</NuxtLink>
 </template>
 
@@ -13,7 +13,6 @@ const props = defineProps<{
     user: UserResponse
 }>();
 
-const displayName = props.user.display_name || props.user.username
 </script>
 
 <style>

@@ -1,14 +1,14 @@
 <template>
-	<div @click="props.callback()" class="button" :class="props.variant + '-button'">
+	<button @click="props.callback ? props.callback() : null" class="button" :class="props.variant + '-button'">
 		{{ props.text }}
-	</div>
+	</button>
 </template>
 
 <script lang="ts" setup>
 
 const props = defineProps<{
 	text: string,
-	callback: CallableFunction,
+	callback?: CallableFunction,
 	variant?: "normal" | "scary" | "neutral",
 }>();
 
@@ -28,6 +28,8 @@ const props = defineProps<{
 	border-radius: 0.7rem;
 	text-decoration: none;
 	display: inline-block;
+
+	border: none;
 }
 
 .button:hover {

@@ -6,7 +6,7 @@
 			</div>
 			<VerticalSpacer />
 
-			<NuxtLink class="user-item" :href="`/me/friends`" tabindex="0">
+			<NuxtLink class="user-item" :href="`/me`" tabindex="0">
 				<Icon class="user-avatar" name="lucide:user" />
 				<span class="user-display-name">Friends</span>
 			</NuxtLink>

@@ -5,7 +5,7 @@
     <div id="cover-color"></div>
     <div id="main-body">
       <p id="display-name">
-        <strong>{{ props.user.display_name }}</strong>
+        <strong>{{ getDisplayName(props.user) }}</strong>
       </p>
       <p id="username-and-pronouns">
         {{ props.user.username }}

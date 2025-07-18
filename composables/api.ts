@@ -33,8 +33,13 @@ export const useApi = () => {
 		return await fetchWithApi(`/users/${userId}`);
 	}
 	
-	async function fetchFriends(): Promise<UserResponse[] | undefined> {
-		return await fetchWithApi('/me/friends')
+	async function fetchFriends(): Promise<UserResponse[]> {
+		const response = await fetchWithApi('/me/friends')
+		if (Array.isArray(response)) {
+			return response
+		} else {
+			return []
+		}
 	}
 
 	async function addFriend(username: string): Promise<void> {
@@ -74,6 +79,14 @@ export const useApi = () => {
 		await fetchWithApi("/auth/verify-email", { method: "POST", body: { email } });
 	}
 
+	async function sendPasswordResetEmail(identifier: string): Promise<void> {
+		await fetchWithApi("/auth/reset-password", { method: "GET", query: { identifier } });
+	}
+
+	async function resetPassword(password: string, token: string) {
+		await fetchWithApi("/auth/reset-password", { method: "POST", body: { password, token } });
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -92,6 +105,8 @@ export const useApi = () => {
 		joinGuild,
 		createChannel,
 		fetchInstanceStats,
-		sendVerificationEmail
+		sendVerificationEmail,
+		sendPasswordResetEmail,
+		resetPassword
 	}
 }
