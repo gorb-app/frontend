@@ -1,9 +1,12 @@
 <template>
 	<NuxtLayout name="client">
-		<ResizableSidebar width="14rem" min-width="10rem" max-width="20rem" border-sides="right">
+		<ResizableSidebar
+				:width="middleLeftColumnWidth ? `${middleLeftColumnWidth}px` : '14rem'"
+				min-width="5rem" max-width="30rem"
+				border-sides="right" :local-storage-name="middleLeftColumnName">
 			<div id="middle-left-column" class="main-grid-row">
 				<div id="server-name-container">
-					<span id="server-name">{{ server?.name }}</span>
+					<span id="server-name" :title="server?.name">{{ server?.name }}</span>
 					<button id="server-settings-button" @click="toggleGuildSettings">
 						<Icon id="server-settings-icon" name="lucide:chevron-down" />
 					</button>
@@ -17,7 +20,10 @@
 			</div>
 		</ResizableSidebar>
 		<MessageArea :channel-url="channelUrlPath" />
-		<ResizableSidebar width="15rem" min-width="13rem" max-width="30rem" border-sides="left">
+		<ResizableSidebar
+				:width="membersContainerWidth ? `${membersContainerWidth}px` : '14rem'"
+				min-width="5.5rem" max-width="30rem"
+				border-sides="left" :local-storage-name="membersContainername">
 			<div id="members-container">
 				<div id="members-list">
 					<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
@@ -49,23 +55,26 @@ const members = ref<GuildMemberResponse[]>();
 const showInvitePopup = ref(false);
 const showGuildSettings = ref(false);
 
+const middleLeftColumnWidth = ref<number>();
+const middleLeftColumnName = "channelsListWidth";
+
+const membersContainerWidth = ref<number>();
+const membersContainername = "membersListWidth"
+
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);
 
 const { fetchMembers } = useApi();
 
-onMounted(async () => {
-	console.log("mounting");
-	const guildUrl = `guilds/${route.params.serverId}`;
-	server.value = await fetchWithApi(guildUrl);
-	await setArrayVariables();
-});
-
 onActivated(async () => {
 	console.log("activating");
+	loadSidebarWidths();
+	console.log("loaded sidebar widths");
 	const guildUrl = `guilds/${route.params.serverId}`;
 	server.value = await fetchWithApi(guildUrl);
+	console.log("fetched guild");
 	await setArrayVariables();
+	console.log("set array variables");
 });
 
 async function setArrayVariables() {
@@ -75,6 +84,18 @@ async function setArrayVariables() {
 	console.log("channels:", channels.value);
 	channel.value = await fetchWithApi(`/channels/${route.params.channelId}`);
 	console.log("channel:", channel.value);
+}
+
+function loadSidebarWidths() {
+	const channelsListWidth = localStorage.getItem(middleLeftColumnName);
+	if (channelsListWidth) {
+		middleLeftColumnWidth.value = parseInt(channelsListWidth) || undefined;
+	}
+
+	const membersListWidth = localStorage.getItem(membersContainername);
+	if (membersListWidth) {
+		membersContainerWidth.value = parseInt(membersListWidth) || undefined;
+	}
 }
 
 function toggleGuildSettings(e: Event) {
@@ -122,6 +143,7 @@ function handleMemberClick(member: GuildMemberResponse) {
 	display: flex;
 	flex-direction: column;
 	gap: .5em;
+	text-overflow: ellipsis;
 }
 
 .member-avatar {
@@ -145,6 +167,8 @@ function handleMemberClick(member: GuildMemberResponse) {
 
 #server-name {
 	font-size: 1.5em;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #server-settings-button {

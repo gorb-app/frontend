@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import type { ContextMenuItem } from '~/types/interfaces';
 
-const props = defineProps<{ width?: string, minWidth: string, maxWidth: string, borderSides: "all" | "top" | "right" | "bottom" | "left" | ("top" | "right" | "bottom" | "left")[] }>();
+const props = defineProps<{ width?: string, minWidth: string, maxWidth: string, borderSides: "all" | "top" | "right" | "bottom" | "left" | ("top" | "right" | "bottom" | "left")[], localStorageName?: string }>();
 
 const borderStyling = ".1rem solid var(--padding-color)";
 
@@ -51,11 +51,13 @@ onMounted(() => {
 					let delta = 0;
 					if (props.borderSides == 'right') {
 						delta = resizableSidebar.value.getBoundingClientRect().left;
+						console.log("delta:", delta);
+						resizableSidebar.value.style.width = `${pointer.clientX - delta}px`;
 					} else {
 						delta = resizableSidebar.value.getBoundingClientRect().right;
+						console.log("delta:", delta);
+						resizableSidebar.value.style.width = `${delta - pointer.clientX}px`;
 					}
-					console.log("delta:", delta);
-					resizableSidebar.value.style.width = `${Math.abs(pointer.clientX - delta)}px`;
 				}
 			}
 
@@ -66,6 +68,9 @@ onMounted(() => {
 				document.removeEventListener("pointermove", handleMove);
 				console.log("removed pointermove event listener");
 				document.body.style.cursor = "";
+				if (resizableSidebar.value && props.localStorageName) {
+					localStorage.setItem(props.localStorageName, resizableSidebar.value.style.width);
+				}
 			}, { once: true });
 		});
 	}

@@ -25,6 +25,8 @@ const isCurrentChannel = props.uuid == props.currentUuid;
 	color: inherit;
 	padding-left: .25em;
 	padding-right: .25em;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .channel-list-link-container {
