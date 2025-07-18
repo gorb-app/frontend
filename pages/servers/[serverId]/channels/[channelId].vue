@@ -1,8 +1,8 @@
 <template>
 	<NuxtLayout name="client">
 		<ResizableSidebar
-				width="14rem" min-width="5rem" max-width="30rem"
-				border-sides="right" :local-storage-name="middleLeftColumnName">
+				width="14rem" min-width="8rem" max-width="30rem"
+				border-sides="right" local-storage-name="middleLeftColumn">
 			<div id="middle-left-column" class="main-grid-row">
 				<div id="server-name-container">
 					<span id="server-name" :title="server?.name">{{ server?.name }}</span>
@@ -21,7 +21,7 @@
 		<MessageArea :channel-url="channelUrlPath" />
 		<ResizableSidebar
 				width="14rem" min-width="5.5rem" max-width="30rem"
-				border-sides="left" :local-storage-name="membersContainername">
+				border-sides="left" local-storage-name="membersListWidth">
 			<div id="members-container">
 				<div id="members-list">
 					<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
@@ -52,9 +52,6 @@ const members = ref<GuildMemberResponse[]>();
 
 const showInvitePopup = ref(false);
 const showGuildSettings = ref(false);
-
-const middleLeftColumnName = "channelsListWidth";
-const membersContainername = "membersListWidth"
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);

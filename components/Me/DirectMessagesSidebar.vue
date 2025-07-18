@@ -1,5 +1,5 @@
 <template>
-	<ResizableSidebar width="14rem" min-width="10rem" max-width="30rem" border-sides="right" local-storage-name="friendsListWidth">
+	<ResizableSidebar width="14rem" min-width="8rem" max-width="30rem" border-sides="right" local-storage-name="middleLeftColumn">
 		<div id="middle-left-column">
 			<div id="friend-sidebar">
 				<div>
