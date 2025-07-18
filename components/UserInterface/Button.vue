@@ -22,11 +22,12 @@ const props = defineProps<{
 	background-color: var(--primary-color);
 	color: var(--text-color);
 
-	padding: 0.4em 0.75em;
-	font-size: 1.1em;
+	padding: 0.35em 0.65em;
+	font-size: 1em;
+	
 	transition: background-color 0.2s;
 
-	border-radius: 0.7rem;
+	border-radius: var(--standard-radius);
 	text-decoration: none;
 	display: inline-block;
 
