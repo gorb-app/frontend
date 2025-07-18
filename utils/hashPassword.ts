@@ -1,4 +1,4 @@
-export async function hashPassword(password: string) {
+export default async (password: string) => {
   const encodedPass = new TextEncoder().encode(password);
   const hashBuffer = await crypto.subtle.digest("SHA-384", encodedPass);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
