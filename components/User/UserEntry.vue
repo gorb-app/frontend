@@ -37,4 +37,10 @@ const props = defineProps<{
     width: 2.3em;
     height: 2.3em;
 }
+
+.user-display-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>
