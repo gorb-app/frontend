@@ -1,10 +1,10 @@
 <template>
-  <div v-if="isCurrentChannel" class="channel-list-link-container rounded-corners current-channel" tabindex="0">
+  <div v-if="isCurrentChannel" class="channel-list-link-container rounded-corners current-channel" tabindex="0" :title="props.name">
 	<NuxtLink class="channel-list-link" :href="props.href" tabindex="-1">
 		# {{ props.name }}
 	</NuxtLink>
   </div>
-  <div v-else class="channel-list-link-container rounded-corners" tabindex="0">
+  <div v-else class="channel-list-link-container rounded-corners" tabindex="0" :title="props.name">
 	<NuxtLink class="channel-list-link" :href="props.href" tabindex="-1">
 		# {{ props.name }}
 	</NuxtLink>
