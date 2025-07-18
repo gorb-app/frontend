@@ -53,10 +53,7 @@ const members = ref<GuildMemberResponse[]>();
 const showInvitePopup = ref(false);
 const showGuildSettings = ref(false);
 
-const middleLeftColumnWidth = ref<number>();
 const middleLeftColumnName = "channelsListWidth";
-
-const membersContainerWidth = ref<number>();
 const membersContainername = "membersListWidth"
 
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
