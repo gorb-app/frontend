@@ -134,9 +134,10 @@ function handleMemberClick(member: GuildMemberResponse) {
 }
 
 .member-avatar {
-	height: 2.3em;
-	width: 2.3em;
-	border-radius: 50%;
+    min-width: 2.3em;
+    max-width: 2.3em;
+    min-width: 2.3em;
+    max-height: 2.3em;
 }
 
 .member-display-name {

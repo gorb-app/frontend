@@ -34,8 +34,10 @@ const props = defineProps<{
 }
 
 .user-avatar {
-    width: 2.3em;
-    height: 2.3em;
+    min-width: 2.3em;
+    max-width: 2.3em;
+    min-width: 2.3em;
+    max-height: 2.3em;
 }
 
 .user-display-name {
