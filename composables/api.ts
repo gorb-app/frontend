@@ -1,24 +1,36 @@
 import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse, StatsResponse, UserResponse } from "~/types/interfaces";
 
+function ensureIsArray(list: any) {
+	if (Array.isArray(list)) {
+		return list
+	} else {
+		return []
+	}
+}
+
 export const useApi = () => {
-	async function fetchGuilds(): Promise<GuildResponse[] | undefined> {
-		return await fetchWithApi(`/guilds`);
+	async function fetchGuilds(): Promise<GuildResponse[]> {
+		return ensureIsArray(await fetchWithApi(`/guilds`));
 	}
 	
 	async function fetchGuild(guildId: string): Promise<GuildResponse | undefined> {
 		return await fetchWithApi(`/guilds/${guildId}`);
 	}
 
-	async function fetchChannels(guildId: string): Promise<ChannelResponse[] | undefined> {
-		return await fetchWithApi(`/guilds/${guildId}/channels`);
+	async function fetchMyGuilds(): Promise<GuildResponse[]> {
+		return ensureIsArray(await fetchWithApi(`/me/guilds`));
+	}
+
+	async function fetchChannels(guildId: string): Promise<ChannelResponse[]> {
+		return ensureIsArray(await fetchWithApi(`/guilds/${guildId}/channels`));
 	}
 
 	async function fetchChannel(channelId: string): Promise<ChannelResponse | undefined> {
 		return await fetchWithApi(`/channels/${channelId}`)
 	}
 
-	async function fetchMembers(guildId: string): Promise<GuildMemberResponse[] | undefined> {
-		return await fetchWithApi(`/guilds/${guildId}/members`);
+	async function fetchMembers(guildId: string): Promise<GuildMemberResponse[]> {
+		return ensureIsArray(await fetchWithApi(`/guilds/${guildId}/members`));
 	}
 
 	async function fetchMember(guildId: string, memberId: string): Promise<GuildMemberResponse | undefined> {
@@ -34,12 +46,7 @@ export const useApi = () => {
 	}
 	
 	async function fetchFriends(): Promise<UserResponse[]> {
-		const response = await fetchWithApi('/me/friends')
-		if (Array.isArray(response)) {
-			return response
-		} else {
-			return []
-		}
+		return ensureIsArray(await fetchWithApi('/me/friends'));
 	}
 
 	async function addFriend(username: string): Promise<void> {
@@ -90,6 +97,7 @@ export const useApi = () => {
 	return {
 		fetchGuilds,
 		fetchGuild,
+		fetchMyGuilds,
 		fetchChannels,
 		fetchChannel,
 		fetchMembers,
