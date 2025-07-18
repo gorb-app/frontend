@@ -66,6 +66,15 @@ const membersContainername = "membersListWidth"
 
 const { fetchMembers } = useApi();
 
+onMounted(async () => {
+	console.log("mounting");
+	const guildUrl = `guilds/${route.params.serverId}`;
+	server.value = await fetchWithApi(guildUrl);
+	console.log("fetched guild");
+	await setArrayVariables();
+	console.log("set array variables");
+});
+
 onActivated(async () => {
 	console.log("activating");
 	loadSidebarWidths();
