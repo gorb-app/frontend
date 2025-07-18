@@ -1,7 +1,7 @@
 <template>
 	<div ref="resizableSidebar" class="resizable-sidebar"
 			:style="{
-				'width': props.width,
+				'width': storedWidth ? `${storedWidth}px` : props.width,
 				'min-width': props.minWidth,
 				'max-width': props.maxWidth,
 				'border': props.borderSides == 'all' ? borderStyling : undefined,
@@ -29,12 +29,15 @@ const borderStyling = ".1rem solid var(--padding-color)";
 
 const resizableSidebar = ref<HTMLDivElement>();
 const widthResizer = ref<HTMLDivElement>();
+const storedWidth = ref<number>();
 
 const menuItems: ContextMenuItem[] = [
 	{ name: "Reset", callback: () => { resizableSidebar.value!.style.width = props.width ?? props.minWidth } }
 ]
 
 onMounted(() => {
+	loadStoredWidth();
+
 	if (resizableSidebar.value && widthResizer.value) {
 		widthResizer.value.addEventListener("pointerdown", (e) => {
 			e.preventDefault();
@@ -75,6 +78,21 @@ onMounted(() => {
 		});
 	}
 });
+
+onActivated(() => {
+	console.log("[res] activated");
+	loadStoredWidth();
+});
+
+function loadStoredWidth() {
+	if (props.localStorageName) {
+		const storedWidthValue = localStorage.getItem(props.localStorageName);
+		if (storedWidthValue) {
+			storedWidth.value = parseInt(storedWidthValue) || undefined;
+			console.log("[res] loaded stored width");
+		}
+	}
+}
 
 </script>
 

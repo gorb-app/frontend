@@ -1,8 +1,7 @@
 <template>
 	<NuxtLayout name="client">
 		<ResizableSidebar
-				:width="middleLeftColumnWidth ? `${middleLeftColumnWidth}px` : '14rem'"
-				min-width="5rem" max-width="30rem"
+				width="14rem" min-width="5rem" max-width="30rem"
 				border-sides="right" :local-storage-name="middleLeftColumnName">
 			<div id="middle-left-column" class="main-grid-row">
 				<div id="server-name-container">
@@ -21,8 +20,7 @@
 		</ResizableSidebar>
 		<MessageArea :channel-url="channelUrlPath" />
 		<ResizableSidebar
-				:width="membersContainerWidth ? `${membersContainerWidth}px` : '14rem'"
-				min-width="5.5rem" max-width="30rem"
+				width="14rem" min-width="5.5rem" max-width="30rem"
 				border-sides="left" :local-storage-name="membersContainername">
 			<div id="members-container">
 				<div id="members-list">
@@ -77,8 +75,6 @@ onMounted(async () => {
 
 onActivated(async () => {
 	console.log("activating");
-	loadSidebarWidths();
-	console.log("loaded sidebar widths");
 	const guildUrl = `guilds/${route.params.serverId}`;
 	server.value = await fetchWithApi(guildUrl);
 	console.log("fetched guild");
@@ -93,18 +89,6 @@ async function setArrayVariables() {
 	console.log("channels:", channels.value);
 	channel.value = await fetchWithApi(`/channels/${route.params.channelId}`);
 	console.log("channel:", channel.value);
-}
-
-function loadSidebarWidths() {
-	const channelsListWidth = localStorage.getItem(middleLeftColumnName);
-	if (channelsListWidth) {
-		middleLeftColumnWidth.value = parseInt(channelsListWidth) || undefined;
-	}
-
-	const membersListWidth = localStorage.getItem(membersContainername);
-	if (membersListWidth) {
-		membersContainerWidth.value = parseInt(membersListWidth) || undefined;
-	}
 }
 
 function toggleGuildSettings(e: Event) {
