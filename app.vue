@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <Banner v-if="banner" />
-    <NuxtPage :keepalive="true" />
-  </div>
+	<div>
+		<Banner v-if="banner" />
+		<NuxtPage :keepalive="true" />
+	</div>
 </template>
 
 <script lang="ts" setup>
+import loadPreferredTheme from '~/utils/loadPreferredTheme';
+
 const banner = useState("banner", () => false);
 
 onMounted(() => {
+	loadPreferredTheme()
+
 	document.removeEventListener("contextmenu", contextMenuHandler);
 	document.addEventListener("contextmenu", (e) => {
 		if (e.target instanceof Element && e.target.classList.contains("default-contextmenu")) return;
@@ -48,15 +52,6 @@ function contextMenuHandler(e: MouseEvent) {
 	//]);
 }
 
-const currentTheme = settingsLoad().selectedThemeId ?? "dark"
-const baseURL = useRuntimeConfig().app.baseURL;
-
-useHead({
-  link: [{
-		rel: "stylesheet",
-		href: `${baseURL}themes/${currentTheme}.css`
-	}]
-})
 </script>
 
 <style>
