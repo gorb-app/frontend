@@ -42,7 +42,7 @@ onMounted(() => {
 				createContextMenu(e, menuItems);
 				return
 			};
-			document.body.style.cursor = "col-resize";
+			document.body.style.cursor = "ew-resize";
 			function handleMove(pointer: PointerEvent) {
 				if (resizableSidebar.value) {
 					console.log("moving");
