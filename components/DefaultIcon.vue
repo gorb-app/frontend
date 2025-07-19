@@ -38,6 +38,9 @@ if (props.name.length > 3) {
 }
 
 .default-icon-text {
+	/* helps centre the icon, yes, this is NOT perfect */
+	margin-top: -0.15em;
+
 	font-weight: bold;
 
 	color: var(--secondary-text-color)

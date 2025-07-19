@@ -4,6 +4,7 @@
 		:src="displayAvatar"
 		:alt="displayName" />
 	<DefaultIcon v-else-if="user"
+		class="display-avatar"
 		:name="displayName"
 		:seed="user.uuid"
 		:alt="displayName" />
