@@ -69,7 +69,6 @@ const props = defineProps<ModalProps & {
 	onFinish: () => void
 }>();
 
-const friendsSinceRequest = await getFriendsSince(props.profile)
 const me = await fetchMe() as UserResponse
 
 const displayName = getDisplayName(props.profile)
@@ -79,7 +78,7 @@ const aboutMe = getAboutMe(props.profile)
 
 const registrationDate = getRegistrationDate(props.profile)
 const joinDate = getGuildJoinDate(props.profile)
-const friendsSince = friendsSinceRequest
+const friendsSince = await getFriendsSince(props.profile)
 
 const uuid = getUuid(props.profile)
 
@@ -96,8 +95,10 @@ async function buttonAddFriend() {
 	try {
 		await addFriend(username)
 		alert("sent!")
-	} catch {
-		alert("failed :(")
+	} catch (error: any) {
+		if (error?.response?.status !== 200) {
+			alert(`error ${error?.response?.status} met whilst trying to add friend\n"${error?.response._data?.message}"`)
+		}
 	}
 }
 
@@ -165,7 +166,6 @@ function buttonEditProfile() {
 #display-name {
 	font-weight: 800;
 	font-size: 2em;
-
 }
 
 #username-and-pronouns {
@@ -235,6 +235,7 @@ function buttonEditProfile() {
 .date-entry-title {
 	font-size: .8em;
 }
+
 .date-entry-value {
 	font-size: 1em;
 }
