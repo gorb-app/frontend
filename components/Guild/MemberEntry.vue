@@ -4,7 +4,7 @@
         <span class="member-display-name">{{ getDisplayName(props.member) }}</span>
     </div>
     <ModalProfilePopup v-if="modalPopupVisible" :profile="props.member"
-        :whendone="hideModalPopup"/>
+        :onFinish="hideModalPopup"/>
 </template>
 
 <script lang="ts" setup>

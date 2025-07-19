@@ -1,5 +1,5 @@
 <template>
-	<ModalBase :obscure="true" :onClose="props.whendone" :onCloseButton="props.whendone">
+	<ModalBase :obscure="true" :onClose="props.onFinish" :onCloseButton="props.onFinish">
 		<div id="profile-container">
 			<div id="profile-header">
 				<div id="header-mask"></div>
@@ -66,7 +66,7 @@ const { addFriend, fetchMe } = useApi();
 
 const props = defineProps<ModalProps & {
 	profile: GuildMemberResponse,
-	whendone: any
+	onFinish: () => void
 }>();
 
 const friendsSinceRequest = await getFriendsSince(props.profile)
