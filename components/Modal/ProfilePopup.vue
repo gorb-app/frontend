@@ -15,7 +15,7 @@
 						{{ pronouns }}
 					</span>
 				</div>
-				<div id="status">Status goes here lorem ipsum or something</div>
+				<!-- <div id="status">Status goes here lorem ipsum or something</div> -->
 
 				<div v-if="me.uuid != uuid" id="action-buttons-container">
 					<Button text="Message" variant="normal" :callback="buttonSendMessage"></Button>
@@ -35,21 +35,21 @@
 					</div>
 				</div>
 			</div>
-			<VerticalSpacer />
+			<VerticalSpacer v-if="aboutMe" />
 
 			<div id="profile-footer">
 				<div id="dates">
 					<div v-if="registrationDate" class="date-entry">
-						<span class="date-entry-title">Registered At</span><br>
-						<span class="date-entry-value">{{ registrationDate }}</span>
+						<span class="date-entry-title">Registered at</span><br>
+						<span class="date-entry-value" :title="registrationDate.toLocaleTimeString()">{{ toDateString(registrationDate) }}</span>
 					</div>
 					<div v-if="joinDate" class="date-entry">
-						<span class="date-entry-title">Joined At</span><br>
-						<span class="date-entry-value">{{ joinDate }}</span>
+						<span class="date-entry-title">Joined at</span><br>
+						<span class="date-entry-value" :title="joinDate.toLocaleTimeString()">{{ toDateString(joinDate) }}</span>
 					</div>
 					<div v-if="friendsSince" class="date-entry">
 						<span class="date-entry-title">Friends Since</span><br>
-						<span class="date-entry-value">{{ friendsSince }}</span>
+						<span class="date-entry-value" :title="friendsSince.toLocaleTimeString()">{{ toDateString(friendsSince) }}</span>
 					</div>
 				</div>
 			</div>
@@ -75,12 +75,16 @@ const username = getUsername(props.profile)
 const pronouns = getPronouns(props.profile)
 const aboutMe = getAboutMe(props.profile)
 
-const registrationDate = getRegistrationDate(props.profile)?.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })
-const joinDate = getGuildJoinDate(props.profile)?.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })
-const friendsSince = friendsSinceRequest?.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })
+const registrationDate = getRegistrationDate(props.profile)
+const joinDate = getGuildJoinDate(props.profile)
+const friendsSince = friendsSinceRequest
 
 const uuid = getUuid(props.profile)
 const me = await fetchMe() as UserResponse
+
+function toDateString(date: Date): string {
+	return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })
+}
 
 function buttonSendMessage() {
 	navigateTo(`/me/${uuid}`)
@@ -163,7 +167,6 @@ function buttonEditProfile() {
 }
 
 #username-and-pronouns {
-	margin-top: -0.2em;
 	font-size: .9em;
 	color: var(--secondary-text-color);
 }
