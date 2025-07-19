@@ -1,10 +1,10 @@
 <template>
-    <div class="member-item" @click.prevent="toggleModalPopup" tabindex="0">
+    <div class="member-item" @click.prevent="showModalPopup" tabindex="0">
         <Avatar :profile="props.member" class="member-avatar"/>
         <span class="member-display-name">{{ getDisplayName(props.member) }}</span>
     </div>
-    <ModalProfilePopup v-if="modalPopupVisible"
-        :profile="props.member"/>
+    <ModalProfilePopup v-if="modalPopupVisible" :profile="props.member"
+        :whendone="hideModalPopup"/>
 </template>
 
 <script lang="ts" setup>
@@ -17,8 +17,14 @@ const props = defineProps<{
 
 const modalPopupVisible = ref<boolean>(false);
 
-function toggleModalPopup() {
-    modalPopupVisible.value = !modalPopupVisible.value
+function showModalPopup() {
+    console.log("hello there")
+    modalPopupVisible.value = true
+}
+
+function hideModalPopup() {
+    console.log("gone")
+    modalPopupVisible.value = false
 }
 </script>
 

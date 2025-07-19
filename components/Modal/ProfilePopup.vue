@@ -1,5 +1,5 @@
 <template>
-	<ModalBase :obscure="true">
+	<ModalBase :obscure="true" :onClose="props.whendone" :onCloseButton="props.whendone">
 		<div id="profile-container">
 			<div id="profile-header">
 				<div id="header-mask"></div>
@@ -65,10 +65,12 @@ import Button from '../UserInterface/Button.vue';
 const { addFriend, fetchMe } = useApi();
 
 const props = defineProps<ModalProps & {
-	profile: GuildMemberResponse
+	profile: GuildMemberResponse,
+	whendone: any
 }>();
 
 const friendsSinceRequest = await getFriendsSince(props.profile)
+const me = await fetchMe() as UserResponse
 
 const displayName = getDisplayName(props.profile)
 const username = getUsername(props.profile)
@@ -80,7 +82,7 @@ const joinDate = getGuildJoinDate(props.profile)
 const friendsSince = friendsSinceRequest
 
 const uuid = getUuid(props.profile)
-const me = await fetchMe() as UserResponse
+
 
 function toDateString(date: Date): string {
 	return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })
