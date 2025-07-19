@@ -224,6 +224,8 @@ function createDropdown() {
 	
 	background: var(--optional-sidebar-background);
 	background-color: var(--sidebar-background-color);
+
+	border-right: 1px solid var(--padding-color);
 }
 
 .left-column-segment {
@@ -241,16 +243,6 @@ function createDropdown() {
 	overflow-y: scroll;
 	flex-grow: 1;
 	gap: var(--sidebar-icon-gap);
-}
-
-#middle-left-column {
-	padding-left: .25em;
-	padding-right: .25em;
-	border-right: 1px solid var(--padding-color);
-	min-width: 13em;
-	max-width: 13em;
-	overflow-y: scroll;
-	overflow-x: hidden;
 }
 
 #home-button {

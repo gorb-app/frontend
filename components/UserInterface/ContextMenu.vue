@@ -7,13 +7,13 @@
 <script lang="ts" setup>
 import type { ContextMenuItem } from '~/types/interfaces';
 
-const props = defineProps<{ menuItems: ContextMenuItem[], cursorX: number, cursorY: number }>();
+const props = defineProps<{ menuItems: ContextMenuItem[], pointerX: number, pointerY: number }>();
 
 onMounted(() => {
 	const contextMenu = document.getElementById("context-menu");
 	if (contextMenu) {
-		contextMenu.style.left = props.cursorX.toString() + "px";
-		contextMenu.style.top = props.cursorY.toString() + "px";
+		contextMenu.style.left = props.pointerX.toString() + "px";
+		contextMenu.style.top = props.pointerY.toString() + "px";
 	}
 });
 
