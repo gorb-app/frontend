@@ -62,6 +62,7 @@ import type { GuildMemberResponse, ModalProps, UserResponse } from '~/types/inte
 import VerticalSpacer from '../UserInterface/VerticalSpacer.vue';
 import Button from '../UserInterface/Button.vue';
 
+const { getDisplayName, getUsername, getPronouns, getAboutMe, getRegistrationDate, getGuildJoinDate, getFriendsSince, getUuid } = useProfile()
 const { addFriend, fetchMe } = useApi();
 
 const props = defineProps<ModalProps & {

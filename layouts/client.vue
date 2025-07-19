@@ -61,6 +61,7 @@ const loading = useState("loading", () => false);
 
 const createButtonContainer = ref<HTMLButtonElement>();
 
+const { getDisplayName } = useProfile()
 const api = useApi();
 
 const blockedCanvas = isCanvasBlocked()

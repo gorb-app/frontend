@@ -69,6 +69,8 @@ import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
 
+const { getDisplayName } = useProfile()
+
 const props = defineProps<MessageProps>();
 
 const messageElement = ref<HTMLDivElement>();

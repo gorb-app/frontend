@@ -21,6 +21,8 @@
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
 
+const { getDisplayName } = useProfile()
+
 const props = defineProps<{
 	user: UserResponse
 }>();

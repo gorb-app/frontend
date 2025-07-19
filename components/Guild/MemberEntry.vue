@@ -11,6 +11,8 @@
 import { ModalProfilePopup } from '#components';
 import type { GuildMemberResponse } from '~/types/interfaces';
 
+const { getDisplayName } = useProfile()
+
 const props = defineProps<{
     member: GuildMemberResponse
 }>();

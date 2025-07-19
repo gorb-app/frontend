@@ -12,6 +12,8 @@
 import { NuxtImg } from '#components';
 import type { GuildMemberResponse, UserResponse } from '~/types/interfaces';
 
+const { getDisplayName } = useProfile()
+
 const props = defineProps<{
 	profile: UserResponse | GuildMemberResponse,
 }>();
