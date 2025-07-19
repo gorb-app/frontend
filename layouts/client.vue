@@ -22,7 +22,7 @@
 							class="sidebar-icon guild-icon"
 							:alt="guild.name"
 							:src="guild.icon" />
-						<DefaultIcon 
+						<DefaultIcon v-else 
 							class="sidebar-icon guild-icon" 
 							:alt="guild.name"
 							:name="guild.name" :seed="guild.uuid"/>
