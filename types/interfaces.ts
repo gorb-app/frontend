@@ -96,7 +96,8 @@ export interface ModalProps {
 	title?: string,
 	obscure?: boolean,
 	onClose?: () => void,
-	onCancel?: () => void
+	onCancel?: () => void,
+	onCloseButton?: () => void,
 }
 
 export interface ContextMenuItem {

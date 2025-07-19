@@ -1,7 +1,7 @@
 <template>
   <dialog ref="dialog" class="modal" :class="props.obscure ? 'modal-obscure' : 'modal-regular'">
 	<span class="modal-exit-button-container" style="position: absolute; right: 2em; top: .2em; width: .5em; height: .5em;">
-		<Button text="✕" variant="stealth" :callback="() => dialog?.remove()" />
+		<Button text="✕" variant="stealth" :callback="onCloseButton" />
 	</span>
 	<div class="modal-content">
 		<h1 class="modal-title">{{ title }}</h1>
@@ -17,8 +17,6 @@ import Button from '~/components/UserInterface/Button.vue';
 const props = defineProps<ModalProps>();
 const dialog = ref<HTMLDialogElement>();
 
-console.log("props:", props);
-
 onMounted(() => {
   if (dialog.value) {
     dialog.value.showModal();
@@ -31,6 +29,15 @@ onMounted(() => {
   }
 });
 
+function onCloseButton () {
+  if (dialog.value) {
+    if (props.onCloseButton) {
+      props.onCloseButton()
+    }
+    
+    dialog.value.remove
+  }
+}
 
 </script>
 
