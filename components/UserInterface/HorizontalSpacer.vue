@@ -5,7 +5,7 @@
 <style scoped>
 .spacer {
   display: block;
-  width: 0.2dvh;
+  min-width: 0.2dvh;
   margin: 0.2dvh 0.8dvw;
   background-color: var(--padding-color);
 }
