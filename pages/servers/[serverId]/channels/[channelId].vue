@@ -133,13 +133,6 @@ function handleMemberClick(member: GuildMemberResponse) {
 	text-overflow: ellipsis;
 }
 
-.member-avatar {
-    min-width: 2.3em;
-    max-width: 2.3em;
-    min-width: 2.3em;
-    max-height: 2.3em;
-}
-
 .member-display-name {
 	overflow: hidden;
 	text-overflow: ellipsis;

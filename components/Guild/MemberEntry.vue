@@ -32,9 +32,9 @@ const hidePopup = () => {
 }
 
 .member-avatar {
-    min-height: 2em;
-	max-height: 2em;
-	min-width: 2em;
-	max-width: 2em;
+    min-height: 2.3em;
+	max-height: 2.3em;
+	min-width: 2.3em;
+	max-width: 2.3em;
 }
 </style>
