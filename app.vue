@@ -55,7 +55,10 @@ function contextMenuHandler(e: MouseEvent) {
 </script>
 
 <style>
-html,
+html {
+	background-color: #1f1e1d;
+}
+
 body {
   font-family: var(--preferred-font), Arial, Helvetica, sans-serif;
   box-sizing: border-box;
