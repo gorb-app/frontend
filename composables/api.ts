@@ -94,6 +94,10 @@ export const useApi = () => {
 		await fetchWithApi("/auth/reset-password", { method: "POST", body: { password, token } });
 	}
 
+	async function fetchInvite(id: string): Promise<GuildResponse | undefined> {
+		return await fetchWithApi(`/invites/${id}`);
+	}
+
 	return {
 		fetchGuilds,
 		fetchGuild,
@@ -115,6 +119,7 @@ export const useApi = () => {
 		fetchInstanceStats,
 		sendVerificationEmail,
 		sendPasswordResetEmail,
-		resetPassword
+		resetPassword,
+		fetchInvite
 	}
 }
