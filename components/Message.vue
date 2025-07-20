@@ -64,7 +64,9 @@
 
 <script lang="ts" setup>
 import DOMPurify from 'dompurify';
-import { parse } from 'marked';
+import { Marked } from 'marked';
+import markedShiki from 'marked-shiki'
+import { codeToHtml } from 'shiki'
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
@@ -92,16 +94,22 @@ const hasEmbed = ref(false);
 const sanitized = ref<string>();
 
 onMounted(async () => {
-	const parsed = await parse(props.text, { gfm: true });
+	let t = props.text.replaceAll("<br>", "\n");
+	const parsed = await new Marked(
+		markedShiki({ async highlight(code, lang) {
+			return codeToHtml(code, { lang, theme: 'gruvbox-dark-medium' }) ;
+		}}))
+		.parse(t, { gfm: true });
 	sanitized.value = DOMPurify.sanitize(parsed, {
 		ALLOWED_TAGS: [
 			"strong", "em", "br", "blockquote",
 			"code", "ul", "ol", "li", "a", "h1",
-			"h2", "h3", "h4", "h5", "h6"
+			"h2", "h3", "h4", "h5", "h6", "pre",
+			"span",
 		],
 		ALLOW_DATA_ATTR: false,
 		ALLOW_SELF_CLOSE_IN_ATTR: false,
-		ALLOWED_ATTR: ["href"]
+		ALLOWED_ATTR: ["href", "style", "class"]
 	});
 	console.log("adding listeners")
 	await nextTick();
@@ -282,5 +290,15 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .message-text ul  {
 	padding-left: 1em;
+}
+</style>
+<style>
+.shiki {
+	padding: 10px;
+	margin: 0px !important;
+	box-sizing: border-box;
+	border-radius: 10px;
+	width: 98%;
+	overflow-wrap: anywhere;
 }
 </style>
