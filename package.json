@@ -17,7 +17,6 @@
     "cropperjs": "^2.0.0",
     "dompurify": "^3.2.6",
     "marked": "^15.0.12",
-    "marked-shiki": "^1.2.0",
     "nuxt": "^3.17.0",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.2.0",

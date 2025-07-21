@@ -64,8 +64,7 @@
 
 <script lang="ts" setup>
 import DOMPurify from 'dompurify';
-import { Marked } from 'marked';
-import markedShiki from 'marked-shiki'
+import { parse } from 'marked';
 import { codeToHtml } from 'shiki'
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
@@ -94,23 +93,36 @@ const hasEmbed = ref(false);
 const sanitized = ref<string>();
 
 onMounted(async () => {
-	let t = props.text.replaceAll("<br>", "\n");
-	const parsed = await new Marked(
-		markedShiki({ async highlight(code, lang) {
-			return codeToHtml(code, { lang, theme: 'gruvbox-dark-medium' }) ;
-		}}))
-		.parse(t, { gfm: true });
+	let t = props.text.replaceAll("<br>", "\n").replaceAll("\xa0", "");
+	let parsed = await parse(t, { gfm: true });
+	const parser = new DOMParser();
+	let languages = []
+	let doc = parser.parseFromString(parsed, 'text/html');
+
+	// how do you map a list?
+ 	for(let code of doc.querySelectorAll('code')) {
+		languages.push(code.className.replace("language-", ""));
+	}
+
 	sanitized.value = DOMPurify.sanitize(parsed, {
 		ALLOWED_TAGS: [
 			"strong", "em", "br", "blockquote",
 			"code", "ul", "ol", "li", "a", "h1",
 			"h2", "h3", "h4", "h5", "h6", "pre",
-			"span",
 		],
 		ALLOW_DATA_ATTR: false,
 		ALLOW_SELF_CLOSE_IN_ATTR: false,
-		ALLOWED_ATTR: ["href", "style", "class"]
+		ALLOWED_ATTR: ["href"]
 	});
+
+	doc = parser.parseFromString(sanitized.value, 'text/html');
+	// how do you zip a list?
+	languages.reverse()
+	for(let code of doc.querySelectorAll('code')) {
+		code.innerHTML = await codeToHtml(code.innerHTML, { lang: languages.pop()!, theme: "gruvbox-dark-medium"});
+	}
+	sanitized.value = new XMLSerializer().serializeToString(doc);
+
 	console.log("adding listeners")
 	await nextTick();
 	if (messageElement.value?.classList.contains("grouped-message")) {
