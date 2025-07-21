@@ -57,6 +57,10 @@ import Button from '~/components/UserInterface/Button.vue';
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
+definePageMeta({
+	keepalive: true
+});
+
 const loading = useState("loading", () => false);
 
 const createButtonContainer = ref<HTMLButtonElement>();

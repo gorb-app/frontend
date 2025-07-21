@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Banner v-if="banner" />
-		<NuxtPage :keepalive="true" />
+		<NuxtPage />
 	</div>
 </template>
 
