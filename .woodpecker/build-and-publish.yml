@@ -8,7 +8,6 @@ steps:
       - pnpm build
     when:
     - event: push
-    - event: pull_request
 
   - name: container-build-and-publish
     image: docker
