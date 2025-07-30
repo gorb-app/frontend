@@ -72,7 +72,7 @@ import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
 
 const props = defineProps<MessageProps>();
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, cursorX: 0, cursorY: 0, items: [] }));
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
 
 const messageElement = ref<HTMLDivElement>();
 

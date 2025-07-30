@@ -1,7 +1,7 @@
 <template>
   	<div>
 		<Banner v-if="banner" />
-		<ContextMenu v-if="contextMenu && contextMenu.show" :cursor-x="contextMenu.cursorX" :cursor-y="contextMenu.cursorY" :menu-items="contextMenu.items" />
+		<ContextMenu v-if="contextMenu && contextMenu.show" :pointer-x="contextMenu.pointerX" :pointer-y="contextMenu.pointerY" :menu-items="contextMenu.items" />
     	<NuxtPage :keepalive="true" />
   	</div>
 </template>

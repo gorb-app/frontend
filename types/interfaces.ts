@@ -107,7 +107,7 @@ export interface ContextMenuItem {
 
 export interface ContextMenuInterface {
 	show: boolean,
-	cursorX: number,
-	cursorY: number,
+	pointerX: number,
+	pointerY: number,
 	items: ContextMenuItem[]
 }
