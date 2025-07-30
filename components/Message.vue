@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid && props.replyMessage?.user.uuid == props.me.uuid }" :data-message-id="props.messageId"
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div v-if="props.replyMessage" class="message-reply-svg">
@@ -50,7 +50,7 @@
 		</div>
 		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
-	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
@@ -71,8 +71,11 @@ import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
+import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
 
 const props = defineProps<MessageProps>();
+
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, cursorX: 0, cursorY: 0, items: [] }));
 
 const messageElement = ref<HTMLDivElement>();
 

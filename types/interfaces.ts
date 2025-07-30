@@ -103,3 +103,10 @@ export interface ContextMenuItem {
 	name: string,
 	callback: (...args: any[]) => any;
 }
+
+export interface ContextMenuInterface {
+	show: boolean,
+	cursorX: number,
+	cursorY: number,
+	items: ContextMenuItem[]
+}

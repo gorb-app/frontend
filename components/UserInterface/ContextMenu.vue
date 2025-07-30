@@ -1,11 +1,13 @@
 <template>
-	<div v-for="item of props.menuItems" class="context-menu-item" @click="runCallback(item)">
-		{{ item.name }}
+	<div id="context-menu">
+		<button v-for="item of props.menuItems" class="context-menu-item" @click="runCallback(item)">
+			{{ item.name }} <Icon v-if="item.icon" :name="item.icon" />
+		</button>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import type { ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
 
 const props = defineProps<{ menuItems: ContextMenuItem[], cursorX: number, cursorY: number }>();
 
@@ -19,7 +21,8 @@ onMounted(() => {
 
 
 function runCallback(item: ContextMenuItem) {
-	removeContextMenu();
+	const contextMenu = useState<ContextMenuInterface>("contextMenu");
+	removeContextMenu(contextMenu);
 	item.callback();
 }
 
