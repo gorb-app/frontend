@@ -34,10 +34,24 @@ function runCallback(item: ContextMenuItem) {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
-	width: 10dvw;
-	border: .15rem solid cyan;
-	background-color: var(--background-color);
-	text-align: center;
+	width: 10rem;
+	border: .1rem solid var(--reply-text-color);
+	background-color: var(--sidebar-highlighted-background-color);
+	text-align: left;
+}
+
+.context-menu-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 2rem;
+	width: 100%;
+	color: var(--text-color);
+	background-color: var(--sidebar-highlighted-background-color);
+	border: none;
+	text-align: left;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .context-menu-item:hover {
