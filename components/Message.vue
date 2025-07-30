@@ -96,14 +96,8 @@ onMounted(async () => {
 	let t = props.text.replaceAll("<br>", "\n").replaceAll("\xa0", "");
 	let parsed = await parse(t, { gfm: true });
 	const parser = new DOMParser();
-	let languages = []
 	let doc = parser.parseFromString(parsed, 'text/html');
-
-	// how do you map a list?
- 	for(let code of doc.querySelectorAll('code')) {
-		languages.push(code.className.replace("language-", ""));
-	}
-
+ 	let languages = Array.from(doc.querySelectorAll('code')).map(code => code.className.replace("language-", ""));
 	sanitized.value = DOMPurify.sanitize(parsed, {
 		ALLOWED_TAGS: [
 			"strong", "em", "br", "blockquote",
