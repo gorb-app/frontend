@@ -1,12 +1,11 @@
 <template>
   <div id="profile-popup">
-    <img v-if="props.user.avatar" id="avatar" :src="props.user.avatar" alt="profile avatar">
-    <Icon v-else id="avatar" name="lucide:user" />
+    <Avatar :user="props.user" id="avatar"/>
 
     <div id="cover-color"></div>
     <div id="main-body">
       <p id="display-name">
-        <strong>{{ props.user.display_name }}</strong>
+        <strong>{{ getDisplayName(props.user) }}</strong>
       </p>
       <p id="username-and-pronouns">
         {{ props.user.username }}
@@ -21,8 +20,6 @@
 
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
-
-const { fetchMembers } = useApi();
 
 const props = defineProps<{
 	user: UserResponse

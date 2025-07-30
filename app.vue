@@ -1,21 +1,24 @@
 <template>
-  <div>
-    <Banner v-if="banner" />
-	<ContextMenu v-if="contextMenu && contextMenu.show" :cursor-x="contextMenu.cursorX" :cursor-y="contextMenu.cursorY" :menu-items="contextMenu.items" />
-    <NuxtPage :keepalive="true" />
-  </div>
+  	<div>
+		<Banner v-if="banner" />
+		<ContextMenu v-if="contextMenu && contextMenu.show" :cursor-x="contextMenu.cursorX" :cursor-y="contextMenu.cursorY" :menu-items="contextMenu.items" />
+    	<NuxtPage :keepalive="true" />
+  	</div>
 </template>
 
 <script lang="ts" setup>
 import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
 import { render } from 'vue';
 import type { ContextMenuInterface } from './types/interfaces';
+import loadPreferredTheme from '~/utils/loadPreferredTheme';
 
 const banner = useState("banner", () => false);
 
 const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 onMounted(() => {
+	loadPreferredTheme()
+
 	document.removeEventListener("contextmenu", contextMenuHandler);
 	document.addEventListener("contextmenu", (e) => {
 		if (e.target instanceof Element && e.target.classList.contains("default-contextmenu")) return;
@@ -55,21 +58,15 @@ function contextMenuHandler(e: MouseEvent) {
 	//]);
 }
 
-const currentTheme = settingsLoad().selectedThemeId ?? "dark"
-const baseURL = useRuntimeConfig().app.baseURL;
-
-useHead({
-  link: [{
-		rel: "stylesheet",
-		href: `${baseURL}themes/${currentTheme}.css`
-	}]
-})
 </script>
 
 <style>
-html,
+html {
+	background-color: #1f1e1d;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--preferred-font), Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   color: var(--text-color);
 	background: var(--optional-body-background);

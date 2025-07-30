@@ -1,12 +1,13 @@
 <template>
 	<div id="message-area">
 		<div id="messages" ref="messagesElement">
-			<Message v-for="(message, i) of messages" :username="message.user.display_name ?? message.user.username"
+			<Message v-for="(message, i) of messages" :username="getDisplayName(message.user)"
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
 				:format="timeFormat" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
 				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me"
 				:message="message" :is-reply="message.reply_to"
+				:author-color="`${generateIrcColor(message.user.uuid)}`"
 				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined" />
 		</div>
 		<div id="message-box" class="rounded-corners">
@@ -41,6 +42,7 @@
 <script lang="ts" setup>
 import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
+import { generateIrcColor } from '#imports';
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 

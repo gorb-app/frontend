@@ -1,8 +1,8 @@
 <template>
     <NuxtLink class="user-item" :href="`/me/${user.uuid}`" tabindex="0">
-        <img v-if="props.user.avatar" class="user-avatar" :src="props.user.avatar" :alt="props.user.display_name ?? props.user.username" />
-        <Icon v-else class="user-avatar" name="lucide:user" />
-        <span class="user-display-name">{{ props.user.display_name || props.user.username }}</span>
+        <Avatar :user="props.user" class="user-avatar"/>
+
+        <span class="user-display-name">{{ getDisplayName(props.user) }}</span>
 	</NuxtLink>
 </template>
 
@@ -12,6 +12,7 @@ import type { UserResponse } from '~/types/interfaces';
 const props = defineProps<{
     user: UserResponse
 }>();
+
 </script>
 
 <style>
@@ -33,8 +34,15 @@ const props = defineProps<{
 }
 
 .user-avatar {
-    width: 2.3em;
-    height: 2.3em;
-    border-radius: 50%;
+    min-width: 2.3em;
+    max-width: 2.3em;
+    min-width: 2.3em;
+    max-height: 2.3em;
+}
+
+.user-display-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>
