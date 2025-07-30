@@ -38,6 +38,7 @@ function runCallback(item: ContextMenuItem) {
 	border: .1rem solid var(--reply-text-color);
 	background-color: var(--sidebar-highlighted-background-color);
 	text-align: left;
+	z-index: 100;
 }
 
 .context-menu-item {
