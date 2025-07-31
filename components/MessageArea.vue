@@ -1,7 +1,7 @@
 <template>
 	<div id="message-area">
 		<div id="messages" ref="messagesElement">
-			<Message v-for="(message, i) of messages" :username="getDisplayName(message.user)"
+			<Message v-for="(message, i) of messages" :username="getDisplayName(message.user)" :key="message.uuid"
 				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
 				:format="timeFormat" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
