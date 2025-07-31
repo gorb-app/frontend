@@ -274,7 +274,7 @@ onMounted(async () => {
 						for (const message of messages.value) {
 							groupMessage(message);
 						}
-						offset += offset;
+						offset += amount;
 					}
 				} else {
 					fetched = false;
