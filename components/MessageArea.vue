@@ -237,12 +237,8 @@ function sendMessage(e: Event) {
 }
 
 function getReplyMessage(id: string) {
-	console.log("[REPLYMSG] id:", id);
 	const messagesValues = Object.values(messages.value);
-	console.log("[REPLYMSG] messages values:", messagesValues);
 	for (const message of messagesValues) {
-		console.log("[REPLYMSG] message:", message);
-		console.log("[REPLYMSG] IDs match?", message.uuid == id);
 		if (message.uuid == id) return message;
 	}
 }
@@ -266,7 +262,6 @@ onMounted(async () => {
 					if (fetched) return;
 					fetched = true;
 					console.log("scroll height is at 10% or less");
-					//console.log("current oldest:", currentOldestMessage);
 					const olderMessages = await fetchMessages(route.params.channelId as string, { amount, offset });
 					if (olderMessages?.length) {
 						olderMessages.reverse();
