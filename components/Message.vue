@@ -152,12 +152,12 @@ const menuItems: ContextMenuItem[] = [
 console.log("me:", props.me);
 if (props.author?.uuid == props.me.uuid) {
 	// Inserts "edit" option at index 1 (below the "reply" option)
-	menuItems.splice(1, 0, { name: "Edit", icon: "lucide:square-pen", callback: () => { if (messageElement.value) editMessage(messageElement.value, props) } });
+	menuItems.splice(1, 0, { name: "Edit (WIP)", icon: "lucide:square-pen", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
 }
 
 if (props.author?.uuid == props.me.uuid /* || check message delete permission*/) {
 	// Inserts "edit" option at index 2 (below the "edit" option)
-	menuItems.splice(2, 0, { name: "Delete", icon: "lucide:trash", callback: () => {} });
+	menuItems.splice(2, 0, { name: "Delete (WIP)", icon: "lucide:trash", callback: () => {} });
 }
 
 function getDayDifference(date1: Date, date2: Date) {
