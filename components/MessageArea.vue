@@ -268,17 +268,11 @@ onMounted(async () => {
 					console.log("scroll height is at 10% or less");
 					//console.log("current oldest:", currentOldestMessage);
 					const olderMessages = await fetchMessages(route.params.channelId as string, { amount, offset });
-					if (olderMessages) {
+					if (olderMessages?.length) {
 						olderMessages.reverse();
-						console.log("older messages:", olderMessages);
-						if (olderMessages.length == 0) return;
-						olderMessages.reverse();
-						for (const [i, oldMessage] of olderMessages.entries()) {
-							console.log("old message:", oldMessage);
-							messages.value.unshift(oldMessage);
-							for (const message of messages.value) {
-								groupMessage(message);
-							}
+						messages.value = [...olderMessages.map(msg => reactive(msg)), ...messages.value];
+						for (const message of messages.value) {
+							groupMessage(message);
 						}
 						offset += offset;
 					}
