@@ -61,4 +61,8 @@ function runCallback(item: ContextMenuItem) {
 	background-color: rgb(50, 50, 50);
 }
 
+.context-menu-item-danger {
+	color: var(--danger-text-color);
+}
+
 </style>
