@@ -65,6 +65,7 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify';
 import { parse } from 'marked';
+import { codeToHtml } from 'shiki'
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
@@ -92,17 +93,30 @@ const hasEmbed = ref(false);
 const sanitized = ref<string>();
 
 onMounted(async () => {
-	const parsed = await parse(props.text, { gfm: true });
+	let t = props.text.replaceAll("<br>", "\n").replaceAll("\xa0", "");
+	let parsed = await parse(t, { gfm: true });
+	const parser = new DOMParser();
+	let doc = parser.parseFromString(parsed, 'text/html');
+ 	let languages = Array.from(doc.querySelectorAll('code')).map(code => code.className.replace("language-", ""));
 	sanitized.value = DOMPurify.sanitize(parsed, {
 		ALLOWED_TAGS: [
 			"strong", "em", "br", "blockquote",
 			"code", "ul", "ol", "li", "a", "h1",
-			"h2", "h3", "h4", "h5", "h6"
+			"h2", "h3", "h4", "h5", "h6", "pre",
 		],
 		ALLOW_DATA_ATTR: false,
 		ALLOW_SELF_CLOSE_IN_ATTR: false,
 		ALLOWED_ATTR: ["href"]
 	});
+
+	doc = parser.parseFromString(sanitized.value, 'text/html');
+	// how do you zip a list?
+	languages.reverse()
+	for(let code of doc.querySelectorAll('code')) {
+		code.innerHTML = await codeToHtml(code.innerHTML, { lang: languages.pop()!, theme: "gruvbox-dark-medium"});
+	}
+	sanitized.value = new XMLSerializer().serializeToString(doc);
+
 	console.log("adding listeners")
 	await nextTick();
 	if (messageElement.value?.classList.contains("grouped-message")) {
@@ -279,5 +293,15 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .message-text ul  {
 	padding-left: 1em;
+}
+</style>
+<style>
+.shiki {
+	padding: 10px;
+	margin: 0px !important;
+	box-sizing: border-box;
+	border-radius: 10px;
+	width: 98%;
+	overflow-wrap: anywhere;
 }
 </style>
