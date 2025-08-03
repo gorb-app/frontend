@@ -221,6 +221,10 @@ function sendMessage(e: Event) {
 		if (messageReply && messageReply.dataset.messageId) {
 			console.log("[MSG] message is a reply");
 			message.reply_to = messageReply.dataset.messageId;
+			const replyToMessage = document.querySelector(`.message[data-message-id='${message.reply_to}']`);
+			if (replyToMessage) {
+				replyToMessage.classList.remove("replying-to");
+			}
 		}
 
 		console.log("[MSG] sent message:", message);
