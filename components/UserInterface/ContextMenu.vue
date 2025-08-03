@@ -1,6 +1,8 @@
 <template>
 	<div id="context-menu">
-		<button v-for="item of props.menuItems" class="context-menu-item" @click="runCallback(item)">
+		<button v-for="item of props.menuItems" class="context-menu-item"
+				:class="'context-menu-item-' + item.type"
+				@click="runCallback(item)">
 			{{ item.name }} <Icon v-if="item.icon" :name="item.icon" />
 		</button>
 	</div>

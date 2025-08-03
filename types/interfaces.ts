@@ -102,6 +102,7 @@ export interface ModalProps {
 export interface ContextMenuItem {
 	name: string,
 	icon?: string,
+	type: "normal" | "danger"
 	callback: (...args: any[]) => any;
 }
 
