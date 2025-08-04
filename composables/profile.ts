@@ -62,7 +62,7 @@ export const useProfile = () => {
 		if ("username" in profile) {
 			return uuidToDate(profile.uuid)
 		} else {
-			return uuidToDate(profile.user_uuid)
+			return uuidToDate(profile.user.uuid)
 		}
 	}
 

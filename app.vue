@@ -8,7 +8,6 @@
 
 <script lang="ts" setup>
 import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
-import { render } from 'vue';
 import type { ContextMenuInterface } from './types/interfaces';
 import loadPreferredTheme from '~/utils/loadPreferredTheme';
 
