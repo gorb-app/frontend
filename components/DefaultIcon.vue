@@ -1,9 +1,11 @@
 <template>
   <div :style="`background-color: ${generateIrcColor(seed, 50)}`"
 	class="default-icon">
-		<span class="default-icon-text">
-			{{ previewName }}
-		</span>
+		<div class="default-icon-text-container">
+			<span class="default-icon-text">
+				{{ previewName }}
+			</span>
+		</div>
   </div>
 </template>
 
@@ -31,10 +33,15 @@ if (props.name.length > 3) {
 </script>
 
 <style scoped>
-.default-icon {
+.default-icon, .default-icon-text-container {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.default-icon-text-container {
+	height: 100%;
+	width: 100%;
 }
 
 .default-icon-text {
