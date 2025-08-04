@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
 
 const props = defineProps<{ width?: string, minWidth: string, maxWidth: string, borderSides: "all" | "top" | "right" | "bottom" | "left" | ("top" | "right" | "bottom" | "left")[], localStorageName?: string }>();
 
@@ -30,6 +30,8 @@ const borderStyling = ".1rem solid var(--padding-color)";
 const resizableSidebar = ref<HTMLDivElement>();
 const widthResizer = ref<HTMLDivElement>();
 const storedWidth = ref<string>();
+
+const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 const menuItems: ContextMenuItem[] = [
 	{ name: "Reset", callback: () => {
@@ -48,7 +50,7 @@ onMounted(() => {
 		widthResizer.value.addEventListener("pointerdown", (e) => {
 			e.preventDefault();
 			if (e.button == 2) {
-				createContextMenu(e, menuItems);
+				showContextMenu(e, contextMenu.value, menuItems);
 				return
 			};
 			document.body.style.cursor = "ew-resize";
