@@ -1,3 +1,9 @@
+/*
+displayName = Dark
+previewGradient = 45deg, #1f1e1d, #36322b
+complementaryColor = white
+*/
+
 :root {
 	--text-color: #f7eee8;
 	--secondary-text-color: #f0e8e4;
@@ -19,14 +25,4 @@
 	--secondary-highlighted-color: #8f5b2c;
 	--accent-color: #b35719;
 	--accent-highlighted-color: #c76a2e;
-
-	--sidebar-icon-width: 2.5em;
-	--sidebar-icon-gap: .25em;
-	--sidebar-margin: .5em;
-	
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--guild-icon-radius: 15%;
-	--pfp-radius: 50%;
-	--preferred-font: Arial;
 }

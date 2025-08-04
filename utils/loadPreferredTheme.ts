@@ -24,5 +24,5 @@ function getThemeUrl(id: string): string {
   const baseURL = runtimeConfig.app.baseURL;
 
   // this should preferrably use version hash, but that's not implemented yet
-  return `${baseURL}themes/${id}.css?v=${runtimeConfig.public.buildTimeString}`
+  return `${baseURL}themes/style/${id}.css?v=${runtimeConfig.public.buildTimeString}`
 }

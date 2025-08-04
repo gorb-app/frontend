@@ -1,3 +1,9 @@
+/*
+displayName = Woke
+previewGradient = 45deg, #ed2224, #ed2224, #f35b22, #f99621, #f5c11e, #f1eb1b 27%, #f1eb1b, #f1eb1b 33%, #63c720, #0c9b49, #21878d, #3954a5, #61379b, #93288e, #93288e
+complementaryColor = white
+*/
+
 :root {
 	--text-color: #161518;
 	--secondary-text-color: #2b2930;
@@ -19,12 +25,6 @@
     --secondary-highlighted-color: #dfb80080;
     --accent-color: #ff218c80;
     --accent-highlighted-color: #df1b6f80;
-
-	--sidebar-width: 2.5em;
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--pfp-radius: 50%;
-	--preferred-font: Arial;
 
     /* --optional-body-background: background */
     --optional-body-background: linear-gradient(45deg, #ed222480, #ed222480, #ed222480, #ed222480, #ed222480, #ed222480, #f35b2280, #f9962180, #f5c11e80, #f1eb1b80, #f1eb1b80, #f1eb1b80, #63c72080, #0c9b4980, #21878d80, #3954a580, #61379b80, #93288e80);

@@ -1,3 +1,9 @@
+/*
+displayName = Ash
+previewGradient = 45deg, #2f2e2d, #46423b
+complementaryColor = white
+*/
+
 :root {
 	--text-color: #f0e5e0;
 	--secondary-text-color: #e8e0db;
@@ -19,11 +25,4 @@
 	--secondary-highlighted-color: #885830;
 	--accent-color: #a04b24;
 	--accent-highlighted-color: #b86038;
-
-	--sidebar-width: 2.5em;
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--guild-icon-radius: 20%;
-	--pfp-radius: 50%;
-	--preferred-font: Arial;
 }
