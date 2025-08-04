@@ -46,6 +46,10 @@ onMounted(() => {
 		if (e.key == "Escape" && messageReply) {
 			e.preventDefault();
 			messageReply.remove();
+			const replyToMessage = document.querySelector(`.message[data-message-id='${messageReply.dataset.messageId}']`);
+			if (replyToMessage) {
+				replyToMessage.classList.remove("replying-to");
+			}
 		}
 	});
 });
