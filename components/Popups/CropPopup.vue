@@ -10,6 +10,7 @@
 
 <script lang="ts" setup>
 import Cropper from 'cropperjs';
+import Button from '../UserInterface/Button.vue';
 
 const props = defineProps({
   imageSrc: String,
