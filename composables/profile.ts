@@ -30,7 +30,7 @@ export const useProfile = () => {
 		if ("username" in profile) {
 			user_uuid = profile.uuid
 		} else {
-			user_uuid = profile.user_uuid
+			user_uuid = profile.user.uuid
 		}
 
 		const friends = await fetchFriends()
