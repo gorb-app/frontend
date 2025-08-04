@@ -41,7 +41,7 @@ export const useAuth = () => {
   async function logout() {
     console.log("access:", accessToken.value);
 
-    await fetchWithApi("/auth/logout", { method: "GET", credentials: "include" });
+    await fetchWithApi("/auth/logout", { method: "DELETE", credentials: "include" });
     clearAuth();
 
 	  return await navigateTo("/login");

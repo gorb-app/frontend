@@ -50,6 +50,7 @@ import { ModalBase } from '#components';
 import { render } from 'vue';
 import DefaultIcon from '~/components/DefaultIcon.vue';
 import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
+import Loading from '~/components/Popups/Loading.vue';
 import Button from '~/components/UserInterface/Button.vue';
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import type { GuildResponse } from '~/types/interfaces';
