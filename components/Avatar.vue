@@ -3,8 +3,10 @@
 		class="display-avatar"
 		:src="displayAvatar"
 		:alt="displayName" />
-	<Icon v-else
-		name="lucide:user"
+	<DefaultIcon v-else
+		class="display-avatar"
+		:name="displayName"
+		:seed="user.uuid"
 		:alt="displayName" />
 </template>
 
@@ -19,26 +21,17 @@ const props = defineProps<{
 }>();
 
 const displayName = getDisplayName(props.profile)
+let user: UserResponse
 let displayAvatar: string | null
-
 
 if ("username" in props.profile) {
 	// assume it's a UserResponse
 	displayAvatar = props.profile.avatar
-	if (!displayAvatar) {
-		if (!isCanvasBlocked()) {
-			displayAvatar = generateDefaultIcon(displayName, props.profile.uuid)
-		}
-	}
-
+	user = props.profile
 } else {
 	// assume it's a GuildMemberResponse
 	displayAvatar = props.profile.user.avatar
-	if (!displayAvatar) {
-		if (!isCanvasBlocked()) {
-			displayAvatar = generateDefaultIcon(displayName, props.profile.user_uuid)
-		}
-	}
+	user = props.profile.user
 }
 
 </script>

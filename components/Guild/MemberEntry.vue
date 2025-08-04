@@ -32,4 +32,11 @@ function hideModalPopup() {
 .member-item {
     position: relative;
 }
+
+.member-avatar {
+    min-height: 2.3em;
+	max-height: 2.3em;
+	min-width: 2.3em;
+	max-width: 2.3em;
+}
 </style>
