@@ -1,34 +1,36 @@
 <template>
-    <div class="member-item" @click="togglePopup" @blur="hidePopup" tabindex="0">
-        <Avatar :member="props.member" class="member-avatar"/>
-        <span class="member-display-name">{{ getDisplayName(props.member.user, props.member) }}</span>
-        <UserPopup v-if="isPopupVisible" :user="props.member.user" id="profile-popup" />
+    <div class="member-item" @click.prevent="showModalPopup" tabindex="0">
+        <Avatar :profile="props.member" class="member-avatar"/>
+        <span class="member-display-name">{{ getDisplayName(props.member) }}</span>
     </div>
+    <ModalProfilePopup v-if="modalPopupVisible" :profile="props.member"
+        :onFinish="hideModalPopup" :keepalive="false"/>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ModalProfilePopup } from '#components';
 import type { GuildMemberResponse } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<{
     member: GuildMemberResponse
 }>();
 
-const isPopupVisible = ref(false);
+const modalPopupVisible = ref<boolean>(false);
 
-const togglePopup = () => {
-    isPopupVisible.value = false;
-    // isPopupVisible.value = !isPopupVisible.value;
-};
+function showModalPopup() {
+    modalPopupVisible.value = true
+}
 
-const hidePopup = () => {
-    isPopupVisible.value = false;
-};
+function hideModalPopup() {
+    modalPopupVisible.value = false
+}
 </script>
 
 <style>
 .member-item {
-    position: relative; /* Set the position to relative for absolute positioning of the popup */
+    position: relative;
 }
 
 .member-avatar {

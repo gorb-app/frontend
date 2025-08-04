@@ -1,6 +1,7 @@
 <template>
-	<button @click="props.callback ? props.callback() : null" class="button" :class="props.variant + '-button'">
-		{{ props.text }}
+	<button class="button" :class="props.variant + '-button'"
+	@click="props.callback ? props.callback() : null">
+			{{ props.text }}
 	</button>
 </template>
 
@@ -9,7 +10,7 @@
 const props = defineProps<{
 	text: string,
 	callback?: CallableFunction,
-	variant?: "normal" | "scary" | "neutral",
+	variant?: "normal" | "scary" | "neutral" | "stealth",
 }>();
 
 </script>
@@ -21,11 +22,12 @@ const props = defineProps<{
 	background-color: var(--primary-color);
 	color: var(--text-color);
 
-	padding: 0.4em 0.75em;
-	font-size: 1.1em;
+	padding: 0.35em 0.65em;
+	font-size: 1em;
+	
 	transition: background-color 0.2s;
 
-	border-radius: 0.7rem;
+	border-radius: var(--standard-radius);
 	text-decoration: none;
 	display: inline-block;
 
@@ -48,6 +50,13 @@ const props = defineProps<{
 }
 .neutral-button:hover {
 	background-color: var(--accent-highlighted-color);
+}
+
+.stealth-button {
+	background-color: unset;
+}
+.stealth-button:hover {
+	background-color: unset;
 }
 
 </style>

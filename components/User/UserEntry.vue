@@ -1,6 +1,6 @@
 <template>
     <NuxtLink class="user-item" :href="`/me/${user.uuid}`" tabindex="0">
-        <Avatar :user="props.user" class="user-avatar"/>
+        <Avatar :profile="props.user" class="user-avatar"/>
 
         <span class="user-display-name">{{ getDisplayName(props.user) }}</span>
 	</NuxtLink>
@@ -8,6 +8,8 @@
 
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<{
     user: UserResponse

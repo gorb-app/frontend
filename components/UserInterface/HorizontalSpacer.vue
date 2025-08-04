@@ -1,12 +1,12 @@
 <template>
-  <span class="vertical-spacer"></span>
+  <span class="horizontal-spacer"></span>
 </template>
 
 <style scoped>
-.vertical-spacer {
+.spacer {
   display: block;
-  min-height: 0.2dvh;
-  margin: 0.8dvh 0.2dvw;
+  min-width: 0.2dvh;
+  margin: 0.2dvh 0.8dvw;
   background-color: var(--padding-color);
 }
 </style>

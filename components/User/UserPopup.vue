@@ -1,6 +1,6 @@
 <template>
   <div id="profile-popup">
-    <Avatar :user="props.user" id="avatar"/>
+    <Avatar :profile="props.user" id="avatar"/>
 
     <div id="cover-color"></div>
     <div id="main-body">
@@ -20,6 +20,8 @@
 
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<{
 	user: UserResponse

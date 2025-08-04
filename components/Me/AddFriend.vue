@@ -23,9 +23,11 @@ async function sendRequest() {
 		try {
 			await addFriend(inputField.value.value)
 			alert("Friend request sent!")
-		} catch {
-			alert("Request failed :(")
-		} 
+		} catch (error: any) {
+			if (error?.response?.status !== 200) {
+				alert(`error ${error?.response?.status} met whilst trying to add friend\n"${error?.response._data?.message}"`)
+			}
+		}
 	}
 }
 </script>

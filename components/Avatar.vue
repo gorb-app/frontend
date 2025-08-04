@@ -3,7 +3,7 @@
 		class="display-avatar"
 		:src="displayAvatar"
 		:alt="displayName" />
-	<DefaultIcon v-else-if="user"
+	<DefaultIcon v-else
 		class="display-avatar"
 		:name="displayName"
 		:seed="user.uuid"
@@ -14,23 +14,24 @@
 import { NuxtImg } from '#components';
 import type { GuildMemberResponse, UserResponse } from '~/types/interfaces';
 
+const { getDisplayName } = useProfile()
+
 const props = defineProps<{
-	user?: UserResponse,
-	member?: GuildMemberResponse,
+	profile: UserResponse | GuildMemberResponse,
 }>();
 
-
-let displayName: string
+const displayName = getDisplayName(props.profile)
+let user: UserResponse
 let displayAvatar: string | null
 
-const user = props.user || props.member?.user
-
-if (user) {
-	displayName = getDisplayName(user, props.member)
-	
-	if (user.avatar) {
-		displayAvatar = user.avatar
-	}
+if ("username" in props.profile) {
+	// assume it's a UserResponse
+	displayAvatar = props.profile.avatar
+	user = props.profile
+} else {
+	// assume it's a GuildMemberResponse
+	displayAvatar = props.profile.user.avatar
+	user = props.profile.user
 }
 
 </script>

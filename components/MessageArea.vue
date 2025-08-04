@@ -44,9 +44,12 @@ import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/inte
 import scrollToBottom from '~/utils/scrollToBottom';
 import { generateIrcColor } from '#imports';
 
+const { getDisplayName } = useProfile()
+const { fetchMe } = useApi()
+
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
-const me = await fetchWithApi("/me") as UserResponse;
+const me = await fetchMe() as UserResponse;
 
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});

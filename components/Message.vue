@@ -29,7 +29,7 @@
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :user="props.author" class="message-author-avatar"/>
+			<Avatar :profile="props.author" class="message-author-avatar"/>
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
@@ -69,6 +69,8 @@ import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
 import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<MessageProps>();
 
