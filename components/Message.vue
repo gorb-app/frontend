@@ -290,3 +290,11 @@ function getDayDifference(date1: Date, date2: Date) {
 	padding-left: 1em;
 }
 </style>
+
+<style>
+
+.replying-to {
+	background-color: var(--primary-highlighted-color);
+}
+
+</style>

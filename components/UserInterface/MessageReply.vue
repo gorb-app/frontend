@@ -46,11 +46,22 @@ onMounted(async () => {
 function scrollToReply(e: MouseEvent) {
 	e.preventDefault();
 	console.log("clicked on reply box");
-	const reply = document.querySelector(`.message[data-message-id="${props.replyId}"]`);
-	if (reply) {
+	let replyId: string;
+	if (props.maxWidth == "reply") {
+		replyId = props.replyId;
+	} else {
+		replyId = props.id;
+	}
+	const reply = document.querySelector(`.message[data-message-id="${replyId}"]`);
+	if (reply instanceof HTMLDivElement) {
 		console.log("reply:", reply);
 		console.log("scrolling into view");
 		reply.scrollIntoView({ behavior: "smooth", block: "center" });
+		reply.style.transition = "background-color .3s";
+		reply.style.backgroundColor = "var(--primary-highlighted-color)";
+		setTimeout(() => {
+			reply.style.backgroundColor = "";
+		}, 1000);
 	}
 }
 
