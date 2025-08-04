@@ -23,7 +23,7 @@ let displayAvatar: string | null
 
 
 if ("username" in props.profile) {
-	// assume it's a UserRespone
+	// assume it's a UserResponse
 	displayAvatar = props.profile.avatar
 	if (!displayAvatar) {
 		if (!isCanvasBlocked()) {

@@ -13,7 +13,7 @@ export const useProfile = () => {
 
 	function getDisplayName (profile: UserResponse | GuildMemberResponse): string  {
 		if ("username" in profile) {
-			// assume it's a UserRespone
+			// assume it's a UserResponse
 			if (profile.display_name) return profile.display_name
 			return profile.username
 		} else {

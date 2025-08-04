@@ -48,7 +48,7 @@
 						<span class="date-entry-value" :title="joinDate.toLocaleTimeString()">{{ toDateString(joinDate) }}</span>
 					</div>
 					<div v-if="friendsSince" class="date-entry">
-						<span class="date-entry-title">Friends Since</span><br>
+						<span class="date-entry-title">Friends since</span><br>
 						<span class="date-entry-value" :title="friendsSince.toLocaleTimeString()">{{ toDateString(friendsSince) }}</span>
 					</div>
 				</div>
