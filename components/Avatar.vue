@@ -3,8 +3,10 @@
 		class="display-avatar"
 		:src="displayAvatar"
 		:alt="displayName" />
-	<Icon v-else
-		name="lucide:user"
+	<DefaultIcon v-else-if="user"
+		class="display-avatar"
+		:name="displayName"
+		:seed="user.uuid"
 		:alt="displayName" />
 </template>
 
@@ -28,10 +30,6 @@ if (user) {
 	
 	if (user.avatar) {
 		displayAvatar = user.avatar
-	} else if (!isCanvasBlocked()){
-		displayAvatar = generateDefaultIcon(displayName, user.uuid)
-	} else {
-		displayAvatar = null
 	}
 }
 

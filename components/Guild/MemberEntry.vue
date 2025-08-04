@@ -30,4 +30,11 @@ const hidePopup = () => {
 .member-item {
     position: relative; /* Set the position to relative for absolute positioning of the popup */
 }
+
+.member-avatar {
+    min-height: 2.3em;
+	max-height: 2.3em;
+	min-width: 2.3em;
+	max-width: 2.3em;
+}
 </style>

@@ -17,19 +17,15 @@
 				</div>
 				<VerticalSpacer />
 				<div class="left-column-segment" id="left-column-middle">
-					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`">
+					<NuxtLink v-for="guild of guilds" :href="`/servers/${guild.uuid}`" id="guild-icon-container">
 						<NuxtImg v-if="guild.icon"
 							class="sidebar-icon guild-icon"
 							:alt="guild.name"
 							:src="guild.icon" />
-						<NuxtImg v-else-if="!blockedCanvas"
-							class="sidebar-icon guild-icon"
+						<DefaultIcon v-else 
+							class="sidebar-icon guild-icon" 
 							:alt="guild.name"
-							:src="generateDefaultIcon(guild.name, guild.uuid)" />
-						<Icon v-else name="lucide:server"
-							:style="`color: ${generateIrcColor(guild.uuid, 50)}`"
-							class="sidebar-icon guild-icon"
-							:alt="guild.name" />
+							:name="guild.name" :seed="guild.uuid"/>
 					</NuxtLink>
 				</div>
 				<VerticalSpacer />
@@ -52,6 +48,7 @@
 <script lang="ts" setup>
 import { ModalBase } from '#components';
 import { render } from 'vue';
+import DefaultIcon from '~/components/DefaultIcon.vue';
 import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
 import Loading from '~/components/Popups/Loading.vue';
 import Button from '~/components/UserInterface/Button.vue';
@@ -63,8 +60,6 @@ const loading = useState("loading", () => false);
 const createButtonContainer = ref<HTMLButtonElement>();
 
 const api = useApi();
-
-const blockedCanvas = isCanvasBlocked()
 
 const options = [
 	{ name: "Join", value: "join", callback: async () => {
@@ -248,6 +243,10 @@ function createDropdown() {
 
 #home-button {
 	height: var(--sidebar-icon-width);
+}
+
+#guild-icon-container {
+	text-decoration: none;
 }
 
 .guild-icon {

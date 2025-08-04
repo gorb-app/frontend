@@ -226,7 +226,10 @@ function getDayDifference(date1: Date, date2: Date) {
 }
 
 .message-author-avatar {
-	width: 100%;
+	min-height: 2em;
+	max-height: 2em;
+	min-width: 2em;
+	max-width: 2em;
 }
 
 .left-column {
