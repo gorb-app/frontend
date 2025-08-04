@@ -1,14 +1,20 @@
 <template>
-	<div>
+  	<div>
 		<Banner v-if="banner" />
-		<NuxtPage :keepalive="true" />
-	</div>
+		<ContextMenu v-if="contextMenu && contextMenu.show" :pointer-x="contextMenu.pointerX" :pointer-y="contextMenu.pointerY" :menu-items="contextMenu.items" />
+    	<NuxtPage :keepalive="true" />
+  	</div>
 </template>
 
 <script lang="ts" setup>
+import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
+import { render } from 'vue';
+import type { ContextMenuInterface } from './types/interfaces';
 import loadPreferredTheme from '~/utils/loadPreferredTheme';
 
 const banner = useState("banner", () => false);
+
+const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 onMounted(() => {
 	loadPreferredTheme()
@@ -19,11 +25,11 @@ onMounted(() => {
 		contextMenuHandler(e);
 	});
 	document.addEventListener("mousedown", (e) => {
-		if (e.target instanceof HTMLDivElement && e.target.closest("#context-menu")) return;
+		if (e.target instanceof HTMLElement && e.target.closest("#context-menu")) return;
 		console.log("click");
 		console.log("target:", e.target);
 		console.log(e.target instanceof HTMLDivElement);
-		removeContextMenu();
+		removeContextMenu(contextMenu);
 		if (e.target instanceof HTMLElement && e.target.classList.contains("message-text") && e.target.contentEditable) {
 			e.target.contentEditable = "false";
 		}
