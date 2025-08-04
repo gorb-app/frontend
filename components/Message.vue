@@ -129,9 +129,6 @@ onMounted(async () => {
 		}
 		if (mediaLinks.length) {
 			hasEmbed.value = true
-			setTimeout(() => {
-				scrollToBottom(document.getElementById("messages") as HTMLDivElement);
-			}, 500);
 		};
 	} catch (error) {
 		console.error(error);
