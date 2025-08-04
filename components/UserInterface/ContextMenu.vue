@@ -1,11 +1,15 @@
 <template>
-	<div v-for="item of props.menuItems" class="context-menu-item" @click="runCallback(item)">
-		{{ item.name }}
+	<div id="context-menu">
+		<button v-for="item of props.menuItems" class="context-menu-item"
+				:class="'context-menu-item-' + item.type"
+				@click="runCallback(item)">
+			{{ item.name }} <Icon v-if="item.icon" :name="item.icon" />
+		</button>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import type { ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
 
 const props = defineProps<{ menuItems: ContextMenuItem[], pointerX: number, pointerY: number }>();
 
@@ -19,7 +23,8 @@ onMounted(() => {
 
 
 function runCallback(item: ContextMenuItem) {
-	removeContextMenu();
+	const contextMenu = useState<ContextMenuInterface>("contextMenu");
+	removeContextMenu(contextMenu);
 	item.callback();
 }
 
@@ -31,14 +36,33 @@ function runCallback(item: ContextMenuItem) {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
-	width: 10dvw;
-	border: .15rem solid cyan;
-	background-color: var(--background-color);
-	text-align: center;
+	width: 10rem;
+	border: .1rem solid var(--reply-text-color);
+	background-color: var(--sidebar-highlighted-background-color);
+	text-align: left;
+	z-index: 100;
+}
+
+.context-menu-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 2rem;
+	width: 100%;
+	color: var(--text-color);
+	background-color: var(--sidebar-highlighted-background-color);
+	border: none;
+	text-align: left;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .context-menu-item:hover {
 	background-color: rgb(50, 50, 50);
+}
+
+.context-menu-item-danger {
+	color: var(--danger-text-color);
 }
 
 </style>
