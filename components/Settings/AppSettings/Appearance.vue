@@ -9,7 +9,7 @@
         <div v-for="style of styles" class="theme-preview-container">
           <span class="theme-instance"
               :title="style.displayName"
-              @click="changeTheme(styleLayout.style, style)">
+              @click="changeTheme(StyleLayout.Style, style)">
             <div class="theme-content-container">
               <span class="style-background"
                 :style="{background:`linear-gradient(${style.previewGradient})`}"
@@ -26,7 +26,7 @@
         <div v-for="layout of layouts" class="theme-preview-container">
           <div class="theme-instance"
               :title="layout.displayName"
-              @click="changeTheme(styleLayout.layout, layout)">
+              @click="changeTheme(StyleLayout.Layout, layout)">
             <div class="theme-content-container">
               <span class="layout-background"
                 :style="{backgroundImage:`url(${layout.previewImageUrl})`}"
@@ -65,9 +65,9 @@ const layoutFolder = `${baseURL}themes/layout`
 
 const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 
-enum styleLayout {
-  style,
-  layout
+enum StyleLayout {
+  Style,
+  Layout
 }
 
 interface Theme {
@@ -161,8 +161,8 @@ if (Array.isArray(layoutList)) {
   await parseThemeLayout(layoutFolder, layoutList, layouts)
 }
 
-function changeTheme(themeType: styleLayout, theme: Theme) {
-  if (themeType == styleLayout.style) {
+function changeTheme(themeType: StyleLayout, theme: Theme) {
+  if (themeType == StyleLayout.Style) {
     settingSave("selectedThemeStyle", theme.themeUrl)
   } else {
     settingSave("selectedThemeLayout", theme.themeUrl)
