@@ -1,4 +1,11 @@
+/*
+displayName = Description
+previewGradient = 45deg, #ff8f8f, #8f8fff
+complementaryColor = black
+*/
+
 /* this is not a real theme, but rather a template for themes */
+
 :root {
 	--text-color: #161518;
 	--secondary-text-color: #2b2930;
@@ -6,6 +13,12 @@
 
     --chat-background-color: #80808000;
     --chat-highlighted-background-color: #ffffff20;
+	--chat-important-background-color: #ffc44f2f;
+	--chat-important-highlighted-background-color: #ffa45f4a;
+	--chat-featured-message-color: #4f2f1f58;
+	--popup-background-color: #2f1f1f;
+	--popup-highlighted-background-color: #3f2f2f;
+
 	--sidebar-background-color: #80808000;
 	--sidebar-highlighted-background-color: #ffffff20;
 	--topbar-background-color: #80808000;
@@ -19,12 +32,6 @@
     --secondary-highlighted-color: #dfb80080;
     --accent-color: #ff218c80;
     --accent-highlighted-color: #df1b6f80;
-
-	--sidebar-width: 2.5em;
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--pfp-radius: 50%;
-	--preferred-font: Arial;
 
     --optional-body-background: ; /* background element for the body */
     --optional-chat-background: ; /* background element for the chat box */

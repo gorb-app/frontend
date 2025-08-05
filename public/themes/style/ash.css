@@ -1,3 +1,9 @@
+/*
+displayName = Ash
+previewGradient = 45deg, #2f2e2d, #46423b
+complementaryColor = white
+*/
+
 :root {
 	--text-color: #f0e5e0;
 	--secondary-text-color: #e8e0db;
@@ -6,12 +12,18 @@
 
 	--chat-background-color: #2f2e2d;
     --chat-highlighted-background-color: #3f3b38;
+	--chat-important-background-color: #ffcf5f38;
+	--chat-important-highlighted-background-color: #ffa86f4f;
+	--chat-featured-message-color: #4f3f2f60;
+	--popup-background-color: #2f2828;
+	--popup-highlighted-background-color: #382f2f;
+
 	--sidebar-background-color: #3e3a37;
 	--sidebar-highlighted-background-color: #46423b;
 	--topbar-background-color: #3a3733;
 	--chatbox-background-color: #3a3733;
 
-    --padding-color: #e0e0e0;
+    --padding-color: #4f4f4f;
 
 	--primary-color: #f07028;
 	--primary-highlighted-color: #f28f4b;
@@ -19,11 +31,4 @@
 	--secondary-highlighted-color: #885830;
 	--accent-color: #a04b24;
 	--accent-highlighted-color: #b86038;
-
-	--sidebar-width: 2.5em;
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--guild-icon-radius: 20%;
-	--pfp-radius: 50%;
-	--preferred-font: Arial;
 }

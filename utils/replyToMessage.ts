@@ -2,6 +2,8 @@ import { render } from "vue";
 import MessageReply from "~/components/UserInterface/MessageReply.vue";
 import type { MessageProps } from "~/types/props";
 
+const { getDisplayName } = useProfile()
+
 export default (element: HTMLDivElement, props: MessageProps) => {
 	console.log("element:", element);
 	const messageBox = document.getElementById("message-box") as HTMLDivElement;

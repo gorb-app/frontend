@@ -1,7 +1,9 @@
 <template>
     <div class="member-item" @click.prevent="showModalPopup" tabindex="0">
         <Avatar :profile="props.member" class="member-avatar"/>
-        <span class="member-display-name">{{ getDisplayName(props.member) }}</span>
+        <span class="member-display-name" :style="`color: ${generateIrcColor(props.member.user.uuid)}`">
+            {{ getDisplayName(props.member) }}
+        </span>
     </div>
     <ModalProfilePopup v-if="modalPopupVisible" :profile="props.member"
         :onFinish="hideModalPopup" :keepalive="false"/>

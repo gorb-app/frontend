@@ -2,18 +2,42 @@
   <div>
     <h1>Appearance</h1>
     
-    <p class="subtitle">THEMES</p>
+    <h2>Themes</h2>
     <div class="themes">
-      <div v-for="theme of themes" class="theme-preview-container">
-        <span class="theme-preview"
-          :title="theme.displayName"
-          :style="{background:`linear-gradient(${theme.previewGradient})`}"
-          @click="changeTheme(theme.id, theme.themeUrl)"
-        >
-          <span class="theme-title" :style="{color:`${theme.complementaryColor}`}">
-            {{ theme.displayName }}
+      <p class="subtitle">STYLES</p>
+      <div class="styles">
+        <div v-for="style of styles" class="theme-preview-container">
+          <span class="theme-instance"
+              :title="style.displayName"
+              @click="changeTheme(StyleLayout.Style, style)">
+            <div class="theme-content-container">
+              <span class="style-background"
+                :style="{background:`linear-gradient(${style.previewGradient})`}"
+              ></span>
+              <span class="theme-title" :style="{color:`${style.complementaryColor}`}">
+                {{ style.displayName }}
+              </span>
+            </div>
           </span>
-        </span>
+        </div>
+      </div>
+      <p class="subtitle">LAYOUTS</p>
+      <div class="layouts">
+        <div v-for="layout of layouts" class="theme-preview-container">
+          <div class="theme-instance"
+              :title="layout.displayName"
+              @click="changeTheme(StyleLayout.Layout, layout)">
+            <div class="theme-content-container">
+              <span class="layout-background"
+                :style="{backgroundImage:`url(${layout.previewImageUrl})`}"
+              ></span>
+              <span class="theme-title" :style="{color:`${layout.complementaryColor}`}">
+                {{ layout.displayName }}
+              </span>
+              <NuxtImg class="layout-preview" :src="layout.previewImageUrl"></NuxtImg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -32,39 +56,119 @@
 <script lang="ts" setup>
 import RadioButtons from '~/components/UserInterface/RadioButtons.vue';
 import type { TimeFormat } from '~/types/settings';
-import loadPreferredTheme from '~/utils/loadPreferredTheme';
-import settingSave from '~/utils/settingSave';
+import { settingSave, settingsLoad } from '#imports';
 
 const runtimeConfig = useRuntimeConfig()
-const defaultThemes = runtimeConfig.public.defaultThemes
 const baseURL = runtimeConfig.app.baseURL;
+const styleFolder = `${baseURL}themes/style`
+const layoutFolder = `${baseURL}themes/layout`
+
 const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 
-const themes: Array<Theme> = []
+enum StyleLayout {
+  Style,
+  Layout
+}
 
 interface Theme {
-  id: string
   displayName: string
-  previewGradient: string
   complementaryColor: string
+  cssData: string
   themeUrl: string
+  previewGradient?: string
+  previewImageUrl?: string
 }
 
-function changeTheme(id: string, url: string) {
-  settingSave("selectedThemeId", id)
-  loadPreferredTheme()
-}
+async function parseTheme(url: string): Promise<Theme | void> {
+  const styleData: any = await $fetch(url)
 
-async function fetchThemes() {
-  for (const theme of defaultThemes) {
-    const themeConfig = await $fetch(`${baseURL}themes/${theme}.json`) as Theme
-    themeConfig.id = theme
+  if (typeof styleData != "string") {
+    return
+  }
 
-    themes.push(themeConfig)
+  const metadataMatch = styleData.match(/\/\*([\s\S]*?)\*\//);
+  if (!metadataMatch) {
+    alert(`Failed to fetch metadata for a theme, panicking`)
+    return
+  }
+
+  const commentContent = metadataMatch[0].trim().split("\n");
+  const cssData = styleData.substring(metadataMatch[0].length).trim();
+
+  let displayName: string | undefined
+  let complementaryColor: string | undefined
+  let previewGradient: string | undefined
+  let previewImageUrl: string | undefined
+
+  for (const line of commentContent) {
+    const lineArray = line.split("=")
+    if (lineArray.length === 2) {
+      switch (lineArray[0].trim()) {
+        case "displayName":
+          displayName = lineArray[1].trim()
+          break
+        case "complementaryColor":
+          complementaryColor = lineArray[1].trim()
+          break
+        case "previewGradient":
+          previewGradient = lineArray[1].trim()
+          break
+        case "previewImageUrl":
+          previewImageUrl = `${layoutFolder}/${lineArray[1].trim()}`
+          break
+      }
+    }
+  }
+  
+  console.log(displayName, complementaryColor, previewGradient, previewImageUrl, cssData)
+  if (!(displayName && complementaryColor && cssData && (previewGradient || previewImageUrl))) {
+    return
+  }
+
+  return {
+    displayName,
+    complementaryColor,
+    cssData,
+    themeUrl: url,
+    previewGradient,
+    previewImageUrl,
   }
 }
 
-await fetchThemes()
+async function parseThemeLayout(
+  folder: string,
+  incomingThemeList: string[],
+  outputThemeList: Theme[]) {
+    for (const theme of incomingThemeList) {
+      const parsedThemeData = await parseTheme(`${folder}/${theme}`)
+      
+      if (parsedThemeData) {
+        outputThemeList.push(parsedThemeData)
+      }
+    }
+}
+
+const styles: Theme[] = [];
+const layouts: Theme[] = [];
+
+const styleList = await $fetch(`${styleFolder}/styles.json`)
+const layoutList = await $fetch(`${layoutFolder}/layouts.json`)
+
+if (Array.isArray(styleList)) {
+  await parseThemeLayout(styleFolder, styleList, styles)
+}
+if (Array.isArray(layoutList)) {
+  await parseThemeLayout(layoutFolder, layoutList, layouts)
+}
+
+function changeTheme(themeType: StyleLayout, theme: Theme) {
+  if (themeType == StyleLayout.Style) {
+    settingSave("selectedThemeStyle", theme.themeUrl)
+  } else {
+    settingSave("selectedThemeLayout", theme.themeUrl)
+  }
+  loadPreferredThemes()
+}
 
 async function onTimeFormatClicked(index: number) {
   let format: "auto" | "12" | "24" = "auto"
@@ -84,29 +188,89 @@ async function onTimeFormatClicked(index: number) {
 
 <style scoped>
 .themes {
+  --instance-size: 5em;
+}
+.styles, .layouts {
   display: flex;
 }
 
 .theme-preview-container {
   margin: .5em;
-  width: 5em;
-  height: 5em;
+  width: var(--instance-size);
+  height: var(--instance-size);
 }
 
-.theme-preview {
-  width: 5em;
-  height: 5em;
+.theme-instance {
+  width: var(--instance-size);
+  height: var(--instance-size);
   border-radius: 100%;
   border: .1em solid var(--primary-color);
 
   display: inline-block;
-  text-align: center;
-  align-content: center;
   cursor: pointer;
 }
 
+.theme-content-container {
+  position: relative;
+
+  text-align: center;
+  align-content: center;
+}
+
+.style-background, .layout-background {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: var(--instance-size);
+  height: var(--instance-size);
+
+  border-radius: 100%;
+}
+
+.layout-background {
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: brightness(35%);
+}
+
+.layout-preview {
+  position: absolute;
+  pointer-events: none;
+
+  border: 0 solid var(--primary-color);
+  transform: translate(0, calc(var(--instance-size) / 2));
+  transition: all 250ms;
+
+  height: 0;
+  width: calc((height / 9) * 16);
+  max-height: 40dvh;
+}
+
+.theme-instance:hover .layout-preview {
+  border: .1em solid var(--primary-color);
+  filter: drop-shadow(0 0 .2em var(--secondary-color));
+  transform: translate(3.5em, -4em);
+  
+  height: 40dvw;
+}
+
 .theme-title {
+  position: absolute;
+  
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  
+  width: 100%;
+  height: 100%;
+  
   font-size: .8em;
-  line-height: 5em; /* same height as the parent to centre it vertically */
+  /* i CANNOT explain this line height calculation, but it works for a font size of .8em no matter what size the instances are */
+  line-height: calc(var(--instance-size) * 1.25); 
 }
 </style>

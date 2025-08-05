@@ -27,7 +27,7 @@ const props = defineProps<{ options: DropdownOption[] }>();
 }
 
 .dropdown-option {
-  border: .09rem solid rgb(70, 70, 70);
+  border: .09rem solid var(--padding-color);
 }
 
 .dropdown-button {

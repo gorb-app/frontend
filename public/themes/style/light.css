@@ -1,3 +1,9 @@
+/*
+displayName = Light
+previewGradient = 45deg, #f0ebe8, #d4d0ca
+complementaryColor = black
+*/
+
 :root {
 	--text-color: #170f08;
 	--secondary-text-color: #2f2b28;
@@ -6,6 +12,12 @@
 
     --chat-background-color: #f0ebe8;
     --chat-highlighted-background-color: #e8e4e0;
+    --chat-important-background-color: #df5f0b26;
+    --chat-important-hightlighted-background-color: #df5f0b3d;
+    --chat-featured-message-color: #e8ac841f;
+    --popup-background-color: #e8e4e0;
+    --popup-highlighted-background-color: #dfdbd6;
+
 	--sidebar-background-color: #dbd8d4;
 	--sidebar-highlighted-background-color: #d4d0ca;
 	--topbar-background-color: #dfdbd6;
@@ -19,10 +31,4 @@
     --secondary-highlighted-color: #f8b68a;
     --accent-color: #e68b4e;
     --accent-highlighted-color: #f69254;
-
-	--sidebar-width: 2.5em;
-	--standard-radius: .5em;
-	--button-radius: .6em;
-	--pfp-radius: 50%;
-	--preferred-font: Arial;
 }
