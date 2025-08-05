@@ -24,7 +24,8 @@
 				border-sides="left" local-storage-name="membersListWidth">
 			<div id="members-container">
 				<div id="members-list">
-					<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
+					<MemberEntry v-for="member of members" :member="member" tabindex="0" />
+					<GuildMemberEntryPlaceholder v-for="n in totalMemberCount" />
 				</div>
 			</div>
 		</ResizableSidebar>
@@ -49,6 +50,7 @@ const channels = ref<ChannelResponse[] | undefined>();
 const channel = ref<ChannelResponse | undefined>();
 
 const members = ref<GuildMemberResponse[]>();
+const totalMemberCount = ref(0);
 
 const showInvitePopup = ref(false);
 const showGuildSettings = ref(false);
@@ -65,6 +67,16 @@ onMounted(async () => {
 	console.log("fetched guild");
 	await setArrayVariables();
 	console.log("set array variables");
+	const membersList = document.getElementById("members-list");
+	if (membersList) {
+		membersList.addEventListener("scroll", (e) => {
+			if (e.target && e.target instanceof Element) {
+				if (isVisible(e.target)) {
+					
+				}
+			}
+		});
+	}
 });
 
 onActivated(async () => {
@@ -79,7 +91,7 @@ onActivated(async () => {
 async function setArrayVariables() {
 	const membersRes = await fetchMembers(route.params.serverId as string);
 	members.value = membersRes.objects;
-	members.value = await fetchMembers(route.params.serverId as string);
+	totalMemberCount.value = (membersRes.amount * membersRes.pages) - membersRes.amount;
 	console.log("Placeholder count:", totalMemberCount.value);
 	const guildUrl = `guilds/${route.params.serverId}`;
 	channels.value = await fetchWithApi(`${guildUrl}/channels`);
@@ -99,6 +111,20 @@ function toggleInvitePopup(e: Event) {
 }
 
 function handleMemberClick(member: GuildMemberResponse) {
+}
+
+function isVisible(element: Element) {
+  const rect = element.getBoundingClientRect();
+  return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (
+          window.innerHeight ||
+          document.documentElement.clientHeight) &&
+      rect.right <= (
+          window.innerWidth ||
+          document.documentElement.clientWidth)
+  );
 }
 </script>
 
