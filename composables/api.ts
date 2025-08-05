@@ -1,4 +1,4 @@
-import type { ChannelResponse, GuildMemberResponse, GuildResponse, MessageResponse, StatsResponse, UserResponse } from "~/types/interfaces";
+import type { ChannelResponse, GuildMemberResponse, GuildMembersResponse, GuildResponse, MessageResponse, StatsResponse, UserResponse } from "~/types/interfaces";
 
 function ensureIsArray(list: any) {
 	if (Array.isArray(list)) {
@@ -33,8 +33,15 @@ export const useApi = () => {
 		return await fetchWithApi(`/channels/${channelId}`)
 	}
 
-	async function fetchMembers(guildId: string): Promise<GuildMemberResponse[]> {
-		return ensureIsArray(await fetchWithApi(`/guilds/${guildId}/members`));
+	async function fetchMembers(guildId: string, options?: { per_page?: number, page?: number }): Promise<GuildMembersResponse> {
+		const query = new URLSearchParams();
+		query.set("page", options?.page ? options.page.toString() : "1");
+		if (options?.per_page) {
+			query.set("per_page", options.per_page.toString());
+		}
+
+		console.log("members query:", query);
+		return await fetchWithApi(`/guilds/${guildId}/members?${query.toString()}`) as GuildMembersResponse;
 	}
 
 	async function fetchMember(guildId: string, memberId: string): Promise<GuildMemberResponse | undefined> {

@@ -77,7 +77,10 @@ onActivated(async () => {
 });
 
 async function setArrayVariables() {
+	const membersRes = await fetchMembers(route.params.serverId as string);
+	members.value = membersRes.objects;
 	members.value = await fetchMembers(route.params.serverId as string);
+	console.log("Placeholder count:", totalMemberCount.value);
 	const guildUrl = `guilds/${route.params.serverId}`;
 	channels.value = await fetchWithApi(`${guildUrl}/channels`);
 	console.log("channels:", channels.value);
