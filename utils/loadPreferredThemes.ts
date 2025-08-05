@@ -6,8 +6,16 @@ export default function loadPreferredThemes() {
   const runtimeConfig = useRuntimeConfig()
   const baseURL = runtimeConfig.app.baseURL;
   
-  const currentStyle = settingsLoad().selectedThemeStyle ?? `${baseURL}themes/style/dark.css`
-  const currentLayout = settingsLoad().selectedThemeLayout ?? `${baseURL}themes/layout/gorb.css`
+  let currentStyle = settingsLoad().selectedThemeStyle ?? undefined
+  let currentLayout = settingsLoad().selectedThemeLayout ?? `${baseURL}themes/layout/gorb.css`
+
+  if (!currentStyle) {
+    if (prefersLight()) {
+      currentStyle = `${baseURL}themes/style/light.css`
+    } else {
+      currentStyle = `${baseURL}themes/style/dark.css`
+    }
+  }
 
   if (styleLinkElement) {
     styleLinkElement.href = currentStyle;
@@ -33,4 +41,12 @@ function createStyleHead(id: string, themeUrl: string) {
       href: themeUrl
     }]
   })
+}
+
+function prefersLight(): boolean {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    return true
+  }
+
+  return false
 }
