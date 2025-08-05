@@ -5,13 +5,19 @@ complementaryColor = white
 */
 
 :root {
-	--text-color: #161518;
-	--secondary-text-color: #2b2930;
+	--text-color: #000000;
+	--secondary-text-color: #1f1f1f;
 	--reply-text-color: #969696;
 	--danger-text-color: #ff0000;
 
-    --chat-background-color: #80808000;
+    --chat-background-color: #b0b0b040;
     --chat-highlighted-background-color: #ffffff20;
+	--chat-important-background-color: #ff4f4f80;
+	--chat-important-highlighted-background-color: #ff6f6fa0;
+	--chat-featured-message-color: #4f8f4f80;
+	--popup-background-color: #80808080;
+	--popup-highlighted-background-color: #9f9f9f9f;
+
 	--sidebar-background-color: #80808000;
 	--sidebar-highlighted-background-color: #ffffff20;
 	--topbar-background-color: #80808000;

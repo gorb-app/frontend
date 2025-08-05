@@ -274,7 +274,7 @@ function getDayDifference(date1: Date, date2: Date) {
 }
 
 .mentioned:hover {
-	background-color: var(--chat-important-hightlighted-background-color);
+	background-color: var(--chat-important-highlighted-background-color);
 }
 
 .message-reply-svg {

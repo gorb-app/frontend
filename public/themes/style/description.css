@@ -13,6 +13,12 @@ complementaryColor = black
 
     --chat-background-color: #80808000;
     --chat-highlighted-background-color: #ffffff20;
+	--chat-important-background-color: #ffc44f2f;
+	--chat-important-highlighted-background-color: #ffa45f4a;
+	--chat-featured-message-color: #4f2f1f58;
+	--popup-background-color: #2f1f1f;
+	--popup-highlighted-background-color: #3f2f2f;
+
 	--sidebar-background-color: #80808000;
 	--sidebar-highlighted-background-color: #ffffff20;
 	--topbar-background-color: #80808000;
