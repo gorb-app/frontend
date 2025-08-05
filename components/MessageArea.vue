@@ -7,7 +7,7 @@
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
 				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.member" :me="me"
 				:message="message" :is-reply="message.reply_to"
-				:author-color="`${generateIrcColor(message.member.uuid)}`"
+				:author-color="`${generateIrcColor(message.member.user.uuid)}`"
 				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined" />
 		</div>
 		<div id="message-box" class="rounded-corners">
