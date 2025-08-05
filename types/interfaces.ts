@@ -31,6 +31,13 @@ export interface GuildMemberResponse {
 	user: UserResponse
 }
 
+export interface GuildMembersResponse {
+	objects: GuildMemberResponse[],
+	amount: number,
+	pages: number,
+	page: number
+}
+
 export interface ChannelResponse {
 	uuid: string,
 	guild_uuid: string,
@@ -45,7 +52,7 @@ export interface MessageResponse {
 	user_uuid: string,
 	message: string,
 	reply_to: string | null,
-	user: UserResponse,
+	member: GuildMemberResponse,
 }
 
 export interface InviteResponse {

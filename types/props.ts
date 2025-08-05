@@ -1,9 +1,9 @@
-import type { MessageResponse, UserResponse } from "./interfaces";
+import type { GuildMemberResponse, MessageResponse, UserResponse } from "./interfaces";
 
 export interface MessageProps {
 	class?: string,
 	img?: string | null,
-	author: UserResponse
+	author: GuildMemberResponse
 	text: string,
 	timestamp: number,
 	format: "12" | "24",
