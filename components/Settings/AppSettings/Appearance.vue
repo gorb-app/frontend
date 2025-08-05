@@ -9,7 +9,7 @@
         <div v-for="style of styles" class="theme-preview-container">
           <span class="theme-instance"
               :title="style.displayName"
-              @click="changeTheme(StyleLayout.style, style)">
+              @click="changeTheme(styleLayout.style, style)">
             <div class="theme-content-container">
               <span class="style-background"
                 :style="{background:`linear-gradient(${style.previewGradient})`}"
@@ -26,7 +26,7 @@
         <div v-for="layout of layouts" class="theme-preview-container">
           <div class="theme-instance"
               :title="layout.displayName"
-              @click="changeTheme(StyleLayout.layout, layout)">
+              @click="changeTheme(styleLayout.layout, layout)">
             <div class="theme-content-container">
               <span class="layout-background"
                 :style="{backgroundImage:`url(${layout.previewImageUrl})`}"
@@ -65,7 +65,7 @@ const layoutFolder = `${baseURL}themes/layout`
 
 const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 
-enum StyleLayout {
+enum styleLayout {
   style,
   layout
 }
@@ -88,7 +88,7 @@ async function parseTheme(url: string): Promise<Theme | void> {
 
   const metadataMatch = styleData.match(/\/\*([\s\S]*?)\*\//);
   if (!metadataMatch) {
-    alert(`Failed to fetch metadata for a theme, panicing`)
+    alert(`Failed to fetch metadata for a theme, panicking`)
     return
   }
 
@@ -101,20 +101,20 @@ async function parseTheme(url: string): Promise<Theme | void> {
   let previewImageUrl: string | undefined
 
   for (const line of commentContent) {
-    const line_array = line.split("=")
-    if (line_array.length === 2) {
-      switch (line_array[0].trim()) {
+    const lineArray = line.split("=")
+    if (lineArray.length === 2) {
+      switch (lineArray[0].trim()) {
         case "displayName":
-          displayName = line_array[1].trim()
+          displayName = lineArray[1].trim()
           break
         case "complementaryColor":
-          complementaryColor = line_array[1].trim()
+          complementaryColor = lineArray[1].trim()
           break
         case "previewGradient":
-          previewGradient = line_array[1].trim()
+          previewGradient = lineArray[1].trim()
           break
         case "previewImageUrl":
-          previewImageUrl = `${layoutFolder}/${line_array[1].trim()}`
+          previewImageUrl = `${layoutFolder}/${lineArray[1].trim()}`
           break
       }
     }
@@ -137,8 +137,8 @@ async function parseTheme(url: string): Promise<Theme | void> {
 
 async function parseThemeLayout(
   folder: string,
-  incomingThemeList: Array<string>,
-  outputThemeList: Array<Theme>) {
+  incomingThemeList: string[],
+  outputThemeList: Theme[]) {
     for (const theme of incomingThemeList) {
       const parsedThemeData = await parseTheme(`${folder}/${theme}`)
       
@@ -148,11 +148,11 @@ async function parseThemeLayout(
     }
 }
 
-const styles: Array<Theme> = [];
-const layouts: Array<Theme> = [];
+const styles: Theme[] = [];
+const layouts: Theme[] = [];
 
-const styleList: any = await $fetch(`${styleFolder}/styles.json`)
-const layoutList: any = await $fetch(`${layoutFolder}/layouts.json`)
+const styleList = await $fetch(`${styleFolder}/styles.json`)
+const layoutList = await $fetch(`${layoutFolder}/layouts.json`)
 
 if (Array.isArray(styleList)) {
   await parseThemeLayout(styleFolder, styleList, styles)
@@ -161,8 +161,8 @@ if (Array.isArray(layoutList)) {
   await parseThemeLayout(layoutFolder, layoutList, layouts)
 }
 
-function changeTheme(themeType: StyleLayout, theme: Theme) {
-  if (themeType == StyleLayout.style) {
+function changeTheme(themeType: styleLayout, theme: Theme) {
+  if (themeType == styleLayout.style) {
     settingSave("selectedThemeStyle", theme.themeUrl)
   } else {
     settingSave("selectedThemeLayout", theme.themeUrl)
