@@ -12,7 +12,7 @@
         <span v-if="props.user.pronouns"> - {{ props.user.pronouns }}</span>
       </p>
       <div id="about-me" v-if="props.user.about">
-        {{ props.user.about }}
+        {{ props.user.about.trim() }}
       </div>
     </div>
   </div>
@@ -80,9 +80,16 @@ const props = defineProps<{
 #about-me {
   background-color: var(--secondary-color);
   border-radius: 12px;
-
+  
   margin-top: 32px;
   padding: 16px;
   font-size: 16px;
+  
+  white-space: pre-line;
+  line-height: 1;
+  max-height: 7em; /* 7 x 1 */
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

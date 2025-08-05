@@ -214,8 +214,21 @@ function buttonEditProfile() {
 	
 	align-self: center;
 
+	width: 100%;
 	font-size: .8em;
 	font-weight: lighter;
+
+	white-space: pre-line;
+	line-height: 1;
+	max-height: 7em; /* 7 x 1 */
+
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: none;
+}
+
+#about-me-text::-webkit-scrollbar {
+	display: none;
 }
 
 
