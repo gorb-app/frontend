@@ -15,8 +15,11 @@
         <label for="profile-pronouns-input" class="subtitle">PRONOUNS</label>
         <input id="profile-pronouns-input" class="profile-data-input" type="text" v-model="user.pronouns" placeholder="Enter pronouns" />
         <label for="profile-about-me-input" class="subtitle">ABOUT ME</label>
-        <input id="profile-about-me-input" class="profile-data-input" type="text" v-model="user.about" placeholder="About me" />
-
+        <div id="profile-about-me-input" class="profile-data-input profile-textarea-input"
+          placeholder="About Me" maxlength="240" wrap="soft" rows="8"
+          autocorrect="off" spellcheck="true" contenteditable="true"
+          @keyup="handleAboutMeKeyUp" ref="aboutMeInput">
+        </div>
         <Button style="margin-top: 2dvh" text="Save Changes" :callback="saveChanges"></Button>
       </div>
 
@@ -42,6 +45,7 @@ import type { UserResponse } from '~/types/interfaces';
 let newPfpFile: File;
 const isCropPopupVisible = ref(false);
 const cropImageSrc = ref("")
+const aboutMeInput = ref<HTMLDivElement>()
 
 const { fetchUser } = useAuth();
 
@@ -125,6 +129,12 @@ function handleCrop(blob: Blob, url: string) {
 function closeCropPopup() {
   isCropPopupVisible.value = false
 }
+
+function handleAboutMeKeyUp(event: KeyboardEvent) {
+  if (user && aboutMeInput.value) {
+    user.about = aboutMeInput.value.innerText
+  }
+}
 </script>
 
 <style scoped>
@@ -139,14 +149,21 @@ function closeCropPopup() {
 
 .profile-data-input {
   min-width: 30dvw;
+  max-width: 30dvw;
   margin: 0.07dvh;
-  padding: 0.1dvh 0.7dvw;
+  padding: .1em .7em;
   height: 2.5em;
   font-size: 1em;
   border-radius: 8px;
   border: none;
   color: var(--text-color);
   background-color: var(--accent-color);
+}
+
+.profile-textarea-input {
+  padding: .6em .7em;
+
+  height: fit-content;
 }
 
 #profile-popup {
