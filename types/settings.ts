@@ -1,6 +1,7 @@
 export interface ClientSettings {
-	selectedThemeId?: string, // the ID of the theme, not the URL, for example "dark"
 	timeFormat?: TimeFormat
+	selectedThemeStyle?: string // URL
+	selectedThemeLayout?: string // URL
 }
 
 export interface TimeFormat {

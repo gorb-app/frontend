@@ -7,7 +7,9 @@
       <p class="subtitle">STYLES</p>
       <div class="styles">
         <div v-for="style of styles" class="theme-preview-container">
-          <div class="theme-instance" :title="style.displayName">
+          <span class="theme-instance"
+              :title="style.displayName"
+              @click="changeTheme(StyleLayout.style, style)">
             <div class="theme-content-container">
               <span class="style-background"
                 :style="{background:`linear-gradient(${style.previewGradient})`}"
@@ -16,13 +18,15 @@
                 {{ style.displayName }}
               </span>
             </div>
-          </div>
+          </span>
         </div>
       </div>
       <p class="subtitle">LAYOUTS</p>
       <div class="layouts">
         <div v-for="layout of layouts" class="theme-preview-container">
-          <div class="theme-instance" :title="layout.displayName">
+          <div class="theme-instance"
+              :title="layout.displayName"
+              @click="changeTheme(StyleLayout.layout, layout)">
             <div class="theme-content-container">
               <span class="layout-background"
                 :style="{backgroundImage:`url(${layout.previewImageUrl})`}"
@@ -51,8 +55,7 @@
 <script lang="ts" setup>
 import RadioButtons from '~/components/UserInterface/RadioButtons.vue';
 import type { TimeFormat } from '~/types/settings';
-import loadPreferredTheme from '~/utils/loadPreferredTheme';
-import settingSave from '~/utils/settingSave';
+import { settingSave, settingsLoad } from '#imports';
 
 const runtimeConfig = useRuntimeConfig()
 const baseURL = runtimeConfig.app.baseURL;
@@ -61,15 +64,27 @@ const layoutFolder = `${baseURL}themes/layout`
 
 const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 
+enum StyleLayout {
+  style,
+  layout
+}
+
 interface Theme {
   displayName: string
   complementaryColor: string
   cssData: string
+  themeUrl: string
   previewGradient?: string
   previewImageUrl?: string
 }
 
-async function parseThemeCss(styleData: string): Promise<Theme | void> {
+async function parseTheme(url: string): Promise<Theme | void> {
+  const styleData: any = await $fetch(url)
+
+  if (typeof styleData != "string") {
+    return
+  }
+
   const metadataMatch = styleData.match(/\/\*([\s\S]*?)\*\//);
   if (!metadataMatch) {
     alert(`Failed to fetch metadata for a theme, panicing`)
@@ -113,18 +128,18 @@ async function parseThemeCss(styleData: string): Promise<Theme | void> {
     displayName,
     complementaryColor,
     cssData,
+    themeUrl: url,
     previewGradient,
     previewImageUrl,
   }
 }
 
-async function parseThemeData(
+async function parseThemeLayout(
   folder: string,
   incomingThemeList: Array<string>,
   outputThemeList: Array<Theme>) {
     for (const theme of incomingThemeList) {
-      const themeData = await $fetch(`${folder}/${theme}`)
-      const parsedThemeData = await parseThemeCss(themeData)
+      const parsedThemeData = await parseTheme(`${folder}/${theme}`)
       
       if (parsedThemeData) {
         outputThemeList.push(parsedThemeData)
@@ -139,18 +154,19 @@ const styleList: any = await $fetch(`${styleFolder}/styles.json`)
 const layoutList: any = await $fetch(`${layoutFolder}/layouts.json`)
 
 if (Array.isArray(styleList)) {
-  await parseThemeData(styleFolder, styleList, styles)
+  await parseThemeLayout(styleFolder, styleList, styles)
 }
 if (Array.isArray(layoutList)) {
-  await parseThemeData(layoutFolder, layoutList, layouts)
+  await parseThemeLayout(layoutFolder, layoutList, layouts)
 }
 
-console.log(layouts)
-
-
-function changeTheme(id: string, url: string) {
-  settingSave("selectedThemeStyle", id)
-  loadPreferredTheme()
+function changeTheme(themeType: StyleLayout, theme: Theme) {
+  if (themeType == StyleLayout.style) {
+    settingSave("selectedThemeStyle", theme.themeUrl)
+  } else {
+    settingSave("selectedThemeLayout", theme.themeUrl)
+  }
+  loadPreferredThemes()
 }
 
 async function onTimeFormatClicked(index: number) {

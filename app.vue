@@ -9,14 +9,13 @@
 <script lang="ts" setup>
 import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
 import type { ContextMenuInterface } from './types/interfaces';
-import loadPreferredTheme from '~/utils/loadPreferredTheme';
 
 const banner = useState("banner", () => false);
 
 const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 onMounted(() => {
-	loadPreferredTheme()
+	loadPreferredThemes()
 
 	document.removeEventListener("contextmenu", contextMenuHandler);
 	document.addEventListener("contextmenu", (e) => {
