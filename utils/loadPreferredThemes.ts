@@ -2,7 +2,7 @@ let styleLinkElement: HTMLLinkElement | null;
 let layoutLinkElement: HTMLLinkElement | null;
 
 
-export default function loadPreferredThemes() {
+export default () => {
   const runtimeConfig = useRuntimeConfig()
   const baseURL = runtimeConfig.app.baseURL;
   
