@@ -13,7 +13,6 @@
 
 <script lang="ts" setup>
 
-console.log("CHANNEL!")
 const props = defineProps<{ name: string, uuid: string, currentUuid: string, href: string }>();
 
 const isCurrentChannel = props.uuid == props.currentUuid;
