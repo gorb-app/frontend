@@ -45,7 +45,7 @@ export interface MessageResponse {
 	user_uuid: string,
 	message: string,
 	reply_to: string | null,
-	user: UserResponse,
+	member: GuildMemberResponse,
 }
 
 export interface InviteResponse {
