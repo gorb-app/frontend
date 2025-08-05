@@ -34,6 +34,7 @@
               <span class="theme-title" :style="{color:`${layout.complementaryColor}`}">
                 {{ layout.displayName }}
               </span>
+              <NuxtImg class="layout-preview" :src="layout.previewImageUrl"></NuxtImg>
             </div>
           </div>
         </div>
@@ -234,6 +235,27 @@ async function onTimeFormatClicked(index: number) {
   background-size: cover;
   background-repeat: no-repeat;
   filter: brightness(35%);
+}
+
+.layout-preview {
+  position: absolute;
+  pointer-events: none;
+
+  border: 0 solid var(--primary-color);
+  transform: translate(0, calc(var(--instance-size) / 2));
+  transition: all 250ms;
+
+  height: 0;
+  width: calc((height / 9) * 16);
+  max-height: 40dvh;
+}
+
+.theme-instance:hover .layout-preview {
+  border: .1em solid var(--primary-color);
+  filter: drop-shadow(0 0 .2em var(--secondary-color));
+  transform: translate(3.5em, -4em);
+  
+  height: 40dvw;
 }
 
 .theme-title {
