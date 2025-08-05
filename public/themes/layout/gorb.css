@@ -1,0 +1,17 @@
+/*
+displayName = Gorb
+previewImageUrl = gorb.jpg
+complementaryColor = white
+*/
+
+:root {
+	--sidebar-icon-width: 2.5em;
+	--sidebar-icon-gap: .25em;
+	--sidebar-margin: .5em;
+	
+	--standard-radius: .5em;
+	--button-radius: .6em;
+	--guild-icon-radius: 15%;
+	--pfp-radius: 50%;
+	--preferred-font: Arial;
+}

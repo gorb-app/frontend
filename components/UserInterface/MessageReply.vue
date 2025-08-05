@@ -58,7 +58,7 @@ function scrollToReply(e: MouseEvent) {
 		console.log("scrolling into view");
 		reply.scrollIntoView({ behavior: "smooth", block: "center" });
 		reply.style.transition = "background-color .3s";
-		reply.style.backgroundColor = "var(--primary-highlighted-color)";
+		reply.style.backgroundColor = "var(--chat-featured-message-color)";
 		setTimeout(() => {
 			reply.style.backgroundColor = "";
 		}, 1000);
