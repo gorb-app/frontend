@@ -50,7 +50,7 @@ function runCallback(item: ContextMenuItem) {
 	height: 2rem;
 	width: 100%;
 	color: var(--text-color);
-	background-color: var(--sidebar-highlighted-background-color);
+	background-color: var(--popup-background-color);
 	border: none;
 	text-align: left;
 	padding-left: 1rem;
@@ -58,7 +58,7 @@ function runCallback(item: ContextMenuItem) {
 }
 
 .context-menu-item:hover {
-	background-color: rgb(50, 50, 50);
+	background-color: var(--popup-highlighted-background-color);
 }
 
 .context-menu-item-danger {
