@@ -189,9 +189,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	text-align: left;
 	/* border: 1px solid lightcoral; */
 	display: grid;
-	grid-template-columns: 2rem 1fr;
+	grid-template-columns: 4rem 1fr;
 	align-items: center;
-	column-gap: 1dvw;
 	width: 100%;
 	overflow-wrap: anywhere;
 }
@@ -225,10 +224,9 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .message-data {
 	/* border: 1px solid white; */
-	margin-left: .5dvw;
 	display: flex;
 	flex-direction: column;
-	height: fit-content;
+	height: 100%;
 	width: 100%;
 	grid-row: 2;
 	grid-column: 2;
@@ -240,10 +238,10 @@ function getDayDifference(date1: Date, date2: Date) {
 }
 
 .message-author-avatar {
-	min-height: 2em;
-	max-height: 2em;
-	min-width: 2em;
-	max-width: 2em;
+	min-height: 2.5em;
+	max-height: 2.5em;
+	min-width: 2.5em;
+	max-width: 2.5em;
 }
 
 .left-column {
@@ -254,7 +252,10 @@ function getDayDifference(date1: Date, date2: Date) {
 	white-space: nowrap;
 	grid-row: 2;
 	grid-column: 1;
+	height: 100%;
+	align-items: start;
 }
+
 
 .author-username {
 	margin-right: .5dvw;
