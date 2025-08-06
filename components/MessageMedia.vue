@@ -34,9 +34,16 @@ function createModal(link: string) {
 <style scoped>
 
 .media-container {
+	display: flex;
 	grid-column: 2;
 	grid-row: 3;
-	margin-left: .5dvw;
+	gap: .2rem;
+}
+
+.grouped-message .media-container {
+	display: flex;
+	grid-column: 2;
+	grid-row: 2;
 }
 
 .media-item {
