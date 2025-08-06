@@ -43,9 +43,9 @@
 					{{ date.toLocaleTimeString(undefined, { hour12: props.format == "12", timeStyle: "short" }) }}
 				</span>
 			</div>
-			<div class="message-text" v-html="sanitized" :hidden="hasEmbed" tabindex="0"></div>
+			<div class="message-text" v-html="sanitized" :hidden="hideText" tabindex="0"></div>
+			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 		</div>
-		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
 	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
@@ -56,7 +56,7 @@
 			</span>
 		</div>
 		<div class="message-data">
-			<div class="message-text" :class="$style['message-text']" v-html="sanitized" :hidden="hasEmbed" tabindex="0"></div>
+			<div class="message-text" :class="$style['message-text']" v-html="sanitized" :hidden="hideText" tabindex="0"></div>
 		</div>
 		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
@@ -89,10 +89,10 @@ console.log("[MSG] reply message:", props.replyMessage);
 
 const linkRegex = /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g;
 const linkMatches = props.message.message.matchAll(linkRegex).map(link => link[0]);
-const mediaLinks: string[] = [];
+const mediaLinks = ref<string[]>([]);
 console.log("link matches:", linkMatches);
 
-const hasEmbed = ref(false);
+const hideText = ref(false);
 
 const sanitized = ref<string>();
 
@@ -121,23 +121,35 @@ onMounted(async () => {
 		console.log("added listeners");
 	}
 
+	const links: string[] = [];
 	for (const link of linkMatches) {
-	console.log("link:", link);
-	try {
-		const res = await $fetch.raw(link);
-		if (res.ok && res.headers.get("content-type")?.match(/^image\/(apng|gif|jpeg|png|webp)$/)) {
-			console.log("link is image");
-			mediaLinks.push(link);
+		console.log("link:", link);
+		try {
+			const res = await $fetch.raw(link);
+			if (res.ok && res.headers.get("content-type")?.match(/^image\/(apng|gif|jpeg|png|webp)$/)) {
+				console.log("link is image");
+				links.push(link);
+			}
+		} catch (error) {
+			console.error(error);
 		}
-		if (mediaLinks.length) {
-			hasEmbed.value = true
-		};
-	} catch (error) {
-		console.error(error);
-	}
-}
 
-console.log("media links:", mediaLinks);
+		mediaLinks.value = [...links];
+	}
+
+	if (mediaLinks.value.length) {
+		const nonLinks = props.message.message.split(linkRegex);
+		let invalidContent = false;
+		for (const nonLink of nonLinks) {
+			if (nonLink != "" && nonLink != "\n" && nonLink != "<br>") {
+				invalidContent = true;
+				break;
+			}
+		}
+		hideText.value = !invalidContent;
+	};
+
+	console.log("media links:", mediaLinks);
 });
 
 //function toggleTooltip(e: Event) {
