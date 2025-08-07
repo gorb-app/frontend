@@ -23,11 +23,14 @@ onMounted(() => {
 		contextMenuHandler(e);
 	});
 	document.addEventListener("mousedown", (e) => {
-		if (e.target instanceof HTMLElement && e.target.closest("#context-menu")) return;
+		if (e.target instanceof HTMLElement && e.target.classList.contains("context-menu-item")) return;
 		console.log("click");
 		console.log("target:", e.target);
 		console.log(e.target instanceof HTMLDivElement);
-		removeContextMenu(contextMenu);
+		if (contextMenu.value.show) {
+			console.log("context menu is shown, hiding");
+			removeContextMenu(contextMenu);
+		}
 		if (e.target instanceof HTMLElement && e.target.classList.contains("message-text") && e.target.contentEditable) {
 			e.target.contentEditable = "false";
 		}
