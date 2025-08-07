@@ -47,6 +47,14 @@ export const useApi = () => {
 	async function fetchMember(guildId: string, memberId: string): Promise<GuildMemberResponse | undefined> {
 		return await fetchWithApi(`/guilds/${guildId}/members/${memberId}`);
 	}
+
+	async function kickMember(memberId: string) {
+		return await fetchWithApi(`/members/${memberId}`, { method: "DELETE" });
+	}
+
+	async function banMember(guildId: string, memberId: string) {
+		//
+	}
 	
 	async function fetchUsers() {
 		return await fetchWithApi(`/users`);
@@ -118,6 +126,8 @@ export const useApi = () => {
 		fetchChannel,
 		fetchMembers,
 		fetchMember,
+		kickMember,
+		banMember,
 		fetchUsers,
 		fetchUser,
 		fetchFriends,
