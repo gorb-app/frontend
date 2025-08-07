@@ -34,7 +34,7 @@ const storedWidth = ref<string>();
 const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 const menuItems: ContextMenuItem[] = [
-	{ name: "Reset", callback: () => {
+	{ name: "Reset", type: "normal", callback: () => {
 		const defaultWidth = props.width ?? props.minWidth;
 		resizableSidebar.value!.style.width = defaultWidth;
 		if (props.localStorageName) {
