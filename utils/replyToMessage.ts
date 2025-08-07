@@ -9,7 +9,7 @@ export default (element: HTMLDivElement, props: MessageProps) => {
 	const messageBox = document.getElementById("message-box") as HTMLDivElement;
 	if (messageBox) {
 		const div = document.createElement("div");
-		const messageReply = h(MessageReply, { author: getDisplayName(props.author), text: props.text || "", id: props.message.uuid, replyId: props.replyMessage?.uuid || element.dataset.messageId!, maxWidth: "full" });
+		const messageReply = h(MessageReply, { author: getDisplayName(props.message.member), text: props.message.message || "", id: props.message.uuid, replyId: props.replyMessage?.uuid || element.dataset.messageId!, maxWidth: "full" });
 		messageBox.prepend(div);
 		render(messageReply, div);
 		const message = document.querySelector(`.message[data-message-id='${props.message.uuid}']`);
