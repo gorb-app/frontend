@@ -219,21 +219,27 @@ if (accessToken && apiBase) {
 function sendMessage(e: Event) {
 	e.preventDefault();
 	if (messageInput.value && messageInput.value.trim() !== "") {
-		const message: Record<string, string> = {
-			message: messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
-		}
+		const text = messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
 
 		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
 		console.log("[MSG] message reply:", messageReply);
 		if (messageReply && messageReply.dataset.messageId) {
 			console.log("[MSG] message is a reply");
-			message.reply_to = messageReply.dataset.messageId;
-			const replyToMessage = document.querySelector(`.message[data-message-id='${message.reply_to}']`);
+			const reply_to = messageReply.dataset.messageId;
+			const event = WSEvent.MessageSend;
+			const replyToMessage = document.querySelector(`.message[data-message-id='${reply_to}']`);
 			if (replyToMessage) {
 				replyToMessage.classList.remove("replying-to");
 			}
 		}
 
+		const message = {
+			event: WSEvent.MessageSend,
+			entity: {
+				text
+			}
+		};
+		
 		console.log("[MSG] sent message:", message);
 		ws.send(JSON.stringify(message));
 
