@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.member.user.uuid != props.me.uuid && props.replyMessage?.member.user.uuid == props.me.uuid }" :data-message-id="props.messageId"
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div v-if="props.replyMessage" class="message-reply-svg">
@@ -33,7 +33,7 @@
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
-				<span class="message-author-username" tabindex="0" :style="`color: ${props.authorColor}`">
+				<span class="message-author-username" tabindex="0" :style="`color: ${props.authorColor}`" @contextmenu="showContextMenu($event, contextMenu, memberMenuItems)">
 					{{ getDisplayName(props.author) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
@@ -47,7 +47,7 @@
 		</div>
 		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
-	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
@@ -71,6 +71,8 @@ import MessageReply from './UserInterface/MessageReply.vue';
 import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
+
+const route = useRoute();
 
 const props = defineProps<MessageProps>();
 
@@ -144,20 +146,22 @@ console.log("media links:", mediaLinks);
 //	showHover.value = !showHover.value;
 //}
 
-const menuItems: ContextMenuItem[] = [
+const messageMenuItems: ContextMenuItem[] = [
 	{ name: "Reply", icon: "lucide:reply", type: "normal", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
 ]
 
 console.log("me:", props.me);
-if (props.author?.user.uuid == props.me.uuid) {
+if (props.author.user.uuid == props.me.uuid) {
 	// Inserts "edit" option at index 1 (below the "reply" option)
-	menuItems.splice(1, 0, { name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
+	messageMenuItems.splice(Math.min(1, messageMenuItems.length), 0, { name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
 }
 
-if (props.author?.user.uuid == props.me.uuid /* || check message delete permission*/) {
+if (props.author.user.uuid == props.me.uuid /* || check message delete permission*/) {
 	// Inserts "edit" option at index 2 (below the "edit" option)
-	menuItems.splice(2, 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
+	messageMenuItems.splice(Math.min(2, messageMenuItems.length), 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
 }
+
+const memberMenuItems = await createMemberContextMenuItems(props.author, route.params.serverId as string);
 
 function getDayDifference(date1: Date, date2: Date) {
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
