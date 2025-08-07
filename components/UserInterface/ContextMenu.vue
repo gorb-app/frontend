@@ -18,6 +18,10 @@ onMounted(() => {
 	if (contextMenu) {
 		contextMenu.style.left = props.pointerX.toString() + "px";
 		contextMenu.style.top = props.pointerY.toString() + "px";
+		const rect = contextMenu.getBoundingClientRect();
+		if (rect.right > (window.innerWidth || document.documentElement.clientWidth)) {
+			contextMenu.style.left = (props.pointerX - contextMenu.clientWidth).toString() + "px";
+		}
 	}
 });
 
