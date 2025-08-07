@@ -25,6 +25,17 @@ export const useApi = () => {
 		return await fetchWithApi("/me")
 	}
 
+	async function fetchMeMember(guildId: string): Promise<GuildMemberResponse | undefined> {
+		const { getUser } = useAuth();
+
+		const me = await getUser();
+		if (me) {
+			const members = await fetchMembers(guildId);
+			const meMember = members.objects.find(member => member.user.uuid == me.uuid);
+			return meMember;
+		}
+	}
+
 	async function fetchChannels(guildId: string): Promise<ChannelResponse[]> {
 		return ensureIsArray(await fetchWithApi(`/guilds/${guildId}/channels`));
 	}
@@ -122,6 +133,7 @@ export const useApi = () => {
 		fetchGuild,
 		fetchMyGuilds,
 		fetchMe,
+		fetchMeMember,
 		fetchChannels,
 		fetchChannel,
 		fetchMembers,
