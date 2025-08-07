@@ -1,13 +1,13 @@
 <template>
 	<div id="message-area">
 		<div id="messages" ref="messagesElement">
-			<Message v-for="(message, i) of messages" :username="getDisplayName(message.user)" :key="message.uuid"
-				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.user.avatar"
+			<Message v-for="(message, i) of messages" :username="getDisplayName(message.member.user)" :key="message.uuid"
+				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.member.user.avatar"
 				:format="timeFormat" :type="messagesType[message.uuid]"
 				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
-				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.user" :me="me"
+				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.member" :me="me"
 				:message="message" :is-reply="message.reply_to"
-				:author-color="`${generateIrcColor(message.user.uuid)}`"
+				:author-color="`${generateIrcColor(message.member.user.uuid)}`"
 				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined" />
 		</div>
 		<div id="message-box" class="rounded-corners">
@@ -44,9 +44,12 @@ import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/inte
 import scrollToBottom from '~/utils/scrollToBottom';
 import { generateIrcColor } from '#imports';
 
+const { getDisplayName } = useProfile()
+const { fetchMe } = useApi()
+
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
-const me = await fetchWithApi("/me") as UserResponse;
+const me = await fetchMe() as UserResponse;
 
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
@@ -64,33 +67,33 @@ const previousMessage = ref<MessageResponse>();
 function groupMessage(message: MessageResponse, options?: { prevMessage?: MessageResponse, reverse?: boolean }) {
 	messageTimestamps.value[message.uuid] = uuidToTimestamp(message.uuid);
 	console.log("message:", message.message);
-	console.log("author:", message.user.username, `(${message.user.uuid})`);
+	console.log("author:", message.member.user.username, `(${message.member.uuid})`);
 
-	if (!previousMessage.value || previousMessage.value && message.user.uuid != previousMessage.value.user.uuid) {
+	if (!previousMessage.value || previousMessage.value && message.member.uuid != previousMessage.value.member.uuid) {
 		console.log("no previous message or author is different than last messsage's");
 		messagesType.value[message.uuid] = "normal";
 		previousMessage.value = message;
 		console.log("set previous message to:", previousMessage.value.message);
-		console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
-		firstMessageByUsers.value[message.user.uuid] = message;
+		console.log(`setting first post by user ${message.member.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
+		firstMessageByUsers.value[message.member.uuid] = message;
 		return;
 	}
 
 
-	const firstByUser = firstMessageByUsers.value[message.user.uuid];
+	const firstByUser = firstMessageByUsers.value[message.member.uuid];
 	if (firstByUser) {
 		console.log("first by user exists:", firstByUser);
-		if (message.user.uuid != firstByUser.user.uuid) {
+		if (message.member.uuid != firstByUser.member.uuid) {
 			console.log("message is by new user, setting their first message")
-			firstMessageByUsers.value[message.user.uuid] = message;
+			firstMessageByUsers.value[message.member.uuid] = message;
 			console.log("RETURNING FALSE");
 			messagesType.value[message.uuid] = "normal";
 			return;
 		}
 	} else {
 		console.log("first by user doesn't exist");
-		console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
-		firstMessageByUsers.value[message.user.uuid] = message;
+		console.log(`setting first post by user ${message.member.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`);
+		firstMessageByUsers.value[message.member.uuid] = message;
 		console.log("RETURNING FALSE");
 		messagesType.value[message.uuid] = "normal";
 		return;
@@ -108,8 +111,8 @@ function groupMessage(message: MessageResponse, options?: { prevMessage?: Messag
 	console.log("group?", lessThanMax);
 	if (!lessThanMax) {
 		console.log("diff exceeds max");
-		console.log(`setting first post by user ${message.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`)
-		firstMessageByUsers.value[message.user.uuid] = message;
+		console.log(`setting first post by user ${message.member.user.username} to "${message.message}" with timestamp ${messageTimestamps.value[message.uuid]}`)
+		firstMessageByUsers.value[message.member.uuid] = message;
 		messagesType.value[message.uuid] = "normal";
 		return;
 	}
@@ -221,6 +224,10 @@ function sendMessage(e: Event) {
 		if (messageReply && messageReply.dataset.messageId) {
 			console.log("[MSG] message is a reply");
 			message.reply_to = messageReply.dataset.messageId;
+			const replyToMessage = document.querySelector(`.message[data-message-id='${message.reply_to}']`);
+			if (replyToMessage) {
+				replyToMessage.classList.remove("replying-to");
+			}
 		}
 
 		console.log("[MSG] sent message:", message);

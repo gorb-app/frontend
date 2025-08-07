@@ -1,6 +1,6 @@
 <template>
   <div id="profile-popup">
-    <Avatar :user="props.user" id="avatar"/>
+    <Avatar :profile="props.user" id="avatar"/>
 
     <div id="cover-color"></div>
     <div id="main-body">
@@ -12,7 +12,7 @@
         <span v-if="props.user.pronouns"> - {{ props.user.pronouns }}</span>
       </p>
       <div id="about-me" v-if="props.user.about">
-        {{ props.user.about }}
+        {{ props.user.about.trim() }}
       </div>
     </div>
   </div>
@@ -20,6 +20,8 @@
 
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<{
 	user: UserResponse
@@ -78,9 +80,16 @@ const props = defineProps<{
 #about-me {
   background-color: var(--secondary-color);
   border-radius: 12px;
-
+  
   margin-top: 32px;
   padding: 16px;
   font-size: 16px;
+  
+  white-space: pre-line;
+  line-height: 1;
+  max-height: 7em; /* 7 x 1 */
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

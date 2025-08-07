@@ -77,7 +77,8 @@ onActivated(async () => {
 });
 
 async function setArrayVariables() {
-	members.value = sortMembers(await fetchMembers(route.params.serverId as string))
+	const membersRes = await fetchMembers(route.params.serverId as string);
+	members.value = membersRes.objects;
 	const guildUrl = `guilds/${route.params.serverId}`;
 	channels.value = await fetchWithApi(`${guildUrl}/channels`);
 	console.log("channels:", channels.value);
@@ -131,13 +132,6 @@ function handleMemberClick(member: GuildMemberResponse) {
 	flex-direction: column;
 	gap: .5em;
 	text-overflow: ellipsis;
-}
-
-.member-avatar {
-    min-width: 2.3em;
-    max-width: 2.3em;
-    min-width: 2.3em;
-    max-height: 2.3em;
 }
 
 .member-display-name {

@@ -1,13 +1,17 @@
 <template>
     <NuxtLink class="user-item" :href="`/me/${user.uuid}`" tabindex="0">
-        <Avatar :user="props.user" class="user-avatar"/>
+        <Avatar :profile="props.user" class="user-avatar"/>
 
-        <span class="user-display-name">{{ getDisplayName(props.user) }}</span>
+        <span class="user-display-name" :style="`color: ${generateIrcColor(props.user.uuid)}`">
+            {{ getDisplayName(props.user) }}
+        </span>
 	</NuxtLink>
 </template>
 
 <script lang="ts" setup>
 import type { UserResponse } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<{
     user: UserResponse
@@ -36,7 +40,7 @@ const props = defineProps<{
 .user-avatar {
     min-width: 2.3em;
     max-width: 2.3em;
-    min-width: 2.3em;
+    min-height: 2.3em;
     max-height: 2.3em;
 }
 

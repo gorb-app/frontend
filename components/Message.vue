@@ -1,6 +1,6 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
-			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.user.uuid != props.me.uuid && props.replyMessage?.user.uuid == props.me.uuid }" :data-message-id="props.messageId"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
+			class="message normal-message" :class="{ 'mentioned': (props.replyMessage || props.isMentioned) && props.message.member.user.uuid != props.me.uuid && props.replyMessage?.member.user.uuid == props.me.uuid }" :data-message-id="props.messageId"
 			:editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div v-if="props.replyMessage" class="message-reply-svg">
 			<svg
@@ -25,11 +25,11 @@
 			</svg>
 		</div>
 		<MessageReply v-if="props.replyMessage" :id="props.message.uuid"
-			:author="getDisplayName(props.replyMessage.user)"
+			:author="getDisplayName(props.replyMessage.member)"
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :user="props.author" class="message-author-avatar"/>
+			<Avatar :profile="props.author" class="message-author-avatar"/>
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
@@ -47,7 +47,7 @@
 		</div>
 		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
-	<div v-else ref="messageElement" @contextmenu="createContextMenu($event, menuItems)" :id="props.last ? 'last-message' : undefined"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)" :id="props.last ? 'last-message' : undefined"
 			class="message grouped-message" :class="{ 'message-margin-bottom': props.marginBottom, 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.messageId" :editing.sync="props.editing" :replying-to.sync="props.replyingTo">
 		<div class="left-column">
@@ -68,8 +68,13 @@ import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
+import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
+
+const { getDisplayName } = useProfile()
 
 const props = defineProps<MessageProps>();
+
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
 
 const messageElement = ref<HTMLDivElement>();
 
@@ -139,13 +144,19 @@ console.log("media links:", mediaLinks);
 //	showHover.value = !showHover.value;
 //}
 
-const menuItems = [
-	{ name: "Reply", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
+const menuItems: ContextMenuItem[] = [
+	{ name: "Reply", icon: "lucide:reply", type: "normal", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
 ]
 
 console.log("me:", props.me);
-if (props.author?.uuid == props.me.uuid) {
-	menuItems.push({ name: "Edit", callback: () => { if (messageElement.value) editMessage(messageElement.value, props) } });
+if (props.author?.user.uuid == props.me.uuid) {
+	// Inserts "edit" option at index 1 (below the "reply" option)
+	menuItems.splice(1, 0, { name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
+}
+
+if (props.author?.user.uuid == props.me.uuid /* || check message delete permission*/) {
+	// Inserts "edit" option at index 2 (below the "edit" option)
+	menuItems.splice(2, 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
 }
 
 function getDayDifference(date1: Date, date2: Date) {
@@ -217,7 +228,10 @@ function getDayDifference(date1: Date, date2: Date) {
 }
 
 .message-author-avatar {
-	width: 100%;
+	min-height: 2em;
+	max-height: 2em;
+	min-width: 2em;
+	max-width: 2em;
 }
 
 .left-column {
@@ -256,11 +270,11 @@ function getDayDifference(date1: Date, date2: Date) {
 */
 
 .mentioned {
-	background-color: rgba(0, 255, 166, 0.123);
+	background-color: var(--chat-important-background-color);
 }
 
 .mentioned:hover {
-	background-color: rgba(90, 255, 200, 0.233);
+	background-color: var(--chat-important-highlighted-background-color);
 }
 
 .message-reply-svg {
@@ -280,4 +294,12 @@ function getDayDifference(date1: Date, date2: Date) {
 .message-text ul  {
 	padding-left: 1em;
 }
+</style>
+
+<style>
+
+.replying-to {
+	background-color: var(--chat-featured-message-color);
+}
+
 </style>

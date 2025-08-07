@@ -24,6 +24,8 @@
 </template>
 
 <script lang="ts" setup>
+
+const { getDisplayName } = useProfile()
 const { fetchFriends } = useApi();
 
 const friends = sortUsers(await fetchFriends())
