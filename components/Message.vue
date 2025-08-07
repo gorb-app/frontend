@@ -234,6 +234,10 @@ function getDayDifference(date1: Date, date2: Date) {
 	max-width: 2em;
 }
 
+.message-author-username {
+	cursor: pointer;
+}
+
 .left-column {
 	min-width: 2rem;
 	display: flex;
