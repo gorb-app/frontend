@@ -40,9 +40,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition, UserResponse, WSMessage } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 import { generateIrcColor } from '#imports';
+import { WSEvent } from '~/types/enums';
 
 const { getDisplayName } = useProfile()
 const { fetchMe } = useApi()
@@ -195,16 +196,19 @@ if (accessToken && apiBase) {
 	ws.addEventListener("message", async (event) => {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
-		const parsedData = JSON.parse(event.data);
-		console.log("[MSG] parsed message:", parsedData);
+		const message: WSMessage = JSON.parse(event.data);
+		console.log("[MSG] parsed message:", message);
 		
-		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
-		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
-		pushMessage(parsedData);
-		await nextTick();
-		if (messagesElement.value) {
-			console.log("scrolling to bottom");
-			scrollToBottom(messagesElement.value);
+		if (message.event == WSEvent.MessageSend) {
+			const messageObject = message.entity as MessageResponse;
+			console.log("parsed message type:", messagesType.value[messageObject.uuid]);
+			console.log("parsed message timestamp:", messageTimestamps.value[messageObject.uuid]);
+			pushMessage(messageObject);
+			await nextTick();
+			if (messagesElement.value) {
+				console.log("scrolling to bottom");
+				scrollToBottom(messagesElement.value);
+			}
 		}
 	});
 
