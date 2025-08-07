@@ -11,8 +11,8 @@ export const enum Permission {
 }
 
 export const enum WSEvent {
-	MessageSend,
-	MessageDelete,
-	MessageEdit,
-	Error
+	MessageSend = "MessageSend",
+	MessageDelete = "MessageDelete",
+	MessageEdit = "MessageEdit",
+	Error = "Error"
 }
