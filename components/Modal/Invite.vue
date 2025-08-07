@@ -40,7 +40,8 @@ function copyInvite(type: "link" | "code") {
   if (!invite.value) return;
 
   if (type == "link") {
-    const inviteUrl = URL.parse(`invite/${invite.value}`, `${window.location.protocol}//${window.location.host}`);
+	const runtimeConfig = useRuntimeConfig();
+    const inviteUrl = URL.parse(`invite/${invite.value}`, `${window.location.protocol}//${window.location.host}${runtimeConfig.app.baseURL}`);
     if (inviteUrl) {
       navigator.clipboard.writeText(inviteUrl.href);
     }
