@@ -9,3 +9,10 @@ export const enum Permission {
 	BanMember = 128,
 	KickMember = 256
 }
+
+export const enum WSEvent {
+	MessageSend,
+	MessageDelete,
+	MessageEdit,
+	Error
+}
