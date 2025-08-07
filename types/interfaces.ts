@@ -19,16 +19,17 @@ export interface GuildResponse {
     description: string | null,
     icon: string | null,
     owner_uuid: string,
-    roles: [],
+    roles: RoleResponse[],
     member_count: number
 }
 
 export interface GuildMemberResponse {
 	uuid: string,
 	nickname: string,
-	user_uuid: string,
 	guild_uuid: string,
-	user: UserResponse
+	is_owner: boolean,
+	user: UserResponse,
+	roles: RoleResponse[]
 }
 
 export interface ChannelResponse {
