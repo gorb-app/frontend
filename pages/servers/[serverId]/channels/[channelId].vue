@@ -56,7 +56,7 @@ const showGuildSettings = ref(false);
 //const servers = await fetchWithApi("/servers") as { uuid: string, name: string, description: string }[];
 //console.log("channelid: servers:", servers);
 
-const { fetchMembers } = useApi();
+const { fetchMembers, fetchMeMember } = useApi();
 
 onMounted(async () => {
 	console.log("mounting");
@@ -84,6 +84,14 @@ async function setArrayVariables() {
 	console.log("channels:", channels.value);
 	channel.value = await fetchWithApi(`/channels/${route.params.channelId}`);
 	console.log("channel:", channel.value);
+	const meMember = useState<GuildMemberResponse | undefined>("meMember");
+	console.log("[CHANNEL] meMember:", meMember.value);
+	if (!meMember.value) {
+		console.log("[CHANNEL] meMember is uninitialized, initializing");
+		const fetchedMeMember = await fetchMeMember(route.params.serverId as string);
+		meMember.value = fetchedMeMember;
+		console.log("[CHANNEL] meMember set to:", fetchedMeMember);
+	}
 }
 
 function toggleGuildSettings(e: Event) {
