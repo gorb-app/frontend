@@ -31,6 +31,7 @@ function hideModalPopup() {
 </script>
 
 <style>
+
 .member-item {
     position: relative;
 }
@@ -41,4 +42,9 @@ function hideModalPopup() {
 	min-width: 2.3em;
 	max-width: 2.3em;
 }
+
+.member-display-name {
+	cursor: pointer;
+}
+
 </style>
