@@ -1,5 +1,5 @@
 <template>
-    <div class="member-item" @click.prevent="showModalPopup" tabindex="0">
+    <div class="member-item" @click.prevent="showModalPopup" tabindex="0" @contextmenu="showContextMenu($event, contextMenu, menuItems)">
         <Avatar :profile="props.member" class="member-avatar"/>
         <span class="member-display-name" :style="`color: ${generateIrcColor(props.member.user.uuid)}`">
             {{ getDisplayName(props.member) }}
@@ -11,13 +11,17 @@
 
 <script lang="ts" setup>
 import { ModalProfilePopup } from '#components';
-import type { GuildMemberResponse } from '~/types/interfaces';
+import type { ContextMenuInterface, GuildMemberResponse } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
+
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
 
 const props = defineProps<{
     member: GuildMemberResponse
 }>();
+
+const menuItems = await createMemberContextMenuItems(props.member, props.member.guild_uuid);
 
 const modalPopupVisible = ref<boolean>(false);
 
