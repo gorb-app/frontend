@@ -1,3 +1,5 @@
+import type { WSEvent } from "./enums"
+
 export interface ChannelPermissionResponse {
 	channel_uuid: string,
 	role_uuid: string,
@@ -54,6 +56,19 @@ export interface MessageResponse {
 	message: string,
 	reply_to: string | null,
 	member: GuildMemberResponse,
+}
+
+export interface IMessageDelete {
+	uuid: string
+}
+
+export interface WSError {
+	message: string
+}
+
+export interface WSMessage {
+	event: WSEvent,
+	entity: MessageResponse | IMessageDelete | WSError
 }
 
 export interface InviteResponse {
