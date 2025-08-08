@@ -13,6 +13,8 @@
 			<DefaultIcon v-else-if="props.contextName && props.guildUuid"
 				class="context-icon" 
 				:name="props.contextName" :seed="props.guildUuid"/>
+			<NuxtImg v-else
+				:src="defaultIcon" />
 			
 			<div class="context-title">
 				{{ props.contextName }}
@@ -31,6 +33,9 @@
 import type { NavbarInterface, NavbarItem } from '~/types/interfaces';
 
 const props = defineProps<NavbarInterface>();
+
+const runtimeConfig = useRuntimeConfig();
+const defaultIcon = `${runtimeConfig.app.baseURL}/icon.svg`
 
 </script>
 

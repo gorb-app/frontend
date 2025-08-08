@@ -45,10 +45,9 @@ onActivated(async () => {
 })
 
 function updateNavbar() {
-	const runtimeConfig = useRuntimeConfig();
 	navbar.value.channelItems = []
 	navbar.value.contextName = "Direct Messages"
-	navbar.value.contextIcon = `${runtimeConfig.app.baseURL}/icon.svg`
+	navbar.value.contextIcon = undefined
 }
 </script>
 
