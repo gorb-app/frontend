@@ -1,6 +1,6 @@
 <template>
 	<div id="navbar">
-		<div v-for="entry of props.clientItems" id="navbar-left">
+		<div v-if="props.clientItems" v-for="entry of props.clientItems" id="navbar-left">
 			<button class="navbar-item" :title="entry.title"
 					@click.prevent="entry.callback()">
 				<Icon :name="entry.icon" class="navbar-item-icon" />
@@ -20,7 +20,7 @@
 				{{ props.contextName }}
 			</div>
 		</div>
-		<div v-for="entry of props.channelItems" id="navbar-right">
+		<div v-if="props.channelItems" v-for="entry of props.channelItems" id="navbar-right">
 			<button class="navbar-item" :title="entry.title"
 					@click.prevent="entry.callback()">
 				<Icon :name="entry.icon" class="navbar-item-icon" />

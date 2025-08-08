@@ -130,8 +130,8 @@ export interface NavbarItem {
 }
 
 export interface NavbarInterface {
-	clientItems: NavbarItem[]
-	channelItems: NavbarItem[] // search bar will require some changes
+	clientItems?: NavbarItem[]
+	channelItems?: NavbarItem[] // search bar will require some changes
 	contextName?: string
 	contextIcon?: string
 	guildUuid?: string
