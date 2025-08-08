@@ -14,6 +14,7 @@
 				class="context-icon" 
 				:name="props.contextName" :seed="props.guildUuid"/>
 			<NuxtImg v-else
+				class="context-icon"
 				:src="defaultIcon" />
 			
 			<div class="context-title">

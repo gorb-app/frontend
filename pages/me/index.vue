@@ -45,9 +45,12 @@ onActivated(async () => {
 })
 
 function updateNavbar() {
-	navbar.value.channelItems = []
-	navbar.value.contextName = "Direct Messages"
-	navbar.value.contextIcon = undefined
+	if (navbar.value) {
+		navbar.value.channelItems = []
+		navbar.value.contextName = "Direct Messages"
+		navbar.value.contextIcon = undefined
+		navbar.value.guildUuid = undefined
+	}
 }
 </script>
 
