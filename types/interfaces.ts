@@ -121,3 +121,19 @@ export interface ContextMenuInterface {
 	pointerY: number,
 	items: ContextMenuItem[]
 }
+
+export interface NavbarItem {
+	title: string,
+	icon: string,
+	hasPing?: boolean, // whether to draw a "ping" icon or not
+	callback: (...args: any[]) => any;
+}
+
+export interface NavbarInterface {
+	clientItems: NavbarItem[]
+	channelItems: NavbarItem[] // search bar will require some changes
+	contextName?: string
+	contextIcon?: string
+	guildUuid?: string
+}
+

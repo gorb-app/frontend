@@ -36,11 +36,12 @@ import ChannelEntry from "~/components/Guild/ChannelEntry.vue";
 import GuildOptionsMenu from "~/components/Guild/GuildOptionsMenu.vue";
 import MemberEntry from "~/components/Guild/MemberEntry.vue";
 import ResizableSidebar from "~/components/UserInterface/ResizableSidebar.vue";
-import type { ChannelResponse, GuildMemberResponse, GuildResponse } from "~/types/interfaces";
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, NavbarInterface } from "~/types/interfaces";
 
 const route = useRoute();
 
 const loading = useState("loading");
+const navbar = useState<NavbarInterface>("navbar");
 
 const channelUrlPath = `channels/${route.params.channelId}`;
 
@@ -65,13 +66,18 @@ onMounted(async () => {
 	console.log("fetched guild");
 	await setArrayVariables();
 	console.log("set array variables");
+
+	updateNavbar()
 });
 
 onActivated(async () => {
 	console.log("activating");
+	updateNavbar()
+
 	const guildUrl = `guilds/${route.params.serverId}`;
 	server.value = await fetchWithApi(guildUrl);
 	console.log("fetched guild");
+	
 	await setArrayVariables();
 	console.log("set array variables");
 });
@@ -97,6 +103,14 @@ function toggleInvitePopup(e: Event) {
 }
 
 function handleMemberClick(member: GuildMemberResponse) {
+}
+
+function updateNavbar() {
+	if (server.value) {
+		navbar.value.contextName = server.value.name
+		navbar.value.contextIcon = server.value.icon ?? undefined
+		navbar.value.guildUuid = server.value.uuid
+	}
 }
 </script>
 

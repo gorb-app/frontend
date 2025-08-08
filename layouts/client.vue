@@ -1,13 +1,7 @@
 <template>
 	<Loading v-show="loading" />
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
-		<div id="homebar">
-			<div class="homebar-item">
-				<marquee>
-					gorb!!!!!
-				</marquee>
-			</div>
-		</div>
+		<Navbar id="navbar" v-bind="navbar" />
 		<div id="page-content">
 			<div id="left-column">
 				<div class="left-column-segment">
@@ -52,14 +46,16 @@ import DefaultIcon from '~/components/DefaultIcon.vue';
 import GuildDropdown from '~/components/Guild/GuildDropdown.vue';
 import Loading from '~/components/Popups/Loading.vue';
 import Button from '~/components/UserInterface/Button.vue';
+import Navbar from '~/components/UserInterface/Navbar.vue';
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
-import type { GuildResponse } from '~/types/interfaces';
+import type { GuildResponse, NavbarInterface, NavbarItem } from '~/types/interfaces';
 
 definePageMeta({
 	keepalive: true
 });
 
 const loading = useState("loading", () => false);
+const navbar = useState<NavbarInterface>("navbar")
 
 const createButtonContainer = ref<HTMLButtonElement>();
 
@@ -68,60 +64,60 @@ const api = useApi();
 
 const options = [
 	{ name: "Join", value: "join", callback: async () => {
-			console.log("join guild!");
-			const div = document.createElement("div");
-			const guildJoinModal = h(ModalBase, {
-				title: "Join Guild",
-				id: "guild-join-modal",
-				onClose: () => {
-					unrender(div);
-				},
-				onCancel: () => {
-					unrender(div);
-				},
-				style: "height: 20dvh; width: 15dvw"
+		console.log("join guild!");
+		const div = document.createElement("div");
+		const guildJoinModal = h(ModalBase, {
+			title: "Join Guild",
+			id: "guild-join-modal",
+			onClose: () => {
+				unrender(div);
 			},
-			[
-				h("input", {
-					id: "guild-invite-input",
-					type: "text",
-					placeholder: "oyqICZ",
-				}),
-				h(Button, {
-					text: "Join",
-					variant: "normal",
-					callback: async () => {
-						const input = document.getElementById("guild-invite-input") as HTMLInputElement;
-						const invite = input.value;
-						if (invite.length == 6) {
-							try {
-								const joinedGuild = await api.joinGuild(invite);
-								guilds.push(joinedGuild);
-								return await navigateTo(`/servers/${joinedGuild.uuid}`);
-							} catch (error) {
-								alert(`Couldn't use invite: ${error}`);
-							}
+			onCancel: () => {
+				unrender(div);
+			},
+			style: "height: 20dvh; width: 15dvw"
+		},
+		[
+			h("input", {
+				id: "guild-invite-input",
+				type: "text",
+				placeholder: "oyqICZ",
+			}),
+			h(Button, {
+				text: "Join",
+				variant: "normal",
+				callback: async () => {
+					const input = document.getElementById("guild-invite-input") as HTMLInputElement;
+					const invite = input.value;
+					if (invite.length == 6) {
+						try {
+							const joinedGuild = await api.joinGuild(invite);
+							guilds.push(joinedGuild);
+							return await navigateTo(`/servers/${joinedGuild.uuid}`);
+						} catch (error) {
+							alert(`Couldn't use invite: ${error}`);
 						}
 					}
-				})
-			]);
-			document.body.appendChild(div);
-			render(guildJoinModal, div);
-		}
-	},
-	{ name: "Create", value: "create", callback: async () => {
-			console.log("create guild");
-			const user = await useAuth().getUser();
-			const div = document.createElement("div");
-			const guildCreateModal = h(ModalBase, {
-				title: "Create a Guild",
-				id: "guild-join-modal",
-				onClose: () => {
-					unrender(div);
-				},
-				onCancel: () => {
-					unrender(div);
-				},
+				}
+			})
+		]);
+		document.body.appendChild(div);
+		render(guildJoinModal, div);
+	}
+},
+{ name: "Create", value: "create", callback: async () => {
+	console.log("create guild");
+	const user = await useAuth().getUser();
+	const div = document.createElement("div");
+	const guildCreateModal = h(ModalBase, {
+		title: "Create a Guild",
+		id: "guild-join-modal",
+		onClose: () => {
+			unrender(div);
+		},
+		onCancel: () => {
+			unrender(div);
+		},
 				style: "height: 20dvh; width: 15dvw;"
 			},
 			[
@@ -153,6 +149,23 @@ const options = [
 ];
 
 const guilds = await api.fetchMyGuilds();
+
+onMounted(() => {
+	if (!navbar.value) {
+		const helpItem = {
+			title: "Source",
+			icon: "lucide:code-xml",
+			callback: () => { open("https://git.gorb.app/gorb/frontend") } 
+		} as NavbarItem
+
+		navbar.value = {
+			clientItems: [
+				helpItem
+			],
+			channelItems: [] // set by the channel
+		} as NavbarInterface
+	}
+})
 
 function createDropdown() {
 	const dropdown = h(GuildDropdown, { options });
@@ -190,22 +203,6 @@ function createDropdown() {
 .visible {
 	opacity: 100%;
 	transition: opacity 500ms;
-}
-
-#homebar {
-	min-height: 4dvh;
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	background: var(--optional-topbar-background);
-	background-color: var(--topbar-background-color);
-	border-bottom: 1px solid var(--padding-color);
-	padding-left: 5dvw;
-	padding-right: 5dvw;
-}
-
-.homebar-item {
-	width: 100dvw;
 }
 
 #page-content {
