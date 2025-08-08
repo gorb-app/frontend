@@ -9,11 +9,9 @@
 		<div id="navbar-middle">
 			<NuxtImg v-if="props.contextIcon"
 				class="context-icon"
-				:alt="props.contextName"
 				:src="props.contextIcon" />
 			<DefaultIcon v-else-if="props.contextName && props.guildUuid"
 				class="context-icon" 
-				:alt="props.contextName"
 				:name="props.contextName" :seed="props.guildUuid"/>
 			
 			<div class="context-title">
@@ -97,7 +95,7 @@ const props = defineProps<NavbarInterface>();
 
 	font-weight: 500;
 	font-size: calc(var(--navbar-height) * .5);
-	line-height: calc(var(--navbar-height) * .9);
+	line-height: var(--navbar-height);
 }
 
 .navbar-item {
