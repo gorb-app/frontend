@@ -41,7 +41,6 @@ import type { ChannelResponse, GuildMemberResponse, GuildResponse, INavbar } fro
 const route = useRoute();
 
 const loading = useState("loading");
-const navbar = useState<INavbar>("navbar");
 
 const channelUrlPath = `channels/${route.params.channelId}`;
 
