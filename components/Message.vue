@@ -195,6 +195,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	align-items: center;
 	width: 100%;
 	overflow-wrap: anywhere;
+	padding-top: .2rem;
+	padding-bottom: .2rem;
 }
 
 .message-reply-preview {
@@ -208,10 +210,6 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .normal-message {
 	margin-top: 1dvh;
-}
-
-.grouped-message {
-	margin-top: .3em;
 }
 
 .message-metadata {
