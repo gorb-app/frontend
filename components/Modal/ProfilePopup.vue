@@ -150,12 +150,13 @@ function buttonEditProfile() {
 	position: absolute;
 	left: 2em;
 	top: 2.5em;
-
+	
 	z-index: 1;
-
+	
 	width: 6em;
 	height: 6em;
-
+	
+	background-color: var(--accent-color);
 	border: .15em solid var(--accent-color);
 }
 
@@ -214,7 +215,7 @@ function buttonEditProfile() {
 	
 	align-self: center;
 
-	width: 100%;
+	width: fit-content;
 	font-size: .8em;
 	font-weight: lighter;
 
