@@ -152,18 +152,18 @@ const guilds = await api.fetchMyGuilds();
 
 onMounted(() => {
 	if (!navbar.value) {
-		const helpItem = {
+		const sourceLinkItem: NavbarItem = {
 			title: "Source",
 			icon: "lucide:code-xml",
 			callback: () => { open("https://git.gorb.app/gorb/frontend") } 
-		} as NavbarItem
+		}
 
 		navbar.value = {
 			clientItems: [
-				helpItem
+				sourceLinkItem
 			],
 			channelItems: [] // set by the channel
-		} as INavbar
+		}
 	}
 })
 
