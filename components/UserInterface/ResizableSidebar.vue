@@ -1,5 +1,5 @@
 <template>
-	<div ref="resizableSidebar" class="resizable-sidebar"
+	<div ref="resizableSidebar" class="resizable-sidebar" @contextmenu="showContextMenu($event, contextMenu, menuItems)"
 			:style="{
 				'width': storedWidth ? storedWidth : props.width,
 				'min-width': props.minWidth,
@@ -49,10 +49,6 @@ onMounted(() => {
 	if (resizableSidebar.value && widthResizer.value) {
 		widthResizer.value.addEventListener("pointerdown", (e) => {
 			e.preventDefault();
-			if (e.button == 2) {
-				showContextMenu(e, contextMenu.value, menuItems);
-				return
-			};
 			document.body.style.cursor = "ew-resize";
 			function handleMove(pointer: PointerEvent) {
 				if (resizableSidebar.value) {

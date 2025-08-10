@@ -76,7 +76,7 @@ const route = useRoute();
 
 const props = defineProps<MessageProps>();
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
+const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 const messageElement = ref<HTMLDivElement>();
 

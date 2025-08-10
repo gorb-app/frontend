@@ -15,7 +15,7 @@ import type { ContextMenuInterface, GuildMemberResponse } from '~/types/interfac
 
 const { getDisplayName } = useProfile()
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
+const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 const props = defineProps<{
     member: GuildMemberResponse
