@@ -384,7 +384,7 @@ router.beforeEach((to, from, next) => {
 	flex-direction: column;
 	padding-left: 1dvw;
 	padding-right: 1dvw;
-	padding-bottom: 2em;
+	padding-bottom: 1em;
 }
 
 .message-box-button {
