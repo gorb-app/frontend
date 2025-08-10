@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { NavbarInterface, NavbarItem } from '~/types/interfaces';
+import type { INavbar, NavbarItem } from '~/types/interfaces';
 
-const props = defineProps<NavbarInterface>();
+const props = defineProps<INavbar>();
 
 const runtimeConfig = useRuntimeConfig();
 const defaultIcon = `${runtimeConfig.app.baseURL}/icon.svg`

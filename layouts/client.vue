@@ -48,14 +48,14 @@ import Loading from '~/components/Popups/Loading.vue';
 import Button from '~/components/UserInterface/Button.vue';
 import Navbar from '~/components/UserInterface/Navbar.vue';
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
-import type { GuildResponse, NavbarInterface, NavbarItem } from '~/types/interfaces';
+import type { GuildResponse, INavbar, NavbarItem } from '~/types/interfaces';
 
 definePageMeta({
 	keepalive: true
 });
 
 const loading = useState("loading", () => false);
-const navbar = useState<NavbarInterface>("navbar")
+const navbar = useState<INavbar>("navbar")
 
 const createButtonContainer = ref<HTMLButtonElement>();
 
@@ -163,7 +163,7 @@ onMounted(() => {
 				helpItem
 			],
 			channelItems: [] // set by the channel
-		} as NavbarInterface
+		} as INavbar
 	}
 })
 

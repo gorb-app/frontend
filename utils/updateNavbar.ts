@@ -1,10 +1,10 @@
-import type { NavbarInterface, NavbarOptions } from "~/types/interfaces";
+import type { INavbar, NavbarOptions } from "~/types/interfaces";
 
-const navbar = useState<NavbarInterface>("navbar")
+const navbar = useState<INavbar>("navbar")
 
 export default async (options: NavbarOptions) => {
 	await nextTick()
-	
+
 	if (navbar.value) {
 		if (options.guild) {
 			navbar.value.channelItems = []

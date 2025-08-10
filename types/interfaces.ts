@@ -129,7 +129,7 @@ export interface NavbarItem {
 	callback: (...args: any[]) => any;
 }
 
-export interface NavbarInterface {
+export interface INavbar {
 	clientItems?: NavbarItem[]
 	channelItems?: NavbarItem[] // search bar will require some changes
 	contextName?: string
