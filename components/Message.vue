@@ -29,7 +29,7 @@
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :profile="props.author" class="message-author-avatar"/>
+			<Avatar :profile="props.author" class="message-author-avatar" @contextmenu="showContextMenu($event, contextMenu, memberMenuItems)" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
@@ -236,6 +236,7 @@ function getDayDifference(date1: Date, date2: Date) {
 	max-height: 2em;
 	min-width: 2em;
 	max-width: 2em;
+	cursor: pointer;
 }
 
 .message-author-username {
