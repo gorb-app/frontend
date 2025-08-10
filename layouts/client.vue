@@ -55,7 +55,18 @@ definePageMeta({
 });
 
 const loading = useState("loading", () => false);
-const navbar = useState<INavbar>("navbar")
+const navbar = useState<INavbar>("navbar", () => {
+	return {
+		clientItems: [
+			{
+				title: "Source",
+				icon: "lucide:code-xml",
+				callback: () => { open("https://git.gorb.app/gorb/frontend") } 
+			}
+		],
+		channelItems: [] // set by the channel
+	}
+})
 
 const createButtonContainer = ref<HTMLButtonElement>();
 
@@ -149,23 +160,6 @@ const options = [
 ];
 
 const guilds = await api.fetchMyGuilds();
-
-onMounted(() => {
-	if (!navbar.value) {
-		const sourceLinkItem: NavbarItem = {
-			title: "Source",
-			icon: "lucide:code-xml",
-			callback: () => { open("https://git.gorb.app/gorb/frontend") } 
-		}
-
-		navbar.value = {
-			clientItems: [
-				sourceLinkItem
-			],
-			channelItems: [] // set by the channel
-		}
-	}
-})
 
 function createDropdown() {
 	const dropdown = h(GuildDropdown, { options });
