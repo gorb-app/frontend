@@ -23,12 +23,10 @@ import DirectMessagesSidebar from '~/components/Me/DirectMessagesSidebar.vue';
 import Button from '~/components/UserInterface/Button.vue';
 import AddFriend from '~/components/Me/AddFriend.vue';
 import FriendsList from '~/components/Me/FriendsList.vue';
-import type { NavbarInterface } from '~/types/interfaces';
 
 const { fetchFriends } = useApi();
 
 let filter = ref("all");
-const navbar = useState<NavbarInterface>("navbar")
 
 const friends = await fetchFriends()
 
@@ -37,21 +35,12 @@ function updateFilter(newFilter: string) {
 }
 
 onMounted(async () => {
-	updateNavbar()
+	updateNavbar({isDirectMessages: true})
 })
 
 onActivated(async () => {
-	updateNavbar()
+	updateNavbar({isDirectMessages: true})
 })
-
-function updateNavbar() {
-	if (navbar.value) {
-		navbar.value.channelItems = []
-		navbar.value.contextName = "Direct Messages"
-		navbar.value.contextIcon = undefined
-		navbar.value.guildUuid = undefined
-	}
-}
 </script>
 
 <style module>

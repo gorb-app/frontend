@@ -137,3 +137,9 @@ export interface NavbarInterface {
 	guildUuid?: string
 }
 
+export interface NavbarOptions {
+	guild?: GuildResponse
+	channel?: ChannelResponse
+	isDirectMessages?: boolean
+}
+

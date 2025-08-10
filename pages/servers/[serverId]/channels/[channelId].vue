@@ -67,12 +67,12 @@ onMounted(async () => {
 	await setArrayVariables();
 	console.log("set array variables");
 
-	updateNavbar()
+	updateNavbar({guild: server.value})
 });
 
 onActivated(async () => {
 	console.log("activating");
-	updateNavbar()
+	updateNavbar({guild: server.value})
 
 	const guildUrl = `guilds/${route.params.serverId}`;
 	server.value = await fetchWithApi(guildUrl);
@@ -105,13 +105,6 @@ function toggleInvitePopup(e: Event) {
 function handleMemberClick(member: GuildMemberResponse) {
 }
 
-function updateNavbar() {
-	if (server.value) {
-		navbar.value.contextName = server.value.name
-		navbar.value.contextIcon = server.value.icon ?? undefined
-		navbar.value.guildUuid = server.value.uuid
-	}
-}
 </script>
 
 <style>
