@@ -224,13 +224,7 @@ function buttonEditProfile() {
 
 	overflow-y: auto;
 	overflow-x: hidden;
-	scrollbar-width: none;
 }
-
-#about-me-text::-webkit-scrollbar {
-	display: none;
-}
-
 
 #profile-footer {
 	margin-left: 1em;
