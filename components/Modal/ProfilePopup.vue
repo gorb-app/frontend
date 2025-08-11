@@ -114,16 +114,16 @@ function buttonEditProfile() {
 	text-align: left;
 
 	position: relative;
-	max-height: 60dvh;
-	max-width: 60dvw;
+	max-height: 70dvh;
+	max-width: 70dvw;
 	height: 30em;
 	width: 40em;
 
 	display: flex;
 	flex-direction: column;
 
+	color: var(--text-color);
 	background-color: var(--chat-background-color);
-	border-radius: var(--standard-radius);
 
 	overflow-y: scroll;
 }
@@ -142,7 +142,6 @@ function buttonEditProfile() {
 	z-index: 0;
 
 	background-color: var(--primary-color);
-	border-radius: var(--standard-radius) var(--standard-radius) 0 0; /* top left and top right */
 }
 
 #avatar {
