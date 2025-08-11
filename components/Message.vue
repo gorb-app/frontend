@@ -271,9 +271,7 @@ function getDayDifference(date1: Date, date2: Date) {
 
 .side-message-date {
 	font-size: .625em;
-	display: flex;
-	align-items: center;
-	align-content: center;
+	margin-top: .4em;
 }
 
 /*
