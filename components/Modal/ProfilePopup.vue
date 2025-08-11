@@ -123,7 +123,7 @@ function buttonEditProfile() {
 	flex-direction: column;
 
 	color: var(--text-color);
-	background-color: var(--chat-background-color);
+	background-color: var(--modal-background-color);
 
 	overflow-y: scroll;
 }

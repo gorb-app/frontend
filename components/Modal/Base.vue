@@ -38,7 +38,8 @@ onMounted(() => {
   max-height: 90dvh;
 	max-width: 90dvw;
 
-	border-radius: var(--standard-radius);
+	background-color: var(--modal-background-color);
+  border-radius: var(--standard-radius);
   border-width: 0;
   padding: 0;
 
