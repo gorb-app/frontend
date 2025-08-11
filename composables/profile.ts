@@ -3,7 +3,7 @@ import type { GuildMemberResponse, UserResponse } from "~/types/interfaces"
 const { fetchFriends } = useApi();
 
 export const useProfile = () => {
-	function getAboutMe (profile: UserResponse | GuildMemberResponse): string | null {
+	function getAboutMe(profile: UserResponse | GuildMemberResponse): string | null {
 		if ("username" in profile) {
 			return profile.about
 		} else {
@@ -11,7 +11,7 @@ export const useProfile = () => {
 		}
 	}
 
-	function getDisplayName (profile: UserResponse | GuildMemberResponse): string  {
+	function getDisplayName(profile: UserResponse | GuildMemberResponse): string  {
 		if ("username" in profile) {
 			// assume it's a UserResponse
 			if (profile.display_name) return profile.display_name
@@ -24,7 +24,15 @@ export const useProfile = () => {
 		}
 	}
 
-	async function getFriendsSince (profile: UserResponse | GuildMemberResponse): Promise<Date | null> {
+	function getAvatarUrl(profile: UserResponse | GuildMemberResponse): string | null {
+		if ("username" in profile) {
+			return profile.avatar
+		} else {
+			return profile.user.avatar
+		}
+	}
+
+	async function getFriendsSince(profile: UserResponse | GuildMemberResponse): Promise<Date | null> {
 		let user_uuid: string;
 
 		if ("username" in profile) {
@@ -42,15 +50,15 @@ export const useProfile = () => {
 		return null
 	}
 
-	function getGuildJoinDate (profile: UserResponse | GuildMemberResponse): Date | null {
+	function getGuildJoinDate(profile: UserResponse | GuildMemberResponse): Date | undefined {
 		if ("username" in profile) {
-			return null
+			return undefined
 		} else {
 			return uuidToDate(profile.uuid)
 		}
 	}
 
-	function getPronouns (profile: UserResponse | GuildMemberResponse): string | null  {
+	function getPronouns(profile: UserResponse | GuildMemberResponse): string | null {
 		if ("username" in profile) {
 			return profile.pronouns
 		} else {
@@ -58,7 +66,7 @@ export const useProfile = () => {
 		}
 	}
 
-	function getRegistrationDate (profile: UserResponse | GuildMemberResponse): Date | null {
+	function getRegistrationDate(profile: UserResponse | GuildMemberResponse): Date {
 		if ("username" in profile) {
 			return uuidToDate(profile.uuid)
 		} else {
@@ -66,7 +74,7 @@ export const useProfile = () => {
 		}
 	}
 
-	function getUsername (profile: UserResponse | GuildMemberResponse): string {
+	function getUsername(profile: UserResponse | GuildMemberResponse): string {
 		if ("username" in profile) {
 			return profile.username
 		} else {
@@ -74,22 +82,32 @@ export const useProfile = () => {
 		}
 	}
 
-	function getUuid (profile: UserResponse | GuildMemberResponse): string | null {
+	function getUserUuid(profile: UserResponse | GuildMemberResponse): string {
 		if ("username" in profile) {
 			return profile.uuid
 		} else {
 			return profile.user.uuid
 		}
 	}
+
+	function getUser(profile: UserResponse | GuildMemberResponse): UserResponse {
+		if ("username" in profile) {
+			return profile
+		} else {
+			return profile.user
+		}
+	}
 	
 	return {
 		getAboutMe,
 		getDisplayName,
+		getAvatarUrl,
 		getFriendsSince,
 		getGuildJoinDate,
 		getRegistrationDate,
 		getPronouns,
 		getUsername,
-		getUuid		
+		getUserUuid,
+		getUser
 	}
 }
