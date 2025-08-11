@@ -1,18 +1,11 @@
 <template>
   <dialog ref="dialog" class="modal" :class="props.obscure ? 'modal-obscure' : 'modal-regular'">
-	<span class="modal-exit-button-container" style="position: absolute; right: 2em; top: .2em; width: .5em; height: .5em;">
-		<Button text="✕" variant="stealth" :callback="onCloseButton" />
-	</span>
-	<div class="modal-content">
-		<h1 class="modal-title">{{ title }}</h1>
-		<slot />
-	</div>
+    <slot />
   </dialog>
 </template>
 
 <script lang="ts" setup>
 import type { ModalProps } from '~/types/interfaces';
-import Button from '~/components/UserInterface/Button.vue';
 
 const props = defineProps<ModalProps>();
 const dialog = ref<HTMLDialogElement>();
@@ -20,75 +13,46 @@ const dialog = ref<HTMLDialogElement>();
 onMounted(() => {
   if (dialog.value) {
     dialog.value.showModal();
-    if (props.onClose) {
-      dialog.value.addEventListener("close", props.onClose);
-    }
-    if (props.onCancel) {
-      dialog.value.addEventListener("cancel", props.onCancel);
-    }
+
+    // close the modal if you click outside of it
+    dialog.value.addEventListener('click', (event) => {
+      if (event.target === dialog.value) {
+        dialog.value.close();
+      }
+    });
+
+    if (props.onClose) dialog.value.addEventListener("close", props.onClose);
+    if (props.onCancel) dialog.value.addEventListener("cancel", props.onCancel);
   }
 });
-
-function onCloseButton () {
-  if (dialog.value) {
-    if (props.onCloseButton) {
-      props.onCloseButton()
-    }
-    
-    dialog.value.remove
-  }
-}
-
 </script>
 
-<style>
+<style scoped>
 .modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 1em;
-  opacity: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 
-  padding: var(--standard-radius); 
+  /* preferably set these to 70dvh and 70dvw in your components, this is a failsafe if you forget */
+  max-height: 90dvh;
+	max-width: 90dvw;
+
 	border-radius: var(--standard-radius);
-	background-color: var(--chat-highlighted-background-color);
-  color: var(--text-color);
+  border-width: 0;
+  padding: 0;
 
-  overflow: hidden;
+  /* completely transparent colour, fixes weird border radius stuff */
+  background-color: #b00b1e00; 
 }
 
 .modal-regular::backdrop {
 	background-color: var(--chat-background-color);
-	opacity: 0%;
+	opacity: 10%;
 }
 
 .modal-obscure::backdrop {
 	background-color: var(--chat-background-color);
 	opacity: 80%;
 }
-
-.modal-top-container {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
-
-.modal-title {
-  font-size: 1.5rem;
-  padding: 0;
-}
-
-.modal-content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 1em;
-	margin: 1em;
-	width: 100%;
-}
-
 </style>
