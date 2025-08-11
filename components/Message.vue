@@ -55,8 +55,8 @@
 		</div>
 		<div class="message-data">
 			<div class="message-text" :class="$style['message-text']" v-html="sanitized" :hidden="hideText" tabindex="0"></div>
+			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 		</div>
-		<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 	</div>
 </template>
 
