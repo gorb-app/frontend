@@ -200,7 +200,8 @@ function getDayDifference(date1: Date, date2: Date) {
 	padding-top: .2rem;
 	padding-bottom: .2rem;
 	padding-left: 2dvw;
-	padding-right: 2dvw;
+	padding-right: 1dvw;
+	border-radius: 0 var(--minor-radius) var(--minor-radius) 0;
 }
 
 .message-reply-preview {
