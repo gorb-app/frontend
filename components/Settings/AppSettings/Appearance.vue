@@ -51,8 +51,9 @@
 <script lang="ts" setup>
 const runtimeConfig = useRuntimeConfig()
 const baseURL = runtimeConfig.app.baseURL;
-const styleFolder = `${baseURL}/themes/style`
-const layoutFolder = `${baseURL}/themes/layout`
+
+const styleFolder = `${baseURL}themes/style`
+const layoutFolder = `${baseURL}themes/layout`
 
 enum StyleLayout {
   Style,
