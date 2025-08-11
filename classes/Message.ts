@@ -12,8 +12,4 @@ export default class Message {
 		this.userUuid = user_uuid;
 		this.message = message;
 	}
-
-	getTimestamp() {
-		return uuidToTimestamp(this.uuid);
-	}
 }
