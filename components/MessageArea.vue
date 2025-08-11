@@ -320,8 +320,6 @@ router.beforeEach((to, from, next) => {
 #message-area {
 	display: flex;
 	flex-direction: column;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
 	overflow: hidden;
 	flex-grow: 1;
 }
@@ -329,8 +327,8 @@ router.beforeEach((to, from, next) => {
 #message-box {
 	margin-top: auto; /* force it to the bottom of the screen */
 	margin-bottom: 2dvh;
-	margin-left: 1dvw;
-	margin-right: 1dvw;
+	margin-left: 2dvw;
+	margin-right: 2dvw;
 
 	padding-left: 2%;
 	padding-right: 2%;
@@ -382,8 +380,6 @@ router.beforeEach((to, from, next) => {
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
 	padding-bottom: 1em;
 }
 

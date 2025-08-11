@@ -188,15 +188,19 @@ function getDayDifference(date1: Date, date2: Date) {
 
 <style scoped>
 .message {
-	text-align: left;
-	/* border: 1px solid lightcoral; */
 	display: grid;
 	grid-template-columns: 4rem 1fr;
 	align-items: center;
-	width: 100%;
+
+	text-align: left;
+	/* -4 dvw due to 2dvw of padding on both sides */
+	width: calc(100% - 4dvw);
 	overflow-wrap: anywhere;
+
 	padding-top: .2rem;
 	padding-bottom: .2rem;
+	padding-left: 2dvw;
+	padding-right: 2dvw;
 }
 
 .message-reply-preview {
