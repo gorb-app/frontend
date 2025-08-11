@@ -1,10 +1,8 @@
 <template>
 	<div class="radio-buttons-container" ref="radioButtonsContainer">
-		<div
-			v-for="(textString, index) in props.textStrings"
-			class="radio-button"
-			@click="onClick(index)"
-		>
+		<div v-for="(textString, index) in props.textStrings"
+				class="radio-button"
+				@click="onClick(index)">
 			<span class="radio-button-radio"></span>
 			<span class="radio-button-text">{{ textString }}</span>
 		</div>
