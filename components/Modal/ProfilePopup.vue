@@ -27,15 +27,17 @@
 			</div>
 			<VerticalSpacer />
 
-			<div v-if="aboutMe" id="profile-body">
-				<div v-if="aboutMe" id="about-me-container">
-					<div><Icon name="lucide:info" size="1.1em"/></div>
-					<div id="about-me-text">
-						{{ " " + aboutMe }}
+			<div v-if="aboutMe">
+				<div id="profile-body">
+					<div id="about-me-container">
+						<div><Icon name="lucide:info" size="1.1em"/></div>
+						<div id="about-me-text">
+							{{ " " + aboutMe }}
+						</div>
 					</div>
 				</div>
+				<VerticalSpacer />
 			</div>
-			<VerticalSpacer v-if="aboutMe" />
 
 			<div id="profile-footer">
 				<div id="dates">
