@@ -3,7 +3,7 @@
 
 	<div :class="{ hidden: loading, visible: !loading }" id="client-root">
 		<div class="flex-container-row">
-			<GuildList />
+			<SidebarColumn />
 			<slot />
 		</div>
 	</div>
@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import Loading from '~/components/Popups/Loading.vue';
-import GuildList from '~/components/UserInterface/GuildList.vue';
+import SidebarColumn from '~/components/UserInterface/SidebarColumn.vue';
 
 definePageMeta({
 	keepalive: true
