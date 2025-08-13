@@ -12,7 +12,6 @@ complementaryColor = white
 	--navbar-height: 5dvh;
 	--navbar-icon-size: 3dvh;
 	--navbar-gap: calc(3dvh * .2);
-	--side-margins: calc(.6dvw + .35dvh); /* try to make it reasonable at any aspect ratio */
 	
 	--standard-radius: .5em;
 	--button-radius: .6em;

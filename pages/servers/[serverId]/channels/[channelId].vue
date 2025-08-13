@@ -3,8 +3,9 @@
 		<GuildSidebar v-if="guild" :guild="guild" />
 		<div class="flex-container-column">
 			<GuildNavbar id="navbar" 
-				v-if="guild"
-				:guild="guild" />
+				v-if="guild && channel"
+				:guild="guild"
+				:channel="channel"/>
 
 			<div class="flex-container-row">
 				<MessageArea :channel-url="channelUrlPath" />
@@ -15,14 +16,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { GuildResponse, INavbar } from "~/types/interfaces";
 
 const route = useRoute();
-const { fetchGuild } = useApi()
+const { fetchGuild, fetchChannel } = useApi()
 
-const channelUrlPath = `channels/${route.params.channelId}`;
+const channelId = route.params.channelId as string
+const guildId = route.params.serverId as string
 
-const guild: GuildResponse | undefined = await fetchGuild(route.params.serverId as string)
+const channelUrlPath = `channels/${channelId}`;
+
+const guild = await fetchGuild(guildId)
+const channel = await fetchChannel(channelId)
 
 // function toggleInvitePopup(e: Event) {
 // 	e.preventDefault();

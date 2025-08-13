@@ -1,6 +1,20 @@
 <template>
-	<div id="navbar">
-		<!--  -->
+	<div id="navbar" class="navbar-row">
+		<div id="channel-info" class="navbar-row">
+			<!-- h1 to help screen readers -->
+			<h1 id="channel-name">
+				# {{ channel.name }}
+			</h1>
+			<span id="channel-description">
+				{{ channel.description }}
+			</span>
+		</div>
+
+		<div id="buttons" class="navbar-row">
+			<a class="button" href="https://git.gorb.app/gorb/frontend">
+				<Icon name="lucide:code-xml" title="Source"/>
+			</a>
+		</div>
 	</div>
 </template>
 
@@ -12,77 +26,54 @@ const props = defineProps<INavbar>();
 </script>
 
 <style scoped>
+.navbar-row {
+	display: flex;
+	flex-direction: row;
+}
+
 #navbar {
+	--font-size: calc(var(--navbar-height) * 0.45);
+	--side-margins: calc(var(--font-size) * 0.5);
+	
 	min-height: var(--navbar-height);
 	max-height: var(--navbar-height);
 	width: 100%;
-
-	display: flex;
-	justify-content: center;
 
 	background: var(--optional-topbar-background);
 	background-color: var(--topbar-background-color);
 	border-bottom: 1px solid var(--padding-color);
 }
 
-#navbar-left,
-#navbar-middle,
-#navbar-right {
-	top: 0;
-	height: var(--navbar-height);
+#channel-info {
+	margin-left: var(--side-margins);
+	gap: calc(var(--font-size) * 0.75);
 
-	display: inline-flex;
-	justify-content: center;
 	align-items: center;
-	gap: var(--navbar-gap);
 }
 
-#navbar-left {
-	left: var(--side-margins);
-}
-
-#navbar-middle {
-	max-width: 50dvw;
-}
-
-#navbar-right {
-	right: var(--side-margins);
-}
-
-.context-icon {
-	height: calc(var(--navbar-height) * 0.7);
-	width: calc(var(--navbar-height) * 0.7);
-	border-radius: var(--guild-icon-radius);
-}
-
-.context-title {
-	min-height: var(--navbar-height);
-	max-height: var(--navbar-height);
-
+#channel-name {
+	font-size: var(--font-size);
 	font-weight: 500;
-	font-size: calc(var(--navbar-height) * .5);
-	line-height: var(--navbar-height);
 }
 
-.navbar-item {
+#channel-description {
+	font-size: calc(var(--font-size) * 0.8);
+	text-overflow: ellipsis;
+
+	/* TODO make new theme colour? unsure of it's name, this is good enough for now */
 	color: var(--reply-text-color);
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-	padding: 0;
+}
 
-	transition: color 300ms;
-	display: flex;
+#buttons {
+	margin-right: var(--side-margins);
+
+	flex-grow: 1;
 	align-items: center;
-	height: var(--navbar-icon-size);
+	justify-content: end;
 }
 
-.navbar-item:hover {
-	color: var(--primary-highlighted-color);
-}
-
-.navbar-item-icon {
-	width: var(--navbar-icon-size);
-	height: 100%;
+.button {
+	color: var(--secondary-text-color);
+	right: 0;
 }
 </style>

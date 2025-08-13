@@ -131,6 +131,7 @@ export interface NavbarItem {
 
 export interface INavbar {
 	guild: GuildResponse
+	channel: ChannelResponse
 }
 
 export interface NavbarOptions {
