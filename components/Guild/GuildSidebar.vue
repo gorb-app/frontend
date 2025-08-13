@@ -1,5 +1,3 @@
-<!-- TODO  -->
-
 <template>
 	<ResizableSidebar
 			width="14rem" min-width="8rem" max-width="30rem"
