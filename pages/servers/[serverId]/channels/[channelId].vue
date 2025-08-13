@@ -2,7 +2,7 @@
 	<NuxtLayout name="client">
 		<GuildSidebar v-if="guild" :guild="guild" />
 		<div class="flex-container-column">
-			<GuildNavbar id="navbar" 
+			<GuildChannelNavbar id="navbar" 
 				v-if="guild && channel"
 				:guild="guild"
 				:channel="channel"/>
