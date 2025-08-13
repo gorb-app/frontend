@@ -130,11 +130,7 @@ export interface NavbarItem {
 }
 
 export interface INavbar {
-	clientItems?: NavbarItem[]
-	channelItems?: NavbarItem[] // search bar will require some changes
-	contextName?: string
-	contextIcon?: string
-	guildUuid?: string
+	guild: GuildResponse
 }
 
 export interface NavbarOptions {
