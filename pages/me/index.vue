@@ -33,14 +33,6 @@ const friends = await fetchFriends()
 function updateFilter(newFilter: string) {
 	filter.value = newFilter;
 }
-
-onMounted(async () => {
-	updateNavbar({isDirectMessages: true})
-})
-
-onActivated(async () => {
-	updateNavbar({isDirectMessages: true})
-})
 </script>
 
 <style module>
