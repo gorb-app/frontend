@@ -1,56 +1,18 @@
 <template>
 	<div id="navbar">
-		<div v-if="props.clientItems" v-for="entry of props.clientItems" id="navbar-left">
-			<button class="navbar-item" :title="entry.title"
-					@click.prevent="entry.callback()">
-				<Icon :name="entry.icon" class="navbar-item-icon" />
-			</button>
-		</div>
-		<div id="navbar-middle">
-			<NuxtImg v-if="props.contextIcon"
-				class="context-icon"
-				:src="props.contextIcon" />
-			<DefaultIcon v-else-if="props.contextName && props.guildUuid"
-				class="context-icon" 
-				:name="props.contextName" :seed="props.guildUuid"/>
-			<NuxtImg v-else
-				class="context-icon"
-				:src="defaultIcon" />
-			
-			<div class="context-title">
-				{{ props.contextName }}
-			</div>
-		</div>
-		<div v-if="props.channelItems" v-for="entry of props.channelItems" id="navbar-right">
-			<button class="navbar-item" :title="entry.title"
-					@click.prevent="entry.callback()">
-				<Icon :name="entry.icon" class="navbar-item-icon" />
-			</button>
-		</div>
+		<!--  -->
 	</div>
 </template>
 
 <script lang="ts" setup>
-import type { INavbar, NavbarItem } from '~/types/interfaces';
+import type { INavbar } from '~/types/interfaces';
 
 const props = defineProps<INavbar>();
-
-const runtimeConfig = useRuntimeConfig();
-const defaultIcon = `${runtimeConfig.app.baseURL}/icon.svg`
 
 </script>
 
 <style scoped>
 #navbar {
-	--navbar-height: 5dvh;
-	--navbar-icon-size: 3dvh;
-	--navbar-gap: calc(3dvh * .2);
-	--side-margins: calc(.6dvw + .35dvh); /* try to make it reasonable at any aspect ratio */
-
-	left: 0;
-	right: 0;
-	top: 0;
-	
 	min-height: var(--navbar-height);
 	max-height: var(--navbar-height);
 	width: 100%;
@@ -77,7 +39,6 @@ const defaultIcon = `${runtimeConfig.app.baseURL}/icon.svg`
 
 #navbar-left {
 	left: var(--side-margins);
-	position: absolute;
 }
 
 #navbar-middle {
@@ -86,7 +47,6 @@ const defaultIcon = `${runtimeConfig.app.baseURL}/icon.svg`
 
 #navbar-right {
 	right: var(--side-margins);
-	position: absolute;
 }
 
 .context-icon {
