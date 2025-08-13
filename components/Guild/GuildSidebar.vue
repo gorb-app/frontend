@@ -48,20 +48,6 @@ function toggleGuildSettings(e: Event) {
 </script>
 
 <style scoped>
-#channels-list {
-	background: var(--optional-channel-list-background);
-	background-color: var(--sidebar-background-color);
-
-	display: flex;
-	flex-direction: column;
-	gap: .5em;
-	text-overflow: ellipsis;
-	
-	padding-top: .5em;
-	padding-bottom: .5em;
-	max-height: calc(100% - 1em); /* 100% - top and bottom padding */
-}
-
 #guild-top-container {
 	min-height: var(--navbar-height);
 	max-height: var(--navbar-height);
@@ -86,5 +72,22 @@ function toggleGuildSettings(e: Event) {
 	color: white;
 	border: none;
 	padding: 0%;
+}
+
+#channels-list {
+	background: var(--optional-channel-list-background);
+	background-color: var(--sidebar-background-color);
+
+	display: flex;
+	flex-direction: column;
+	gap: .5em;
+	text-overflow: ellipsis;
+	
+	padding-top: .5em;
+	padding-bottom: .5em;
+	max-height: calc(100% - 1em); /* 100% - top and bottom padding */
+
+	padding-left: .5em;
+	padding-right: .5em;
 }
 </style>

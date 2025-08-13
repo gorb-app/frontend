@@ -40,5 +40,8 @@ const members = await fetchMembers(props.guild.uuid)
 	flex-direction: column;
 	overflow-x: hidden;
 	overflow-y: scroll;
+
+	padding-left: .5em;
+	padding-right: .5em;
 }
 </style>
