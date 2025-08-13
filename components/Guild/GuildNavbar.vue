@@ -74,6 +74,12 @@ const props = defineProps<INavbar>();
 
 .button {
 	color: var(--secondary-text-color);
+	transition: color 300ms;
+
 	right: 0;
+}
+
+.button:hover {
+	color: var(--primary-highlighted-color);
 }
 </style>
