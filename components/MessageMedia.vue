@@ -1,13 +1,15 @@
 <template>
 	<div class="media-container">
-		<NuxtImg v-for="link of props.links" class="media-item" :src="link" @click.prevent="createModal(link)" />
+		<NuxtImg v-for="link of props.links"
+			class="media-item"
+			:src="link"
+			@click.prevent="createModal(link)" />
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { ModalBase } from '#components';
 import { render } from 'vue';
-
 
 const props = defineProps<{ links: string[] }>();
 
@@ -34,14 +36,14 @@ function createModal(link: string) {
 <style scoped>
 
 .media-container {
-	grid-column: 2;
-	grid-row: 3;
-	margin-left: .5dvw;
+	display: flex;
+	flex-wrap: wrap;
+	gap: .2rem;
+	max-width: 100%;
 }
 
 .media-item {
 	cursor: pointer;
 	max-width: 15dvw;
 }
-
 </style>

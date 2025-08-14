@@ -1,14 +1,12 @@
 <template>
 	<div id="message-area">
 		<div id="messages" ref="messagesElement">
-			<Message v-for="(message, i) of messages" :username="getDisplayName(message.member.user)" :key="message.uuid"
-				:text="message.message" :timestamp="messageTimestamps[message.uuid]" :img="message.member.user.avatar"
-				:format="timeFormat" :type="messagesType[message.uuid]"
-				:margin-bottom="(messages[i + 1] && messagesType[messages[i + 1].uuid] == 'normal') ?? false"
-				:last="i == messages.length - 1" :message-id="message.uuid" :author="message.member" :me="me"
+			<Message v-for="(message, i) of messages" :key="message.uuid"
 				:message="message" :is-reply="message.reply_to"
-				:author-color="`${generateIrcColor(message.member.user.uuid)}`"
-				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined" />
+				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined"
+				:type="messagesType[message.uuid]"
+				:editing="false"
+				:is-mentioned="false" />
 		</div>
 		<div id="message-box" class="rounded-corners">
 			<form id="message-form" @submit="sendMessage">
@@ -320,8 +318,6 @@ router.beforeEach((to, from, next) => {
 #message-area {
 	display: flex;
 	flex-direction: column;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
 	overflow: hidden;
 	flex-grow: 1;
 }
@@ -329,8 +325,8 @@ router.beforeEach((to, from, next) => {
 #message-box {
 	margin-top: auto; /* force it to the bottom of the screen */
 	margin-bottom: 2dvh;
-	margin-left: 1dvw;
-	margin-right: 1dvw;
+	margin-left: 2dvw;
+	margin-right: 2dvw;
 
 	padding-left: 2%;
 	padding-right: 2%;
@@ -382,8 +378,7 @@ router.beforeEach((to, from, next) => {
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
-	padding-left: 1dvw;
-	padding-right: 1dvw;
+	padding-bottom: 1em;
 }
 
 .message-box-button {
