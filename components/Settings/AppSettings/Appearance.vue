@@ -34,7 +34,8 @@
               <span class="theme-title" :style="{color:`${layout.complementaryColor}`}">
                 {{ layout.displayName }}
               </span>
-              <NuxtImg class="layout-preview" :src="layout.previewImageUrl"></NuxtImg>
+              <!-- this breaks if it's a nuxtimg, i don't know why -->
+              <img class="layout-preview" :src="layout.previewImageUrl"></img>
             </div>
           </div>
         </div>
@@ -60,8 +61,8 @@ import { settingSave, settingsLoad } from '#imports';
 
 const runtimeConfig = useRuntimeConfig()
 const baseURL = runtimeConfig.app.baseURL;
-const styleFolder = `${baseURL}themes/style`
-const layoutFolder = `${baseURL}themes/layout`
+const styleFolder = `${baseURL}/themes/style`
+const layoutFolder = `${baseURL}/themes/layout`
 
 const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 
@@ -115,6 +116,7 @@ async function parseTheme(url: string): Promise<Theme | void> {
           break
         case "previewImageUrl":
           previewImageUrl = `${layoutFolder}/${lineArray[1].trim()}`
+          console.log(previewImageUrl)
           break
       }
     }
