@@ -13,6 +13,7 @@ complementaryColor = white
 	--navbar-icon-size: 3dvh;
 	--navbar-gap: calc(3dvh * .2);
 	
+	--minor-radius: .35em;
 	--standard-radius: .5em;
 	--button-radius: .6em;
 	--guild-icon-radius: 15%;
