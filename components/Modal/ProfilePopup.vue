@@ -27,15 +27,17 @@
 			</div>
 			<VerticalSpacer />
 
-			<div v-if="aboutMe" id="profile-body">
-				<div v-if="aboutMe" id="about-me-container">
-					<div><Icon name="lucide:info" size="1.1em"/></div>
-					<div id="about-me-text">
-						{{ " " + aboutMe }}
+			<div v-if="aboutMe">
+				<div id="profile-body">
+					<div id="about-me-container">
+						<div><Icon name="lucide:info" size="1.1em"/></div>
+						<div id="about-me-text">
+							{{ " " + aboutMe }}
+						</div>
 					</div>
 				</div>
+				<VerticalSpacer />
 			</div>
-			<VerticalSpacer v-if="aboutMe" />
 
 			<div id="profile-footer">
 				<div id="dates">
@@ -62,7 +64,7 @@ import type { GuildMemberResponse, ModalProps, UserResponse } from '~/types/inte
 import VerticalSpacer from '../UserInterface/VerticalSpacer.vue';
 import Button from '../UserInterface/Button.vue';
 
-const { getDisplayName, getUsername, getPronouns, getAboutMe, getRegistrationDate, getGuildJoinDate, getFriendsSince, getUuid } = useProfile()
+const { getDisplayName, getUsername, getPronouns, getAboutMe, getRegistrationDate, getGuildJoinDate, getFriendsSince, getUserUuid } = useProfile()
 const { addFriend, fetchMe } = useApi();
 
 const props = defineProps<ModalProps & {
@@ -81,7 +83,7 @@ const registrationDate = getRegistrationDate(props.profile)
 const joinDate = getGuildJoinDate(props.profile)
 const friendsSince = await getFriendsSince(props.profile)
 
-const uuid = getUuid(props.profile)
+const uuid = getUserUuid(props.profile)
 
 
 function toDateString(date: Date): string {
@@ -114,16 +116,16 @@ function buttonEditProfile() {
 	text-align: left;
 
 	position: relative;
-	max-height: 60dvh;
-	max-width: 60dvw;
+	max-height: 70dvh;
+	max-width: 70dvw;
 	height: 30em;
 	width: 40em;
 
 	display: flex;
 	flex-direction: column;
 
-	background-color: var(--chat-background-color);
-	border-radius: var(--standard-radius);
+	color: var(--text-color);
+	background-color: var(--modal-background-color);
 
 	overflow-y: scroll;
 }
@@ -142,7 +144,6 @@ function buttonEditProfile() {
 	z-index: 0;
 
 	background-color: var(--primary-color);
-	border-radius: var(--standard-radius) var(--standard-radius) 0 0; /* top left and top right */
 }
 
 #avatar {
@@ -150,12 +151,13 @@ function buttonEditProfile() {
 	position: absolute;
 	left: 2em;
 	top: 2.5em;
-
+	
 	z-index: 1;
-
+	
 	width: 6em;
 	height: 6em;
-
+	
+	background-color: var(--accent-color);
 	border: .15em solid var(--accent-color);
 }
 
@@ -224,13 +226,7 @@ function buttonEditProfile() {
 
 	overflow-y: auto;
 	overflow-x: hidden;
-	scrollbar-width: none;
 }
-
-#about-me-text::-webkit-scrollbar {
-	display: none;
-}
-
 
 #profile-footer {
 	margin-left: 1em;

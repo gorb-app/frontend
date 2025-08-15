@@ -37,7 +37,13 @@ function hideModalPopup() {
 <style>
 
 .member-item {
-    position: relative;
+	display: flex;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	gap: .5em;
+	align-items: center;
+	text-align: left;
+	cursor: pointer;
 }
 
 .member-avatar {
@@ -49,6 +55,7 @@ function hideModalPopup() {
 
 .member-display-name {
 	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
-
 </style>

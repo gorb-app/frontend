@@ -34,7 +34,8 @@
               <span class="theme-title" :style="{color:`${layout.complementaryColor}`}">
                 {{ layout.displayName }}
               </span>
-              <NuxtImg class="layout-preview" :src="layout.previewImageUrl"></NuxtImg>
+              <!-- this breaks if it's a nuxtimg, i don't know why -->
+              <img class="layout-preview" :src="layout.previewImageUrl"></img>
             </div>
           </div>
         </div>
@@ -44,26 +45,15 @@
     <!-- <p class="subtitle">Icons</p>
     <div class="icons">
     </div> -->
-
-    <p class="subtitle">TIME FORMAT</p>
-    <div class="icons">
-      <RadioButtons :button-count="3" :text-strings="timeFormatTextStrings"
-          :default-button-index="settingsLoad().timeFormat?.index ?? 0" :callback="onTimeFormatClicked"></RadioButtons>
-    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import RadioButtons from '~/components/UserInterface/RadioButtons.vue';
-import type { TimeFormat } from '~/types/settings';
-import { settingSave, settingsLoad } from '#imports';
-
 const runtimeConfig = useRuntimeConfig()
 const baseURL = runtimeConfig.app.baseURL;
+
 const styleFolder = `${baseURL}themes/style`
 const layoutFolder = `${baseURL}themes/layout`
-
-const timeFormatTextStrings = ["Auto", "12-Hour", "24-Hour"]
 
 enum StyleLayout {
   Style,
@@ -115,6 +105,7 @@ async function parseTheme(url: string): Promise<Theme | void> {
           break
         case "previewImageUrl":
           previewImageUrl = `${layoutFolder}/${lineArray[1].trim()}`
+          console.log(previewImageUrl)
           break
       }
     }
@@ -168,21 +159,6 @@ function changeTheme(themeType: StyleLayout, theme: Theme) {
     settingSave("selectedThemeLayout", theme.themeUrl)
   }
   loadPreferredThemes()
-}
-
-async function onTimeFormatClicked(index: number) {
-  let format: "auto" | "12" | "24" = "auto"
-
-  if (index == 0) {
-    format = "auto"
-  } else if (index == 1) {
-    format = "12"
-  } else if (index == 2) {
-    format = "24"
-  }
-
-  const timeFormat: TimeFormat = {index, format}
-  settingSave("timeFormat", timeFormat)
 }
 </script>
 

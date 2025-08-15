@@ -131,8 +131,7 @@ function loadStoredWidth() {
 
 .sidebar-content {
 	width: 100%;
-	padding-left: .25em;
-	padding-right: .25em;
+	height: 100%;
 }
 
 .sidebar-content > :first-child {
