@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuItems)"
 			class="message normal-message" :class="{ 'highlighted': (props.isMentioned || (props.replyMessage && props.message.member.user.uuid != me!.uuid && props.replyMessage?.member.user.uuid == me!.uuid)) }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div v-if="props.replyMessage" class="message-reply-svg">
@@ -27,11 +27,12 @@
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :profile="props.message.member" class="message-author-avatar"/>
+			<Avatar :profile="props.message.member" class="message-author-avatar" @contextmenu="showContextMenu($event, contextMenu, memberMenuItems)" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
-				<span class="message-author-username" tabindex="0" :style="`color: ${generateIrcColor(props.message.member.user.uuid)}`">
+				<span class="message-author-username" tabindex="0" :style="`color: ${generateIrcColor(props.message.member.user.uuid)}`"
+						@contextmenu="showContextMenu($event, contextMenu, memberMenuItems)">
 					{{ getDisplayName(props.message.member) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
@@ -45,7 +46,7 @@
 			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 		</div>
 	</div>
-	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuItems)"
 			class="message grouped-message" :class="{ 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div class="left-column">
