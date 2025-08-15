@@ -322,6 +322,8 @@ router.beforeEach((to, from, next) => {
 	flex-direction: column;
 	overflow: hidden;
 	flex-grow: 1;
+
+	background-color: var(--chat-background-color);
 }
 
 #message-box {

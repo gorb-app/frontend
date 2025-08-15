@@ -28,7 +28,7 @@ const members = await fetchMembers(props.guild.uuid)
 
 <style scoped>
 #members-container {
-	background: var(--optional-member-list-background);
+	background-color: var(--chat-background-color);
 
 	padding-top: .5em;
 	padding-bottom: .5em;
