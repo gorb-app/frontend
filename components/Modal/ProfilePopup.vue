@@ -215,7 +215,7 @@ function buttonEditProfile() {
 	
 	align-self: center;
 
-	width: fit-content;
+	width: 100%;
 	font-size: .8em;
 	font-weight: lighter;
 
