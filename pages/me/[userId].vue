@@ -8,6 +8,7 @@
 
 <script lang="ts" setup>
 import DirectMessagesSidebar from '~/components/Me/DirectMessagesSidebar.vue';
+
 </script>
 
 <style>

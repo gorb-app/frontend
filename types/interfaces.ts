@@ -121,3 +121,22 @@ export interface ContextMenuInterface {
 	pointerY: number,
 	items: ContextMenuItem[]
 }
+
+export interface NavbarItem {
+	title: string,
+	icon: string,
+	hasPing?: boolean, // whether to draw a "ping" icon or not
+	callback: (...args: any[]) => any;
+}
+
+export interface INavbar {
+	guild: GuildResponse
+	channel: ChannelResponse
+}
+
+export interface NavbarOptions {
+	guild?: GuildResponse
+	channel?: ChannelResponse
+	isDirectMessages?: boolean
+}
+

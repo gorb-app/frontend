@@ -45,6 +45,8 @@ import { generateIrcColor } from '#imports';
 const { getDisplayName } = useProfile()
 const { fetchMe } = useApi()
 
+// TODO this file is a mess, and we need to stop using fetchWithApi
+
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
 const me = await fetchMe() as UserResponse;
@@ -320,6 +322,8 @@ router.beforeEach((to, from, next) => {
 	flex-direction: column;
 	overflow: hidden;
 	flex-grow: 1;
+
+	background-color: var(--chat-background-color);
 }
 
 #message-box {
