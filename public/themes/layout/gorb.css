@@ -8,7 +8,12 @@ complementaryColor = white
 	--sidebar-icon-width: 2.5em;
 	--sidebar-icon-gap: .25em;
 	--sidebar-margin: .5em;
+
+	--navbar-height: 5dvh;
+	--navbar-icon-size: 3dvh;
+	--navbar-gap: calc(3dvh * .2);
 	
+	--minor-radius: .35em;
 	--standard-radius: .5em;
 	--embed-radius: .3em;
 	--button-radius: .6em;

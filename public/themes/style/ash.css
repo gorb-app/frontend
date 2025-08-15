@@ -10,8 +10,8 @@ complementaryColor = white
 	--reply-text-color: #969696;
 	--danger-text-color: #ff0000;
 
-	--chat-background-color: #2f2e2d;
-    --chat-highlighted-background-color: #3f3b38;
+	--chat-background-color: #383432;
+    --chat-highlighted-background-color: #4c4a48;
 	--chat-important-background-color: #ffcf5f38;
 	--chat-important-highlighted-background-color: #ffa86f4f;
 	--chat-featured-message-color: #4f3f2f60;
@@ -19,7 +19,7 @@ complementaryColor = white
 	--popup-highlighted-background-color: #382f2f;
 	--modal-background-color: #3a352f;
 
-	--sidebar-background-color: #3e3a37;
+	--sidebar-background-color: #322f2d;
 	--sidebar-highlighted-background-color: #46423b;
 	--topbar-background-color: #3a3733;
 	--chatbox-background-color: #3a3733;
