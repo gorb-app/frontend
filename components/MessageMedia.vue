@@ -45,5 +45,6 @@ function createModal(link: string) {
 .media-item {
 	cursor: pointer;
 	max-width: 15dvw;
+	border-radius: var(--embed-radius);
 }
 </style>
