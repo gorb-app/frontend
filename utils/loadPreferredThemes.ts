@@ -2,20 +2,17 @@ let styleLinkElement: HTMLLinkElement | null;
 let layoutLinkElement: HTMLLinkElement | null;
 
 
-export default () => {
+export default () => {  
   const runtimeConfig = useRuntimeConfig()
   const baseURL = runtimeConfig.app.baseURL;
-  
-  let currentStyle = settingsLoad().selectedThemeStyle ?? undefined
-  let currentLayout = settingsLoad().selectedThemeLayout ?? `${baseURL}themes/layout/gorb.css`
 
-  if (!currentStyle) {
-    if (prefersLight()) {
-      currentStyle = `${baseURL}themes/style/light.css`
-    } else {
-      currentStyle = `${baseURL}themes/style/dark.css`
-    }
-  }
+  let currentStyle = settingsLoad().selectedThemeStyle || (
+    prefersLight()
+      ? `${baseURL}themes/style/light.css`
+      : `${baseURL}themes/style/dark.css`
+  );
+
+  let currentLayout = settingsLoad().selectedThemeLayout || `${baseURL}themes/layout/gorb.css`
 
   if (styleLinkElement) {
     styleLinkElement.href = currentStyle;

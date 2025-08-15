@@ -27,15 +27,17 @@
 			</div>
 			<VerticalSpacer />
 
-			<div v-if="aboutMe" id="profile-body">
-				<div v-if="aboutMe" id="about-me-container">
-					<div><Icon name="lucide:info" size="1.1em"/></div>
-					<div id="about-me-text">
-						{{ " " + aboutMe }}
+			<div v-if="aboutMe">
+				<div id="profile-body">
+					<div id="about-me-container">
+						<div><Icon name="lucide:info" size="1.1em"/></div>
+						<div id="about-me-text">
+							{{ " " + aboutMe }}
+						</div>
 					</div>
 				</div>
+				<VerticalSpacer />
 			</div>
-			<VerticalSpacer v-if="aboutMe" />
 
 			<div id="profile-footer">
 				<div id="dates">
@@ -62,7 +64,7 @@ import type { GuildMemberResponse, ModalProps, UserResponse } from '~/types/inte
 import VerticalSpacer from '../UserInterface/VerticalSpacer.vue';
 import Button from '../UserInterface/Button.vue';
 
-const { getDisplayName, getUsername, getPronouns, getAboutMe, getRegistrationDate, getGuildJoinDate, getFriendsSince, getUuid } = useProfile()
+const { getDisplayName, getUsername, getPronouns, getAboutMe, getRegistrationDate, getGuildJoinDate, getFriendsSince, getUserUuid } = useProfile()
 const { addFriend, fetchMe } = useApi();
 
 const props = defineProps<ModalProps & {
@@ -81,7 +83,7 @@ const registrationDate = getRegistrationDate(props.profile)
 const joinDate = getGuildJoinDate(props.profile)
 const friendsSince = await getFriendsSince(props.profile)
 
-const uuid = getUuid(props.profile)
+const uuid = getUserUuid(props.profile)
 
 
 function toDateString(date: Date): string {

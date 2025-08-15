@@ -1,8 +1,10 @@
 <template>
 	<div class="radio-buttons-container" ref="radioButtonsContainer">
-		<div v-for="index in indices" :key="index" class="radio-button" @click="onClick(index)">
+		<div v-for="(textString, index) in props.textStrings"
+				class="radio-button"
+				@click="onClick(index)">
 			<span class="radio-button-radio"></span>
-			<span class="radio-button-text">{{ textStrings[index] }}</span>
+			<span class="radio-button-text">{{ textString }}</span>
 		</div>
 	</div>
 </template>
@@ -13,41 +15,63 @@ const radioButtonsContainer = ref<HTMLDivElement>()
 
 const props = defineProps<{
 	textStrings: string[],
-	buttonCount: number,
-	defaultButtonIndex: number,
+	defaultButtonKey?: string,
+	defaultButtonIndex?: number,
 	callback: CallableFunction,
 }>();
 
-// makes an array from 0 to buttonCount - 1
-const indices = Array.from({ length: props.buttonCount }, (_, i) => i) 
-
-// select default selected button
 onMounted(async () => {
 	await nextTick()
 	
-	if (props.defaultButtonIndex != undefined && radioButtonsContainer.value) {
+	// select default selected button
+	if (radioButtonsContainer.value) {
 		const children = radioButtonsContainer.value.children
-		const defaultButton = children.item(props.defaultButtonIndex)
-		defaultButton?.classList.add("selected-radio-button")
-		defaultButton?.children.item(0)?.classList.add("selected-radio-button-radio")
+
+		// set the button based on key
+		if (props.defaultButtonKey) {
+			const newIndex = props.textStrings.indexOf(props.defaultButtonKey)
+			const defaultButton = children.item(newIndex)
+			if (defaultButton) {
+				selectButton(defaultButton)
+				return // note the return if you're extending this
+			}
+		}
+		// if that fails, set it based on index, defaulting to 0
+		const defaultButton = children.item(props.defaultButtonIndex ?? 0)
+		if (defaultButton) {
+			selectButton(defaultButton)
+		}
 	}
 })
 
 
 function onClick(clickedIndex: number) {
-	// remove selected-radio-button class from all buttons except the clicked one	
 	if (radioButtonsContainer.value) {
+		// remove selected-radio-button class from all buttons except the clicked one	
 		const children = radioButtonsContainer.value.children
-		for (let i = 0; i < children.length; i++) {
-			children.item(i)?.classList.remove("selected-radio-button")
-			children.item(i)?.children.item(0)?.classList.remove("selected-radio-button-radio")
+		for (const button of children) {
+			if (button) {
+				unselectButton(button)
+			}
 		}
 
-		children.item(clickedIndex)?.classList.add("selected-radio-button")
-		children.item(clickedIndex)?.children.item(0)?.classList.add("selected-radio-button-radio")
+		const button = children.item(clickedIndex)
+		if (button) {
+			selectButton(button)
+		}
 	}
 	
 	props.callback(clickedIndex)
+}
+
+function unselectButton(button: Element) {
+	button.classList.remove("selected-radio-button")
+	button.children.item(0)?.classList.remove("selected-radio-button-radio")	
+}
+
+function selectButton(button: Element) {
+	button.classList.add("selected-radio-button")
+	button.children.item(0)?.classList.add("selected-radio-button-radio")
 }
 </script>
 

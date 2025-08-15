@@ -17,6 +17,7 @@ const props = defineProps<{
 }>();
 
 let previewName = "";
+// include the entire name if it's 3 chars or less, use the first char of the first 3 words otherwise
 if (props.name.length > 3) {
 	let guildName: string[] = props.name.split(' ')
 	for (let i = 0; i < 3; i ++) {

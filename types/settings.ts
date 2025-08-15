@@ -4,7 +4,4 @@ export interface ClientSettings {
 	selectedThemeLayout?: string // URL
 }
 
-export interface TimeFormat {
-	index: number,
-	format: "auto" | "12" | "24"
-}
+export type TimeFormat = "Auto" | "4:18 PM" | "16:18"
