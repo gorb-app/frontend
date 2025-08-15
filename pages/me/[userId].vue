@@ -9,13 +9,6 @@
 <script lang="ts" setup>
 import DirectMessagesSidebar from '~/components/Me/DirectMessagesSidebar.vue';
 
-onMounted(async () => {
-	updateNavbar({isDirectMessages: true})
-})
-
-onActivated(async () => {
-	updateNavbar({isDirectMessages: true})
-})
 </script>
 
 <style>
