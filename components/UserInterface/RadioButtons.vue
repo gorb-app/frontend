@@ -28,7 +28,7 @@ onMounted(async () => {
 		const children = radioButtonsContainer.value.children
 
 		// set the button based on key
-		if (props.defaultButtonKey != undefined) {
+		if (props.defaultButtonKey) {
 			const newIndex = props.textStrings.indexOf(props.defaultButtonKey)
 			const defaultButton = children.item(newIndex)
 			if (defaultButton) {
@@ -49,10 +49,9 @@ function onClick(clickedIndex: number) {
 	if (radioButtonsContainer.value) {
 		// remove selected-radio-button class from all buttons except the clicked one	
 		const children = radioButtonsContainer.value.children
-		for (let i = 0; i < children.length; i++) {
-			const button = children.item(i)
+		for (const button of children) {
 			if (button) {
-				unSelectButton(button)
+				unselectButton(button)
 			}
 		}
 
@@ -65,7 +64,7 @@ function onClick(clickedIndex: number) {
 	props.callback(clickedIndex)
 }
 
-function unSelectButton(button: Element) {
+function unselectButton(button: Element) {
 	button.classList.remove("selected-radio-button")
 	button.children.item(0)?.classList.remove("selected-radio-button-radio")	
 }

@@ -6,13 +6,13 @@ export default () => {
   const runtimeConfig = useRuntimeConfig()
   const baseURL = runtimeConfig.app.baseURL;
 
-  let currentStyle = settingsLoad().selectedThemeStyle ?? (
+  let currentStyle = settingsLoad().selectedThemeStyle || (
     prefersLight()
       ? `${baseURL}themes/style/light.css`
       : `${baseURL}themes/style/dark.css`
   );
 
-  let currentLayout = settingsLoad().selectedThemeLayout ?? `${baseURL}themes/layout/gorb.css`
+  let currentLayout = settingsLoad().selectedThemeLayout || `${baseURL}themes/layout/gorb.css`
 
   if (styleLinkElement) {
     styleLinkElement.href = currentStyle;

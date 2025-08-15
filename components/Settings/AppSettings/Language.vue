@@ -6,8 +6,8 @@
     <div class="icons">
       <RadioButtons
         :text-strings="timeFormatTextStrings"
-        :default-button-key='settingsLoad().timeFormat ?? "Auto"'
-        :callback="(index: number) => {settingSave('timeFormat', timeFormatTextStrings[index])}"
+        :default-button-key='settingsLoad().timeFormat || "Auto"'
+        :callback="(index: number) => { settingSave('timeFormat', timeFormatTextStrings[index]) }"
       />
     </div>
 
