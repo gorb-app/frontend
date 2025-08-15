@@ -175,7 +175,7 @@ if (props.message.member.user.uuid == me!.uuid /* || check message delete permis
 	messageMenuItems.splice(Math.min(2, messageMenuItems.length), 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
 }
 
-const memberMenuItems = await createMemberContextMenuItems(props.author, route.params.serverId as string);
+const memberMenuItems = await createMemberContextMenuItems(props.message.member, route.params.serverId as string);
 
 function getDayDifference(date1: Date, date2: Date) {
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
