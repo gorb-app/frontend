@@ -244,19 +244,15 @@ function getDayDifference(date1: Date, date2: Date) {
 }
 
 .message-author-avatar {
-	min-height: 2em;
-	max-height: 2em;
-	min-width: 2em;
-	max-width: 2em;
+	min-height: 2.5em;
+	max-height: 2.5em;
+	min-width: 2.5em;
+	max-width: 2.5em;
 	cursor: pointer;
 }
 
 .message-author-username {
 	cursor: pointer;
-	min-height: 2.5em;
-	max-height: 2.5em;
-	min-width: 2.5em;
-	max-width: 2.5em;
 }
 
 .left-column {
