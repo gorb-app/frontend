@@ -116,16 +116,16 @@ function buttonEditProfile() {
 	text-align: left;
 
 	position: relative;
-	max-height: 60dvh;
-	max-width: 60dvw;
+	max-height: 70dvh;
+	max-width: 70dvw;
 	height: 30em;
 	width: 40em;
 
 	display: flex;
 	flex-direction: column;
 
-	background-color: var(--chat-background-color);
-	border-radius: var(--standard-radius);
+	color: var(--text-color);
+	background-color: var(--modal-background-color);
 
 	overflow-y: scroll;
 }
@@ -144,7 +144,6 @@ function buttonEditProfile() {
 	z-index: 0;
 
 	background-color: var(--primary-color);
-	border-radius: var(--standard-radius) var(--standard-radius) 0 0; /* top left and top right */
 }
 
 #avatar {
@@ -152,12 +151,13 @@ function buttonEditProfile() {
 	position: absolute;
 	left: 2em;
 	top: 2.5em;
-
+	
 	z-index: 1;
-
+	
 	width: 6em;
 	height: 6em;
-
+	
+	background-color: var(--accent-color);
 	border: .15em solid var(--accent-color);
 }
 
@@ -226,13 +226,7 @@ function buttonEditProfile() {
 
 	overflow-y: auto;
 	overflow-x: hidden;
-	scrollbar-width: none;
 }
-
-#about-me-text::-webkit-scrollbar {
-	display: none;
-}
-
 
 #profile-footer {
 	margin-left: 1em;
