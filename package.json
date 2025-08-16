@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^1.8.0",
-    "@nuxt/icon": "1.13.0",
-    "@nuxt/image": "1.10.0",
-    "@pinia/nuxt": "0.11.0",
+    "@nuxt/icon": "2.0.0",
+    "@nuxt/image": "1.11.0",
+    "@pinia/nuxt": "0.11.2",
     "cropperjs": "^2.0.1",
     "dompurify": "^3.2.6",
-    "marked": "^15.0.12",
+    "marked": "^16.1.2",
     "nuxt": "^4.0.3",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
@@ -29,7 +29,7 @@
   "license": "MIT",
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.62",
-    "@types/node": "^22.17.2",
+    "@types/node": "^24.3.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4"
   }
