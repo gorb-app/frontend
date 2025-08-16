@@ -6,12 +6,15 @@
         </span>
     </div>
     <ModalProfilePopup v-if="modalPopupVisible" :profile="props.member"
-        :onFinish="hideModalPopup" :keepalive="false"/>
+        :onFinish="hideModalPopup" :keepalive="false" />
+	<ModalConfirmation v-if="confirmationModal && confirmationModal.show" :action-name="confirmationModal.actionName"
+		:target-name="getDisplayName(props.member)" :callback="confirmationModal.callback"
+		:onClose="resetConfirmationModal" :onCancel="resetConfirmationModal" />
 </template>
 
 <script lang="ts" setup>
 import { ModalProfilePopup } from '#components';
-import type { ContextMenuInterface, GuildMemberResponse } from '~/types/interfaces';
+import type { GuildMemberResponse, IConfirmationModal } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
 
@@ -19,9 +22,11 @@ const props = defineProps<{
     member: GuildMemberResponse
 }>();
 
-const menuSections = await createMemberContextMenuItems(props.member, props.member.guild_uuid);
+const confirmationModal = ref<IConfirmationModal>();
+const menuSections = await createMemberContextMenuItems(props.member, props.member.guild_uuid, confirmationModal);
 
 const modalPopupVisible = ref<boolean>(false);
+
 
 function showModalPopup() {
     modalPopupVisible.value = true
@@ -30,6 +35,14 @@ function showModalPopup() {
 function hideModalPopup() {
     modalPopupVisible.value = false
 }
+
+function resetConfirmationModal() {
+	console.log("[CONFIRM] resetting");
+	if (confirmationModal) {
+		confirmationModal.value = { show: false, actionName: "", callback: () => {} };
+	}
+}
+
 </script>
 
 <style>
