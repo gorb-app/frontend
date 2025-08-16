@@ -6,7 +6,7 @@
 			</div>
 			<div class="confirmation-modal-buttons">
 				<Button :variant="'normal'" :text="'Cancel'" @click="closeModal()" />
-				<Button :variant="'scary'" :text="'Confirm'" :callback="props.callback()" />
+				<Button :variant="'scary'" :text="'Confirm'" :callback="props.callback" />
 			</div>
 		</div>
 	</ModalBase>
