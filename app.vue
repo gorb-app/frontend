@@ -17,7 +17,7 @@ const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show:
 onMounted(() => {
 	loadPreferredThemes()
 
-	document.addEventListener("mousedown", (e) => {
+	document.addEventListener("pointerdown", (e) => {
 		if (e.target instanceof HTMLElement && e.target.classList.contains("context-menu-item")) return;
 		console.log("click");
 		console.log("target:", e.target);
