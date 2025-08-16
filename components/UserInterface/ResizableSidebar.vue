@@ -53,6 +53,7 @@ onMounted(() => {
 
 	if (resizableSidebar.value && widthResizer.value) {
 		widthResizer.value.addEventListener("pointerdown", (e) => {
+			if (e.button != 0) return;
 			e.preventDefault();
 			document.body.style.cursor = "ew-resize";
 			function handleMove(pointer: PointerEvent) {
