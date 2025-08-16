@@ -4,7 +4,7 @@
 			<Message v-for="(message, i) of messages" :key="message.uuid"
 				:message="message" :is-reply="message.reply_to"
 				:reply-message="message.reply_to ? getReplyMessage(message.reply_to) : undefined"
-				:type="messagesType[message.uuid]"
+				:type="messagesType[message.uuid] || 'normal'"
 				:editing="false"
 				:is-mentioned="false" />
 		</div>
@@ -108,6 +108,7 @@ function groupMessage(message: MessageResponse, options?: { prevMessage?: Messag
 	const prevTimestamp = messageTimestamps.value[firstByUser.uuid];
 	const timestamp = messageTimestamps.value[message.uuid];
 	
+	if (!prevTimestamp || !timestamp) return;
 	console.log("first message timestamp:", prevTimestamp);
 	console.log("timestamp:", timestamp);
 	const diff = Math.abs(timestamp - prevTimestamp);
@@ -298,9 +299,10 @@ onActivated(async () => {
 	await nextTick();
 	console.log("scroll activated");
 	if (messagesElement.value) {
-		if (scrollPosition.value[route.params.channelId as string]) {
+		const channelScrollPosition = scrollPosition.value[route.params.channelId as string]
+		if (channelScrollPosition) {
 			console.log("saved scroll position:", scrollPosition.value);
-			setScrollPosition(messagesElement.value, scrollPosition.value[route.params.channelId as string]);
+			setScrollPosition(messagesElement.value, channelScrollPosition);
 			console.log("scrolled to saved scroll position");
 		} else {
 			scrollToBottom(messagesElement.value);

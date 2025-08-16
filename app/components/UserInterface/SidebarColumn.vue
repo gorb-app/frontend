@@ -2,7 +2,7 @@
 	<div id="sidebar-column">
 		<div class="side-column-segment">
 			<NuxtLink id="home-button" href="/me">
-				<img class="sidebar-icon" src="/public/icon.svg"/>
+				<img class="sidebar-icon" src="/icon.svg"/>
 			</NuxtLink>
 		</div>
 
