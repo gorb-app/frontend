@@ -1,5 +1,5 @@
 <template>
-	<div ref="resizableSidebar" class="resizable-sidebar" @contextmenu="showContextMenu($event, contextMenu, menuSections)"
+	<div ref="resizableSidebar" class="resizable-sidebar"
 			:style="{
 				'width': storedWidth ? storedWidth : props.width,
 				'min-width': props.minWidth,
@@ -8,13 +8,15 @@
 				'border-top': props.borderSides?.includes('top') ? borderStyling : undefined,
 				'border-bottom': props.borderSides?.includes('bottom') ? borderStyling : undefined,
 			}">
-		<div v-if="props.borderSides != 'right'" class="width-resizer-bar">
+		<div v-if="props.borderSides != 'right'" class="width-resizer-bar"
+				@contextmenu="showContextMenu($event, menuSections)">
 			<div ref="widthResizer" class="width-resizer"></div>
 		</div>
 		<div class="sidebar-content">
 			<slot />
 		</div>
-		<div v-if="props.borderSides == 'right'" class="width-resizer-bar">
+		<div v-if="props.borderSides == 'right'" class="width-resizer-bar"
+				@contextmenu="showContextMenu($event, menuSections)">
 			<div ref="widthResizer" class="width-resizer"></div>
 		</div>
 	</div>
@@ -30,8 +32,6 @@ const borderStyling = ".1rem solid var(--padding-color)";
 const resizableSidebar = ref<HTMLDivElement>();
 const widthResizer = ref<HTMLDivElement>();
 const storedWidth = ref<string>();
-
-const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
 const menuSections: ContextMenuSection[] = [{
 	items: [

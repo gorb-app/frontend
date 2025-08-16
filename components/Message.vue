@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuSections)"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, messageMenuSections)"
 			class="message normal-message" :class="{ 'highlighted': (props.isMentioned || (props.replyMessage && props.message.member.user.uuid != me!.uuid && props.replyMessage?.member.user.uuid == me!.uuid)) }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div v-if="props.replyMessage" class="message-reply-svg">
@@ -27,12 +27,12 @@
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :profile="props.message.member" class="message-author-avatar" @contextmenu="showContextMenu($event, contextMenu, memberMenuSections)" />
+			<Avatar :profile="props.message.member" class="message-author-avatar" @contextmenu="showContextMenu($event, memberMenuSections)" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
 				<span class="message-author-username" tabindex="0" :style="`color: ${generateIrcColor(props.message.member.user.uuid)}`"
-						@contextmenu="showContextMenu($event, contextMenu, memberMenuSections)">
+						@contextmenu="showContextMenu($event, memberMenuSections)">
 					{{ getDisplayName(props.message.member) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
@@ -46,7 +46,7 @@
 			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 		</div>
 	</div>
-	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuSections)"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, messageMenuSections)"
 			class="message grouped-message" :class="{ 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div class="left-column">
@@ -80,8 +80,6 @@ const route = useRoute();
 const props = defineProps<MessageProps>();
 
 const me = await getUser()
-
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, sections: [] }));
 
 const messageElement = ref<HTMLDivElement>();
 
@@ -193,7 +191,9 @@ if (props.message.member.user.uuid == me!.uuid) {
 	regularSection.items.push({ name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
 }
 
-messageMenuSections.push(regularSection);
+if (regularSection.items.length) {
+	messageMenuSections.push(regularSection);
+}
 
 function getDayDifference(date1: Date, date2: Date) {
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
