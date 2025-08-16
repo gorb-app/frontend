@@ -6,13 +6,17 @@ export default (e: MouseEvent | PointerEvent, sections: ContextMenuSection[]) =>
 	e.preventDefault();
 	e.stopPropagation();
 	const contextMenu = useState<ContextMenuInterface>("contextMenu");
-	console.log("Menu sections:", sections);
-	if (sections.length) {
-		console.log("Showing context menu");
-		contextMenu.value.show = true;
-		contextMenu.value.pointerX = e.clientX;
-		contextMenu.value.pointerY = e.clientY;
-		contextMenu.value.sections = sections;
-		console.log("Showed");
+	if (contextMenu.value.show) {
+		removeContextMenu(contextMenu);
+	} else {
+		console.log("Menu sections:", sections);
+		if (sections.length) {
+			console.log("Showing context menu");
+			contextMenu.value.show = true;
+			contextMenu.value.pointerX = e.clientX;
+			contextMenu.value.pointerY = e.clientY;
+			contextMenu.value.sections = sections;
+			console.log("Showed");
+		}
 	}
 }

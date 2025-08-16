@@ -17,12 +17,21 @@ const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show:
 onMounted(() => {
 	loadPreferredThemes()
 
-	document.addEventListener("pointerdown", (e) => {
+	document.addEventListener("contextmenu", (e) => {
+		if (contextMenu.value.show) {
+			e.preventDefault();
+			if (e.target instanceof Element && !e.target.classList.contains("context-menu-item")) {
+				removeContextMenu(contextMenu);
+			}
+		}
+	});
+
+	document.addEventListener("mousedown", (e) => {
 		if (e.target instanceof HTMLElement && e.target.classList.contains("context-menu-item")) return;
 		console.log("click");
 		console.log("target:", e.target);
 		console.log(e.target instanceof HTMLDivElement);
-		if (contextMenu.value.show) {
+		if (e.button != 2 && contextMenu.value.show) {
 			console.log("context menu is shown, hiding");
 			removeContextMenu(contextMenu);
 		}
