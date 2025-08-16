@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuItems)"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuSections)"
 			class="message normal-message" :class="{ 'highlighted': (props.isMentioned || (props.replyMessage && props.message.member.user.uuid != me!.uuid && props.replyMessage?.member.user.uuid == me!.uuid)) }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div v-if="props.replyMessage" class="message-reply-svg">
@@ -27,12 +27,12 @@
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :profile="props.message.member" class="message-author-avatar" @contextmenu="showContextMenu($event, contextMenu, memberMenuItems)" />
+			<Avatar :profile="props.message.member" class="message-author-avatar" @contextmenu="showContextMenu($event, contextMenu, memberMenuSections)" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
 				<span class="message-author-username" tabindex="0" :style="`color: ${generateIrcColor(props.message.member.user.uuid)}`"
-						@contextmenu="showContextMenu($event, contextMenu, memberMenuItems)">
+						@contextmenu="showContextMenu($event, contextMenu, memberMenuSections)">
 					{{ getDisplayName(props.message.member) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
@@ -46,7 +46,7 @@
 			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 		</div>
 	</div>
-	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuItems)"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, messageMenuSections)"
 			class="message grouped-message" :class="{ 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div class="left-column">
@@ -70,7 +70,7 @@ import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
-import type { ContextMenuInterface, ContextMenuItem, IConfirmationModal } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem, ContextMenuSection, IConfirmationModal } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
 const { getUser } = useAuth()
@@ -81,7 +81,7 @@ const props = defineProps<MessageProps>();
 
 const me = await getUser()
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, sections: [] }));
 
 const messageElement = ref<HTMLDivElement>();
 
@@ -93,7 +93,7 @@ const currentDate: Date = new Date()
 
 const confirmationModal = ref<IConfirmationModal>();
 
-const memberMenuItems = ref<ContextMenuItem[]>([]);
+const memberMenuSections = ref<ContextMenuSection[]>([]);
 
 console.log("[MSG] message to render:", props.message);
 console.log("author:", props.message.member);
@@ -164,27 +164,36 @@ onMounted(async () => {
 	console.log("media links:", mediaLinks);
 
 	console.log("[CONFIRM] modal:", confirmationModal.value);
-	memberMenuItems.value = await createMemberContextMenuItems(props.message.member, route.params.serverId as string, confirmationModal);
+	memberMenuSections.value = await createMemberContextMenuItems(props.message.member, route.params.serverId as string, confirmationModal);
 });
 
 //function toggleTooltip(e: Event) {
 //	showHover.value = !showHover.value;
 //}
 
-const messageMenuItems: ContextMenuItem[] = [
-	{ name: "Reply", icon: "lucide:reply", type: "normal", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
-]
+const messageMenuSections: ContextMenuSection[] = [];
+
+const regularSection: ContextMenuSection = {
+	items: [
+		{
+			name: "Reply",
+			icon: "lucide:reply",
+			type: "normal",
+			callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props)}
+		}
+	]
+};
 
 console.log("me:", me);
 if (props.message.member.user.uuid == me!.uuid) {
-	// Inserts "edit" option at index 1 (below the "reply" option)
-	messageMenuItems.splice(Math.min(1, messageMenuItems.length), 0, { name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
+	regularSection.items.push({ name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
 }
 
-if (props.message.member.user.uuid == me!.uuid /* || check message delete permission*/) {
-	// Inserts "edit" option at index 2 (below the "edit" option)
-	messageMenuItems.splice(Math.min(2, messageMenuItems.length), 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
+if (props.message.member.user.uuid == me!.uuid) {
+	regularSection.items.push({ name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
 }
+
+messageMenuSections.push(regularSection);
 
 function getDayDifference(date1: Date, date2: Date) {
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());

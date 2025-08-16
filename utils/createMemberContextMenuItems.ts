@@ -1,8 +1,12 @@
 import { Permission } from "~/types/enums";
-import type { ContextMenuItem, GuildMemberResponse, IConfirmationModal } from "~/types/interfaces";
+import type { ContextMenuSection, GuildMemberResponse, IConfirmationModal } from "~/types/interfaces";
 
 export default async (member: GuildMemberResponse, guildId: string, confirmationModal?: Ref<IConfirmationModal | undefined>) => {
-	const menuItems: ContextMenuItem[] = [];
+	const menuSections: ContextMenuSection[] = [];
+	const moderationSection: ContextMenuSection = {
+		name: "Moderation",
+		items: []
+	};
 
 	const { fetchMeMember } = useApi();
 	const me = useState<GuildMemberResponse | undefined>("me");
@@ -19,7 +23,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 		console.log("[MENUITEM] member is not me");
 		if (hasPermission(me.value, Permission.KickMember)) {
 			console.log("[MENUITEM] has kick member permission");
-			menuItems.splice(Math.min(3, menuItems.length), 0, {
+			moderationSection.items.splice(Math.min(3, menuSections.length), 0, {
 				name: "Kick",
 				icon: "lucide:user-x",
 				type: "danger",
@@ -41,7 +45,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 
 		if (hasPermission(me.value, Permission.BanMember)) {
 			console.log("[MENUITEM] has ban permission");
-			menuItems.splice(Math.min(4, menuItems.length), 0, {
+			moderationSection.items.splice(Math.min(4, menuSections.length), 0, {
 				name: "Ban (WIP)",
 				icon: "lucide:ban",
 				type: "danger",
@@ -62,6 +66,8 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 		}
 	}
 
-	console.log("[MENUITEM] returning menu items:", menuItems);
-	return menuItems;
+	menuSections.push(moderationSection);
+
+	console.log("[MENUITEM] returning menu items:", menuSections);
+	return menuSections;
 }

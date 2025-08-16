@@ -1,5 +1,5 @@
 <template>
-	<div ref="resizableSidebar" class="resizable-sidebar" @contextmenu="showContextMenu($event, contextMenu, menuItems)"
+	<div ref="resizableSidebar" class="resizable-sidebar" @contextmenu="showContextMenu($event, contextMenu, menuSections)"
 			:style="{
 				'width': storedWidth ? storedWidth : props.width,
 				'min-width': props.minWidth,
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem, ContextMenuSection } from '~/types/interfaces';
 
 const props = defineProps<{ width?: string, minWidth: string, maxWidth: string, borderSides: "all" | "top" | "right" | "bottom" | "left" | ("top" | "right" | "bottom" | "left")[], localStorageName?: string }>();
 
@@ -33,14 +33,19 @@ const storedWidth = ref<string>();
 
 const contextMenu = useState<ContextMenuInterface>("contextMenu");
 
-const menuItems: ContextMenuItem[] = [
-	{ name: "Reset", type: "normal", callback: () => {
-		const defaultWidth = props.width ?? props.minWidth;
-		resizableSidebar.value!.style.width = defaultWidth;
-		if (props.localStorageName) {
-			localStorage.setItem(props.localStorageName, defaultWidth);
+const menuSections: ContextMenuSection[] = [{
+	items: [
+		{
+			name: "Reset", type: "normal", callback: () => {
+			const defaultWidth = props.width ?? props.minWidth;
+			resizableSidebar.value!.style.width = defaultWidth;
+				if (props.localStorageName) {
+					localStorage.setItem(props.localStorageName, defaultWidth);
+				}
+			}
 		}
-	} }
+	]
+}
 ]
 
 onMounted(() => {

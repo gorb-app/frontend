@@ -6,7 +6,7 @@ export default (contextMenu: Ref<ContextMenuInterface>) => {
 		show: false,
 		pointerX: 0,
 		pointerY: 0,
-		items: []
+		sections: []
 	}
 	console.log("hidden context menu");
 }

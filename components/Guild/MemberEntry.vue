@@ -1,5 +1,5 @@
 <template>
-    <div class="member-item" @click.prevent="showModalPopup" tabindex="0" @contextmenu="showContextMenu($event, contextMenu, menuItems)">
+    <div class="member-item" @click.prevent="showModalPopup" tabindex="0" @contextmenu="showContextMenu($event, contextMenu, menuSections)">
         <Avatar :profile="props.member" class="member-avatar"/>
         <span class="member-display-name" :style="`color: ${generateIrcColor(props.member.user.uuid)}`">
             {{ getDisplayName(props.member) }}
@@ -21,7 +21,7 @@ const props = defineProps<{
     member: GuildMemberResponse
 }>();
 
-const menuItems = await createMemberContextMenuItems(props.member, props.member.guild_uuid);
+const menuSections = await createMemberContextMenuItems(props.member, props.member.guild_uuid);
 
 const modalPopupVisible = ref<boolean>(false);
 

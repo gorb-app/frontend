@@ -1,7 +1,7 @@
 <template>
   	<div>
 		<Banner v-if="banner" />
-		<ContextMenu v-if="contextMenu && contextMenu.show" :pointer-x="contextMenu.pointerX" :pointer-y="contextMenu.pointerY" :menu-items="contextMenu.items" />
+		<ContextMenu v-if="contextMenu && contextMenu.show" :pointer-x="contextMenu.pointerX" :pointer-y="contextMenu.pointerY" :menu-sections="contextMenu.sections" />
     	<NuxtPage :keepalive="true" />
   	</div>
 </template>
@@ -12,7 +12,7 @@ import type { ContextMenuInterface } from './types/interfaces';
 
 const banner = useState("banner", () => false);
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, sections: [] }));
 
 onMounted(() => {
 	loadPreferredThemes()
