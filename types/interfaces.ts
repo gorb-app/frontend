@@ -140,3 +140,8 @@ export interface NavbarOptions {
 	isDirectMessages?: boolean
 }
 
+export interface IConfirmationModal {
+	show: boolean,
+	actionName: string,
+	callback: CallableFunction
+}
