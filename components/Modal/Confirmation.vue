@@ -2,7 +2,7 @@
 	<ModalBase ref="modal" class="confirmation-modal" :obscure="true" :onClose="props.onClose" :onCancel="props.onCancel">
 		<div class="confirmation-modal-body">
 			<div>
-				<h1 class="confirmation-modal-message">Are you sure you would like to {{ props.actionName.toLowerCase() }} {{ props.displayName }}?</h1>
+				<h1 class="confirmation-modal-message">Are you sure you would like to {{ props.actionName.toLowerCase() }} {{ props.targetName }}?</h1>
 			</div>
 			<div class="confirmation-modal-buttons">
 				<Button :variant="'normal'" :text="'Cancel'" @click="closeModal()" />
@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import Button from '../UserInterface/Button.vue';
 
-const props = defineProps<{ actionName: string, displayName?: string, callback: CallableFunction, onClose: () => void, onCancel: () => void }>();
+const props = defineProps<{ actionName: string, targetName?: string, callback: CallableFunction, onClose: () => void, onCancel: () => void }>();
 
 const modal = ref<{ close: () => void }>();
 
