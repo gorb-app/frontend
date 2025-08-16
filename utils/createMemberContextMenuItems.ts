@@ -18,7 +18,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 		console.log("[MENUITEM] member is not me");
 		if (hasPermission(me.value, Permission.KickMember)) {
 			console.log("[MENUITEM] has kick member permission");
-			moderationSection.items.splice(Math.min(3, menuSections.length), 0, {
+			moderationSection.items.push({
 				name: "Kick",
 				icon: "lucide:user-x",
 				type: "danger",
@@ -40,7 +40,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 
 		if (hasPermission(me.value, Permission.BanMember)) {
 			console.log("[MENUITEM] has ban permission");
-			moderationSection.items.splice(Math.min(4, menuSections.length), 0, {
+			moderationSection.items.push({
 				name: "Ban (WIP)",
 				icon: "lucide:ban",
 				type: "danger",
