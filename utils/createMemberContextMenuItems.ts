@@ -1,7 +1,7 @@
 import { Permission } from "~/types/enums";
-import type { ContextMenuItem, GuildMemberResponse } from "~/types/interfaces";
+import type { ContextMenuItem, GuildMemberResponse, IConfirmationModal } from "~/types/interfaces";
 
-export default async (member: GuildMemberResponse, guildId: string) => {
+export default async (member: GuildMemberResponse, guildId: string, confirmationModal?: Ref<IConfirmationModal | undefined>) => {
 	const menuItems: ContextMenuItem[] = [];
 
 	const { fetchMeMember } = useApi();
@@ -19,12 +19,46 @@ export default async (member: GuildMemberResponse, guildId: string) => {
 		console.log("[MENUITEM] member is not me");
 		if (hasPermission(me.value, Permission.KickMember)) {
 			console.log("[MENUITEM] has kick member permission");
-			menuItems.splice(Math.min(3, menuItems.length), 0, { name: "Kick", icon: "lucide:user-x", type: "danger", callback: async () => await kickMember(member.uuid) });
+			menuItems.splice(Math.min(3, menuItems.length), 0, {
+				name: "Kick",
+				icon: "lucide:user-x",
+				type: "danger",
+				callback: async () => {
+					if (confirmationModal) {
+						console.log("[CONFIRM] HEYO THERE!!");
+						confirmationModal.value = {
+							actionName: "kick",
+							callback: async () => await kickMember(member.uuid),
+							show: true
+						}
+					} else {
+						console.log("[CONFIRM] no modal");
+						await kickMember(member.uuid)
+					}
+				}
+			});
 		}
 
 		if (hasPermission(me.value, Permission.BanMember)) {
 			console.log("[MENUITEM] has ban permission");
-			menuItems.splice(Math.min(4, menuItems.length), 0, { name: "Ban (WIP)", icon: "lucide:ban", type: "danger", callback: async () => await banMember(guildId, member.uuid) });
+			menuItems.splice(Math.min(4, menuItems.length), 0, {
+				name: "Ban (WIP)",
+				icon: "lucide:ban",
+				type: "danger",
+				callback: async () => {
+					if (confirmationModal) {
+						console.log("[CONFIRM] HEYO THERE!! 2");
+						confirmationModal.value = {
+							actionName: "ban",
+							callback: async () => await banMember(member.guild_uuid, member.uuid),
+							show: true
+						}
+					} else {
+						console.log("[CONFIRM] no modal 2");
+						await banMember(member.guild_uuid, member.uuid)
+					}
+		 		}
+			});
 		}
 	}
 

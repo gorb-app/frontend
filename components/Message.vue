@@ -59,6 +59,9 @@
 			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks"/>
 		</div>
 	</div>
+	<ModalConfirmation v-if="confirmationModal && confirmationModal.show" :action-name="confirmationModal.actionName"
+		:display-name="getDisplayName(props.message.member)" :callback="confirmationModal.callback"
+		:onClose="resetConfirmationModal" :onCancel="resetConfirmationModal" />
 </template>
 
 <script lang="ts" setup>
@@ -67,7 +70,7 @@ import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
-import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem, IConfirmationModal } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
 const { getUser } = useAuth()
@@ -87,6 +90,10 @@ const dateHidden = ref<boolean>(true);
 const date = uuidToDate(props.message.uuid);
 
 const currentDate: Date = new Date()
+
+const confirmationModal = ref<IConfirmationModal>();
+
+const memberMenuItems = ref<ContextMenuItem[]>([]);
 
 console.log("[MSG] message to render:", props.message);
 console.log("author:", props.message.member);
@@ -155,6 +162,9 @@ onMounted(async () => {
 	};
 
 	console.log("media links:", mediaLinks);
+
+	console.log("[CONFIRM] modal:", confirmationModal.value);
+	memberMenuItems.value = await createMemberContextMenuItems(props.message.member, route.params.serverId as string, confirmationModal);
 });
 
 //function toggleTooltip(e: Event) {
@@ -176,8 +186,6 @@ if (props.message.member.user.uuid == me!.uuid /* || check message delete permis
 	messageMenuItems.splice(Math.min(2, messageMenuItems.length), 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
 }
 
-const memberMenuItems = await createMemberContextMenuItems(props.message.member, route.params.serverId as string);
-
 function getDayDifference(date1: Date, date2: Date) {
     const midnight1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
     const midnight2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
@@ -187,6 +195,13 @@ function getDayDifference(date1: Date, date2: Date) {
     const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
 
     return Math.round(dayDifference);
+}
+
+function resetConfirmationModal() {
+	console.log("[CONFIRM] resetting");
+	if (confirmationModal) {
+		confirmationModal.value = { show: false, actionName: "", callback: () => {} };
+	}
 }
 
 </script>
