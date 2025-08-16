@@ -60,7 +60,7 @@
 		</div>
 	</div>
 	<ModalConfirmation v-if="confirmationModal && confirmationModal.show" :action-name="confirmationModal.actionName"
-		:display-name="getDisplayName(props.message.member)" :callback="confirmationModal.callback"
+		:target-name="getDisplayName(props.message.member)" :callback="confirmationModal.callback"
 		:onClose="resetConfirmationModal" :onCancel="resetConfirmationModal" />
 </template>
 
@@ -70,7 +70,7 @@ import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
-import type { ContextMenuInterface, ContextMenuItem, ContextMenuSection, IConfirmationModal } from '~/types/interfaces';
+import type { ContextMenuSection, IConfirmationModal } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
 const { getUser } = useAuth()
