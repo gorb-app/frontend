@@ -8,20 +8,22 @@
 				'border-top': props.borderSides?.includes('top') ? borderStyling : undefined,
 				'border-bottom': props.borderSides?.includes('bottom') ? borderStyling : undefined,
 			}">
-		<div v-if="props.borderSides != 'right'" class="width-resizer-bar">
+		<div v-if="props.borderSides != 'right'" class="width-resizer-bar"
+				@contextmenu="showContextMenu($event, menuSections)">
 			<div ref="widthResizer" class="width-resizer"></div>
 		</div>
 		<div class="sidebar-content">
 			<slot />
 		</div>
-		<div v-if="props.borderSides == 'right'" class="width-resizer-bar">
+		<div v-if="props.borderSides == 'right'" class="width-resizer-bar"
+				@contextmenu="showContextMenu($event, menuSections)">
 			<div ref="widthResizer" class="width-resizer"></div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuInterface, ContextMenuItem, ContextMenuSection } from '~/types/interfaces';
 
 const props = defineProps<{ width?: string, minWidth: string, maxWidth: string, borderSides: "all" | "top" | "right" | "bottom" | "left" | ("top" | "right" | "bottom" | "left")[], localStorageName?: string }>();
 
@@ -31,16 +33,19 @@ const resizableSidebar = ref<HTMLDivElement>();
 const widthResizer = ref<HTMLDivElement>();
 const storedWidth = ref<string>();
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu");
-
-const menuItems: ContextMenuItem[] = [
-	{ name: "Reset", type: "normal", callback: () => {
-		const defaultWidth = props.width ?? props.minWidth;
-		resizableSidebar.value!.style.width = defaultWidth;
-		if (props.localStorageName) {
-			localStorage.setItem(props.localStorageName, defaultWidth);
+const menuSections: ContextMenuSection[] = [{
+	items: [
+		{
+			name: "Reset", type: "normal", callback: () => {
+			const defaultWidth = props.width ?? props.minWidth;
+			resizableSidebar.value!.style.width = defaultWidth;
+				if (props.localStorageName) {
+					localStorage.setItem(props.localStorageName, defaultWidth);
+				}
+			}
 		}
-	} }
+	]
+}
 ]
 
 onMounted(() => {
@@ -48,11 +53,8 @@ onMounted(() => {
 
 	if (resizableSidebar.value && widthResizer.value) {
 		widthResizer.value.addEventListener("pointerdown", (e) => {
+			if (e.button != 0) return;
 			e.preventDefault();
-			if (e.button == 2) {
-				showContextMenu(e, contextMenu.value, menuItems);
-				return
-			};
 			document.body.style.cursor = "ew-resize";
 			function handleMove(pointer: PointerEvent) {
 				if (resizableSidebar.value) {

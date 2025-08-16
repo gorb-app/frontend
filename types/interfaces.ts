@@ -115,11 +115,16 @@ export interface ContextMenuItem {
 	callback: (...args: any[]) => any;
 }
 
+export interface ContextMenuSection {
+	name?: string
+	items: ContextMenuItem[]
+}
+
 export interface ContextMenuInterface {
 	show: boolean,
 	pointerX: number,
 	pointerY: number,
-	items: ContextMenuItem[]
+	sections: ContextMenuSection[]
 }
 
 export interface NavbarItem {
@@ -140,3 +145,8 @@ export interface NavbarOptions {
 	isDirectMessages?: boolean
 }
 
+export interface IConfirmationModal {
+	show: boolean,
+	actionName: string,
+	callback: CallableFunction
+}

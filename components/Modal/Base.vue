@@ -25,6 +25,11 @@ onMounted(() => {
     if (props.onCancel) dialog.value.addEventListener("cancel", props.onCancel);
   }
 });
+
+function close() { dialog.value?.close() }
+
+defineExpose({ close });
+
 </script>
 
 <style scoped>

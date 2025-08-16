@@ -1,5 +1,5 @@
 <template>
-	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)"
+	<div v-if="props.type == 'normal' || props.replyMessage" ref="messageElement" @contextmenu="showContextMenu($event, messageMenuSections)"
 			class="message normal-message" :class="{ 'highlighted': (props.isMentioned || (props.replyMessage && props.message.member.user.uuid != me!.uuid && props.replyMessage?.member.user.uuid == me!.uuid)) }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div v-if="props.replyMessage" class="message-reply-svg">
@@ -27,11 +27,12 @@
 			:text="props.replyMessage?.message"
 			:reply-id="props.replyMessage.uuid" max-width="reply" />
 		<div class="left-column">
-			<Avatar :profile="props.message.member" class="message-author-avatar"/>
+			<Avatar :profile="props.message.member" class="message-author-avatar" @contextmenu="showContextMenu($event, memberMenuSections)" />
 		</div>
 		<div class="message-data">
 			<div class="message-metadata">
-				<span class="message-author-username" tabindex="0" :style="`color: ${generateIrcColor(props.message.member.user.uuid)}`">
+				<span class="message-author-username" tabindex="0" :style="`color: ${generateIrcColor(props.message.member.user.uuid)}`"
+						@contextmenu="showContextMenu($event, memberMenuSections)">
 					{{ getDisplayName(props.message.member) }}
 				</span>
 				<span class="message-date" :title="date.toString()">
@@ -45,7 +46,7 @@
 			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks" />
 		</div>
 	</div>
-	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, contextMenu, menuItems)"
+	<div v-else ref="messageElement" @contextmenu="showContextMenu($event, messageMenuSections)"
 			class="message grouped-message" :class="{ 'mentioned': props.replyMessage || props.isMentioned }"
 			:data-message-id="props.message.uuid" :editing.sync="props.editing">
 		<div class="left-column">
@@ -58,6 +59,9 @@
 			<MessageMedia v-if="mediaLinks.length" :links="mediaLinks"/>
 		</div>
 	</div>
+	<ModalConfirmation v-if="confirmationModal && confirmationModal.show" :action-name="confirmationModal.actionName"
+		:target-name="getDisplayName(props.message.member)" :callback="confirmationModal.callback"
+		:onClose="resetConfirmationModal" :onCancel="resetConfirmationModal" />
 </template>
 
 <script lang="ts" setup>
@@ -66,16 +70,16 @@ import { parse } from 'marked';
 import type { MessageProps } from '~/types/props';
 import MessageMedia from './MessageMedia.vue';
 import MessageReply from './UserInterface/MessageReply.vue';
-import type { ContextMenuInterface, ContextMenuItem } from '~/types/interfaces';
+import type { ContextMenuSection, IConfirmationModal } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
 const { getUser } = useAuth()
 
+const route = useRoute();
+
 const props = defineProps<MessageProps>();
 
 const me = await getUser()
-
-const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, items: [] }));
 
 const messageElement = ref<HTMLDivElement>();
 
@@ -84,6 +88,10 @@ const dateHidden = ref<boolean>(true);
 const date = uuidToDate(props.message.uuid);
 
 const currentDate: Date = new Date()
+
+const confirmationModal = ref<IConfirmationModal>();
+
+const memberMenuSections = ref<ContextMenuSection[]>([]);
 
 console.log("[MSG] message to render:", props.message);
 console.log("author:", props.message.member);
@@ -152,25 +160,39 @@ onMounted(async () => {
 	};
 
 	console.log("media links:", mediaLinks);
+
+	console.log("[CONFIRM] modal:", confirmationModal.value);
+	memberMenuSections.value = await createMemberContextMenuItems(props.message.member, route.params.serverId as string, confirmationModal);
 });
 
 //function toggleTooltip(e: Event) {
 //	showHover.value = !showHover.value;
 //}
 
-const menuItems: ContextMenuItem[] = [
-	{ name: "Reply", icon: "lucide:reply", type: "normal", callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props) } }
-]
+const messageMenuSections: ContextMenuSection[] = [];
+
+const regularSection: ContextMenuSection = {
+	items: [
+		{
+			name: "Reply",
+			icon: "lucide:reply",
+			type: "normal",
+			callback: () => { if (messageElement.value) replyToMessage(messageElement.value, props)}
+		}
+	]
+};
 
 console.log("me:", me);
 if (props.message.member.user.uuid == me!.uuid) {
-	// Inserts "edit" option at index 1 (below the "reply" option)
-	menuItems.splice(1, 0, { name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
+	regularSection.items.push({ name: "Edit (WIP)", icon: "lucide:square-pen", type: "normal", callback: () => { /* if (messageElement.value) editMessage(messageElement.value, props) */ } });
 }
 
-if (props.message.member.user.uuid == me!.uuid /* || check message delete permission*/) {
-	// Inserts "edit" option at index 2 (below the "edit" option)
-	menuItems.splice(2, 0, { name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
+if (props.message.member.user.uuid == me!.uuid) {
+	regularSection.items.push({ name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
+}
+
+if (regularSection.items.length) {
+	messageMenuSections.push(regularSection);
 }
 
 function getDayDifference(date1: Date, date2: Date) {
@@ -182,6 +204,13 @@ function getDayDifference(date1: Date, date2: Date) {
     const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
 
     return Math.round(dayDifference);
+}
+
+function resetConfirmationModal() {
+	console.log("[CONFIRM] resetting");
+	if (confirmationModal) {
+		confirmationModal.value = { show: false, actionName: "", callback: () => {} };
+	}
 }
 
 </script>
@@ -243,6 +272,11 @@ function getDayDifference(date1: Date, date2: Date) {
 	max-height: 2.5em;
 	min-width: 2.5em;
 	max-width: 2.5em;
+	cursor: pointer;
+}
+
+.message-author-username {
+	cursor: pointer;
 }
 
 .left-column {

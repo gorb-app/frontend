@@ -1,7 +1,7 @@
 <template>
   	<div>
 		<Banner v-if="banner" />
-		<ContextMenu v-if="contextMenu && contextMenu.show" :pointer-x="contextMenu.pointerX" :pointer-y="contextMenu.pointerY" :menu-items="contextMenu.items" />
+		<ContextMenu v-if="contextMenu && contextMenu.show" :pointer-x="contextMenu.pointerX" :pointer-y="contextMenu.pointerY" :menu-sections="contextMenu.sections" />
     	<NuxtPage :keepalive="true" />
   	</div>
 </template>
@@ -12,22 +12,29 @@ import type { ContextMenuInterface } from './types/interfaces';
 
 const banner = useState("banner", () => false);
 
-const contextMenu = useState<ContextMenuInterface>("contextMenu");
+const contextMenu = useState<ContextMenuInterface>("contextMenu", () => ({ show: false, pointerX: 0, pointerY: 0, sections: [] }));
 
 onMounted(() => {
 	loadPreferredThemes()
 
-	document.removeEventListener("contextmenu", contextMenuHandler);
 	document.addEventListener("contextmenu", (e) => {
-		if (e.target instanceof Element && e.target.classList.contains("default-contextmenu")) return;
-		contextMenuHandler(e);
+		if (contextMenu.value.show) {
+			e.preventDefault();
+			if (e.target instanceof Element && !e.target.classList.contains("context-menu-item")) {
+				removeContextMenu(contextMenu);
+			}
+		}
 	});
+
 	document.addEventListener("mousedown", (e) => {
-		if (e.target instanceof HTMLElement && e.target.closest("#context-menu")) return;
+		if (e.target instanceof HTMLElement && e.target.classList.contains("context-menu-item")) return;
 		console.log("click");
 		console.log("target:", e.target);
 		console.log(e.target instanceof HTMLDivElement);
-		removeContextMenu(contextMenu);
+		if (e.button != 2 && contextMenu.value.show) {
+			console.log("context menu is shown, hiding");
+			removeContextMenu(contextMenu);
+		}
 		if (e.target instanceof HTMLElement && e.target.classList.contains("message-text") && e.target.contentEditable) {
 			e.target.contentEditable = "false";
 		}
@@ -51,14 +58,6 @@ onMounted(() => {
 		}
 	});
 });
-
-function contextMenuHandler(e: MouseEvent) {
-	e.preventDefault();
-	//console.log("Opened context menu");
-	//createContextMenu(e, [
-	//	{ name: "Wah", callback: () => { return } }
-	//]);
-}
 
 </script>
 
