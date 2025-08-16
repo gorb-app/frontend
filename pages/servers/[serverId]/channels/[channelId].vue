@@ -16,8 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { GuildMemberResponse } from '~/types/interfaces';
-
+import type { ChannelResponse, GuildMemberResponse, GuildResponse } from '~/types/interfaces';
 
 const route = useRoute();
 const { fetchGuild, fetchChannel } = useApi()
@@ -27,8 +26,20 @@ const guildId = route.params.serverId as string
 
 const channelUrlPath = `channels/${channelId}`;
 
-const guild = await fetchGuild(guildId)
-const channel = await fetchChannel(channelId)
+let guild: GuildResponse | undefined;
+let channel: ChannelResponse | undefined;
+
+try {
+	guild = await fetchGuild(guildId)
+} catch (error) {
+	console.error("Failed to fetch guild:", error);
+}
+
+try {
+	channel = await fetchChannel(channelId)
+} catch (error) {
+	console.error("Failed to fetch channel:", error);
+}
 
 const { fetchMeMember } = useApi();
 const me = useState<GuildMemberResponse | undefined>("me");

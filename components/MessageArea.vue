@@ -56,10 +56,16 @@ const messagesType = ref<Record<string, "normal" | "grouped">>({});
 const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference
 const timeFormat = getPreferredTimeFormat()
 
-const messagesRes: MessageResponse[] | undefined = await fetchWithApi(
-	`${props.channelUrl}/messages`,
-	{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
-);
+let messagesRes: MessageResponse[] | undefined;
+
+try {
+	messagesRes = await fetchWithApi(
+		`${props.channelUrl}/messages`,
+		{ query: { "amount": props.amount ?? 100, "offset": props.offset ?? 0 } }
+	);
+} catch (error) {
+	console.error("Failed to fetch messages:", error);
+}
 
 const firstMessageByUsers = ref<Record<string, MessageResponse | undefined>>({});
 const previousMessage = ref<MessageResponse>();
