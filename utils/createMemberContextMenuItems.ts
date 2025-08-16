@@ -8,12 +8,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 		items: []
 	};
 
-	const { fetchMeMember } = useApi();
 	const me = useState<GuildMemberResponse | undefined>("me");
-	if (!me.value) {
-		const fetchedMe = await fetchMeMember(member.guild_uuid);
-		me.value = fetchedMe;
-	}
 	const { banMember, kickMember } = useApi();
 
 	console.log("[MENUITEM] hi");
@@ -66,7 +61,9 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 		}
 	}
 
-	menuSections.push(moderationSection);
+	if (moderationSection.items.length) {
+		menuSections.push(moderationSection);
+	}
 
 	console.log("[MENUITEM] returning menu items:", menuSections);
 	return menuSections;
