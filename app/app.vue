@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import ContextMenu from '~/components/UserInterface/ContextMenu.vue';
-import type { ContextMenuInterface } from './types/interfaces';
+import type { ContextMenuInterface } from '~/types/interfaces';
 
 const banner = useState("banner", () => false);
 

@@ -1,4 +1,4 @@
-import type { MessageResponse } from "~/types/interfaces";
+import type { MessageResponse } from "~/app/types/interfaces";
 
 export default class Message {
 	uuid: string;
