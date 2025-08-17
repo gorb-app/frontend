@@ -5,33 +5,34 @@ complementaryColor = white
 */
 
 :root {
-	--text-color: hsl(5, 95%, 95%);
+	--text-color: hsl(0, 2%, 95%);
 	--secondary-text-color: hsl(195, 2%, 80%);
 	--reply-text-color: hsl(0, 0%, 50%);
-	--danger-text-color: hsl(0, 80%, 55%);
-	--danger-text-highlighted-color: hsl(0, 100%, 50%);
 
-	--chat-background-color: hsl(28, 3%, 14%);
-    --chat-highlighted-background-color: hsl(28, 6%, 17%);
+	--chat-background-color: hsl(28, 4%, 15%);
+    --chat-highlighted-background-color: hsl(28, 7%, 20%);
 	--chat-important-background-color: hsl(28, 50%, 50%, 0.20);
 	--chat-important-highlighted-background-color: hsl(28, 75%, 60%, 0.25);
-	--chat-featured-message-color: hsl(28, 100%, 60%, 0.35);
+	--chat-featured-message-color: hsl(28, 90%, 60%, 0.25);
+
+	--chatbox-background-color: hsl(210, 1%, 7%);
+	--topbar-background-color: hsl(30, 2%, 12%);
+	--sidebar-background-color: hsl(25, 3%, 12%);
+	--sidebar-highlighted-background-color: hsl(25, 5%, 17%);
+	
 	--popup-background-color: hsl(20, 3%, 14%);
 	--popup-highlighted-background-color: hsl(20, 6%, 20%);
 	--modal-background-color: hsl(28, 5%, 12%);
-
-	--sidebar-background-color: hsl(30, 5%, 12%);
-	--sidebar-highlighted-background-color: hsl(30, 12%, 16%);
-	--topbar-background-color: hsl(30, 2%, 12%);
-	--chatbox-background-color: hsl(210, 1%, 6%);
-
+	
     --padding-color: hsl(0, 0%, 25%);
-
+	
 	--primary-color: hsl(22, 85%, 55%);
-	--primary-highlighted-color: hsl(22, 100%, 58%);
-	--secondary-color: hsl(19, 78%, 42%);
-	--secondary-highlighted-color: hsl(19, 85%, 50%);
-	--accent-color: hsl(24, 90%, 37%);
-	--accent-highlighted-color: hsl(24, 100%, 42%);
+	--primary-highlighted-color: hsl(28, 88%, 60%);
+	--secondary-color: hsl(19, 70%, 42%);
+	--secondary-highlighted-color: hsl(14, 72%, 48%);
+	--accent-color: hsl(24, 80%, 45%);
+	--accent-highlighted-color: hsl(24, 93%, 54%);
+	--danger-text-color: hsl(0, 80%, 55%);
+	--danger-text-highlighted-color: hsl(0, 100%, 50%);
 }
 
