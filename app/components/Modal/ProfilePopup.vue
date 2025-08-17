@@ -157,8 +157,8 @@ function buttonEditProfile() {
 	width: 6em;
 	height: 6em;
 	
-	background-color: var(--accent-color);
-	border: .15em solid var(--accent-color);
+	background-color: var(--secondary-color);
+	border: .15em solid var(--secondary-color);
 }
 
 #profile-sub-header {

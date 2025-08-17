@@ -49,7 +49,7 @@ const props = defineProps<{
   border-radius: 0 0 12px 12px;
   padding: 12px;
   min-height: 280px;
-  background-color: var(--accent-color);
+  background-color: var(--secondary-color);
   overflow-wrap: break-word;
   hyphens: manual;
 }
@@ -58,7 +58,7 @@ const props = defineProps<{
   width: 96px;
   height: 96px;
   border: 5px solid #4b3018;
-  background-color: var(--secondary-color);
+  background-color: var(--accent-color);
   border-radius: 100%;
   position: absolute;
   left: 16px;
@@ -78,7 +78,7 @@ const props = defineProps<{
 }
 
 #about-me {
-  background-color: var(--secondary-color);
+  background-color: var(--accent-color);
   border-radius: 12px;
   
   margin-top: 32px;

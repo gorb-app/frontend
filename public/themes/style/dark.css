@@ -5,31 +5,33 @@ complementaryColor = white
 */
 
 :root {
-	--text-color: #f7eee8;
-	--secondary-text-color: #f0e8e4;
-	--reply-text-color: #969696;
-	--danger-text-color: #ff0000;
+	--text-color: hsl(5, 95%, 95%);
+	--secondary-text-color: hsl(195, 2%, 80%);
+	--reply-text-color: hsl(0, 0%, 50%);
+	--danger-text-color: hsl(0, 80%, 55%);
+	--danger-text-highlighted-color: hsl(0, 100%, 50%);
 
-	--chat-background-color: #282624;
-    --chat-highlighted-background-color: #383430;
-	--chat-important-background-color: #ffc44f2f;
-	--chat-important-highlighted-background-color: #ffa45f4a;
-	--chat-featured-message-color: #4f2f1f58;
-	--popup-background-color: #2f1f1f;
-	--popup-highlighted-background-color: #3f2f2f;
-	--modal-background-color: #28241f;
+	--chat-background-color: hsl(28, 3%, 14%);
+    --chat-highlighted-background-color: hsl(28, 6%, 17%);
+	--chat-important-background-color: hsl(28, 50%, 50%, 0.20);
+	--chat-important-highlighted-background-color: hsl(28, 75%, 60%, 0.25);
+	--chat-featured-message-color: hsl(28, 100%, 60%, 0.35);
+	--popup-background-color: hsl(20, 3%, 14%);
+	--popup-highlighted-background-color: hsl(20, 6%, 20%);
+	--modal-background-color: hsl(28, 5%, 12%);
 
-	--sidebar-background-color: #1f1e1d;
-	--sidebar-highlighted-background-color: #2f2b28;
-	--topbar-background-color: #1f1e1e;
-	--chatbox-background-color: #1a1713;
+	--sidebar-background-color: hsl(30, 5%, 12%);
+	--sidebar-highlighted-background-color: hsl(30, 12%, 16%);
+	--topbar-background-color: hsl(30, 2%, 12%);
+	--chatbox-background-color: hsl(210, 1%, 6%);
 
-    --padding-color: #484848;
-    
-	--primary-color: #f4741f;
-	--primary-highlighted-color: #f68a3f;
-	--secondary-color: #7c4018;
-	--secondary-highlighted-color: #8f5b2c;
-	--accent-color: #b35719;
-	--accent-highlighted-color: #c76a2e;
+    --padding-color: hsl(0, 0%, 25%);
+
+	--primary-color: hsl(22, 85%, 55%);
+	--primary-highlighted-color: hsl(22, 100%, 58%);
+	--secondary-color: hsl(19, 78%, 42%);
+	--secondary-highlighted-color: hsl(19, 85%, 50%);
+	--accent-color: hsl(24, 90%, 37%);
+	--accent-highlighted-color: hsl(24, 100%, 42%);
 }
+

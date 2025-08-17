@@ -228,7 +228,7 @@ function changeTheme(themeType: StyleLayout, theme: Theme) {
 
 .theme-instance:hover .layout-preview {
   border: .1em solid var(--primary-color);
-  filter: drop-shadow(0 0 .2em var(--secondary-color));
+  filter: drop-shadow(0 0 .2em var(--accent-color));
   transform: translate(3.5em, -4em);
   
   height: 40dvw;

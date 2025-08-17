@@ -56,7 +56,6 @@ function toggleGuildSettings(e: Event) {
 	position: relative;
 
 	border-bottom: 1px solid var(--padding-color);
-	background-color: var(--topbar-background-color);
 }
 
 #guild-name {
