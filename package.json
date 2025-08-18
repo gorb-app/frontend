@@ -28,6 +28,7 @@
   "packageManager": "pnpm@10.11.0",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "2.2.0",
     "@iconify-json/lucide": "^1.2.44",
     "@types/node": "^22.15.3",
     "eslint-config-prettier": "^10.1.2",
