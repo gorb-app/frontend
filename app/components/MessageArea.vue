@@ -38,9 +38,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse, ScrollPosition, UserResponse } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition, UserResponse, WSMessage } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 import { generateIrcColor } from '#imports';
+import { WSEvent } from '~/types/enums';
 
 const { getDisplayName } = useProfile()
 const { fetchMe } = useApi()
@@ -202,16 +203,19 @@ if (accessToken && apiBase) {
 	ws.addEventListener("message", async (event) => {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
-		const parsedData = JSON.parse(event.data);
-		console.log("[MSG] parsed message:", parsedData);
+		const message: WSMessage = JSON.parse(event.data);
+		console.log("[MSG] parsed message:", message);
 		
-		console.log("parsed message type:", messagesType.value[parsedData.uuid]);
-		console.log("parsed message timestamp:", messageTimestamps.value[parsedData.uuid]);
-		pushMessage(parsedData);
-		await nextTick();
-		if (messagesElement.value) {
-			console.log("scrolling to bottom");
-			scrollToBottom(messagesElement.value);
+		if (message.event == WSEvent.MessageSend) {
+			const messageObject = message.entity as MessageResponse;
+			console.log("parsed message type:", messagesType.value[messageObject.uuid]);
+			console.log("parsed message timestamp:", messageTimestamps.value[messageObject.uuid]);
+			pushMessage(messageObject);
+			await nextTick();
+			if (messagesElement.value) {
+				console.log("scrolling to bottom");
+				scrollToBottom(messagesElement.value);
+			}
 		}
 	});
 
@@ -222,21 +226,27 @@ if (accessToken && apiBase) {
 function sendMessage(e: Event) {
 	e.preventDefault();
 	if (messageInput.value && messageInput.value.trim() !== "") {
-		const message: Record<string, string> = {
-			message: messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
-		}
+		const text = messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
 
 		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
 		console.log("[MSG] message reply:", messageReply);
 		if (messageReply && messageReply.dataset.messageId) {
 			console.log("[MSG] message is a reply");
-			message.reply_to = messageReply.dataset.messageId;
-			const replyToMessage = document.querySelector(`.message[data-message-id='${message.reply_to}']`);
+			const reply_to = messageReply.dataset.messageId;
+			const event = WSEvent.MessageSend;
+			const replyToMessage = document.querySelector(`.message[data-message-id='${reply_to}']`);
 			if (replyToMessage) {
 				replyToMessage.classList.remove("replying-to");
 			}
 		}
 
+		const message = {
+			event: WSEvent.MessageSend,
+			entity: {
+				text
+			}
+		};
+		
 		console.log("[MSG] sent message:", message);
 		ws.send(JSON.stringify(message));
 
