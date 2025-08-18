@@ -10,7 +10,7 @@ export default defineNuxtConfig({
       E.g.: baseURL set to "/web" would host at https://gorb.app/web
       Default is "/" (aka root), which hosts at https://gorb.app/
     */
-    baseURL: "/",
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',
     head: {
       title: 'Gorb',
       // this is purely used to embed in that other chat app, and similar stuff
