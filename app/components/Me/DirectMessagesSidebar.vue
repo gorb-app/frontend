@@ -34,7 +34,7 @@ const friends = await fetchFriends()
 <style>
 #middle-left-column {
 	background: var(--optional-channel-list-background);
-	background-color: var(--sidebar-background-color);
+	background-color: var(--left-sidebar-background-color);
 }
 
 #friend-sidebar {

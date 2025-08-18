@@ -121,7 +121,7 @@ async function acceptInvite() {
 	align-items: center;
 	height: 100%;
 	width: 100%;
-	background-color: var(--sidebar-highlighted-background-color);
+	background-color: var(--left-sidebar-highlighted-background-color);
 	border: .5rem solid black;
 	border-radius: var(--standard-radius);
 	padding: .5rem;

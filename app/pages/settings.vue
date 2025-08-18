@@ -127,7 +127,7 @@ onMounted(() => {
   min-width: 25dvw;
   max-width: 25dvw;
   background: var(--optional-channel-list-background);
-  background-color: var(--sidebar-background-color);
+  background-color: var(--left-sidebar-background-color);
   color: var(--text-color);
   padding: 1dvh 1dvw;
   margin-left: 0;
@@ -160,11 +160,11 @@ onMounted(() => {
 }
 
 .sidebar-focus {
-  background-color: var(--sidebar-highlighted-background-color);
+  background-color: var(--left-sidebar-highlighted-background-color);
 }
 
 #sidebar li:hover {
-  background-color: var(--sidebar-highlighted-background-color);
+  background-color: var(--left-sidebar-highlighted-background-color);
 }
 
 #sub-page {

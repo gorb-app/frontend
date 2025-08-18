@@ -161,12 +161,12 @@ function createDropdown() {
 	display: flex;
 	flex-direction: column;
 
-	padding-left: var(--sidebar-margin);
-	padding-right: var(--sidebar-margin);
+	padding-left: var(--left-sidebar-margin);
+	padding-right: var(--left-sidebar-margin);
 	padding-top: .5em;
 	
 	background: var(--optional-sidebar-background);
-	background-color: var(--sidebar-background-color);
+	background-color: var(--guild-list-background-color);
 
 	border-right: 1px solid var(--padding-color);
 	text-align: center;
@@ -175,7 +175,7 @@ function createDropdown() {
 #guild-column {
 	overflow-y: scroll;
 	flex-grow: 1;
-	gap: var(--sidebar-icon-gap);
+	gap: var(--left-sidebar-icon-gap);
 }
 #guild-icon-container {
 	text-decoration: none;
@@ -192,15 +192,15 @@ function createDropdown() {
 }
 
 #home-button {
-	height: var(--sidebar-icon-width);
+	height: var(--left-sidebar-icon-width);
 }
 
 .guild-icon {
 	border-radius: var(--guild-icon-radius);
 }
 .sidebar-icon {
-	width: var(--sidebar-icon-width);
-	height: var(--sidebar-icon-width);
+	width: var(--left-sidebar-icon-width);
+	height: var(--left-sidebar-icon-width);
 }
 
 .sidebar-bottom-buttons {

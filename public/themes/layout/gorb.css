@@ -5,9 +5,9 @@ complementaryColor = white
 */
 
 :root {
-	--sidebar-icon-width: 2.5em;
-	--sidebar-icon-gap: .25em;
-	--sidebar-margin: .5em;
+	--left-sidebar-icon-width: 2.5em;
+	--left-sidebar-icon-gap: .25em;
+	--left-sidebar-margin: .5em;
 
 	--navbar-height: 5dvh;
 	--navbar-icon-size: 3dvh;

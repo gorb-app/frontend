@@ -47,7 +47,7 @@ function runCallback(item: ContextMenuItem) {
 	display: flex;
 	flex-direction: column;
 	width: 10rem;
-	border: .1rem solid var(--reply-text-color);
+	border: .1rem solid var(--padding-color);
 	background-color: var(--popup-background-color);
 	text-align: left;
 	z-index: 100;

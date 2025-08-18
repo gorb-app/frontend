@@ -5,26 +5,34 @@ complementaryColor = white
 */
 
 :root {
+	--gorb-background-1: hsl(28, 4%, 15%);
+	--gorb-background-2: hsl(25, 3%, 13%);
+	--gorb-background-2-highlight: hsl(26, 3%, 16%);
+	--gorb-background-3: hsl(26, 5%, 10%);
+
 	--text-color: hsl(0, 2%, 95%);
 	--secondary-text-color: hsl(195, 2%, 80%);
 	--reply-text-color: hsl(0, 0%, 50%);
 
-	--chat-background-color: hsl(28, 4%, 15%);
+	--chat-background-color: var(--gorb-background-1);
     --chat-highlighted-background-color: hsl(28, 7%, 20%);
 	--chat-important-background-color: hsl(28, 50%, 50%, 0.20);
 	--chat-important-highlighted-background-color: hsl(28, 75%, 60%, 0.25);
 	--chat-featured-message-color: hsl(28, 90%, 60%, 0.25);
 
-	--chatbox-background-color: hsl(210, 1%, 7%);
-	--topbar-background-color: hsl(30, 2%, 12%);
-	--sidebar-background-color: hsl(25, 3%, 12%);
-	--sidebar-highlighted-background-color: hsl(25, 5%, 17%);
+	--chatbox-background-color: hsl(30, 4%, 9%);
+	--topbar-background-color: var(--gorb-background-3);
+	--guild-list-background-color: var(--gorb-background-3);
+	--left-sidebar-background-color: var(--gorb-background-2);
+	--left-sidebar-highlighted-background-color: var(--gorb-background-2-highlight);
+	--left-sidebar-top-background-color: var(--gorb-background-3);
+	--right-sidebar-background-color: var(--gorb-background-2);
 	
 	--popup-background-color: hsl(20, 3%, 14%);
 	--popup-highlighted-background-color: hsl(20, 6%, 20%);
 	--modal-background-color: hsl(28, 5%, 12%);
 	
-    --padding-color: hsl(0, 0%, 25%);
+    --padding-color: hsla(0, 0%, 100%, 10%);
 	
 	--primary-color: hsl(22, 85%, 55%);
 	--primary-highlighted-color: hsl(28, 88%, 60%);
