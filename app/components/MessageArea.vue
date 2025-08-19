@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { MessageResponse, ScrollPosition, UserResponse, WSMessage } from '~/types/interfaces';
+import type { MessageResponse, ScrollPosition, UserResponse, WSChatMessage, WSMessage } from '~/types/interfaces';
 import scrollToBottom from '~/utils/scrollToBottom';
 import { generateIrcColor } from '#imports';
 import { WSEvent } from '~/types/enums';
@@ -228,27 +228,29 @@ function sendMessage(e: Event) {
 	if (messageInput.value && messageInput.value.trim() !== "") {
 		const text = messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
 
+		const message: WSChatMessage = {
+			text
+		}
+
 		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
 		console.log("[MSG] message reply:", messageReply);
 		if (messageReply && messageReply.dataset.messageId) {
 			console.log("[MSG] message is a reply");
 			const reply_to = messageReply.dataset.messageId;
-			const event = WSEvent.MessageSend;
+			message.reply_to = reply_to;
 			const replyToMessage = document.querySelector(`.message[data-message-id='${reply_to}']`);
 			if (replyToMessage) {
 				replyToMessage.classList.remove("replying-to");
 			}
 		}
 
-		const message = {
+		const wsMessage: WSMessage = {
 			event: WSEvent.MessageSend,
-			entity: {
-				text
-			}
+			entity: message
 		};
 		
-		console.log("[MSG] sent message:", message);
-		ws.send(JSON.stringify(message));
+		console.log("[MSG] sending message:", wsMessage);
+		ws.send(JSON.stringify(wsMessage));
 
 		// reset input field
 		messageInput.value = ""
