@@ -58,17 +58,27 @@ export interface MessageResponse {
 	member: GuildMemberResponse,
 }
 
-export interface IMessageDelete {
+export interface WSChatMessage {
+	text: string,
+	reply_to?: string
+}
+
+export interface WSChatMessageEdit {
+	uuid: string,
+	text: string
+}
+
+export interface WSChatMessageDelete {
 	uuid: string
 }
 
-export interface WSError {
+export interface WSSendError {
 	message: string
 }
 
 export interface WSMessage {
 	event: WSEvent,
-	entity: MessageResponse | IMessageDelete | WSError
+	entity: WSChatMessage | WSChatMessageEdit | WSChatMessageDelete | WSSendError
 }
 
 export interface InviteResponse {
