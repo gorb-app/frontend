@@ -1,6 +1,6 @@
 /*
-displayName = Purp
-previewGradient = 45deg, hsl(230, 16%, 18%), #6272a4
+displayName = Midnight Shadow
+previewGradient = 45deg, hsl(230, 16%, 18%), hsl(234, 24%, 29%)
 complementaryColor = white
 */
 
@@ -22,8 +22,8 @@ complementaryColor = white
 
 	--chat-background-color: hsl(230, 16%, 18%); /* background 1 */
     --chat-highlighted-background-color: hsl(232deg, 22%, 17%); /* highlight background 1 */
-	--chat-important-background-color: hsl(232, 14%, 31%, 45%); /* line highlight */
-	--chat-important-highlighted-background-color: hsl(234, 24%, 29%, 45%); /* highlight line highlight */
+	--chat-important-background-color: hsla(232, 14%, 31%, 45%); /* line highlight */
+	--chat-important-highlighted-background-color: hsla(234, 24%, 29%, 45%); /* highlight line highlight */
 	--chat-featured-message-color: hsla(200, 65%, 75%, 20%);
 
 	--chatbox-background-color: hsl(210, 1%, 7%);
@@ -39,13 +39,13 @@ complementaryColor = white
 	
     --padding-color: hsla(0, 0%, 100%, 10%);
 	
-	--primary-color: hsl(30, 92%, 41%);
-	--primary-highlighted-color: hsl(107deg, 56%, 68%);
-	--secondary-color: hsl(29, 91%, 37%);
-	--secondary-highlighted-color: hsl(172deg, 53%, 65%);
-	--accent-color: hsl(28, 93%, 32%);
-	--accent-highlighted-color: hsl(24, 93%, 54%);
-	--danger-text-color: hsl(0, 80%, 55%);
-	--danger-text-highlighted-color: hsl(0, 100%, 50%);
+	--primary-color: hsl(105deg, 30%, 62%);
+	--primary-highlighted-color: hsl(107deg, 36%, 58%);
+	--secondary-color: hsl(170deg, 34%, 55%);
+	--secondary-highlighted-color: hsl(172deg, 40%, 52%);
+	--accent-color: hsl(140, 33%, 50%);
+	--accent-highlighted-color: hsl(142, 39%, 47%);
+	--danger-text-color: hsl(0, 75%, 60%);
+	--danger-text-highlighted-color: hsl(0, 81%, 50%);
 }
 
