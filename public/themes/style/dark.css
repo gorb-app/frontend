@@ -28,8 +28,8 @@ complementaryColor = white
 	--left-sidebar-top-background-color: var(--gorb-background-3);
 	--right-sidebar-background-color: var(--gorb-background-2);
 	
-	--popup-background-color: hsl(20, 3%, 14%);
-	--popup-highlighted-background-color: hsl(20, 6%, 20%);
+	--context-background-color: hsl(20, 3%, 14%);
+	--context-highlighted-background-color: hsl(20, 6%, 20%);
 	--modal-background-color: hsl(28, 5%, 12%);
 	
     --padding-color: hsla(0, 0%, 100%, 10%);
