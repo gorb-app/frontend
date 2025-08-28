@@ -4,6 +4,7 @@ let layoutLinkElement: HTMLLinkElement | null;
 
 export default () => {  
   const runtimeConfig = useRuntimeConfig()
+  const version = runtimeConfig.public.buildTimeString
   const baseURL = runtimeConfig.app.baseURL;
 
   let currentStyle = settingsLoad().selectedThemeStyle || (
@@ -11,8 +12,10 @@ export default () => {
       ? `${baseURL}themes/style/light.css`
       : `${baseURL}themes/style/dark.css`
   );
-
+  currentStyle += `?v=${version}`
+  
   let currentLayout = settingsLoad().selectedThemeLayout || `${baseURL}themes/layout/gorb.css`
+  currentLayout += `?v=${version}`
 
   if (styleLinkElement) {
     styleLinkElement.href = currentStyle;
