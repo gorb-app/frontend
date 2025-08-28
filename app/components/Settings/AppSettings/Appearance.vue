@@ -9,13 +9,13 @@
         <div v-for="style of styles" class="theme-preview-container">
           <span class="theme-instance"
               :title="style.displayName"
+              :style="{background:`linear-gradient(${style.previewGradient})`}"
               @click="changeTheme(StyleLayout.Style, style)">
             <div class="theme-content-container">
-              <span class="style-background"
-                :style="{background:`linear-gradient(${style.previewGradient})`}"
-              ></span>
-              <span class="theme-title" :style="{color:`${style.complementaryColor}`}">
-                {{ style.displayName }}
+              <span class="theme-title-container" :style="{color:`${style.complementaryColor}`}">
+                <span class="theme-title">
+                  {{ style.displayName }}
+                </span>
               </span>
             </div>
           </span>
@@ -31,8 +31,10 @@
               <span class="layout-background"
                 :style="{backgroundImage:`url(${layout.previewImageUrl})`}"
               ></span>
-              <span class="theme-title" :style="{color:`${layout.complementaryColor}`}">
-                {{ layout.displayName }}
+              <span class="theme-title-container" :style="{color:`${layout.complementaryColor}`}">
+                <span class="theme-title">
+                  {{ layout.displayName }}
+                </span>
               </span>
               <!-- this breaks if it's a nuxtimg, i don't know why -->
               <img class="layout-preview" :src="layout.previewImageUrl"></img>
@@ -193,7 +195,7 @@ function changeTheme(themeType: StyleLayout, theme: Theme) {
   align-content: center;
 }
 
-.style-background, .layout-background {
+.theme-title-container, .layout-background {
   position: absolute;
 
   top: 0;
@@ -205,6 +207,17 @@ function changeTheme(themeType: StyleLayout, theme: Theme) {
   height: var(--instance-size);
 
   border-radius: 100%;
+}
+
+.theme-title-container {
+  display: flex;
+  align-items: center;
+}
+
+.theme-title {
+  width: 100%;
+  font-size: .75em;
+  line-height: .95em;
 }
 
 .layout-background {
@@ -228,25 +241,9 @@ function changeTheme(themeType: StyleLayout, theme: Theme) {
 
 .theme-instance:hover .layout-preview {
   border: .1em solid var(--primary-color);
-  filter: drop-shadow(0 0 .2em var(--secondary-color));
+  filter: drop-shadow(0 0 .2em var(--accent-color));
   transform: translate(3.5em, -4em);
   
   height: 40dvw;
-}
-
-.theme-title {
-  position: absolute;
-  
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  
-  width: 100%;
-  height: 100%;
-  
-  font-size: .8em;
-  /* i CANNOT explain this line height calculation, but it works for a font size of .8em no matter what size the instances are */
-  line-height: calc(var(--instance-size) * 1.25); 
 }
 </style>

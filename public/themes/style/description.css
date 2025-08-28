@@ -16,12 +16,12 @@ complementaryColor = black
 	--chat-important-background-color: #ffc44f2f;
 	--chat-important-highlighted-background-color: #ffa45f4a;
 	--chat-featured-message-color: #4f2f1f58;
-	--popup-background-color: #2f1f1f;
-	--popup-highlighted-background-color: #3f2f2f;
+	--context-background-color: #2f1f1f;
+	--context-highlighted-background-color: #3f2f2f;
 	--modal-background-color: #181f1f;
 
-	--sidebar-background-color: #80808000;
-	--sidebar-highlighted-background-color: #ffffff20;
+	--left-sidebar-background-color: #80808000;
+	--left-sidebar-highlighted-background-color: #ffffff20;
 	--topbar-background-color: #80808000;
 	--chatbox-background-color: #80808000;
 

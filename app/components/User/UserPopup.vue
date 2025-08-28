@@ -33,23 +33,27 @@ const props = defineProps<{
 #profile-popup {
   min-width: 300px;
   max-width: 300px;
-  border-radius: 8px;
-  position: relative;
+  height: fit-content;
+
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  border-radius: calc(var(--standard-radius));
+  box-shadow: 0 0 .25em .02em  var(--chat-highlighted-background-color);
 }
 
+
 #cover-color {
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--standard-radius) var(--standard-radius) 0 0;
   min-height: 60px;
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
 }
 
 #main-body {
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 var(--standard-radius) var(--standard-radius);
   padding: 12px;
-  min-height: 280px;
-  background-color: var(--accent-color);
+  background-color: var(--modal-background-color);
   overflow-wrap: break-word;
   hyphens: manual;
 }
@@ -57,7 +61,7 @@ const props = defineProps<{
 #avatar {
   width: 96px;
   height: 96px;
-  border: 5px solid #4b3018;
+	border: .15em solid var(--secondary-color);
   background-color: var(--secondary-color);
   border-radius: 100%;
   position: absolute;
@@ -79,7 +83,7 @@ const props = defineProps<{
 
 #about-me {
   background-color: var(--secondary-color);
-  border-radius: 12px;
+  border-radius: var(--standard-radius);
   
   margin-top: 32px;
   padding: 16px;

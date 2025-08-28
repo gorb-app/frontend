@@ -15,21 +15,21 @@ complementaryColor = black
     --chat-important-background-color: #df5f0b26;
     --chat-important-hightlighted-background-color: #df5f0b3d;
     --chat-featured-message-color: #e8ac841f;
-    --popup-background-color: #b8b4b0;
-    --popup-highlighted-background-color: #a6a4a2;
+    --context-background-color: #b8b4b0;
+    --context-highlighted-background-color: #a6a4a2;
 	--modal-background-color: #e8e4e0;
 
-	--sidebar-background-color: #dbd8d4;
-	--sidebar-highlighted-background-color: #d4d0ca;
+	--left-sidebar-background-color: #dbd8d4;
+	--left-sidebar-highlighted-background-color: #d4d0ca;
 	--topbar-background-color: #dfdbd6;
 	--chatbox-background-color: #dfdbd6;
 
     --padding-color: #484848;
     
-    --primary-color: #df5f0b;
-    --primary-highlighted-color: #ef6812;
-    --secondary-color: #e8ac84;
-    --secondary-highlighted-color: #f8b68a;
-    --accent-color: #e68b4e;
-    --accent-highlighted-color: #f69254;
+    --primary-color: hsl(22, 70%, 75%);
+    --primary-highlighted-color: hsl(14, 72%, 48%);
+    --secondary-color: hsl(19, 60%, 65%);
+    --secondary-highlighted-color: hsl(14, 72%, 48%);
+    --accent-color:  hsl(24, 70%, 60%);
+    --accent-highlighted-color: hsl(24, 85%, 50%);
 }

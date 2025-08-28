@@ -1,0 +1,51 @@
+/*
+displayName = Midnight Shadow
+previewGradient = 45deg, hsl(230, 16%, 18%), hsl(234, 24%, 29%)
+complementaryColor = white
+*/
+
+:root {
+	--purp-background-1: hsl(230, 16%, 18%);
+	--purp-background-2: hsl(230, 15%, 16%);
+	--purp-background-3: hsl(230, 14%, 15%);
+	--purp-popup-1: hsl(231deg, 16%, 34%);
+	--purp-line-highlight: hsla(232, 14%, 31%, 45%);
+
+	/* highlight colours follow this formula;
+	hue + 2
+	chroma + 6
+	lightness * 0.94 */
+
+	--text-color: hsl(60, 30%, 96%);
+	--secondary-text-color: hsl(225, 27%, 51%);
+	--reply-text-color: var(--macchiato-subetxt-0);
+
+	--chat-background-color: hsl(230, 16%, 18%); /* background 1 */
+    --chat-highlighted-background-color: hsl(232deg, 22%, 17%); /* highlight background 1 */
+	--chat-important-background-color: hsla(232, 14%, 31%, 45%); /* line highlight */
+	--chat-important-highlighted-background-color: hsla(234, 24%, 29%, 45%); /* highlight line highlight */
+	--chat-featured-message-color: hsla(200, 65%, 75%, 20%);
+
+	--chatbox-background-color: hsl(210, 1%, 7%);
+	--guild-list-background-color: var(--purp-background-3);
+	--topbar-background-color: var(--purp-background-1);
+	--left-sidebar-background-color: hsl(230, 15%, 16%); /* background 2 */
+	--left-sidebar-highlighted-background-color: hsl(232deg, 23%, 15%); /* highlight background 1 */
+	--right-sidebar-background-color: var(--purp-background-2);
+	
+	--context-background-color: hsl(231deg, 16%, 34%); /* popup 1 */
+	--context-highlighted-background-color: hsl(231deg, 24%, 32%); /* highlight popup 1 */
+	--modal-background-color: hsl(231deg, 13%, 27%);
+	
+    --padding-color: hsla(0, 0%, 100%, 10%);
+	
+	--primary-color: hsl(105deg, 30%, 62%);
+	--primary-highlighted-color: hsl(107deg, 36%, 58%);
+	--secondary-color: hsl(170deg, 34%, 55%);
+	--secondary-highlighted-color: hsl(172deg, 40%, 52%);
+	--accent-color: hsl(140, 33%, 50%);
+	--accent-highlighted-color: hsl(142, 39%, 47%);
+	--danger-text-color: hsl(0, 75%, 60%);
+	--danger-text-highlighted-color: hsl(0, 81%, 50%);
+}
+

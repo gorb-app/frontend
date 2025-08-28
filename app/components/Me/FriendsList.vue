@@ -43,7 +43,7 @@ const props = defineProps<{
 	width: 100%;
 
 	border-radius: 1em;
-	border: 1px solid var(--accent-color);
+	border: 1px solid var(--secondary-color);
 
 	box-sizing: border-box;
 	

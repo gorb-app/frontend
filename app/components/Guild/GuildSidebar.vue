@@ -56,7 +56,7 @@ function toggleGuildSettings(e: Event) {
 	position: relative;
 
 	border-bottom: 1px solid var(--padding-color);
-	background-color: var(--topbar-background-color);
+	background-color: var(--left-sidebar-top-background-color);
 }
 
 #guild-name {
@@ -75,7 +75,7 @@ function toggleGuildSettings(e: Event) {
 
 #channels-list {
 	background: var(--optional-channel-list-background);
-	background-color: var(--sidebar-background-color);
+	background-color: var(--left-sidebar-background-color);
 
 	display: flex;
 	flex-direction: column;

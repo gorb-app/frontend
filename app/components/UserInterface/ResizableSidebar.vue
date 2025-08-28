@@ -114,7 +114,7 @@ function loadStoredWidth() {
 .resizable-sidebar {
 	display: flex;
 	background: var(--optional-channel-list-background);
-	background-color: var(--sidebar-background-color);
+	background-color: var(--left-sidebar-background-color);
 	height: 100%;
 	flex: 0 0 auto;
 }

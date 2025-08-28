@@ -47,8 +47,8 @@ function runCallback(item: ContextMenuItem) {
 	display: flex;
 	flex-direction: column;
 	width: 10rem;
-	border: .1rem solid var(--reply-text-color);
-	background-color: var(--popup-background-color);
+	border: .1rem solid var(--padding-color);
+	background-color: var(--context-background-color);
 	text-align: left;
 	z-index: 100;
 }
@@ -60,7 +60,7 @@ function runCallback(item: ContextMenuItem) {
 	height: 2rem;
 	width: 100%;
 	color: var(--text-color);
-	background-color: var(--popup-background-color);
+	background-color: var(--context-background-color);
 	border: none;
 	text-align: left;
 	padding-left: 1rem;
@@ -68,7 +68,7 @@ function runCallback(item: ContextMenuItem) {
 }
 
 .context-menu-item:hover {
-	background-color: var(--popup-highlighted-background-color);
+	background-color: var(--context-highlighted-background-color);
 }
 
 .context-menu-item-danger {

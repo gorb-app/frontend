@@ -13,16 +13,16 @@
 
 const props = defineProps<{
 	seed: string,
-	name: string	
+	name: string
 }>();
 
 let previewName = "";
 // include the entire name if it's 3 chars or less, use the first char of the first 3 words otherwise
 if (props.name.length > 3) {
-	let guildName: string[] = props.name.split(' ')
+	let splitName: string[] = props.name.split(' ')
 	for (let i = 0; i < 3; i ++) {
-		if (guildName.length > i) {
-			previewName += guildName[i].charAt(0)
+		if (splitName[i]) {
+			previewName += splitName[i].charAt(0)
 		} else {
 			break
 		}
@@ -51,6 +51,6 @@ if (props.name.length > 3) {
 
 	font-weight: bold;
 
-	color: var(--secondary-text-color)
+	color: var(--text-color)
 }
 </style>

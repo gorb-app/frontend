@@ -72,6 +72,8 @@
 </template>
 
 <script lang="ts" setup>
+import Button from '~/components/UserInterface/Button.vue';
+
 definePageMeta({
   layout: "auth"
 });

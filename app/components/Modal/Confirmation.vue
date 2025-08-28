@@ -34,6 +34,7 @@ function closeModal() {
 .confirmation-modal-body {
 	display: flex;
 	flex-direction: column;
+	border-radius: var(--standard-radius);
 	background-color: var(--modal-background-color);
 	align-items: center;
 	text-align: center;

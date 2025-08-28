@@ -98,15 +98,15 @@ function selectButton(button: Element) {
 }
 
 .radio-button:hover {
-	background-color: var(--secondary-highlighted-color);
+	background-color: var(--accent-highlighted-color);
 }
 
 .selected-radio-button {
-	background-color: var(--accent-color);
+	background-color: var(--secondary-color);
 }
 
 .selected-radio-button:hover {
-	background-color: var(--accent-highlighted-color);
+	background-color: var(--secondary-highlighted-color);
 }
 
 .radio-button-radio, .selected-radio-button-radio {

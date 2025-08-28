@@ -41,7 +41,7 @@ async function sendRequest() {
 	padding: .3em .3em;
 
 	border-radius: 1em;
-	border: 1px solid var(--accent-color);
+	border: 1px solid var(--secondary-color);
 }
 
 #add-friend-search-input {

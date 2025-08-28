@@ -38,6 +38,6 @@ const isCurrentChannel = props.uuid == props.currentUuid;
 }
 
 .current-channel {
-	background-color: var(--sidebar-highlighted-background-color);
+	background-color: var(--left-sidebar-highlighted-background-color);
 }
 </style>

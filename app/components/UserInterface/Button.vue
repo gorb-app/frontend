@@ -39,17 +39,17 @@ const props = defineProps<{
 }
 
 .scary-button {
-	background-color: red;
+	background-color: var(--danger-text-color);
 }
 .scary-button:hover {
-	background-color: red;
+	background-color: var(--danger-text-highlighted-color);
 }
 
 .neutral-button {
-	background-color: var(--accent-color);
+	background-color: var(--secondary-color);
 }
 .neutral-button:hover {
-	background-color: var(--accent-highlighted-color);
+	background-color: var(--secondary-highlighted-color);
 }
 
 .stealth-button {

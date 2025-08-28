@@ -92,6 +92,6 @@ async function deleteAccount() {
   border-radius: 8px;
   border: none;
   color: var(--text-color);
-  background-color: var(--accent-color);
+  background-color: var(--secondary-color);
 }
 </style>
