@@ -14,5 +14,7 @@ export const enum WSEvent {
 	MessageSend = "MessageSend",
 	MessageDelete = "MessageDelete",
 	MessageEdit = "MessageEdit",
+	ChannelSubscribe = "ChannelSubscribe",
+	ChannelUnsubscribe = "ChannelUnsubscribe",
 	Error = "Error"
 }
