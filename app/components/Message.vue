@@ -188,7 +188,10 @@ if (props.message.member.user.uuid == me!.uuid) {
 }
 
 if (props.message.member.user.uuid == me!.uuid) {
-	regularSection.items.push({ name: "Delete (WIP)", icon: "lucide:trash", type: "danger", callback: () => {} });
+	regularSection.items.push({ name: "Delete", icon: "lucide:trash", type: "danger", callback: async() => {
+		await deleteMessage(props.message.uuid, props.message.channel_uuid);
+		messageElement.value?.remove();
+	} });
 }
 
 if (regularSection.items.length) {
