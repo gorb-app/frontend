@@ -16,13 +16,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { ChannelResponse, GuildMemberResponse, GuildResponse } from '~/types/interfaces';
+import { WSEvent } from '~/types/enums';
+import type { ChannelResponse, GuildMemberResponse, GuildResponse, WSMessage } from '~/types/interfaces';
 
 const route = useRoute();
+const router = useRouter();
 const { fetchGuild, fetchChannel } = useApi()
 
 const channelId = route.params.channelId as string
 const guildId = route.params.serverId as string
+
+const ws = await useWebSocket();
 
 const channelUrlPath = `channels/${channelId}`;
 
@@ -48,6 +52,17 @@ if (!me.value || me.value.guild_uuid != guildId) {
 	me.value = fetchedMe;
 }
 
+onActivated(() => {
+	const wsMessage: WSMessage = {
+		event: WSEvent.ChannelSubscribe,
+		id: generateEventId(),
+		entity: channelId
+	};
+	
+	ws.socket.value.send(JSON.stringify(wsMessage));
+	console.log("Subscribed to channel", channelId);
+});
+
 // function toggleInvitePopup(e: Event) {
 // 	e.preventDefault();
 // 	showInvitePopup.value = !showInvitePopup.value;
@@ -55,6 +70,25 @@ if (!me.value || me.value.guild_uuid != guildId) {
 
 // function handleMemberClick(member: GuildMemberResponse) {
 // }
+
+router.beforeEach((to, from, next) => {
+	console.log("[ROUTER] from:", from.fullPath);
+	console.log("[ROUTER] to:", to.fullPath);
+	if (from.fullPath == route.fullPath) {
+		const wsMessage: WSMessage = {
+			event: WSEvent.ChannelUnsubscribe,
+			id: generateEventId(),
+			entity: channelId
+		};
+
+		console.log("unsub value:", ws.socket.value);
+		console.log("unsub msg:", wsMessage);
+		ws.socket.value.send(JSON.stringify(wsMessage));
+		console.log("Unsubscribed from channel", channelId);
+	}
+	console.log("dsifjids");
+	next();
+});
 
 </script>
 

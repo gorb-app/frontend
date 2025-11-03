@@ -194,16 +194,6 @@ if (accessToken && apiBase) {
 	console.log("channel url:", `${apiBase.replace("http", "ws")}/${props.channelUrl}/socket`);
 	console.log("access token:", accessToken);
 
-	const wsMessage: WSMessage = {
-		event: WSEvent.ChannelSubscribe,
-		id: generateEventId(),
-		entity: channelId
-	};
-
-	console.log("ws value:", ws.socket.value);
-	console.log("ws msg:", wsMessage);
-	ws.socket.value.send(JSON.stringify(wsMessage));
-
 	ws.socket.value.addEventListener("message", async (event) => {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
