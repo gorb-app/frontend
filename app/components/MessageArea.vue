@@ -42,6 +42,7 @@ import type { MessageResponse, ScrollPosition, UserResponse, WSChatMessage, WSMe
 import scrollToBottom from '~/utils/scrollToBottom';
 import { generateIrcColor } from '#imports';
 import { WSEvent } from '~/types/enums';
+import { useWebSocket } from '~/composables/web-socket';
 
 const { getDisplayName } = useProfile()
 const { fetchMe } = useApi()
@@ -182,25 +183,23 @@ const apiBase = useCookie("api_base").value;
 const { refresh } = useAuth();
 const { fetchMessages } = useApi();
 
-let ws: WebSocket;
+const { ws } = await useWebSocket();
+console.log("ws:", ws);
 
 if (accessToken && apiBase) {
 	console.log("channel url:", `${apiBase.replace("http", "ws")}/${props.channelUrl}/socket`);
 	console.log("access token:", accessToken);
-	do {
-		console.log("Trying to connect to channel WebSocket...");
-		ws = new WebSocket(`${apiBase.replace("http", "ws").replace("3000", "8080")}/${props.channelUrl}/socket`,
-			["Authorization", accessToken]
-		);
-		if (ws) break;
-		await sleep(5000);
-	} while (!ws);
 
-	ws.addEventListener("open", (event) => {
-		console.log("WebSocket connected!");
-	});
+	const wsMessage: WSMessage = {
+		event: WSEvent.ChannelSubscribe,
+		entity: channelId
+	};
 
-	ws.addEventListener("message", async (event) => {
+	console.log("ws value:", ws.value);
+	console.log("ws msg:", wsMessage);
+	ws.value.send(JSON.stringify(wsMessage));
+
+	ws.value.addEventListener("message", async (event) => {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
 		const message: WSMessage = JSON.parse(event.data);
@@ -250,7 +249,7 @@ function sendMessage(e: Event) {
 		};
 		
 		console.log("[MSG] sending message:", wsMessage);
-		ws.send(JSON.stringify(wsMessage));
+		ws.value!.send(JSON.stringify(wsMessage));
 
 		// reset input field
 		messageInput.value = ""
