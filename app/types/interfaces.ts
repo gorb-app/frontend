@@ -60,16 +60,19 @@ export interface MessageResponse {
 
 export interface WSChatMessage {
 	text: string,
+	channel_uuid: string,
 	reply_to?: string
 }
 
 export interface WSChatMessageEdit {
 	uuid: string,
-	text: string
+	text: string,
+	channel_uuid: string,
 }
 
 export interface WSChatMessageDelete {
-	uuid: string
+	uuid: string,
+	channel_uuid: string,
 }
 
 export interface WSSendError {

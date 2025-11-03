@@ -53,6 +53,10 @@ const props = defineProps<{ channelUrl: string, amount?: number, offset?: number
 
 const me = await fetchMe() as UserResponse;
 
+const route = useRoute();
+
+const channelId = route.params.channelId as string;
+
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});
 const messageGroupingMaxDifference = useRuntimeConfig().public.messageGroupingMaxDifference
@@ -228,7 +232,8 @@ function sendMessage(e: Event) {
 		const text = messageInput.value.trim().replace(/\n/g, "<br>") // trim, and replace \n with <br>
 
 		const message: WSChatMessage = {
-			text
+			text,
+			channel_uuid: channelId
 		}
 
 		const messageReply = document.getElementById("message-reply") as HTMLDivElement;
@@ -268,8 +273,6 @@ function getReplyMessage(id: string) {
 	}
 }
 
-const route = useRoute();
-
 onMounted(async () => {
 	if (import.meta.server) return;
 	console.log("[MSG] messages keys:", Object.values(messages.value));
@@ -287,7 +290,7 @@ onMounted(async () => {
 					if (fetched) return;
 					fetched = true;
 					console.log("scroll height is at 10% or less");
-					const olderMessages = await fetchMessages(route.params.channelId as string, { amount, offset });
+					const olderMessages = await fetchMessages(channelId, { amount, offset });
 					if (olderMessages?.length) {
 						olderMessages.reverse();
 						messages.value = [...olderMessages.map(msg => reactive(msg)), ...messages.value];
