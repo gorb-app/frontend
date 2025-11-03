@@ -76,9 +76,13 @@ export interface WSSendError {
 	message: string
 }
 
+export type WSChannelSubscribe = string;
+
+export type WSChannelUnsubscribe = string;
+
 export interface WSMessage {
 	event: WSEvent,
-	entity: WSChatMessage | WSChatMessageEdit | WSChatMessageDelete | WSSendError
+	entity: WSChatMessage | WSChatMessageEdit | WSChatMessageDelete | WSChannelSubscribe | WSChannelUnsubscribe | WSSendError
 }
 
 export interface InviteResponse {
