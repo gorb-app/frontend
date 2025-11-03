@@ -187,7 +187,7 @@ const apiBase = useCookie("api_base").value;
 const { refresh } = useAuth();
 const { fetchMessages } = useApi();
 
-const { ws } = await useWebSocket();
+const ws = await useWebSocket();
 console.log("ws:", ws);
 
 if (accessToken && apiBase) {
@@ -199,11 +199,11 @@ if (accessToken && apiBase) {
 		entity: channelId
 	};
 
-	console.log("ws value:", ws.value);
+	console.log("ws value:", ws.socket.value);
 	console.log("ws msg:", wsMessage);
-	ws.value.send(JSON.stringify(wsMessage));
+	ws.socket.value.send(JSON.stringify(wsMessage));
 
-	ws.value.addEventListener("message", async (event) => {
+	ws.socket.value.addEventListener("message", async (event) => {
 		console.log("event data:", event.data);
 		console.log("message uuid:", event.data.uuid);
 		const message: WSMessage = JSON.parse(event.data);
@@ -254,7 +254,7 @@ function sendMessage(e: Event) {
 		};
 		
 		console.log("[MSG] sending message:", wsMessage);
-		ws.value!.send(JSON.stringify(wsMessage));
+		ws.socket.value!.send(JSON.stringify(wsMessage));
 
 		// reset input field
 		messageInput.value = ""

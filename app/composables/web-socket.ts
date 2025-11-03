@@ -2,13 +2,13 @@ const apiBase = useCookie("api_base").value;
 const accessToken = useCookie("access_token").value;
 
 export const useWebSocket = async () => {
-	const ws = useState<WebSocket>("ws");
+	const socket = useState<WebSocket>("socket");
   	
-	if (!ws.value) {
+	if (!socket.value) {
 		while (true) {
-			ws.value = await connect();
-			if (ws.value) {
-				ws.value.addEventListener("open", () => {
+			socket.value = await connect();
+			if (socket.value) {
+				socket.value.addEventListener("open", () => {
 					console.log("WebSocket connected!");
 				});
 				break;
@@ -17,7 +17,7 @@ export const useWebSocket = async () => {
 		}
 
 		while (true) {
-			if (ws.value.readyState == ws.value.OPEN) break;
+			if (socket.value.readyState == socket.value.OPEN) break;
 			await sleep(5);
 		}
 	}
@@ -27,13 +27,13 @@ export const useWebSocket = async () => {
 			throw new Error("No API base or access token cookie");
 		}
 		console.log("Trying to connect to channel WebSocket...");
-		ws.value = new WebSocket(`${apiBase.replace("http", "ws").replace("3000", "8080")}/socket`,
+		socket.value = new WebSocket(`${apiBase.replace("http", "ws").replace("3000", "8080")}/socket`,
 			["Authorization", accessToken]
 		);
 
-		return ws.value;
+		return socket.value;
 	}
 	return {
-		ws
+		socket,
 	}
 }
