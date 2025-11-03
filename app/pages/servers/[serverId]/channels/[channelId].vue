@@ -52,16 +52,14 @@ if (!me.value || me.value.guild_uuid != guildId) {
 	me.value = fetchedMe;
 }
 
-onActivated(() => {
-	const wsMessage: WSMessage = {
-		event: WSEvent.ChannelSubscribe,
-		id: generateEventId(),
-		entity: channelId
-	};
-	
-	ws.socket.value.send(JSON.stringify(wsMessage));
-	console.log("Subscribed to channel", channelId);
-});
+const wsMessage: WSMessage = {
+	event: WSEvent.ChannelSubscribe,
+	id: generateEventId(),
+	entity: channelId
+};
+
+ws.socket.value.send(JSON.stringify(wsMessage));
+console.log("Subscribed to channel", channelId);
 
 // function toggleInvitePopup(e: Event) {
 // 	e.preventDefault();
@@ -81,12 +79,23 @@ router.beforeEach((to, from, next) => {
 			entity: channelId
 		};
 
-		console.log("unsub value:", ws.socket.value);
-		console.log("unsub msg:", wsMessage);
+		console.log("[ROUTER] unsub value:", ws.socket.value);
+		console.log("[ROUTER] unsub msg:", wsMessage);
 		ws.socket.value.send(JSON.stringify(wsMessage));
-		console.log("Unsubscribed from channel", channelId);
+		console.log("[ROUTER] Unsubscribed from channel", channelId);
+	} else if (to.fullPath.includes("/channels/")) {
+		const channelId = to.params.channelId as string;
+		
+		const wsMessage: WSMessage = {
+			event: WSEvent.ChannelSubscribe,
+			id: generateEventId(),
+			entity: channelId
+		};
+		
+		ws.socket.value.send(JSON.stringify(wsMessage));
+		console.log("[ROUTER] Subscribed to channel", channelId);
 	}
-	console.log("dsifjids");
+
 	next();
 });
 
