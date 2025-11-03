@@ -196,6 +196,7 @@ if (accessToken && apiBase) {
 
 	const wsMessage: WSMessage = {
 		event: WSEvent.ChannelSubscribe,
+		id: generateEventId(),
 		entity: channelId
 	};
 
@@ -250,6 +251,7 @@ function sendMessage(e: Event) {
 
 		const wsMessage: WSMessage = {
 			event: WSEvent.MessageSend,
+			id: generateEventId(),
 			entity: message
 		};
 		

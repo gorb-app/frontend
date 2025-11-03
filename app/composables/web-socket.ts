@@ -3,6 +3,7 @@ const accessToken = useCookie("access_token").value;
 
 export const useWebSocket = async () => {
 	const socket = useState<WebSocket>("socket");
+	const eventIds = useState<number[]>("eventIds", () => []);
   	
 	if (!socket.value) {
 		while (true) {
@@ -33,7 +34,26 @@ export const useWebSocket = async () => {
 
 		return socket.value;
 	}
+
+	function pushEventId(id: number) {
+		eventIds.value.push(id);
+	}
+	
+	function removeEventId(id: number) {
+		const index = eventIds.value.findIndex(eventId => eventId == id);
+		if (index != -1) {
+			eventIds.value.splice(index, 1);
+		}
+	}
+
+	function isEventIdFree(id: number): boolean {
+		return eventIds.value.findIndex(eventId => eventId == id) == -1;
+	} 
+
 	return {
 		socket,
+		pushEventId,
+		removeEventId,
+		isEventIdFree
 	}
 }

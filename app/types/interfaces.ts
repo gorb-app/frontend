@@ -85,6 +85,7 @@ export type WSChannelUnsubscribe = string;
 
 export interface WSMessage {
 	event: WSEvent,
+	id: number
 	entity: WSChatMessage | WSChatMessageEdit | WSChatMessageDelete | WSChannelSubscribe | WSChannelUnsubscribe | WSSendError
 }
 
