@@ -1,7 +1,9 @@
+import Timer from "~/classes/Timer";
 import type { ChannelResponse } from "~/types/interfaces";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-	const { fetchChannels } = useApi();
+	const timer = new Timer("MIDDLEWARE-SERVER");
+	timer.start();
 
 	const guildId = to.params.serverId as string;
 
@@ -11,6 +13,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 	if (channels.length > 0) {
 		console.log("wah");
+		timer.stop();
 		return await navigateTo(`/servers/${guildId}/channels/${channels[0].uuid}`, { replace: true });
 	}
+
+	timer.stop();
 })
