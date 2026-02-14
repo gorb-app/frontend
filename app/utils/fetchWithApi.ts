@@ -1,6 +1,9 @@
 import type { NitroFetchOptions } from "nitropack";
+import Timer from "~/classes/Timer";
 
 export default async <T>(path: string, options: NitroFetchOptions<string> = {}) => {
+  const timer = new Timer("fetchWithApi");
+  timer.start();
   console.log("path received:", path);
   if (!path.startsWith("/")) {
     path = "/" + path;
@@ -15,7 +18,8 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
   console.log("apiBase:", apiBase);
   if (!apiBase) {
     console.log("no api base");
-    return;
+    timer.stop();
+	return;
   }
   console.log("path:", path)
   const { clearAuth, refresh } = useAuth();
@@ -45,6 +49,7 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
         credentials: "include"
       });
 
+	  timer.stop();
       return res;
     } catch (error: any) {
       console.error("Error fetching resource");
@@ -65,15 +70,18 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
               console.log("Redirecting to login");
               await navigateTo("/login");
               console.log("redirected");
-              return;
+			  timer.stop();
+			  return;
             }
           }
         } else {
           console.log("Path is refresh endpoint, throwing error");
+		  timer.stop();
           throw error;
         }
       } else {
         console.log("throwing error:", error);
+		timer.stop();
         throw error;
       }
     }
