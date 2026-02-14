@@ -4,7 +4,7 @@
 			border-sides="left" local-storage-name="membersListWidth">
 		<div id="members-container">
 			<div id="members-list">
-				<MemberEntry v-for="member of members.objects" :member="member" tabindex="0"/>
+				<MemberEntry v-for="member of members" :member="member" tabindex="0"/>
 			</div>
 		</div>
 	</ResizableSidebar>
@@ -19,10 +19,10 @@ const props = defineProps<{
     guild: GuildResponse
 }>();
 
-const { fetchMembers } = useApi();
+const guildsStore = useGuildsStore();
 
 // TODO implement paging
-const members = await fetchMembers(props.guild.uuid)
+const members = await guildsStore.getMembersArray(props.guild.uuid);
 
 </script>
 

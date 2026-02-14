@@ -44,11 +44,13 @@ import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import type { GuildResponse } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
-const { fetchMyGuilds, joinGuild, createGuild, createChannel } = useApi();
+const { joinGuild, createGuild, createChannel } = useApi();
 
 const createButtonContainer = ref<HTMLButtonElement>();
 
-const guilds = await fetchMyGuilds();
+const guildsStore = useGuildsStore();
+
+const guilds = guildsStore.guildsArray;
 
 // TODO we need to turn this into an actual modal
 const options = [

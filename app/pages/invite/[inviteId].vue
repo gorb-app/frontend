@@ -39,8 +39,7 @@ import type { GuildResponse } from '~/types/interfaces';
 
 
 const route = useRoute();
-const { fetchInvite, joinGuild, fetchMembers } = useApi();
-const { getUser } = useAuth();
+const { fetchInvite, joinGuild } = useApi();
 
 const inviteId = route.params.inviteId as string;
 
@@ -55,8 +54,11 @@ if (inviteId) {
 		guild.value = await fetchInvite(inviteId);
 		console.log("invite guild:", guild.value);
 		if (accessToken.value && guild.value) {
+			const guildsStore = useGuildsStore();
+			const members = await guildsStore.getMembers(guild.value.uuid);
 			const userStore = useUserStore();
 			const me = await userStore.getMe();
+			if (me && members.get(me.uuid)) {
 				isMember.value = true;
 			}
 		} 

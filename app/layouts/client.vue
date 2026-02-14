@@ -19,6 +19,9 @@ definePageMeta({
 
 const loading = useState("loading", () => false);
 
+const guildsStore = useGuildsStore();
+await guildsStore.initGuildsIfEmpty();
+
 </script>
 
 <style>

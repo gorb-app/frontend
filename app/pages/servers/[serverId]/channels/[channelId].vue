@@ -19,7 +19,6 @@
 import type { ChannelResponse, GuildMemberResponse, GuildResponse } from '~/types/interfaces';
 
 const route = useRoute();
-const { fetchGuild, fetchChannel } = useApi()
 
 const channelId = route.params.channelId as string
 const guildId = route.params.serverId as string
@@ -29,14 +28,17 @@ const channelUrlPath = `channels/${channelId}`;
 let guild: GuildResponse | undefined;
 let channel: ChannelResponse | undefined;
 
+const guildsStore = useGuildsStore();
+
 try {
-	guild = await fetchGuild(guildId)
+	guild = await guildsStore.getGuild(guildId);
 } catch (error) {
 	console.error("Failed to fetch guild:", error);
 }
 
 try {
-	channel = await fetchChannel(channelId)
+	const guildsStore = useGuildsStore();
+	channel = await guildsStore.getChannel(guildId, channelId);
 } catch (error) {
 	console.error("Failed to fetch channel:", error);
 }

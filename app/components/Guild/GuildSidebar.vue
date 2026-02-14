@@ -32,11 +32,11 @@ const props = defineProps<{
 }>();
 
 const route = useRoute();
-const { fetchChannels } = useApi();
 
 const showGuildSettings = ref(false);
 
-const channels: ChannelResponse[] = await fetchChannels(props.guild.uuid);
+const guildsStore = useGuildsStore();
+const channels: ChannelResponse[] = await guildsStore.getChannelsArray(props.guild.uuid);
 
 function toggleGuildSettings(e: Event) {
 	e.preventDefault();

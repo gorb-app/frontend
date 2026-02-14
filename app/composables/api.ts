@@ -30,8 +30,9 @@ export const useApi = () => {
 
 		const me = await userStore.getMe();
 		if (me) {
-			const members = await fetchMembers(guildId);
-			const meMember = members.objects.find(member => member.user.uuid == me.uuid);
+			const guildsStore = useGuildsStore();
+			const members = await guildsStore.getMembers(guildId);
+			const meMember = members?.get(me.uuid);
 			return meMember;
 		}
 	}

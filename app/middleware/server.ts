@@ -5,7 +5,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 	const guildId = to.params.serverId as string;
 
-	const channels: ChannelResponse[] = await fetchChannels(guildId);
+	const guildsStore = useGuildsStore();
+	const channels: ChannelResponse[] = await guildsStore.getChannelsArray(guildId);
 	console.log("channels:", channels);
 
 	if (channels.length > 0) {
