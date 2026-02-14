@@ -44,13 +44,13 @@ import { generateIrcColor } from '#imports';
 import { WSEvent } from '~/types/enums';
 
 const { getDisplayName } = useProfile()
-const { fetchMe } = useApi()
 
 // TODO this file is a mess, and we need to stop using fetchWithApi
 
 const props = defineProps<{ channelUrl: string, amount?: number, offset?: number }>();
 
-const me = await fetchMe() as UserResponse;
+const userStore = useUserStore();
+const me = await userStore.getMe() as UserResponse;
 
 const messageTimestamps = ref<Record<string, number>>({});
 const messagesType = ref<Record<string, "normal" | "grouped">>({});

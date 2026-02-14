@@ -7,7 +7,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	
 	console.log("[AUTH] instance url:", apiBase);
 	if (apiBase && !Object.keys(to.query).includes("special") && to.path != "/verify-email") {
-		const user = await useAuth().getUser();
+		const userStore = useUserStore();
+		const user = await userStore.getMe();
 		const stats = await fetchInstanceStats(apiBase);
 		console.log("[AUTH] stats:", stats);
 		console.log("[AUTH] email verification check:", user?.email && !user.email_verified && stats.email_verification_required);

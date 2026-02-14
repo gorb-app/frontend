@@ -85,12 +85,13 @@ const emailSent = ref(false);
 
 const auth = useAuth();
 
-const loggedIn = ref(await auth.getUser());
+const userStore = useUserStore();
+const loggedIn = ref(await userStore.getMe());
 
 const query = new URLSearchParams(useRoute().query as Record<string, string>);
 query.delete("token");
 
-const user = await useAuth().getUser();
+const user = await userStore.getMe();
 
 if (user?.email_verified) {
 	if (query.get("redirect_to")) {

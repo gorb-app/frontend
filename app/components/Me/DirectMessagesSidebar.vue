@@ -26,9 +26,8 @@
 import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import ResizableSidebar from '../UserInterface/ResizableSidebar.vue';
 
-const { fetchFriends } = useApi();
-
-const friends = await fetchFriends()
+const userStore = useUserStore();
+const friends = await userStore.getFriendsArray();
 </script>
 
 <style>

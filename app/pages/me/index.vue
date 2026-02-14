@@ -24,11 +24,10 @@ import Button from '~/components/UserInterface/Button.vue';
 import AddFriend from '~/components/Me/AddFriend.vue';
 import FriendsList from '~/components/Me/FriendsList.vue';
 
-const { fetchFriends } = useApi();
-
 let filter = ref("all");
 
-const friends = await fetchFriends()
+const userStore = useUserStore();
+const friends = await userStore.getFriendsArray();
 
 function updateFilter(newFilter: string) {
 	filter.value = newFilter;

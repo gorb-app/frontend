@@ -1,7 +1,5 @@
 import type { GuildMemberResponse, UserResponse } from "~/types/interfaces"
 
-const { fetchFriends } = useApi();
-
 export const useProfile = () => {
 	function getAboutMe(profile: UserResponse | GuildMemberResponse): string | null {
 		if ("username" in profile) {
@@ -41,8 +39,8 @@ export const useProfile = () => {
 			user_uuid = profile.user.uuid
 		}
 
-		const friends = await fetchFriends()
-		const friend = friends.find(friend => friend.uuid === user_uuid);
+		const userStore = useUserStore();
+		const friend = await userStore.getFriend(user_uuid);
 		if (friend?.friends_since) {
 			return new Date(friend.friends_since);
 		}

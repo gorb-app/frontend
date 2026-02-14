@@ -47,9 +47,8 @@ const isCropPopupVisible = ref(false);
 const cropImageSrc = ref("")
 const aboutMeInput = ref<HTMLDivElement>()
 
-const { fetchUser } = useAuth();
-
-const user: UserResponse | undefined = await fetchUser()
+const userStore = useUserStore();
+const user: UserResponse | undefined = await userStore.getMe();
 if (!user) {
   alert("could not fetch user info, aborting :(")
 }

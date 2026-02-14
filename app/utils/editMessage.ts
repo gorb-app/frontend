@@ -1,12 +1,11 @@
 import type { MessageProps } from "~/types/props";
 
-const { fetchMe } = useApi()
-
 export default async (element: HTMLDivElement, props: MessageProps) => {
 	console.log("message:", element);
-	const me = await fetchMe();
+	const userStore = useUserStore();
+	const me = await userStore.getMe();
 
-	if (me && props.author?.uuid == me.uuid) {
+	if (me && props.message.user_uuid == me.uuid) {
 		const text = element.getElementsByClassName("message-text")[0] as HTMLDivElement;
 		text.contentEditable = "true";
 		text.focus();

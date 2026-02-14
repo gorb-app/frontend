@@ -26,9 +26,9 @@ export const useApi = () => {
 	}
 
 	async function fetchMeMember(guildId: string): Promise<GuildMemberResponse | undefined> {
-		const { getUser } = useAuth();
+		const userStore = useUserStore();
 
-		const me = await getUser();
+		const me = await userStore.getMe();
 		if (me) {
 			const members = await fetchMembers(guildId);
 			const meMember = members.objects.find(member => member.user.uuid == me.uuid);

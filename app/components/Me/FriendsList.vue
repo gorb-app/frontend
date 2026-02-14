@@ -26,9 +26,9 @@
 <script lang="ts" setup>
 
 const { getDisplayName } = useProfile()
-const { fetchFriends } = useApi();
 
-const friends = sortUsers(await fetchFriends())
+const userStore = useUserStore();
+const friends = sortUsers(await userStore.getFriendsArray());
 
 const props = defineProps<{
     variant: string

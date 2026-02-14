@@ -55,9 +55,8 @@ if (inviteId) {
 		guild.value = await fetchInvite(inviteId);
 		console.log("invite guild:", guild.value);
 		if (accessToken.value && guild.value) {
-			const members = await fetchMembers(guild.value.uuid);
-			const me = await getUser();
-			if (me && members.find(member => member.user.uuid == me.uuid)) {
+			const userStore = useUserStore();
+			const me = await userStore.getMe();
 				isMember.value = true;
 			}
 		} 

@@ -73,13 +73,13 @@ import MessageReply from './UserInterface/MessageReply.vue';
 import type { ContextMenuSection, IConfirmationModal } from '~/types/interfaces';
 
 const { getDisplayName } = useProfile()
-const { getUser } = useAuth()
 
 const route = useRoute();
 
 const props = defineProps<MessageProps>();
 
-const me = await getUser()
+const userStore = useUserStore();
+const me = await userStore.getMe();
 
 const messageElement = ref<HTMLDivElement>();
 
