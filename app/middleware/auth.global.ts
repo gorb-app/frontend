@@ -1,4 +1,8 @@
+import Timer from "~/classes/Timer";
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
+	const timer = new Timer("MIDDLEWARE-AUTH");
+	timer.start();
 	console.log("to.fullPath:", to.fullPath);
 	const loading = useState("loading");
 	const accessToken = useCookie("access_token").value;
@@ -13,6 +17,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		console.log("[AUTH] stats:", stats);
 		console.log("[AUTH] email verification check:", user?.email && !user.email_verified && stats.email_verification_required);
 		if (user?.email && !user.email_verified && stats.email_verification_required) {
+			timer.stop();
 			return await navigateTo("/register?special=verify_email");
 		}
 	}
@@ -46,8 +51,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			}
 		}
 		if (accessToken) {
+			timer.stop();
 			return await navigateTo("/");
 		}
+
+		timer.stop();
 		return;
 	};
 
@@ -61,6 +69,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		query.set("redirect_to", to.path);
 		loading.value = false;
 		console.log("set loading to false");
+		timer.stop();
 		return await navigateTo("/login?" + (query ?? ""));
 	}
+	
+	timer.stop();
 })
