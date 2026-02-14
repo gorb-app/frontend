@@ -43,13 +43,6 @@ try {
 	console.error("Failed to fetch channel:", error);
 }
 
-const { fetchMeMember } = useApi();
-const me = useState<GuildMemberResponse | undefined>("me");
-if (!me.value || me.value.guild_uuid != guildId) {
-	const fetchedMe = await fetchMeMember(guildId);
-	me.value = fetchedMe;
-}
-
 // function toggleInvitePopup(e: Event) {
 // 	e.preventDefault();
 // 	showInvitePopup.value = !showInvitePopup.value;

@@ -8,15 +8,21 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 		items: []
 	};
 
-	const me = useState<GuildMemberResponse | undefined>("me");
+	const guildsStore = useGuildsStore();
+	const userStore = useUserStore();
+	const meUser = await userStore.getMe();
+	let me: GuildMemberResponse | undefined;
+	if (meUser) {
+		me = await guildsStore.getMember(guildId, meUser?.uuid);
+	}
 	const { banMember, kickMember } = useApi();
 
 	console.log("[MENUITEM] hi");
 	console.log("[MENUITEM] member:", member.user.username);
-	console.log("[MENUITEM] me:", me.value?.user.username);
-	if (me.value && member.uuid != me.value.uuid) {
+	console.log("[MENUITEM] me:", me?.user.username);
+	if (me && member.uuid != me.uuid) {
 		console.log("[MENUITEM] member is not me");
-		if (hasPermission(me.value, Permission.KickMember)) {
+		if (hasPermission(me, Permission.KickMember)) {
 			console.log("[MENUITEM] has kick member permission");
 			moderationSection.items.push({
 				name: "Kick",
@@ -38,7 +44,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 			});
 		}
 
-		if (hasPermission(me.value, Permission.BanMember)) {
+		if (hasPermission(me, Permission.BanMember)) {
 			console.log("[MENUITEM] has ban permission");
 			moderationSection.items.push({
 				name: "Ban (WIP)",
