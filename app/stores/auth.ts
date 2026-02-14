@@ -13,5 +13,5 @@ export const useAuthStore = defineStore("auth", {
     setAccessToken(value: string) {
       this.accessToken = value;
     }
-  }
+  },
 })
