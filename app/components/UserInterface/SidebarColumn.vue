@@ -98,7 +98,8 @@ const options = [
 },
 { name: "Create", value: "create", callback: async () => {
 	console.log("create guild");
-	const user = await useAuth().getUser();
+	const userStore = useUserStore();
+	const user = await userStore.getMe();
 	const div = document.createElement("div");
 	const guildCreateModal = h(ModalBase, {
 		title: "Create a Guild",
