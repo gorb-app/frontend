@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	const { fetchInstanceStats } = useApi();
 	
 	console.log("[AUTH] instance url:", apiBase);
-	if (apiBase && !Object.keys(to.query).includes("special") && to.path != "/verify-email") {
+	if (accessToken && apiBase && !Object.keys(to.query).includes("special") && to.path != "/verify-email") {
 		const user = await useAuth().getUser();
 		const stats = await fetchInstanceStats(apiBase);
 		console.log("[AUTH] stats:", stats);
