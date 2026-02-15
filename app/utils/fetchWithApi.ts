@@ -53,8 +53,8 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
       return res;
     } catch (error: any) {
       console.error("Error fetching resource");
-      if (error?.response?.status === 401) {
-        console.log("Error status is 401");
+      if (error?.response?.status === 401 || (error?.data === "Header of type `authorization` was missing")) {
+        console.log("Error status is 401, or 400 due to missing Authorization header");
         if (!path.startsWith("/auth/refresh")) {
           console.log("Path is not refresh endpoint");
           try {
