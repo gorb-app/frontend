@@ -65,14 +65,15 @@ import VerticalSpacer from '../UserInterface/VerticalSpacer.vue';
 import Button from '../UserInterface/Button.vue';
 
 const { getDisplayName, getUsername, getPronouns, getAboutMe, getRegistrationDate, getGuildJoinDate, getFriendsSince, getUserUuid } = useProfile()
-const { addFriend, fetchMe } = useApi();
+const { addFriend } = useApi();
 
 const props = defineProps<ModalProps & {
 	profile: GuildMemberResponse,
 	onFinish: () => void
 }>();
 
-const me = await fetchMe() as UserResponse
+const userStore = useUserStore();
+const me = await userStore.getMe() as UserResponse;
 
 const displayName = getDisplayName(props.profile)
 const username = getUsername(props.profile)
