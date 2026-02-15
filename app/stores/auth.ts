@@ -95,7 +95,7 @@ export const useAuthStore = defineStore("auth", {
 			} else {
 				console.log("refresh didn't return access token");
 			}
-		},		
+		},
 
 		// as in email the password link
 		async requestPasswordReset() {

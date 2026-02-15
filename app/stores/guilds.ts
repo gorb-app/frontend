@@ -76,6 +76,21 @@ export const useGuildsStore = defineStore("guilds", {
 			timer.stop();
 			return member;
 		},
+		async getMemberByUserId(guildId: string, userId: string): Promise<GuildMemberResponse | undefined> {
+			const timer = new Timer("getMemberByUserId");
+			timer.start();
+			console.log("[STORE-GUILDS] getMemberByUserId() called");
+			await this.initMembersIfNotExists(guildId);
+			const members = this.members.get(guildId)!;
+			console.log("[STORE-GUILDS] members map:", members);
+			console.log("[STORE-GUILDS] members map values:", members.values());
+			for (const member of members.values()) {
+				if (member.user.uuid == userId) {
+					console.log("[STORE-GUILDS] gotten member by user ID:", member);
+					return member;
+				}
+			}
+		},
 		async initMembersIfNotExists(guildId: string): Promise<void> {
 			const timer = new Timer("INIT-MEMBERS");
 			timer.start();
@@ -133,10 +148,11 @@ export const useGuildsStore = defineStore("guilds", {
 			console.log("[STORE-GUILDS] Fetched channels");
 			if (fetchedChannels.length) {
 				console.log("[STORE-GUILDS] Creating map of channels");
-				const channels = new Map(fetchedChannels.map(channel => [channel.guild_uuid, channel]));
+				const channels = new Map(fetchedChannels.map(channel => [channel.uuid, channel]));
 				console.log("[STORE-GUILDS] Saving map to state");
 				this.channels.set(guildId, channels);
 			}
+			console.log("[STORE-GUILDS] Channels map:", this.channels);
 			console.log("[STORE-GUILDS] Done");
 			timer.stop();
 		},
