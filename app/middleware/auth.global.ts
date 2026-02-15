@@ -5,7 +5,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	timer.start();
 	console.log("to.fullPath:", to.fullPath);
 	const loading = useState("loading");
-	const accessToken = useCookie("access_token").value;
+	const authStore = useAuthStore();
+	if (!useCookie("access_token").value) authStore.updateToken();
+	const accessToken = authStore.accessToken;
 	const apiBase = useCookie("api_base").value;
 	const { fetchInstanceStats } = useApi();
 	
@@ -62,7 +64,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	if (!accessToken) {
 		loading.value = true;
 		console.log("set loading to true");
-		const authStore = useAuthStore();
 		console.log("hi");
 		await authStore.refresh();
 		const query = new URLSearchParams();

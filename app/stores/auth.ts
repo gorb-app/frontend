@@ -1,8 +1,7 @@
-import type { CookieRef } from '#app';
 import { defineStore } from 'pinia'
 
 interface State {
-	accessToken: CookieRef<string | null | undefined> | undefined;
+	accessToken: string | null | undefined;
 }
 
 interface TokenResponse {
@@ -18,8 +17,17 @@ export const useAuthStore = defineStore("auth", {
 		isAuthenticated: (state) => Boolean(state.accessToken),
 	},
 	actions: {
+		updateToken(token?: string | null) {
+			const cookie = useCookie("access_token");
+			if (token) {
+				cookie.value = token;
+			}
+			this.accessToken = cookie.value;
+			console.log("updated state access token to:", this.accessToken);
+		},
+
 		async clear() {
-			this.accessToken = null;
+			this.updateToken(null);
 			//await navigateTo("/login");
 		},
 
@@ -34,7 +42,7 @@ export const useAuthStore = defineStore("auth", {
 				}
 			}) as TokenResponse;
 			
-			this.accessToken = res.access_token;
+			this.updateToken(res.access_token);
 		},
 
 		async login(username: string, password: string, device_name: string) {
@@ -49,11 +57,8 @@ export const useAuthStore = defineStore("auth", {
 				}
 			}) as TokenResponse;
 			console.log("hi");
-			const cookie = useCookie("access_token");
-			cookie.value = res.access_token;
-			this.accessToken = cookie;
+			this.updateToken(res.access_token);
 			console.log("access token:", this.accessToken);
-			console.log("cookie token:", cookie.value);
 			//await fetchUser();
 		},
 
@@ -85,9 +90,7 @@ export const useAuthStore = defineStore("auth", {
 			}) as TokenResponse;
 			console.log("finished refreshing:", res);
 			if (res && res.access_token) {
-				const cookie = useCookie("access_token");
-				cookie.value = res.access_token;
-				this.accessToken = cookie;
+				this.updateToken(res.access_token);
 				console.log("set new access token");
 			} else {
 				console.log("refresh didn't return access token");
