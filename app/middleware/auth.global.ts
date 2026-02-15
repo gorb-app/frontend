@@ -6,13 +6,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	console.log("to.fullPath:", to.fullPath);
 	const loading = useState("loading");
 	const authStore = useAuthStore();
-	if (!useCookie("access_token").value) authStore.updateToken();
-	const accessToken = authStore.accessToken;
+	authStore.updateToken();
 	const apiBase = useCookie("api_base").value;
 	const { fetchInstanceStats } = useApi();
 	
 	console.log("[AUTH] instance url:", apiBase);
-	if (accessToken && apiBase && !Object.keys(to.query).includes("special") && to.path != "/verify-email") {
+	if (authStore.isAuthenticated && apiBase && !Object.keys(to.query).includes("special") && to.path != "/verify-email") {
 		const userStore = useUserStore();
 		const user = await userStore.getMe();
 		const stats = await fetchInstanceStats(apiBase);
@@ -52,7 +51,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				}
 			}
 		}
-		if (accessToken) {
+		if (authStore.isAuthenticated) {
 			timer.stop();
 			return await navigateTo("/");
 		}
@@ -61,7 +60,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		return;
 	};
 
-	if (!accessToken) {
+	if (!authStore.isAuthenticated) {
 		loading.value = true;
 		console.log("set loading to true");
 		console.log("hi");
