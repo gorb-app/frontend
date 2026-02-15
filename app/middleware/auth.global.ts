@@ -1,3 +1,4 @@
+import type { LocationQueryValue } from "vue-router";
 import Timer from "~/classes/Timer";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -52,6 +53,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			}
 		}
 		if (authStore.isAuthenticated) {
+			const redirectTo = to.query.redirect_to as LocationQueryValue | undefined;
+			if (redirectTo) {
+				timer.stop();
+				return await navigateTo(redirectTo);
+			}
 			timer.stop();
 			return await navigateTo("/");
 		}
@@ -64,13 +70,16 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		loading.value = true;
 		console.log("set loading to true");
 		console.log("hi");
-		await authStore.refresh();
-		const query = new URLSearchParams();
-		query.set("redirect_to", to.path);
+		if (!authStore.isAuthenticated) {
+			const query = new URLSearchParams();
+			query.set("redirect_to", to.path);
+			loading.value = false;
+			console.log("set loading to false");
+			timer.stop();
+			return await navigateTo("/login?" + (query ?? ""));
+		}
 		loading.value = false;
 		console.log("set loading to false");
-		timer.stop();
-		return await navigateTo("/login?" + (query ?? ""));
 	}
 	
 	timer.stop();
