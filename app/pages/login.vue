@@ -51,13 +51,13 @@ if (apiBase.value) {
 
 const registerUrl = `/register?${searchParams}`;
 
-const { login } = useAuth();
 
 async function formLogin(e: Event) {
 	e.preventDefault();
 	console.log("Sending login data");
 	try {
-		await login(form.username, form.password, "Linux Laptop");
+		const authStore = useAuthStore();
+		await authStore.login(form.username, form.password, "Linux Laptop");
 		console.log("logged in");
 		if (query.redirect_to) {
 			console.log("redirecting to:", query.redirect_to);

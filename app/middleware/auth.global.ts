@@ -62,9 +62,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	if (!accessToken) {
 		loading.value = true;
 		console.log("set loading to true");
-		const { refresh } = useAuth();
+		const authStore = useAuthStore();
 		console.log("hi");
-		await refresh();
+		await authStore.refresh();
 		const query = new URLSearchParams();
 		query.set("redirect_to", to.path);
 		loading.value = false;

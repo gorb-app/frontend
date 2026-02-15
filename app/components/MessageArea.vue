@@ -179,7 +179,6 @@ if (messagesRes) messages.value = messagesRes;
 
 const accessToken = useCookie("access_token").value;
 const apiBase = useCookie("api_base").value;
-const { refresh } = useAuth();
 const { fetchMessages } = useApi();
 
 let ws: WebSocket;
@@ -220,7 +219,8 @@ if (accessToken && apiBase) {
 	});
 
 } else {
-	await refresh();
+	const authStore = useAuthStore();
+	await authStore.refresh();
 }
 
 function sendMessage(e: Event) {

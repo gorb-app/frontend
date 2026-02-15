@@ -49,7 +49,7 @@ export const useAuthStore = defineStore("auth", {
 				}
 			}) as TokenResponse;
 			console.log("hi");
-			const cookie = useCookie("access_token")
+			const cookie = useCookie("access_token");
 			cookie.value = res.access_token;
 			this.accessToken = cookie;
 			console.log("access token:", this.accessToken);

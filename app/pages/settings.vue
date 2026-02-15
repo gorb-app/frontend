@@ -53,7 +53,7 @@ import VerticalSpacer from '~/components/UserInterface/VerticalSpacer.vue';
 import Button from '~/components/UserInterface/Button.vue';
 
 
-const { logout } = useAuth()
+const { logout } = useAuthStore();
 const appConfig = useRuntimeConfig()
 
 interface Page {

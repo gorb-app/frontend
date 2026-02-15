@@ -83,14 +83,13 @@ const emailVerificationRequired = useState("emailVerificationRequired", () => fa
 const registrationSubmitted = ref(false);
 const emailSent = ref(false);
 
-const auth = useAuth();
-
-const userStore = useUserStore();
-const loggedIn = ref(await userStore.getMe());
+const authStore = useAuthStore();
+const loggedIn = authStore.isAuthenticated;
 
 const query = new URLSearchParams(useRoute().query as Record<string, string>);
 query.delete("token");
 
+const userStore = useUserStore();
 const user = await userStore.getMe();
 
 if (user?.email_verified) {
@@ -189,7 +188,8 @@ async function register(e: Event) {
   e.preventDefault();
   console.log("Sending registration data");
   try {
-    await auth.register(form.username, form.email, form.password);
+	const authStore = useAuthStore();
+    await authStore.register(form.username, form.email, form.password);
 	if (!emailVerificationRequired.value) {
 		return await navigateTo(query.get("redirect_to"));
 	}

@@ -22,7 +22,7 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
 	return;
   }
   console.log("path:", path)
-  const { clearAuth, refresh } = useAuth();
+  const authStore = useAuthStore();
   
   let headers: HeadersInit = {};
   
@@ -59,14 +59,14 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
           console.log("Path is not refresh endpoint");
           try {
             console.log("Trying to refresh");
-            await refresh();
+            await authStore.refresh();
             console.log("Successfully refreshed token");
           } catch (error: any) {
             console.log("Failed to refresh token");
             if (error?.response?.status === 401) {
               console.log("Refresh returned 401");
               reauthFailed = true;
-              await clearAuth()
+              await authStore.clear();
               console.log("Redirecting to login");
               await navigateTo("/login");
               console.log("redirected");
