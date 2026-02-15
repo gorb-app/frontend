@@ -13,7 +13,7 @@ export default async (member: GuildMemberResponse, guildId: string, confirmation
 	const meUser = await userStore.getMe();
 	let me: GuildMemberResponse | undefined;
 	if (meUser) {
-		me = await guildsStore.getMember(guildId, meUser?.uuid);
+		me = await guildsStore.getMemberByUserId(guildId, meUser?.uuid);
 	}
 	const { banMember, kickMember } = useApi();
 
