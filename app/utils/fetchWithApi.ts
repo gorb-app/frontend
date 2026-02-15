@@ -67,11 +67,8 @@ export default async <T>(path: string, options: NitroFetchOptions<string> = {}) 
               console.log("Refresh returned 401");
               reauthFailed = true;
               await authStore.clear();
-              console.log("Redirecting to login");
-              await navigateTo("/login");
-              console.log("redirected");
 			  timer.stop();
-			  return;
+			  throw error;
             }
           }
         } else {
